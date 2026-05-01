@@ -1,0 +1,73 @@
+---
+import { skillGroups } from '@data/skills';
+---
+
+<section id="especializacion" class="section container" aria-labelledby="expertise-title">
+  <p class="eyebrow">Especialización</p>
+  <h2 id="expertise-title" class="section-title">Menos ruido, más foco técnico.</h2>
+  <p class="section-description">
+    El portfolio prioriza las áreas donde el perfil aporta más valor: backend Java/Spring, arquitectura, seguridad e IA aplicada.
+  </p>
+  <div class="grid">
+    {skillGroups.map((group) => (
+      <article class="surface card">
+        <h3>{group.title}</h3>
+        <p>{group.description}</p>
+        <ul>
+          {group.skills.map((skill) => <li>{skill}</li>)}
+        </ul>
+      </article>
+    ))}
+  </div>
+</section>
+
+<style>
+  .section {
+    padding-block: 5rem;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+
+  .card {
+    padding: 1.4rem;
+  }
+
+  h3 {
+    margin: 0;
+    font-size: 1.35rem;
+  }
+
+  p {
+    color: var(--color-text-muted);
+    line-height: 1.7;
+  }
+
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    padding: 0;
+    margin: 1.25rem 0 0;
+    list-style: none;
+  }
+
+  li {
+    padding: 0.45rem 0.65rem;
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    color: var(--color-text);
+    background: rgba(255, 255, 255, 0.04);
+    font-size: 0.9rem;
+  }
+
+  @media (max-width: 760px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

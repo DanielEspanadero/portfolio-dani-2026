@@ -1,0 +1,35 @@
+---
+import Button from '@components/ui/Button.astro';
+import { profile } from '@data/profile';
+---
+
+<section class="section container" aria-labelledby="authority-title">
+  <div class="surface authority">
+    <p class="eyebrow">Libro · YouTube · Comunidad</p>
+    <h2 id="authority-title" class="section-title">Más que código: comunicación técnica y enseñanza.</h2>
+    <p class="section-description">
+      Además de trabajar como ingeniero backend, comparto conocimiento sobre programación, backend y arquitectura. Esta capacidad de explicar conceptos complejos es parte central de mi perfil profesional.
+    </p>
+    <div class="actions">
+      <Button href="/libro/">Ver libro</Button>
+      <Button href={profile.links.youtube} variant="secondary">Ver YouTube</Button>
+    </div>
+  </div>
+</section>
+
+<style>
+  .section {
+    padding-block: 5rem;
+  }
+
+  .authority {
+    padding: clamp(1.5rem, 5vw, 3rem);
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+</style>

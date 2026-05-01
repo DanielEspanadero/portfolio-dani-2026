@@ -1,0 +1,21 @@
+{
+  "name": "portfolio-dani-2026",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "@astrojs/cloudflare": "latest",
+    "@astrojs/sitemap": "latest",
+    "astro": "latest",
+    "resend": "^6.1.3"
+  },
+  "devDependencies": {
+    "typescript": "latest"
+  }
+}

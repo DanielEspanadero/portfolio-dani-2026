@@ -1,0 +1,43 @@
+---
+export const prerender = true;
+
+import BaseLayout from '@layouts/BaseLayout.astro';
+import Button from '@components/ui/Button.astro';
+import { profile } from '@data/profile';
+
+const title = 'YouTube de Daniel Españadero | Programación, Java y backend';
+const description = 'Canal de YouTube de Daniel Españadero sobre programación, backend, Java, arquitectura de software y desarrollo profesional.';
+---
+
+<BaseLayout {title} {description}>
+  <section class="container page">
+    <p class="eyebrow">YouTube</p>
+    <h1>Contenido técnico sobre programación, backend y arquitectura.</h1>
+    <p>
+      El canal refuerza una parte clave del perfil: capacidad de explicar conceptos técnicos complejos de forma clara.
+    </p>
+    <Button href={profile.links.youtube}>Ver canal</Button>
+  </section>
+</BaseLayout>
+
+<style>
+  .page {
+    min-height: 70vh;
+    padding-block: 6rem;
+  }
+
+  h1 {
+    max-width: 860px;
+    margin: 0;
+    font-size: clamp(3rem, 8vw, 6rem);
+    line-height: 0.95;
+    letter-spacing: -0.07em;
+  }
+
+  p:not(.eyebrow) {
+    max-width: 720px;
+    color: var(--color-text-muted);
+    font-size: 1.2rem;
+    line-height: 1.7;
+  }
+</style>

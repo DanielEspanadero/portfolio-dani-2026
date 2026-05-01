@@ -1,0 +1,83 @@
+---
+import { experiences } from '@data/experience';
+---
+
+<section id="experiencia" class="section container" aria-labelledby="experience-title">
+  <p class="eyebrow">Experiencia profesional</p>
+  <h2 id="experience-title" class="section-title">Backend en contextos reales de empresa.</h2>
+  <div class="timeline">
+    {experiences.map((experience) => (
+      <article class="surface item">
+        <div>
+          <p class="period">{experience.period}</p>
+          <h3>{experience.company}</h3>
+          <p class="role">{experience.role}</p>
+        </div>
+        <div>
+          <p class="description">{experience.description}</p>
+          <ul class="highlights">
+            {experience.highlights.map((highlight) => <li>{highlight}</li>)}
+          </ul>
+          <ul class="stack" aria-label={`Tecnologías usadas en ${experience.company}`}>
+            {experience.stack.map((technology) => <li>{technology}</li>)}
+          </ul>
+        </div>
+      </article>
+    ))}
+  </div>
+</section>
+
+<style>
+  .section {
+    padding-block: 5rem;
+  }
+
+  .timeline {
+    display: grid;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+
+  .item {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 2rem;
+    padding: 1.4rem;
+  }
+
+  .period,
+  .role,
+  .description {
+    color: var(--color-text-muted);
+  }
+
+  h3 {
+    margin: 0.25rem 0;
+    font-size: 1.5rem;
+  }
+
+  .description,
+  .highlights {
+    line-height: 1.7;
+  }
+
+  .stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 0;
+    list-style: none;
+  }
+
+  .stack li {
+    color: var(--color-primary);
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+  }
+
+  @media (max-width: 780px) {
+    .item {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

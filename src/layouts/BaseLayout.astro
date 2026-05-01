@@ -1,0 +1,69 @@
+---
+import SEO from '@components/seo/SEO.astro';
+import JsonLd from '@components/seo/JsonLd.astro';
+import Header from '@components/layout/Header.astro';
+import Footer from '@components/layout/Footer.astro';
+import { profile } from '@data/profile';
+import '@styles/global.css';
+
+type Props = {
+  title?: string;
+  description?: string;
+};
+
+const { title, description } = Astro.props;
+
+const personSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: profile.name,
+  url: profile.website,
+  jobTitle: profile.role,
+  email: profile.email,
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: 'Barcelona',
+    addressCountry: 'ES',
+  },
+  knowsAbout: [
+    'Java',
+    'Spring Boot',
+    'Spring Security',
+    'Microservices',
+    'Hexagonal Architecture',
+    'Domain-Driven Design',
+    'Artificial Intelligence',
+    'Spring AI',
+  ],
+  sameAs: Object.values(profile.links).filter((link) => link !== '#'),
+};
+
+const websiteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: profile.name,
+  url: profile.website,
+};
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <SEO {title} {description} />
+    <JsonLd data={personSchema} />
+    <JsonLd data={websiteSchema} />
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Saltar al contenido principal</a>
+    <Header />
+    <main id="main-content">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

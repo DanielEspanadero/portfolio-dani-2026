@@ -1,0 +1,66 @@
+---
+export const prerender = true;
+
+import BaseLayout from '@layouts/BaseLayout.astro';
+import { projects } from '@data/projects';
+
+const title = 'Proyectos de Daniel Españadero | Java, Spring Boot y arquitectura';
+const description = 'Proyectos y contenido técnico de Daniel Españadero sobre Java, Spring Boot, arquitectura backend, AWS y desarrollo de software.';
+---
+
+<BaseLayout {title} {description}>
+  <section class="container page">
+    <p class="eyebrow">Proyectos</p>
+    <h1>Contenido y proyectos que demuestran criterio técnico.</h1>
+    <div class="grid">
+      {projects.map((project) => (
+        <article class="surface card">
+          <h2>{project.title}</h2>
+          <p>{project.description}</p>
+          <a href={project.href} target="_blank" rel="noreferrer">Ver recurso</a>
+        </article>
+      ))}
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page {
+    padding-block: 6rem;
+  }
+
+  h1 {
+    max-width: 900px;
+    margin: 0;
+    font-size: clamp(3rem, 8vw, 6rem);
+    line-height: 0.95;
+    letter-spacing: -0.07em;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+    margin-top: 3rem;
+  }
+
+  .card {
+    padding: 1.4rem;
+  }
+
+  .card p {
+    color: var(--color-text-muted);
+    line-height: 1.7;
+  }
+
+  .card a {
+    color: var(--color-accent);
+    font-weight: 700;
+  }
+
+  @media (max-width: 920px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

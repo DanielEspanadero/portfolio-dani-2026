@@ -1,0 +1,94 @@
+---
+import Button from '@components/ui/Button.astro';
+import { profile } from '@data/profile';
+---
+
+<section class="hero container" aria-labelledby="hero-title">
+  <div class="hero-content">
+    <p class="eyebrow">Java · Spring Boot · IA aplicada</p>
+    <h1 id="hero-title">{profile.headline}</h1>
+    <p class="hero-description">{profile.description}</p>
+    <p class="hero-proof">
+      También comparto conocimiento técnico a través de mi canal de YouTube y mi libro sobre programación.
+    </p>
+    <div class="hero-actions">
+      <Button href="#contacto">Contactar</Button>
+      <Button href="#experiencia" variant="secondary">Ver experiencia</Button>
+    </div>
+  </div>
+  <aside class="hero-card surface" aria-label="Resumen profesional">
+    <span class="status">Disponible para oportunidades estratégicas</span>
+    <strong>Backend con foco enterprise</strong>
+    <p>Java, Spring Boot, Spring Security, arquitectura hexagonal, microservicios e integración pragmática de IA.</p>
+  </aside>
+</section>
+
+<style>
+  .hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 360px;
+    gap: 2rem;
+    align-items: center;
+    min-height: calc(100vh - 72px);
+    padding-block: 5rem;
+  }
+
+  h1 {
+    max-width: 850px;
+    margin: 0;
+    font-size: clamp(3rem, 8vw, 6.8rem);
+    line-height: 0.92;
+    letter-spacing: -0.075em;
+  }
+
+  .hero-description,
+  .hero-proof {
+    max-width: 720px;
+    color: var(--color-text-muted);
+    font-size: clamp(1.1rem, 2vw, 1.35rem);
+    line-height: 1.7;
+  }
+
+  .hero-proof {
+    color: var(--color-text);
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+
+  .hero-card {
+    padding: 1.5rem;
+  }
+
+  .hero-card strong {
+    display: block;
+    margin-top: 1.5rem;
+    font-size: 1.5rem;
+    line-height: 1.15;
+  }
+
+  .hero-card p {
+    color: var(--color-text-muted);
+    line-height: 1.7;
+  }
+
+  .status {
+    display: inline-flex;
+    padding: 0.45rem 0.75rem;
+    border-radius: 999px;
+    color: var(--color-accent);
+    background: rgba(167, 243, 208, 0.1);
+    font-size: 0.85rem;
+  }
+
+  @media (max-width: 920px) {
+    .hero {
+      grid-template-columns: 1fr;
+      min-height: auto;
+    }
+  }
+</style>

@@ -1,0 +1,57 @@
+---
+export const prerender = true;
+
+import BaseLayout from '@layouts/BaseLayout.astro';
+import Button from '@components/ui/Button.astro';
+import JsonLd from '@components/seo/JsonLd.astro';
+import { profile } from '@data/profile';
+
+const title = 'Libro de Daniel Españadero | Guía para aprender programación';
+const description = 'Libro de Daniel Españadero para aprender programación desde cero y preparar el camino hacia el primer empleo como programador.';
+
+const bookSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Book',
+  name: 'GUÍA PARA APRENDER A PROGRAMAR: Desde Cero Hasta tu Primer Empleo',
+  author: {
+    '@type': 'Person',
+    name: profile.name,
+  },
+  url: profile.links.book,
+  inLanguage: 'es',
+};
+---
+
+<BaseLayout {title} {description}>
+  <JsonLd data={bookSchema} />
+  <section class="container page">
+    <p class="eyebrow">Libro</p>
+    <h1>Guía para aprender a programar desde cero hasta tu primer empleo.</h1>
+    <p>
+      Un recurso pensado para ayudar a nuevos desarrolladores a entender el camino real hacia su primer trabajo en programación.
+    </p>
+    <Button href={profile.links.book}>Ver en Amazon</Button>
+  </section>
+</BaseLayout>
+
+<style>
+  .page {
+    min-height: 70vh;
+    padding-block: 6rem;
+  }
+
+  h1 {
+    max-width: 860px;
+    margin: 0;
+    font-size: clamp(3rem, 8vw, 6rem);
+    line-height: 0.95;
+    letter-spacing: -0.07em;
+  }
+
+  p:not(.eyebrow) {
+    max-width: 720px;
+    color: var(--color-text-muted);
+    font-size: 1.2rem;
+    line-height: 1.7;
+  }
+</style>

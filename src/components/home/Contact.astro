@@ -1,0 +1,94 @@
+<section id="contacto" class="section container" aria-labelledby="contact-title">
+  <div class="surface contact">
+    <div>
+      <p class="eyebrow">Contacto</p>
+      <h2 id="contact-title" class="section-title">Hablemos de backend, arquitectura o IA aplicada.</h2>
+      <p class="section-description">
+        Si querés contactar conmigo por una oportunidad profesional, colaboración o propuesta técnica, escribime desde este formulario.
+      </p>
+    </div>
+    <form class="form" action="/api/contact" method="post">
+      <label>
+        Nombre
+        <input name="name" type="text" autocomplete="name" required minlength="3" maxlength="120" />
+      </label>
+      <label>
+        Email
+        <input name="email" type="email" autocomplete="email" required />
+      </label>
+      <label>
+        Mensaje
+        <textarea name="message" required minlength="10" maxlength="4000"></textarea>
+      </label>
+      <label class="honeypot" aria-hidden="true">
+        No rellenar este campo
+        <input name="company" type="text" tabindex="-1" autocomplete="off" />
+      </label>
+      <button type="submit">Enviar mensaje</button>
+    </form>
+  </div>
+</section>
+
+<style>
+  .section {
+    padding-block: 5rem;
+  }
+
+  .contact {
+    display: grid;
+    grid-template-columns: 1fr 420px;
+    gap: 2rem;
+    padding: clamp(1.5rem, 5vw, 3rem);
+  }
+
+  .form {
+    display: grid;
+    gap: 1rem;
+  }
+
+  label {
+    display: grid;
+    gap: 0.45rem;
+    color: var(--color-text-muted);
+    font-size: 0.95rem;
+  }
+
+  input,
+  textarea {
+    width: 100%;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    color: var(--color-text);
+    background: rgba(7, 11, 18, 0.84);
+    padding: 0.85rem 1rem;
+  }
+
+  textarea {
+    min-height: 150px;
+    resize: vertical;
+  }
+
+  button {
+    border: 0;
+    border-radius: 999px;
+    color: #06101a;
+    background: var(--color-primary);
+    padding: 0.9rem 1rem;
+    font-weight: 800;
+    cursor: pointer;
+  }
+
+  .honeypot {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+
+  @media (max-width: 860px) {
+    .contact {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

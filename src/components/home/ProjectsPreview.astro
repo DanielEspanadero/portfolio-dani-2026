@@ -1,0 +1,71 @@
+---
+import { projects } from '@data/projects';
+---
+
+<section class="section container" aria-labelledby="projects-title">
+  <p class="eyebrow">Proyectos y contenido técnico</p>
+  <h2 id="projects-title" class="section-title">Prueba técnica, no solo listado de tecnologías.</h2>
+  <div class="projects">
+    {projects.map((project) => (
+      <article class="surface project">
+        <h3>{project.title}</h3>
+        <p>{project.description}</p>
+        <ul>
+          {project.tags.map((tag) => <li>{tag}</li>)}
+        </ul>
+        <a href={project.href} target="_blank" rel="noreferrer">Ver contenido técnico</a>
+      </article>
+    ))}
+  </div>
+</section>
+
+<style>
+  .section {
+    padding-block: 5rem;
+  }
+
+  .projects {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+
+  .project {
+    padding: 1.4rem;
+  }
+
+  h3 {
+    margin-top: 0;
+  }
+
+  p {
+    color: var(--color-text-muted);
+    line-height: 1.7;
+  }
+
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 0;
+    list-style: none;
+  }
+
+  li {
+    color: var(--color-primary);
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+  }
+
+  a {
+    color: var(--color-accent);
+    font-weight: 700;
+  }
+
+  @media (max-width: 920px) {
+    .projects {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
