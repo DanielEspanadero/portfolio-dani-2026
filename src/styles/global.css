@@ -8,10 +8,12 @@
 html {
   scroll-behavior: smooth;
   background: var(--color-bg);
+  overflow-x: hidden;
 }
 
 body {
   margin: 0;
+  overflow-x: hidden;
   min-height: 100vh;
   font-family: var(--font-sans);
   color: var(--color-text);
@@ -43,6 +45,20 @@ a {
 img {
   display: block;
   max-width: 100%;
+  height: auto;
+}
+
+p,
+li,
+a {
+  overflow-wrap: anywhere;
+}
+
+h1,
+h2,
+h3 {
+  overflow-wrap: normal;
+  text-wrap: balance;
 }
 
 button,
@@ -59,4 +75,18 @@ textarea {
 :focus-visible {
   outline: 3px solid var(--color-primary);
   outline-offset: 4px;
+}
+
+@media (max-width: 720px) {
+  body {
+    background:
+      radial-gradient(circle at 22% -8%, rgba(52, 211, 153, 0.16), transparent 22rem),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.018), transparent 14rem),
+      var(--color-bg);
+  }
+
+  body::before {
+    background-size: 48px 48px;
+    opacity: 0.55;
+  }
 }

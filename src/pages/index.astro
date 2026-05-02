@@ -5,19 +5,12 @@ import BaseLayout from '@layouts/BaseLayout.astro';
 import Contact from '@components/home/Contact.astro';
 import Button from '@components/ui/Button.astro';
 import { profile } from '@data/profile';
-import { skillGroups } from '@data/skills';
+import { technicalPractices, technologies } from '@data/skills';
 import { experiences } from '@data/experience';
 import { projects } from '@data/projects';
 
 const title = 'Daniel Españadero | Software Engineer Java, Spring Boot e IA';
 const description = 'Portfolio profesional de Daniel Españadero, Software Engineer especializado en backend, Java, Spring Boot, arquitectura limpia e IA aplicada.';
-
-const metrics = [
-  { value: '2021', label: 'inicio del camino profesional en programación' },
-  { value: '2024', label: 'publicación de su libro de programación' },
-  { value: '4.5/5', label: 'valoración visible del libro en Amazon' },
-  { value: '26', label: 'reseñas visibles en Amazon' },
-];
 
 const principles = [
   'Backend mantenible antes que soluciones espectaculares pero frágiles.',
@@ -65,45 +58,80 @@ const principles = [
   </section>
 
   <section id="perfil" class="profile-section container" aria-labelledby="profile-title">
-    <div>
-      <p class="eyebrow">Perfil</p>
-      <h2 id="profile-title" class="section-title">Un perfil técnico que también sabe explicar lo que construye.</h2>
-    </div>
-    <div class="profile-panel surface">
-      <p>
-        Daniel Españadero es software engineer con trayectoria profesional en desarrollo de software y especialización en backend moderno. Su posicionamiento combina Java, Spring Boot, arquitectura de software, seguridad e inteligencia artificial aplicada.
-      </p>
-      <p>
-        Como diferencial, también es autor del libro <strong>“GUÍA PARA APRENDER A PROGRAMAR: Desde Cero Hasta tu Primer Empleo”</strong> y creador de contenido técnico sobre programación, aprendizaje y desarrollo profesional.
-      </p>
-      <ul class="fact-list">
-        {profile.facts.map((fact) => <li>{fact}</li>)}
-      </ul>
-    </div>
-  </section>
+    <div class="profile-shell surface">
+      <div class="profile-copy">
+        <p class="eyebrow">Perfil</p>
+        <h2 id="profile-title" class="section-title">Backend engineer con criterio de arquitectura, producto y comunicación técnica.</h2>
+        <p>
+          Soy Daniel Españadero, Backend Software Engineer especializado en Java, Spring Boot, arquitectura backend e IA aplicada. Construyo software mantenible para sistemas reales, no demos bonitas.
+        </p>
+      </div>
 
-  <section class="metrics container" aria-label="Datos destacados verificados públicamente">
-    {metrics.map((metric) => (
-      <article>
-        <strong>{metric.value}</strong>
-        <span>{metric.label}</span>
-      </article>
-    ))}
+      <blockquote class="profile-manifesto">
+        <p>Construir backend no va de acumular frameworks. Va de tomar buenas decisiones bajo restricciones reales.</p>
+      </blockquote>
+
+      <div class="profile-proof" aria-label="Pruebas profesionales de Daniel Españadero">
+        <article>
+          <span>01</span>
+          <h3>Ingeniería backend</h3>
+          <p>Java, Spring Boot, Spring Security, APIs REST y sistemas mantenibles.</p>
+        </article>
+        <article>
+          <span>02</span>
+          <h3>Arquitectura aplicada</h3>
+          <p>Hexagonal Architecture, testing, diseño de APIs y evolución de software.</p>
+        </article>
+        <article>
+          <span>03</span>
+          <h3>Autoridad técnica</h3>
+          <p>Autor de un libro de programación y creador de contenido para una comunidad de más de <strong>50.000 desarrolladores</strong>.</p>
+        </article>
+      </div>
+    </div>
   </section>
 
   <section id="stack" class="stack-section container" aria-labelledby="stack-title">
     <p class="eyebrow">Stack y criterio técnico</p>
-    <h2 id="stack-title" class="section-title">No es una lista infinita de tecnologías. Es una forma de construir software.</h2>
-    <div class="stack-grid">
-      {skillGroups.map((group) => (
-        <article class="stack-card surface">
-          <span>{group.title}</span>
-          <h3>{group.description}</h3>
-          <div class="chips">
-            {group.skills.map((skill) => <strong>{skill}</strong>)}
-          </div>
-        </article>
-      ))}
+    <div class="stack-heading-row">
+      <h2 id="stack-title" class="section-title">Herramientas visibles. Criterio invisible. Las dos cosas importan.</h2>
+      <p>
+        Separar tecnologías de habilidades no es estético: es arquitectura de comunicación. Una cosa es con qué construyo; otra, cómo tomo decisiones.
+      </p>
+    </div>
+
+    <div class="technology-panel surface" aria-labelledby="technologies-title">
+      <div class="stack-subheading">
+        <span>01</span>
+        <h3 id="technologies-title">Tecnologías principales</h3>
+        <p>Stack curado para backend Java/Spring, soporte enterprise y entrega de software real.</p>
+      </div>
+      <div class="technology-grid">
+        {technologies.map((technology) => (
+          <article class="technology-card">
+            <img src={technology.icon} alt="" width="64" height="64" loading="lazy" decoding="async" />
+            <strong>{technology.name}</strong>
+            <span>{technology.category}</span>
+          </article>
+        ))}
+      </div>
+    </div>
+
+    <div class="practice-panel" aria-labelledby="practices-title">
+      <div class="stack-subheading">
+        <span>02</span>
+        <h3 id="practices-title">Habilidades técnicas</h3>
+        <p>La parte que no cabe en un logo: arquitectura, calidad, integración y criterio para mantener sistemas vivos.</p>
+      </div>
+      <div class="practice-grid">
+        {technicalPractices.map((practice, index) => (
+          <article class="practice-card surface">
+            <span>0{index + 1}</span>
+            <h4>{practice.title}</h4>
+            <p>{practice.description}</p>
+          </article>
+        ))}
+      </div>
     </div>
   </section>
 
@@ -187,11 +215,11 @@ const principles = [
     position: relative;
     isolation: isolate;
     display: grid;
-    grid-template-columns: minmax(0, 1.35fr) minmax(320px, 0.65fr);
-    gap: clamp(2.5rem, 6vw, 5rem);
-    align-items: end;
-    min-height: calc(92vh - 72px);
-    padding-block: clamp(4rem, 9vw, 7rem);
+    grid-template-columns: minmax(0, 1.28fr) minmax(300px, 0.72fr);
+    gap: clamp(2.5rem, 5vw, 4.25rem);
+    align-items: center;
+    min-height: calc(86svh - 72px);
+    padding-block: clamp(3.5rem, 8vw, 6.5rem);
   }
 
   .hero::before,
@@ -224,18 +252,30 @@ const principles = [
     z-index: 1;
   }
 
+  .hero-statement {
+    min-width: 0;
+  }
+
   .hero-title {
     display: grid;
     gap: 0.03em;
     margin: 0;
-    font-size: clamp(6rem, 9.2vw, 9rem);
-    line-height: 0.78;
-    letter-spacing: -0.018em;
+    font-size: clamp(4rem, 7.8vw, 7.25rem);
+    line-height: 0.88;
+    letter-spacing: -0.025em;
     text-transform: uppercase;
+    overflow-wrap: normal;
+    word-break: keep-all;
+    user-select: none;
+  }
+
+  .hero-statement .eyebrow {
+    user-select: none;
   }
 
   .hero-title-line {
     display: block;
+    white-space: nowrap;
   }
 
   .hero-profile {
@@ -354,7 +394,6 @@ const principles = [
   }
 
   .section-heading-row > p,
-  .profile-panel p,
   .authority-card p,
   .project-card p {
     color: var(--color-text-muted);
@@ -368,79 +407,143 @@ const principles = [
     margin-top: 1.75rem;
   }
 
-  .fact-list {
-    display: grid;
-    gap: 0.75rem;
-    padding: 0;
-    list-style: none;
-    color: var(--color-text-muted);
-  }
-
-  .fact-list li::before {
-    content: '↳ ';
-    color: var(--color-accent);
-  }
-
-  .metrics {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1px;
-    overflow: hidden;
-    margin-top: 1rem;
-    border: 1px solid var(--color-border);
-    border-radius: 1.5rem;
-    background: var(--color-border);
-  }
-
-  .metrics article {
-    padding: 1.4rem;
-    background: rgba(13, 19, 34, 0.82);
-  }
-
-  .metrics strong {
-    display: block;
-    color: var(--color-primary);
-    font-size: clamp(2rem, 4vw, 3rem);
-    letter-spacing: -0.06em;
-  }
-
-  .metrics span {
-    color: var(--color-text-muted);
-    line-height: 1.5;
-  }
-
   .profile-section,
   .stack-section,
   .experience-section,
   .principles-section,
   .authority-section,
   .projects-section {
-    padding-block: 5rem;
+    padding-block: var(--section-space);
   }
 
   .profile-section {
-    display: grid;
-    grid-template-columns: 0.8fr 1.2fr;
-    gap: 2rem;
-    align-items: start;
+    position: relative;
   }
 
-  .profile-panel,
   .authority-card {
     padding: clamp(1.5rem, 4vw, 3rem);
   }
 
-  .profile-panel p,
+  .profile-shell {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+    gap: clamp(2rem, 5vw, 4.5rem);
+    overflow: hidden;
+    padding: clamp(1.35rem, 4vw, 3.25rem);
+    background:
+      radial-gradient(circle at 78% 18%, rgba(52, 211, 153, 0.2), transparent 18rem),
+      linear-gradient(135deg, rgba(255, 255, 255, 0.055), transparent 28%),
+      linear-gradient(145deg, rgba(16, 24, 39, 0.94), rgba(8, 13, 22, 0.82));
+  }
+
+  .profile-shell::before,
+  .profile-shell::after {
+    position: absolute;
+    pointer-events: none;
+    content: '';
+  }
+
+  .profile-shell::before {
+    inset: 0;
+    background-image: radial-gradient(circle, rgba(167, 243, 208, 0.12) 1px, transparent 1.4px);
+    background-size: 26px 26px;
+    mask-image: linear-gradient(120deg, transparent, black 22%, transparent 74%);
+    opacity: 0.38;
+  }
+
+  .profile-shell::after {
+    right: clamp(1rem, 3vw, 2rem);
+    bottom: clamp(1rem, 3vw, 2rem);
+    width: min(42%, 420px);
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(167, 243, 208, 0.42), transparent);
+    box-shadow:
+      -72px -82px 0 rgba(167, 243, 208, 0.1),
+      -24px -42px 0 rgba(167, 243, 208, 0.16),
+      -120px -18px 0 rgba(167, 243, 208, 0.08);
+  }
+
+  .profile-copy,
+  .profile-manifesto,
+  .profile-proof {
+    position: relative;
+    z-index: 1;
+  }
+
+  .profile-copy p:not(.eyebrow) {
+    max-width: 620px;
+    color: var(--color-text-muted);
+    font-size: clamp(1.02rem, 2vw, 1.18rem);
+    line-height: 1.75;
+  }
+
+  .profile-manifesto {
+    align-self: end;
+    margin: 0;
+    padding-left: clamp(1rem, 3vw, 2rem);
+    border-left: 1px solid rgba(167, 243, 208, 0.28);
+  }
+
+  .profile-manifesto p {
+    margin: 0;
+    color: var(--color-text);
+    font-size: clamp(1.8rem, 4vw, 3.45rem);
+    font-weight: 800;
+    line-height: 0.98;
+    letter-spacing: -0.06em;
+  }
+
+  .profile-proof {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1px;
+    grid-column: 1 / -1;
+    overflow: hidden;
+    margin-top: clamp(0.5rem, 2vw, 1rem);
+    border: 1px solid var(--color-border);
+    border-radius: calc(var(--radius-lg) - 0.25rem);
+    background:
+      linear-gradient(90deg, rgba(52, 211, 153, 0.22), transparent 24%, transparent 76%, rgba(167, 243, 208, 0.12)),
+      var(--color-border);
+  }
+
+  .profile-proof article {
+    min-height: 230px;
+    padding: clamp(1.1rem, 2.5vw, 1.55rem);
+    background: rgba(5, 7, 13, 0.58);
+  }
+
+  .profile-proof span {
+    color: var(--color-primary);
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    font-weight: 800;
+  }
+
+  .profile-proof h3 {
+    margin: clamp(2rem, 5vw, 3.6rem) 0 0.75rem;
+    font-size: clamp(1.15rem, 2vw, 1.45rem);
+    line-height: 1.1;
+    letter-spacing: -0.04em;
+  }
+
+  .profile-proof p {
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: 0.98rem;
+    line-height: 1.65;
+  }
+
   .authority-card p {
     font-size: 1.12rem;
     line-height: 1.8;
   }
 
-  .profile-panel strong {
+  .profile-proof strong {
     color: var(--color-text);
   }
 
-  .stack-grid,
   .principles-grid,
   .project-row {
     display: grid;
@@ -449,36 +552,156 @@ const principles = [
     margin-top: 2rem;
   }
 
-  .stack-card {
-    min-height: 310px;
-    padding: 1.35rem;
+  .stack-heading-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(280px, 0.58fr);
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: end;
   }
 
-  .stack-card span {
+  .stack-heading-row > p {
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: 1.08rem;
+    line-height: 1.75;
+  }
+
+  .technology-panel {
+    position: relative;
+    overflow: hidden;
+    margin-top: clamp(2rem, 5vw, 3rem);
+    padding: clamp(1.25rem, 3vw, 2rem);
+    background:
+      radial-gradient(circle at 8% 12%, rgba(52, 211, 153, 0.18), transparent 16rem),
+      linear-gradient(145deg, rgba(16, 24, 39, 0.94), rgba(8, 13, 22, 0.84));
+  }
+
+  .technology-panel::before {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    content: '';
+    background-image:
+      linear-gradient(rgba(167, 243, 208, 0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(167, 243, 208, 0.06) 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: linear-gradient(90deg, black, transparent 78%);
+  }
+
+  .stack-subheading,
+  .technology-grid,
+  .practice-grid {
+    position: relative;
+    z-index: 1;
+  }
+
+  .stack-subheading {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 0.35rem 1rem;
+    max-width: 760px;
+  }
+
+  .stack-subheading span {
+    grid-row: span 2;
     color: var(--color-primary);
     font-family: var(--font-mono);
-    font-size: 0.85rem;
-  }
-
-  .stack-card h3 {
-    font-size: 1.2rem;
-    line-height: 1.35;
-  }
-
-  .chips {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-top: 1.5rem;
-  }
-
-  .chips strong {
-    padding: 0.45rem 0.62rem;
-    border: 1px solid var(--color-border);
-    border-radius: 999px;
-    color: var(--color-text-muted);
     font-size: 0.82rem;
-    font-weight: 600;
+    font-weight: 800;
+  }
+
+  .stack-subheading h3 {
+    margin: 0;
+    font-size: clamp(1.55rem, 3vw, 2.25rem);
+    line-height: 1;
+    letter-spacing: -0.05em;
+  }
+
+  .stack-subheading p {
+    margin: 0;
+    color: var(--color-text-muted);
+    line-height: 1.65;
+  }
+
+  .technology-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1px;
+    overflow: hidden;
+    margin-top: clamp(1.5rem, 4vw, 2rem);
+    border: 1px solid var(--color-border);
+    border-radius: calc(var(--radius-lg) - 0.25rem);
+    background: var(--color-border);
+  }
+
+  .technology-card img {
+    width: 3.6rem;
+    height: 3.6rem;
+    margin-bottom: 0.25rem;
+    filter: brightness(0) invert(1);
+  }
+
+  .technology-card::before {
+    position: absolute;
+    inset: auto auto -1px -1px;
+    width: 60%;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(52, 211, 153, 0.5), transparent);
+    content: '';
+  }
+
+  .technology-card strong {
+    align-self: end;
+    font-size: clamp(1.15rem, 2vw, 1.45rem);
+    line-height: 1;
+    letter-spacing: -0.04em;
+  }
+
+  .technology-card span {
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+  }
+
+  .practice-panel {
+    display: grid;
+    grid-template-columns: minmax(260px, 0.42fr) minmax(0, 1fr);
+    gap: clamp(1.5rem, 4vw, 2.5rem);
+    margin-top: clamp(2rem, 5vw, 3rem);
+    align-items: start;
+  }
+
+  .practice-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .practice-card {
+    min-height: 220px;
+    padding: clamp(1rem, 2.5vw, 1.35rem);
+    background:
+      linear-gradient(145deg, rgba(16, 24, 39, 0.9), rgba(8, 13, 22, 0.76));
+  }
+
+  .practice-card > span {
+    color: var(--color-primary);
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    font-weight: 800;
+  }
+
+  .practice-card h4 {
+    margin: 2.25rem 0 0.75rem;
+    font-size: clamp(1.15rem, 2vw, 1.45rem);
+    line-height: 1.1;
+    letter-spacing: -0.04em;
+  }
+
+  .practice-card p {
+    margin: 0;
+    color: var(--color-text-muted);
+    line-height: 1.65;
   }
 
   .section-heading-row {
@@ -501,7 +724,7 @@ const principles = [
 
   .experience-item {
     display: grid;
-    grid-template-columns: 320px 1fr;
+    grid-template-columns: minmax(220px, 320px) 1fr;
     gap: 2rem;
     padding-block: 2rem;
     border-bottom: 1px solid var(--color-border);
@@ -515,7 +738,7 @@ const principles = [
 
   .experience-item h3 {
     margin: 0.5rem 0;
-    font-size: 2rem;
+    font-size: clamp(1.45rem, 4vw, 2rem);
     letter-spacing: -0.05em;
   }
 
@@ -560,7 +783,7 @@ const principles = [
   }
 
   .project-card {
-    padding: 1.4rem;
+    padding: clamp(1.1rem, 3vw, 1.4rem);
   }
 
   .project-card h3 {
@@ -575,17 +798,19 @@ const principles = [
 
   @media (max-width: 980px) {
     .hero,
-    .profile-section,
+    .profile-shell,
+    .profile-proof,
+    .stack-heading-row,
+    .practice-panel,
     .section-heading-row,
     .authority-card,
     .experience-item {
       grid-template-columns: 1fr;
     }
 
-    .stack-grid,
+    .technology-grid,
     .principles-grid,
-    .project-row,
-    .metrics {
+    .project-row {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
@@ -596,23 +821,136 @@ const principles = [
     .hero::after {
       inset: 8% -8% 52% -8%;
     }
+
+    .hero {
+      align-items: start;
+      justify-items: center;
+      min-height: auto;
+    }
+
+    .hero-statement {
+      width: 100%;
+      max-width: 760px;
+      justify-self: center;
+    }
+
+    .hero-title {
+      font-size: clamp(4rem, 11.8vw, 6.6rem);
+    }
+
+    .hero-profile {
+      width: 100%;
+      max-width: 520px;
+      justify-self: center;
+    }
+
+    .profile-section,
+    .stack-section,
+    .experience-section,
+    .principles-section,
+    .authority-section,
+    .projects-section {
+      padding-block: var(--section-space-sm);
+    }
   }
 
   @media (max-width: 620px) {
     .hero {
-      padding-block: 3.5rem;
+      gap: 2rem;
+      padding-block: 2.75rem 2.75rem;
+    }
+
+    .hero-statement,
+    .hero-profile {
+      max-width: none;
     }
 
     .hero-title {
-      font-size: clamp(4.5rem, 19vw, 6.5rem);
-      letter-spacing: -0.012em;
+      font-size: clamp(2.55rem, 14.8vw, 4.65rem);
+      line-height: 0.94;
+      letter-spacing: -0.018em;
     }
 
-    .stack-grid,
+    .hero-actions,
+    .authority-actions {
+      display: grid;
+      gap: 0.75rem;
+      width: 100%;
+      margin-top: 1.45rem;
+    }
+
+    .hero-profile-content {
+      padding: 1.15rem;
+    }
+
+    .hero-profile h2 {
+      font-size: clamp(1.9rem, 10vw, 2.6rem);
+      line-height: 1;
+    }
+
+    .hero-profile-heading {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .profile-shell,
+    .authority-card {
+      padding: 1.15rem;
+    }
+
+    .authority-card p {
+      font-size: 1rem;
+      line-height: 1.7;
+    }
+
+    .profile-manifesto {
+      padding-left: 1rem;
+    }
+
+    .profile-manifesto p {
+      font-size: clamp(1.55rem, 10vw, 2.35rem);
+      line-height: 1.02;
+    }
+
+    .profile-proof article {
+      min-height: auto;
+    }
+
+    .section-heading-row > p {
+      font-size: 1rem;
+      line-height: 1.65;
+    }
+
+    .experience-item {
+      gap: 1rem;
+      padding-block: 1.5rem;
+    }
+
+    .experience-item ul {
+      padding-left: 1.1rem;
+    }
+
+    .principle-card {
+      min-height: auto;
+      border-radius: var(--radius-md);
+    }
+
+    .principle-card p {
+      margin-top: 1.5rem;
+      font-size: 1.05rem;
+    }
+
+    .technology-grid,
+    .practice-grid,
     .principles-grid,
-    .project-row,
-    .metrics {
+    .project-row {
       grid-template-columns: 1fr;
+    }
+
+    .technology-card,
+    .practice-card {
+      min-height: auto;
     }
   }
 </style>

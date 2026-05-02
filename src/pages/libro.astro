@@ -37,21 +37,28 @@ const bookSchema = {
 <style>
   .page {
     min-height: 70vh;
-    padding-block: 6rem;
+    padding-block: var(--section-space);
   }
 
   h1 {
     max-width: 860px;
     margin: 0;
-    font-size: clamp(3rem, 8vw, 6rem);
-    line-height: 0.95;
-    letter-spacing: -0.07em;
+    font-size: clamp(2.6rem, 10vw, 6rem);
+    line-height: 0.98;
+    letter-spacing: clamp(-0.07em, -0.8vw, -0.035em);
   }
 
   p:not(.eyebrow) {
     max-width: 720px;
     color: var(--color-text-muted);
-    font-size: 1.2rem;
+    font-size: clamp(1rem, 2.4vw, 1.2rem);
     line-height: 1.7;
+  }
+
+  @media (max-width: 620px) {
+    .page {
+      min-height: auto;
+      padding-block: var(--section-space-sm);
+    }
   }
 </style>

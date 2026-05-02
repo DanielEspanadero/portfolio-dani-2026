@@ -24,6 +24,7 @@ import { profile } from '@data/profile';
     justify-content: space-between;
     gap: 1rem;
     padding-block: 2rem;
+    line-height: 1.6;
   }
 
   .footer-inner p {
@@ -42,6 +43,11 @@ import { profile } from '@data/profile';
   @media (max-width: 700px) {
     .footer-inner {
       flex-direction: column;
+      padding-block: 1.5rem;
+    }
+
+    .footer-links {
+      flex-wrap: wrap;
     }
   }
 </style>

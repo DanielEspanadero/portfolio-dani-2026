@@ -31,13 +31,13 @@
 
 <style>
   .section {
-    padding-block: 5rem;
+    padding-block: var(--section-space);
   }
 
   .contact {
     display: grid;
-    grid-template-columns: 1fr 420px;
-    gap: 2rem;
+    grid-template-columns: minmax(0, 1fr) minmax(320px, 420px);
+    gap: clamp(1.5rem, 4vw, 2rem);
     padding: clamp(1.5rem, 5vw, 3rem);
   }
 
@@ -89,6 +89,25 @@
   @media (max-width: 860px) {
     .contact {
       grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 620px) {
+    .section {
+      padding-block: var(--section-space-sm);
+    }
+
+    .contact {
+      padding: 1.15rem;
+    }
+
+    input,
+    textarea {
+      padding: 0.8rem 0.9rem;
+    }
+
+    button {
+      min-height: 48px;
     }
   }
 </style>

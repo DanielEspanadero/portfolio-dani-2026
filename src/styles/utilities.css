@@ -1,12 +1,21 @@
 .container {
-  width: min(100% - 2rem, var(--container));
+  width: min(calc(100% - (var(--container-gutter) * 2)), var(--container));
   margin-inline: auto;
+}
+
+@supports (padding: max(0px)) {
+  .container {
+    width: min(
+      calc(100% - (max(var(--container-gutter), env(safe-area-inset-left)) + max(var(--container-gutter), env(safe-area-inset-right)))),
+      var(--container)
+    );
+  }
 }
 
 .eyebrow {
   margin: 0 0 1rem;
   font-family: var(--font-mono);
-  font-size: 0.85rem;
+  font-size: clamp(0.72rem, 1.8vw, 0.85rem);
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--color-primary);
@@ -15,9 +24,9 @@
 .section-title {
   margin: 0;
   max-width: 760px;
-  font-size: clamp(2rem, 5vw, 3.5rem);
-  line-height: 1;
-  letter-spacing: -0.055em;
+  font-size: clamp(2rem, 7vw, 3.5rem);
+  line-height: 1.02;
+  letter-spacing: clamp(-0.055em, -0.6vw, -0.025em);
 }
 
 .section-description {
@@ -32,6 +41,17 @@
   border-radius: var(--radius-lg);
   background: linear-gradient(145deg, rgba(16, 24, 39, 0.92), rgba(13, 20, 32, 0.78));
   box-shadow: var(--shadow-soft);
+}
+
+@media (max-width: 720px) {
+  .surface {
+    border-radius: var(--radius-md);
+  }
+
+  .section-description {
+    font-size: 1rem;
+    line-height: 1.65;
+  }
 }
 
 .skip-link {

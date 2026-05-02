@@ -17,6 +17,9 @@
   --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
 
   --container: 1180px;
+  --container-gutter: clamp(1.5rem, 5vw, 2.25rem);
+  --section-space: clamp(4rem, 8vw, 6rem);
+  --section-space-sm: clamp(3rem, 7vw, 4.5rem);
   --radius-sm: 0.75rem;
   --radius-md: 1rem;
   --radius-lg: 1.5rem;

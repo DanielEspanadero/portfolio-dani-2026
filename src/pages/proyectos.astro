@@ -26,26 +26,26 @@ const description = 'Proyectos y contenido técnico de Daniel Españadero sobre 
 
 <style>
   .page {
-    padding-block: 6rem;
+    padding-block: var(--section-space);
   }
 
   h1 {
     max-width: 900px;
     margin: 0;
-    font-size: clamp(3rem, 8vw, 6rem);
-    line-height: 0.95;
-    letter-spacing: -0.07em;
+    font-size: clamp(2.6rem, 10vw, 6rem);
+    line-height: 0.98;
+    letter-spacing: clamp(-0.07em, -0.8vw, -0.035em);
   }
 
   .grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 1rem;
-    margin-top: 3rem;
+    gap: clamp(0.85rem, 2vw, 1rem);
+    margin-top: clamp(2rem, 5vw, 3rem);
   }
 
   .card {
-    padding: 1.4rem;
+    padding: clamp(1.1rem, 3vw, 1.4rem);
   }
 
   .card p {
@@ -61,6 +61,12 @@ const description = 'Proyectos y contenido técnico de Daniel Españadero sobre 
   @media (max-width: 920px) {
     .grid {
       grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 620px) {
+    .page {
+      padding-block: var(--section-space-sm);
     }
   }
 </style>

@@ -1,22 +1,29 @@
-export const skillGroups = [
+export const technologies = [
+  { name: 'Java', icon: '/icons/tech/java.svg', category: 'Backend core' },
+  { name: 'Spring Boot', icon: '/icons/tech/spring-boot.svg', category: 'Framework' },
+  { name: 'Spring Security', icon: '/icons/tech/spring-security.svg', category: 'Security' },
+  { name: 'MySQL', icon: '/icons/tech/mysql.svg', category: 'Database' },
+  { name: 'Docker', icon: '/icons/tech/docker.svg', category: 'Delivery' },
+  { name: 'AWS', icon: '/icons/tech/aws.svg', category: 'Cloud' },
+  { name: 'Linux', icon: '/icons/tech/linux.svg', category: 'Systems' },
+  { name: 'Angular', icon: '/icons/tech/angular.svg', category: 'Frontend support' },
+] as const;
+
+export const technicalPractices = [
   {
-    title: 'Backend Core',
-    description: 'Stack principal para construir APIs, servicios y sistemas backend mantenibles.',
-    skills: ['Java', 'Spring Boot', 'Spring Security', 'REST APIs', 'Microservices', 'SQL / MySQL', 'Docker'],
+    title: 'Arquitectura backend',
+    description: 'Hexagonal Architecture, límites claros, diseño de APIs y separación de responsabilidades.',
   },
   {
-    title: 'Architecture & Quality',
-    description: 'Diseño de software con foco en mantenibilidad, testabilidad y claridad de dominio.',
-    skills: ['Hexagonal Architecture', 'Domain-Driven Design', 'Clean Code', 'JUnit', 'Mockito', 'API Design'],
+    title: 'Calidad y evolución',
+    description: 'Clean Code, testing con JUnit/Mockito y código preparado para cambiar sin romperse.',
   },
   {
-    title: 'AI Engineering',
-    description: 'Integración pragmática de IA en productos backend y automatizaciones reales.',
-    skills: ['Spring AI', 'LLM integrations', 'RAG', 'AI agents', 'AI workflows'],
+    title: 'IA aplicada',
+    description: 'Spring AI, integraciones con LLMs, RAG y workflows útiles en sistemas reales.',
   },
   {
-    title: 'Enterprise Stack',
-    description: 'Tecnologías de soporte habituales en entornos corporativos Java/Spring.',
-    skills: ['Angular', 'AWS', 'Linux', 'Bash / scripting'],
+    title: 'Sistemas enterprise',
+    description: 'Seguridad, SQL, Docker, Linux y despliegue en contextos donde la mantenibilidad importa.',
   },
 ] as const;
