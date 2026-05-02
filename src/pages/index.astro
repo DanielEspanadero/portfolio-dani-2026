@@ -6,6 +6,17 @@ import Contact from '@components/home/Contact.astro';
 import Button from '@components/ui/Button.astro';
 import { profile } from '@data/profile';
 import { technicalPractices, technologies } from '@data/skills';
+
+const techColors: Record<string, string> = {
+  'Java': '#f89820',
+  'Spring Boot': '#6db33f',
+  'Spring Security': '#5ba033',
+  'MySQL': '#4479a1',
+  'Docker': '#2496ed',
+  'AWS': '#ff9900',
+  'Linux': '#fcc624',
+  'Angular': '#dd0031',
+};
 import { experiences } from '@data/experience';
 import { projects } from '@data/projects';
 
@@ -108,7 +119,7 @@ const principles = [
       </div>
       <div class="technology-grid">
         {technologies.map((technology) => (
-          <article class="technology-card">
+          <article class="technology-card" style={`--tc: ${techColors[technology.name] ?? '#34d399'}`}>
             <img src={technology.icon} alt="" width="64" height="64" loading="lazy" decoding="async" />
             <strong>{technology.name}</strong>
             <span>{technology.category}</span>
@@ -634,10 +645,36 @@ const principles = [
     background: var(--color-border);
   }
 
+  .technology-card {
+    position: relative;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    gap: 0.75rem;
+    padding: clamp(1rem, 2.5vw, 1.5rem);
+    min-height: 160px;
+    background: rgba(5, 7, 13, 0.58);
+    transition: background 0.3s ease;
+  }
+
+  .technology-card:hover {
+    background: color-mix(in srgb, var(--tc) 14%, rgba(5, 7, 13, 0.92));
+  }
+
+  .technology-card:hover::before {
+    background: linear-gradient(90deg, color-mix(in srgb, var(--tc) 70%, transparent), transparent);
+  }
+
+  .technology-card:hover img {
+    filter: brightness(0) invert(1) drop-shadow(0 0 10px var(--tc));
+  }
+
+  .technology-card:hover strong {
+    color: color-mix(in srgb, var(--tc) 80%, var(--color-text));
+  }
+
   .technology-card img {
-    width: 3.6rem;
-    height: 3.6rem;
-    margin-bottom: 0.25rem;
+    width: 3rem;
+    height: 3rem;
     filter: brightness(0) invert(1);
   }
 
