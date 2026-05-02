@@ -634,10 +634,22 @@ const principles = [
     background: var(--color-border);
   }
 
-  .technology-card img {
+  .technology-card {
+    position: relative;
+    display: flex;
+    min-height: 10.75rem;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 1.5rem;
+    background: rgba(31, 41, 55, 0.84);
+    text-align: center;
+  }
+
+ .technology-card img {
     width: 3.6rem;
     height: 3.6rem;
-    margin-bottom: 0.25rem;
+    margin-bottom: 0.75rem;
     filter: brightness(0) invert(1);
   }
 
@@ -651,13 +663,15 @@ const principles = [
   }
 
   .technology-card strong {
-    align-self: end;
+    display: block;
     font-size: clamp(1.15rem, 2vw, 1.45rem);
     line-height: 1;
     letter-spacing: -0.04em;
   }
 
   .technology-card span {
+    display: block;
+    margin-top: 0.35rem;
     color: var(--color-text-muted);
     font-family: var(--font-mono);
     font-size: 0.78rem;
