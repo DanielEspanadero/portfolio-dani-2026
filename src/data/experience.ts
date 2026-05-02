@@ -4,13 +4,13 @@ export const experiences = [
     role: 'Software Developer',
     period: 'Julio 2025 - Actualidad',
     description:
-      'Desarrollo software en entornos enterprise, con foco en backend, mantenibilidad, integración de sistemas y calidad técnica.',
+      'Desarrollo backend para el sector bancario en entornos enterprise, trabajando principalmente con Java y Spring Boot.',
     highlights: [
-      'Desarrollo y evolución de soluciones backend en contexto profesional.',
-      'Aplicación de buenas prácticas de arquitectura, seguridad y testing.',
-      'Trabajo sobre sistemas empresariales con necesidades reales de mantenibilidad.',
+      'Desarrollo y evolución de soluciones backend Java/Spring Boot para contexto bancario.',
+      'Aplicación de buenas prácticas de arquitectura, seguridad y testing en software enterprise.',
+      'Trabajo sobre sistemas financieros con necesidades reales de mantenibilidad, integración y fiabilidad.',
     ],
-    stack: ['Java', 'Spring Boot', 'SQL', 'Enterprise Software'],
+    stack: ['Java', 'Spring Boot', 'SQL', 'Banca', 'Enterprise Software'],
   },
   {
     company: 'Mytic Innova',

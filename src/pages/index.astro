@@ -7,16 +7,73 @@ import Button from '@components/ui/Button.astro';
 import { profile } from '@data/profile';
 import { technicalPractices, technologies } from '@data/skills';
 import { experiences } from '@data/experience';
-import { projects } from '@data/projects';
 
 const title = 'Daniel Españadero | Software Engineer Java, Spring Boot e IA';
 const description = 'Portfolio profesional de Daniel Españadero, Software Engineer especializado en backend, Java, Spring Boot, arquitectura limpia e IA aplicada.';
 
-const principles = [
-  'Backend mantenible antes que soluciones espectaculares pero frágiles.',
-  'Arquitectura clara para que los equipos puedan evolucionar software sin miedo.',
-  'IA aplicada a problemas reales, no como etiqueta de moda.',
-  'Comunicación técnica como parte del trabajo de ingeniería.',
+const youtubeStats = [
+  { value: '+24k', label: 'desarrolladores en la comunidad' },
+  { value: '+500', label: 'vídeos publicados' },
+  { value: '+4M', label: 'visualizaciones acumuladas' },
+];
+
+const youtubePillars = [
+  'Java y Spring Boot',
+  'Arquitectura hexagonal',
+  'Spring Security',
+  'IA aplicada',
+  'Carrera técnica',
+];
+
+const featuredVideos = [
+  {
+    title: 'Arquitectura Hexagonal con Java y Spring',
+    description: 'Una explicación larga, práctica y con proyecto sobre cómo separar dominio, aplicación e infraestructura sin caer en teoría vacía.',
+    meta: '+82k visualizaciones',
+    href: 'https://www.youtube.com/watch?v=JD_ZL3Bnaog',
+  },
+  {
+    title: 'API REST con Java, Spring Boot y MySQL',
+    description: 'Backend completo, CRUD real y persistencia: contenido técnico alineado con el tipo de sistemas que construyo profesionalmente.',
+    meta: '+89k visualizaciones',
+    href: 'https://www.youtube.com/watch?v=M7lhQMzzHWU',
+  },
+  {
+    title: 'Spring Security de 0 a proyecto completo',
+    description: 'Seguridad aplicada a backend Java explicada paso a paso, desde los conceptos hasta una implementación usable.',
+    meta: '+17k visualizaciones',
+    href: 'https://www.youtube.com/watch?v=Qu3soRF168I',
+  },
+  {
+    title: 'Concurrencia en Java con proyecto completo',
+    description: 'Threads, sincronización y ejecución concurrente explicados desde la práctica para entender cómo se comporta Java en escenarios reales.',
+    meta: '+13k visualizaciones',
+    href: 'https://www.youtube.com/watch?v=cskoNJCWMws',
+  },
+  {
+    title: 'Spring Boot + MySQL desplegado en AWS',
+    description: 'Despliegue completo usando EC2 y RDS para llevar una aplicación backend Java desde local hasta infraestructura cloud.',
+    meta: '+16k visualizaciones',
+    href: 'https://www.youtube.com/watch?v=gEWqXYlC4ak',
+  },
+  {
+    title: 'AWS S3 con Java: CRUD completo',
+    description: 'Subida, descarga, modificación y borrado de archivos con Java y S3, conectando backend con servicios cloud de forma práctica.',
+    meta: '+9k visualizaciones',
+    href: 'https://www.youtube.com/watch?v=b186cnroYyc',
+  },
+];
+
+const bookStats = [
+  { value: '4.5/5', label: 'valoración media en Amazon' },
+  { value: '26', label: 'reseñas de lectores' },
+  { value: '140', label: 'páginas en español' },
+];
+
+const bookHighlights = [
+  'Elegir un camino realista para aprender programación.',
+  'Construir proyectos, GitHub, LinkedIn y portfolio con intención.',
+  'Preparar entrevistas y dar los primeros pasos en el primer empleo.',
 ];
 ---
 
@@ -85,7 +142,7 @@ const principles = [
         <article>
           <span>03</span>
           <h3>Autoridad técnica</h3>
-          <p>Autor de un libro de programación y creador de contenido para una comunidad de más de <strong>50.000 desarrolladores</strong>.</p>
+          <p>Autor de un libro de programación y creador de contenido técnico para más de <strong>24.000 desarrolladores en YouTube</strong>.</p>
         </article>
       </div>
     </div>
@@ -108,7 +165,7 @@ const principles = [
       </div>
       <div class="technology-grid">
         {technologies.map((technology) => (
-          <article class="technology-card">
+          <article class="technology-card" style={`--technology-color: ${technology.color}`}>
             <img src={technology.icon} alt="" width="64" height="64" loading="lazy" decoding="async" />
             <strong>{technology.name}</strong>
             <span>{technology.category}</span>
@@ -164,46 +221,98 @@ const principles = [
     </div>
   </section>
 
-  <section class="principles-section container" aria-labelledby="principles-title">
-    <p class="eyebrow">Principios</p>
-    <h2 id="principles-title" class="section-title">La técnica importa, pero el criterio decide.</h2>
-    <div class="principles-grid">
-      {principles.map((principle, index) => (
-        <article class="principle-card">
-          <span>0{index + 1}</span>
-          <p>{principle}</p>
-        </article>
-      ))}
+  <section id="youtube" class="youtube-section container" aria-labelledby="youtube-title">
+    <div class="youtube-shell surface">
+      <div class="youtube-hero">
+        <div class="youtube-copy">
+          <p class="eyebrow">Creador de contenido técnico</p>
+          <h2 id="youtube-title" class="section-title">Enseñar backend también es parte de mi ingeniería.</h2>
+          <p>
+            En mi canal comparto Java, Spring Boot, arquitectura backend, fundamentos de software e IA aplicada con una comunidad de más de <strong>24.000 desarrolladores</strong>. No es contenido decorativo: es una forma de ordenar ideas, bajar conceptos complejos a tierra y construir criterio técnico en público.
+          </p>
+          <div class="youtube-actions">
+            <Button href={profile.links.youtube} target="_blank" rel="noreferrer">Ver canal</Button>
+          </div>
+        </div>
+
+        <aside class="youtube-proof" aria-label="Datos del canal de YouTube de Daniel Españadero">
+          <div class="youtube-logo" aria-hidden="true">
+            <svg viewBox="0 0 28 20" role="img" focusable="false">
+              <path d="M27.42 3.12A3.5 3.5 0 0 0 24.96.64C22.78.05 14 .05 14 .05S5.22.05 3.04.64A3.5 3.5 0 0 0 .58 3.12C0 5.32 0 9.9 0 9.9s0 4.58.58 6.78a3.5 3.5 0 0 0 2.46 2.48c2.18.59 10.96.59 10.96.59s8.78 0 10.96-.59a3.5 3.5 0 0 0 2.46-2.48C28 14.48 28 9.9 28 9.9s0-4.58-.58-6.78Z" />
+              <path d="M11.2 14.1V5.7l7.28 4.2-7.28 4.2Z" />
+            </svg>
+          </div>
+          <p class="youtube-proof-label">Daniel Españadero en YouTube</p>
+          <div class="youtube-stat-grid">
+            {youtubeStats.map((stat) => (
+              <article>
+                <strong>{stat.value}</strong>
+                <span>{stat.label}</span>
+              </article>
+            ))}
+          </div>
+        </aside>
+      </div>
+
+      <div class="youtube-pillar-row" aria-label="Temas principales del canal">
+        {youtubePillars.map((pillar) => <span>{pillar}</span>)}
+      </div>
+
+      <div class="featured-video-grid" aria-label="Vídeos destacados del canal">
+        {featuredVideos.map((video, index) => (
+          <article class="featured-video-card">
+            <span>0{index + 1}</span>
+            <p>{video.meta}</p>
+            <h3>{video.title}</h3>
+            <p>{video.description}</p>
+            <a href={video.href} target="_blank" rel="noreferrer">Ver vídeo</a>
+          </article>
+        ))}
+      </div>
     </div>
   </section>
 
-  <section id="autoridad" class="authority-section container" aria-labelledby="authority-title">
-    <div class="authority-card surface">
-      <div>
-        <p class="eyebrow">Autoridad técnica</p>
-        <h2 id="authority-title" class="section-title">Autor, creador y comunicador técnico.</h2>
+  <section id="libro" class="book-section container" aria-labelledby="book-title">
+    <div class="book-shell surface">
+      <div class="book-visual" aria-label="Portada del libro Guía para aprender a programar">
+        <img
+          class="book-cover"
+          src="/images/guia-para-aprender-a-programar.png"
+          alt="Portada del libro Guía para aprender a programar: Desde Cero Hasta tu Primer Empleo, de Daniel Españadero Fernández"
+          width="1294"
+          height="2000"
+          loading="lazy"
+          decoding="async"
+        />
+      </div>
+
+      <div class="book-copy">
+        <p class="eyebrow">Autor técnico</p>
+        <h2 id="book-title" class="section-title">Un libro para convertir el aprendizaje en dirección.</h2>
         <p>
-          Su libro y su canal de YouTube refuerzan algo que en ingeniería de software es diferencial: la capacidad de convertir conocimiento técnico en explicaciones claras, accionables y útiles para otros desarrolladores.
+          <strong>“Guía para aprender a programar: Desde Cero Hasta tu Primer Empleo”</strong> condensa una parte clave de mi trabajo como divulgador: ayudar a personas que empiezan a ordenar el caos, elegir un camino y construir un perfil profesional con criterio.
         </p>
-      </div>
-      <div class="authority-actions">
-        <Button href={profile.links.book}>Ver libro</Button>
-        <Button href={profile.links.youtube} variant="secondary">Ver YouTube</Button>
-      </div>
-    </div>
-  </section>
+        <p>
+          No es un libro sobre memorizar sintaxis. Es una guía práctica sobre mentalidad, proyectos, marca personal, entrevistas y primeros pasos para entrar en programación sin vender atajos mágicos.
+        </p>
 
-  <section class="projects-section container" aria-labelledby="projects-title">
-    <p class="eyebrow">Contenido técnico</p>
-    <h2 id="projects-title" class="section-title">Ideas técnicas convertidas en contenido práctico.</h2>
-    <div class="project-row">
-      {projects.map((project) => (
-        <article class="project-card surface">
-          <h3>{project.title}</h3>
-          <p>{project.description}</p>
-          <a href={project.href} target="_blank" rel="noreferrer">Ver recurso</a>
-        </article>
-      ))}
+        <div class="book-stat-grid" aria-label="Datos del libro en Amazon">
+          {bookStats.map((stat) => (
+            <article>
+              <strong>{stat.value}</strong>
+              <span>{stat.label}</span>
+            </article>
+          ))}
+        </div>
+
+        <ul class="book-highlight-list" aria-label="Temas principales del libro">
+          {bookHighlights.map((highlight) => <li>{highlight}</li>)}
+        </ul>
+
+        <div class="book-actions">
+          <Button href={profile.links.book} target="_blank" rel="noreferrer">Ver libro en Amazon</Button>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -292,6 +401,7 @@ const principles = [
 
   .hero-photo-frame {
     margin: clamp(0.85rem, 2vw, 1rem) clamp(0.85rem, 2vw, 1rem) 0;
+    height: clamp(17rem, 38svh, 25.5rem);
     overflow: hidden;
     border: 1px solid var(--color-border);
     border-radius: calc(var(--radius-lg) - 0.5rem);
@@ -300,9 +410,9 @@ const principles = [
 
   .hero-photo-frame img {
     width: 100%;
-    height: auto;
-    object-fit: contain;
-    object-position: center;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
   }
 
   .hero-profile-content {
@@ -393,14 +503,11 @@ const principles = [
     line-height: 1.55;
   }
 
-  .section-heading-row > p,
-  .authority-card p,
-  .project-card p {
+  .section-heading-row > p {
     color: var(--color-text-muted);
   }
 
-  .hero-actions,
-  .authority-actions {
+  .hero-actions {
     display: flex;
     flex-wrap: wrap;
     gap: 1rem;
@@ -410,18 +517,13 @@ const principles = [
   .profile-section,
   .stack-section,
   .experience-section,
-  .principles-section,
-  .authority-section,
-  .projects-section {
+  .youtube-section,
+  .book-section {
     padding-block: var(--section-space);
   }
 
   .profile-section {
     position: relative;
-  }
-
-  .authority-card {
-    padding: clamp(1.5rem, 4vw, 3rem);
   }
 
   .profile-shell {
@@ -535,21 +637,8 @@ const principles = [
     line-height: 1.65;
   }
 
-  .authority-card p {
-    font-size: 1.12rem;
-    line-height: 1.8;
-  }
-
   .profile-proof strong {
     color: var(--color-text);
-  }
-
-  .principles-grid,
-  .project-row {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 1rem;
-    margin-top: 2rem;
   }
 
   .stack-heading-row {
@@ -644,6 +733,18 @@ const principles = [
     padding: 1.5rem;
     background: rgba(31, 41, 55, 0.84);
     text-align: center;
+    transition:
+      background 180ms ease,
+      transform 180ms ease;
+  }
+
+  .technology-card:hover,
+  .technology-card:focus-within {
+    transform: translateY(-1px);
+    background:
+      radial-gradient(circle at 50% 24%, rgb(var(--technology-color) / 0.18), transparent 42%),
+      linear-gradient(180deg, rgb(var(--technology-color) / 0.1), rgba(31, 41, 55, 0.86) 58%),
+      rgba(31, 41, 55, 0.9);
   }
 
  .technology-card img {
@@ -651,6 +752,15 @@ const principles = [
     height: 3.6rem;
     margin-bottom: 0.75rem;
     filter: brightness(0) invert(1);
+    transition:
+      filter 180ms ease,
+      transform 180ms ease;
+  }
+
+  .technology-card:hover img,
+  .technology-card:focus-within img {
+    transform: translateY(-2px);
+    filter: brightness(0) invert(1) drop-shadow(0 0 18px rgb(var(--technology-color) / 0.24));
   }
 
   .technology-card::before {
@@ -658,7 +768,7 @@ const principles = [
     inset: auto auto -1px -1px;
     width: 60%;
     height: 1px;
-    background: linear-gradient(90deg, rgba(52, 211, 153, 0.5), transparent);
+    background: linear-gradient(90deg, rgb(var(--technology-color) / 0.6), transparent);
     content: '';
   }
 
@@ -762,52 +872,327 @@ const principles = [
     line-height: 1.7;
   }
 
-  .principle-card {
-    min-height: 220px;
+  .youtube-shell {
+    position: relative;
+    overflow: hidden;
+    padding: clamp(1.25rem, 4vw, 2rem);
+    background:
+      radial-gradient(circle at 14% 12%, rgba(255, 0, 0, 0.2), transparent 18rem),
+      radial-gradient(circle at 86% 0%, rgba(52, 211, 153, 0.16), transparent 20rem),
+      linear-gradient(145deg, rgba(16, 24, 39, 0.96), rgba(8, 13, 22, 0.86));
+  }
+
+  .youtube-shell::before {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    content: '';
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.055) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.055) 1px, transparent 1px);
+    background-size: 52px 52px;
+    mask-image: linear-gradient(135deg, black, transparent 72%);
+  }
+
+  .youtube-hero,
+  .youtube-pillar-row,
+  .featured-video-grid {
+    position: relative;
+    z-index: 1;
+  }
+
+  .youtube-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(280px, 0.42fr);
+    gap: clamp(1.5rem, 4vw, 3rem);
+    align-items: stretch;
+  }
+
+  .youtube-copy {
+    max-width: 850px;
+  }
+
+  .youtube-copy p:not(.eyebrow) {
+    max-width: 760px;
+    color: var(--color-text-muted);
+    font-size: clamp(1.05rem, 2vw, 1.22rem);
+    line-height: 1.8;
+  }
+
+  .youtube-copy strong {
+    color: var(--color-text);
+  }
+
+  .youtube-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+    margin-top: 1.5rem;
+  }
+
+  .youtube-proof {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 100%;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-lg);
+    padding: clamp(1rem, 3vw, 1.35rem);
+    background: rgba(255, 255, 255, 0.045);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  }
+
+  .youtube-logo {
+    display: grid;
+    width: 4.7rem;
+    height: 4.7rem;
+    place-items: center;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 1.4rem;
+    background:
+      radial-gradient(circle at 50% 45%, rgba(255, 255, 255, 0.18), transparent 54%),
+      rgba(255, 0, 0, 0.92);
+    box-shadow: 0 20px 46px rgba(255, 0, 0, 0.2);
+  }
+
+  .youtube-logo svg {
+    width: 2.4rem;
+    fill: var(--color-text);
+  }
+
+  .youtube-logo svg path:last-child {
+    fill: rgba(8, 13, 22, 0.96);
+  }
+
+  .youtube-proof-label {
+    max-width: 14rem;
+    margin: clamp(1.5rem, 5vw, 3.5rem) 0 1rem;
+    font-size: clamp(1.55rem, 4vw, 2.2rem);
+    font-weight: 800;
+    line-height: 0.98;
+    letter-spacing: -0.06em;
+  }
+
+  .youtube-stat-grid {
+    display: grid;
+    gap: 1px;
+    overflow: hidden;
     border: 1px solid var(--color-border);
-    border-radius: 1.5rem;
-    padding: 1.2rem;
-    background: rgba(255, 255, 255, 0.035);
+    border-radius: calc(var(--radius-lg) - 0.35rem);
+    background: var(--color-border);
   }
 
-  .principle-card span {
-    color: var(--color-accent);
+  .youtube-stat-grid article {
+    padding: 1rem;
+    background: rgba(8, 13, 22, 0.68);
+  }
+
+  .youtube-stat-grid strong {
+    display: block;
+    color: var(--color-text);
+    font-size: clamp(1.65rem, 4vw, 2.45rem);
+    line-height: 1;
+    letter-spacing: -0.06em;
+  }
+
+  .youtube-stat-grid span {
+    display: block;
+    margin-top: 0.35rem;
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+    line-height: 1.35;
+  }
+
+  .youtube-pillar-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+    margin-top: clamp(1.5rem, 4vw, 2rem);
+  }
+
+  .youtube-pillar-row span {
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 999px;
+    padding: 0.52rem 0.78rem;
+    background: rgba(255, 255, 255, 0.045);
+    color: var(--color-text-muted);
     font-family: var(--font-mono);
+    font-size: 0.78rem;
+    font-weight: 800;
   }
 
-  .principle-card p {
-    margin-top: 2.5rem;
-    font-size: 1.15rem;
+  .featured-video-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1px;
+    overflow: hidden;
+    margin-top: clamp(1rem, 3vw, 1.35rem);
+    border: 1px solid var(--color-border);
+    border-radius: calc(var(--radius-lg) - 0.25rem);
+    background: var(--color-border);
+  }
+
+  .featured-video-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-height: 20rem;
+    padding: clamp(1rem, 2.5vw, 1.35rem);
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.05), transparent 50%),
+      rgba(13, 19, 34, 0.94);
+  }
+
+  .featured-video-card::before {
+    position: absolute;
+    inset: auto 1rem 0 1rem;
+    height: 2px;
+    background: linear-gradient(90deg, rgba(255, 0, 0, 0.85), rgba(52, 211, 153, 0.45), transparent);
+    content: '';
+  }
+
+  .featured-video-card > span,
+  .featured-video-card > p:first-of-type {
+    color: var(--color-primary);
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    font-weight: 800;
+  }
+
+  .featured-video-card > p:first-of-type {
+    margin: 0.5rem 0 0;
+    color: rgba(248, 199, 126, 0.9);
+  }
+
+  .featured-video-card h3 {
+    margin: clamp(2.25rem, 5vw, 3.4rem) 0 0.75rem;
+    font-size: clamp(1.25rem, 2.4vw, 1.65rem);
+    line-height: 1.05;
+    letter-spacing: -0.05em;
+  }
+
+  .featured-video-card p:last-of-type {
+    color: var(--color-text-muted);
+    line-height: 1.65;
+  }
+
+  .featured-video-card a {
+    display: inline-flex;
+    align-self: flex-start;
+    margin-top: auto;
+    color: var(--color-accent);
+    font-weight: 800;
+  }
+
+  .book-shell {
+    display: grid;
+    grid-template-columns: minmax(260px, 0.42fr) minmax(0, 1fr);
+    gap: clamp(1.5rem, 5vw, 3.5rem);
+    align-items: stretch;
+    overflow: hidden;
+    padding: clamp(1.25rem, 4vw, 2.5rem);
+    background:
+      radial-gradient(circle at 18% 18%, rgba(248, 199, 126, 0.2), transparent 18rem),
+      linear-gradient(145deg, rgba(17, 24, 39, 0.95), rgba(8, 13, 22, 0.86));
+  }
+
+  .book-visual {
+    display: grid;
+    min-height: 100%;
+    place-items: center;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: calc(var(--radius-lg) - 0.35rem);
+    padding: clamp(1.25rem, 4vw, 2.25rem);
+    background:
+      linear-gradient(135deg, rgba(248, 199, 126, 0.12), transparent 46%),
+      rgba(255, 255, 255, 0.04);
+  }
+
+  .book-cover {
+    display: block;
+    width: min(100%, 18.5rem);
+    height: auto;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 0.8rem;
+    box-shadow: 24px 28px 64px rgba(0, 0, 0, 0.4);
+  }
+
+  .book-copy p:not(.eyebrow) {
+    max-width: 760px;
+    color: var(--color-text-muted);
+    font-size: clamp(1.02rem, 2vw, 1.16rem);
+    line-height: 1.8;
+  }
+
+  .book-copy {
+    align-self: center;
+    padding-block: clamp(0.5rem, 2vw, 1rem);
+  }
+
+  .book-copy strong {
+    color: var(--color-text);
+  }
+
+  .book-stat-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1px;
+    overflow: hidden;
+    margin-top: 1.5rem;
+    border: 1px solid var(--color-border);
+    border-radius: calc(var(--radius-lg) - 0.35rem);
+    background: var(--color-border);
+  }
+
+  .book-stat-grid article {
+    padding: 1rem;
+    background: rgba(8, 13, 22, 0.68);
+  }
+
+  .book-stat-grid strong {
+    display: block;
+    color: var(--color-text);
+    font-size: clamp(1.35rem, 3vw, 2rem);
+    line-height: 1;
+    letter-spacing: -0.055em;
+  }
+
+  .book-stat-grid span {
+    display: block;
+    margin-top: 0.35rem;
+    color: var(--color-text-muted);
+    font-size: 0.88rem;
+    line-height: 1.35;
+  }
+
+  .book-highlight-list {
+    display: grid;
+    gap: 0.65rem;
+    margin: 1.5rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .book-highlight-list li {
+    position: relative;
+    padding-left: 1.25rem;
+    color: var(--color-text-muted);
     line-height: 1.55;
   }
 
-  .authority-card {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 2rem;
-    align-items: end;
-    background:
-      linear-gradient(135deg, rgba(52, 211, 153, 0.15), transparent 36%),
-      linear-gradient(315deg, rgba(248, 199, 126, 0.12), transparent 42%),
-      rgba(13, 19, 34, 0.92);
+  .book-highlight-list li::before {
+    position: absolute;
+    top: 0.72em;
+    left: 0;
+    width: 0.45rem;
+    height: 0.45rem;
+    border-radius: 999px;
+    background: var(--color-primary);
+    content: '';
   }
 
-  .project-row {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-
-  .project-card {
-    padding: clamp(1.1rem, 3vw, 1.4rem);
-  }
-
-  .project-card h3 {
-    margin-top: 0;
-    font-size: 1.4rem;
-  }
-
-  .project-card a {
-    color: var(--color-accent);
-    font-weight: 800;
+  .book-actions {
+    margin-top: 1.5rem;
   }
 
   @media (max-width: 980px) {
@@ -817,14 +1202,15 @@ const principles = [
     .stack-heading-row,
     .practice-panel,
     .section-heading-row,
-    .authority-card,
+    .youtube-hero,
+    .book-shell,
     .experience-item {
       grid-template-columns: 1fr;
     }
 
     .technology-grid,
-    .principles-grid,
-    .project-row {
+    .featured-video-grid,
+    .book-stat-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
@@ -861,9 +1247,8 @@ const principles = [
     .profile-section,
     .stack-section,
     .experience-section,
-    .principles-section,
-    .authority-section,
-    .projects-section {
+    .youtube-section,
+    .book-section {
       padding-block: var(--section-space-sm);
     }
   }
@@ -886,7 +1271,8 @@ const principles = [
     }
 
     .hero-actions,
-    .authority-actions {
+    .youtube-actions,
+    .book-actions {
       display: grid;
       gap: 0.75rem;
       width: 100%;
@@ -895,6 +1281,10 @@ const principles = [
 
     .hero-profile-content {
       padding: 1.15rem;
+    }
+
+    .hero-photo-frame {
+      height: clamp(15.5rem, 68vw, 22rem);
     }
 
     .hero-profile h2 {
@@ -909,13 +1299,18 @@ const principles = [
     }
 
     .profile-shell,
-    .authority-card {
+    .youtube-shell,
+    .book-shell {
       padding: 1.15rem;
     }
 
-    .authority-card p {
-      font-size: 1rem;
-      line-height: 1.7;
+    .youtube-proof {
+      min-height: auto;
+    }
+
+    .youtube-proof-label {
+      max-width: none;
+      margin-top: 1.5rem;
     }
 
     .profile-manifesto {
@@ -945,25 +1340,16 @@ const principles = [
       padding-left: 1.1rem;
     }
 
-    .principle-card {
-      min-height: auto;
-      border-radius: var(--radius-md);
-    }
-
-    .principle-card p {
-      margin-top: 1.5rem;
-      font-size: 1.05rem;
-    }
-
     .technology-grid,
     .practice-grid,
-    .principles-grid,
-    .project-row {
+    .featured-video-grid,
+    .book-stat-grid {
       grid-template-columns: 1fr;
     }
 
     .technology-card,
-    .practice-card {
+    .practice-card,
+    .featured-video-card {
       min-height: auto;
     }
   }

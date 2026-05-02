@@ -1,3 +1,7 @@
+---
+const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
+---
+
 <section id="contacto" class="section container" aria-labelledby="contact-title">
   <div class="surface contact">
     <div>
@@ -7,27 +11,120 @@
         Si querés contactar conmigo por una oportunidad profesional, colaboración o propuesta técnica, escribime desde este formulario.
       </p>
     </div>
-    <form class="form" action="/api/contact" method="post">
-      <label>
+    <form class="form" action="/api/contact" method="post" novalidate>
+      <label for="contact-name">
         Nombre
-        <input name="name" type="text" autocomplete="name" required minlength="3" maxlength="120" />
+        <input id="contact-name" name="name" type="text" autocomplete="name" required minlength="3" maxlength="80" pattern="^[A-Za-zÀ-ÿÑñ0-9][A-Za-zÀ-ÿÑñ0-9 .'-]{1,78}[A-Za-zÀ-ÿÑñ0-9]$" aria-describedby="contact-name-error" />
+        <span id="contact-name-error" class="field-error" data-error-for="name" aria-live="polite"></span>
       </label>
-      <label>
+      <label for="contact-email">
         Email
-        <input name="email" type="email" autocomplete="email" required />
+        <input id="contact-email" name="email" type="email" autocomplete="email" required maxlength="254" inputmode="email" aria-describedby="contact-email-error" />
+        <span id="contact-email-error" class="field-error" data-error-for="email" aria-live="polite"></span>
       </label>
-      <label>
+      <label for="contact-message">
         Mensaje
-        <textarea name="message" required minlength="10" maxlength="4000"></textarea>
+        <textarea id="contact-message" name="message" required minlength="20" maxlength="3000" aria-describedby="contact-message-error"></textarea>
+        <span id="contact-message-error" class="field-error" data-error-for="message" aria-live="polite"></span>
       </label>
       <label class="honeypot" aria-hidden="true">
         No rellenar este campo
         <input name="company" type="text" tabindex="-1" autocomplete="off" />
       </label>
+      {turnstileSiteKey ? (
+        <div class="turnstile-wrap" aria-label="Verificación anti spam de Cloudflare">
+          <div class="cf-turnstile" data-sitekey={turnstileSiteKey} data-theme="dark" data-action="contact"></div>
+        </div>
+      ) : (
+        <p class="form-warning">La verificación anti spam no está configurada.</p>
+      )}
       <button type="submit">Enviar mensaje</button>
     </form>
   </div>
 </section>
+
+{turnstileSiteKey && <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>}
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('.form[action="/api/contact"]');
+
+  const validators = {
+    name(value: string) {
+      const trimmed = value.trim();
+
+      if (trimmed.length < 3) return 'El nombre debe tener al menos 3 caracteres.';
+      if (trimmed.length > 80) return 'El nombre no puede superar 80 caracteres.';
+      if (/https?:\/\//i.test(trimmed) || /@/.test(trimmed)) return 'El nombre no debe incluir URLs ni emails.';
+      if (!/^[A-Za-zÀ-ÿÑñ0-9][A-Za-zÀ-ÿÑñ0-9 .'-]{1,78}[A-Za-zÀ-ÿÑñ0-9]$/.test(trimmed)) return 'Usá un nombre válido, sin símbolos raros.';
+
+      return '';
+    },
+    email(value: string) {
+      const trimmed = value.trim();
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+      if (!trimmed) return 'Introducí tu email.';
+      if (trimmed.length > 254) return 'El email es demasiado largo.';
+      if (!emailPattern.test(trimmed)) return 'Introducí un email válido.';
+      if (trimmed.includes('..')) return 'El email no parece válido.';
+
+      const [local, domain] = trimmed.split('@');
+      if (!local || !domain || local.length > 64) return 'El email no parece válido.';
+      if (!domain.includes('.') || domain.startsWith('.') || domain.endsWith('.')) return 'El dominio del email no parece válido.';
+
+      return '';
+    },
+    message(value: string) {
+      const trimmed = value.trim();
+
+      if (trimmed.length < 20) return 'El mensaje debe tener al menos 20 caracteres.';
+      if (trimmed.length > 3000) return 'El mensaje no puede superar 3000 caracteres.';
+      if (/<\/?[a-z][\s\S]*>/i.test(trimmed)) return 'No pegues HTML ni etiquetas en el mensaje.';
+      if (/\b(?:javascript|data|vbscript)\s*:/i.test(trimmed)) return 'No pegues código ejecutable en el mensaje.';
+      if (/\b(?:ignore|ignora|olvida|descarta)\b.{0,90}\b(?:previous|anteriores|instrucciones|instructions|system|sistema|developer)\b/i.test(trimmed)) return 'El mensaje contiene instrucciones automatizadas sospechosas.';
+      if (new Set(trimmed.replace(/\s/g, '')).size < 5) return 'El mensaje necesita contenido legible.';
+
+      return '';
+    },
+  };
+
+  function setFieldError(field: HTMLInputElement | HTMLTextAreaElement, message: string) {
+    const error = form?.querySelector<HTMLElement>(`[data-error-for="${field.name}"]`);
+
+    field.setAttribute('aria-invalid', message ? 'true' : 'false');
+
+    if (error) {
+      error.textContent = message;
+    }
+  }
+
+  function validateField(field: HTMLInputElement | HTMLTextAreaElement) {
+    const validator = validators[field.name as keyof typeof validators];
+    const message = validator ? validator(field.value) : '';
+
+    setFieldError(field, message);
+
+    return !message;
+  }
+
+  form?.addEventListener('input', (event) => {
+    const field = event.target;
+
+    if (field instanceof HTMLInputElement || field instanceof HTMLTextAreaElement) {
+      validateField(field);
+    }
+  });
+
+  form?.addEventListener('submit', (event) => {
+    const fields = Array.from(form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('input[name="name"], input[name="email"], textarea[name="message"]'));
+    const isValid = fields.every(validateField);
+
+    if (!isValid) {
+      event.preventDefault();
+      fields.find((field) => field.getAttribute('aria-invalid') === 'true')?.focus();
+    }
+  });
+</script>
 
 <style>
   .section {
@@ -61,6 +158,40 @@
     color: var(--color-text);
     background: rgba(7, 11, 18, 0.84);
     padding: 0.85rem 1rem;
+  }
+
+  input[aria-invalid='true'],
+  textarea[aria-invalid='true'] {
+    border-color: rgba(248, 113, 113, 0.82);
+    box-shadow: 0 0 0 3px rgba(248, 113, 113, 0.12);
+  }
+
+  .field-error {
+    font-size: 0.82rem;
+    line-height: 1.45;
+  }
+
+  .field-error {
+    min-height: 1.2em;
+    color: #fca5a5;
+  }
+
+  .turnstile-wrap {
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+    min-height: 65px;
+  }
+
+  .form-warning {
+    margin: 0;
+    border: 1px solid rgba(248, 199, 126, 0.28);
+    border-radius: var(--radius-sm);
+    padding: 0.8rem 1rem;
+    color: rgba(248, 199, 126, 0.95);
+    background: rgba(248, 199, 126, 0.08);
+    font-size: 0.9rem;
+    line-height: 1.45;
   }
 
   textarea {
