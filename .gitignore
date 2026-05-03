@@ -8,3 +8,5 @@ dist/
 .DS_Store
 AGENTS.md
 .obsidian/
+/.idea/
+/.claude/

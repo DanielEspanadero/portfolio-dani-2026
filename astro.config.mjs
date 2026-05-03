@@ -7,4 +7,9 @@ export default defineConfig({
   output: 'server',
   adapter: cloudflare(),
   integrations: [sitemap()],
+  vite: {
+    server: {
+      allowedHosts: ['w7kbtl-ip-186-18-87-181.tunnelmole.net'],
+    },
+  },
 });

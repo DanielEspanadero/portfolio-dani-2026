@@ -7,11 +7,33 @@ import Button from '@components/ui/Button.astro';
 import { profile } from '@data/profile';
 import { technicalPractices, technologies } from '@data/skills';
 
+const techIcons: Record<string, string> = {
+  'Java':            '/icons/tech/java.svg',
+  'Spring Boot':     '/icons/tech/spring-boot.svg',
+  'Spring Security': '/icons/tech/spring-security.svg',
+  'MySQL':           '/icons/tech/mysql.svg',
+  'Docker':          '/icons/tech/docker.svg',
+  'AWS':             '/icons/tech/aws.svg',
+  'Linux':           '/icons/tech/linux.svg',
+  'Angular':         '/icons/tech/angular.svg',
+  'SQL':             '/icons/tech/mysql.svg',
+  'MongoDB':         '/icons/tech/mongodb.svg',
+  'React':           '/icons/tech/react.svg',
+  'Node.js':         '/icons/tech/nodejs.svg',
+  'Express':         '/icons/tech/express.svg',
+};
+
+const companyLogos: Record<string, string> = {
+  'Optimissa':    '/icons/companies/optimissa.png',
+  'Mytic Innova': '/icons/companies/mytic.png',
+  'Malt':         '/icons/companies/malt.svg',
+};
+
 const techColors: Record<string, string> = {
   'Java': '#f89820',
   'Spring Boot': '#6db33f',
   'Spring Security': '#5ba033',
-  'MySQL': '#4479a1',
+  'MySQL': '#1a9ae0',
   'Docker': '#2496ed',
   'AWS': '#ff9900',
   'Linux': '#fcc624',
@@ -118,11 +140,10 @@ const principles = [
         <p>Stack curado para backend Java/Spring, soporte enterprise y entrega de software real.</p>
       </div>
       <div class="technology-grid">
-        {technologies.map((technology) => (
-          <article class="technology-card" style={`--tc: ${techColors[technology.name] ?? '#34d399'}`}>
+        {technologies.map((technology, index) => (
+          <article class="technology-card" style={`--tc: ${techColors[technology.name] ?? '#34d399'}; --i: ${index}`}>
             <img src={technology.icon} alt="" width="64" height="64" loading="lazy" decoding="async" />
             <strong>{technology.name}</strong>
-            <span>{technology.category}</span>
           </article>
         ))}
       </div>
@@ -157,21 +178,38 @@ const principles = [
       </p>
     </div>
     <div class="experience-list">
-      {experiences.map((experience) => (
-        <article class="experience-item">
-          <div>
-            <span>{experience.period}</span>
-            <h3>{experience.company}</h3>
-            <p>{experience.role}</p>
-          </div>
-          <div>
-            <p>{experience.description}</p>
-            <ul>
-              {experience.highlights.map((highlight) => <li>{highlight}</li>)}
-            </ul>
-          </div>
-        </article>
-      ))}
+      {experiences.map((experience) => {
+        const logo = companyLogos[experience.company];
+        return (
+          <article class="experience-item">
+            <div class="experience-left">
+              {logo && (
+                <div class="company-logo-wrap">
+                  <img src={logo} alt={experience.company} class="company-logo" width="160" height="48" loading="lazy" decoding="async" />
+                </div>
+              )}
+              <span class="experience-period">{experience.period}</span>
+              <p class="experience-role">{experience.role}</p>
+              <div class="experience-stack">
+                {experience.stack.map((s) => (
+                  <span class="stack-pill">
+                    {techIcons[s] && (
+                      <img src={techIcons[s]} alt="" width="14" height="14" aria-hidden="true" />
+                    )}
+                    {s}
+                  </span>
+                ))}
+              </div>
+            </div>
+            <div class="experience-right">
+              <p>{experience.description}</p>
+              <ul>
+                {experience.highlights.map((highlight) => <li>{highlight}</li>)}
+              </ul>
+            </div>
+          </article>
+        );
+      })}
     </div>
   </section>
 
@@ -190,16 +228,32 @@ const principles = [
 
   <section id="autoridad" class="authority-section container" aria-labelledby="authority-title">
     <div class="authority-card surface">
-      <div>
+      <div class="authority-intro">
         <p class="eyebrow">Autoridad técnica</p>
         <h2 id="authority-title" class="section-title">Autor, creador y comunicador técnico.</h2>
-        <p>
-          Su libro y su canal de YouTube refuerzan algo que en ingeniería de software es diferencial: la capacidad de convertir conocimiento técnico en explicaciones claras, accionables y útiles para otros desarrolladores.
-        </p>
+        <p>Conocimiento técnico convertido en contenido claro y accionable para otros desarrolladores.</p>
       </div>
-      <div class="authority-actions">
-        <Button href={profile.links.book}>Ver libro</Button>
-        <Button href={profile.links.youtube} variant="secondary">Ver YouTube</Button>
+      <div class="authority-items">
+        <article class="authority-item authority-item--book">
+          <span class="authority-item-tag">Libro</span>
+          <div class="book-covers">
+            <img src="/images/dorso-libro.jpg" alt="" class="book-cover book-cover--back" width="120" height="170" loading="lazy" decoding="async" />
+            <img src="/images/frente-libro.jpg" alt="Portada del libro Guía para aprender a programar" class="book-cover book-cover--front" width="120" height="170" loading="lazy" decoding="async" />
+          </div>
+          <h3>Guía para aprender a programar</h3>
+          <p>De cero hasta el primer empleo. Publicado en Amazon.</p>
+          <a href={profile.links.book} target="_blank" rel="noreferrer">Ver libro →</a>
+        </article>
+        <article class="authority-item authority-item--yt">
+          <span class="authority-item-tag">YouTube</span>
+          <img src="/icons/youtube.svg" alt="YouTube" class="yt-logo" width="96" height="68" loading="lazy" decoding="async" />
+          <div class="authority-stat">
+            <strong>50.000+</strong>
+            <span>desarrolladores</span>
+          </div>
+          <p>Canal de contenido técnico sobre programación y carrera.</p>
+          <a href={profile.links.youtube} target="_blank" rel="noreferrer">Ver canal →</a>
+        </article>
       </div>
     </div>
   </section>
@@ -220,6 +274,22 @@ const principles = [
 
   <Contact />
 </BaseLayout>
+
+<script>
+  const cards = document.querySelectorAll('.technology-card');
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { rootMargin: '0px 0px -40px 0px', threshold: 0.08 }
+  );
+  cards.forEach((card) => observer.observe(card));
+</script>
 
 <style>
   .hero {
@@ -546,10 +616,6 @@ const principles = [
     line-height: 1.65;
   }
 
-  .authority-card p {
-    font-size: 1.12rem;
-    line-height: 1.8;
-  }
 
   .profile-proof strong {
     color: var(--color-text);
@@ -646,26 +712,37 @@ const principles = [
   }
 
   .technology-card {
+    --tc: #34d399;
     position: relative;
-    display: grid;
-    grid-template-rows: auto 1fr auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     gap: 0.75rem;
     padding: clamp(1rem, 2.5vw, 1.5rem);
     min-height: 160px;
     background: rgba(5, 7, 13, 0.58);
+    cursor: pointer;
+    opacity: 0;
+    transform: translateY(14px);
     transition: background 0.3s ease;
   }
 
+  .technology-card.is-visible {
+    animation: card-reveal 0.45s ease forwards;
+    animation-delay: calc(var(--i, 0) * 55ms);
+  }
+
   .technology-card:hover {
-    background: color-mix(in srgb, var(--tc) 14%, rgba(5, 7, 13, 0.92));
+    background: color-mix(in srgb, var(--tc) 18%, rgba(5, 7, 13, 0.92));
   }
 
   .technology-card:hover::before {
-    background: linear-gradient(90deg, color-mix(in srgb, var(--tc) 70%, transparent), transparent);
+    opacity: 1;
   }
 
   .technology-card:hover img {
-    filter: brightness(0) invert(1) drop-shadow(0 0 10px var(--tc));
+    filter: drop-shadow(0 0 8px var(--tc)) brightness(1.15);
   }
 
   .technology-card:hover strong {
@@ -675,7 +752,7 @@ const principles = [
   .technology-card img {
     width: 3rem;
     height: 3rem;
-    filter: brightness(0) invert(1);
+    transition: filter 0.3s ease;
   }
 
   .technology-card::before {
@@ -683,21 +760,18 @@ const principles = [
     inset: auto auto -1px -1px;
     width: 60%;
     height: 1px;
-    background: linear-gradient(90deg, rgba(52, 211, 153, 0.5), transparent);
+    background: linear-gradient(90deg, color-mix(in srgb, var(--tc) 70%, transparent), transparent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
     content: '';
   }
 
   .technology-card strong {
-    align-self: end;
-    font-size: clamp(1.15rem, 2vw, 1.45rem);
+    font-size: clamp(1rem, 1.8vw, 1.25rem);
     line-height: 1;
-    letter-spacing: -0.04em;
-  }
-
-  .technology-card span {
-    color: var(--color-text-muted);
-    font-family: var(--font-mono);
-    font-size: 0.78rem;
+    letter-spacing: -0.03em;
+    text-align: center;
+    transition: color 0.3s ease;
   }
 
   .practice-panel {
@@ -761,28 +835,88 @@ const principles = [
 
   .experience-item {
     display: grid;
-    grid-template-columns: minmax(220px, 320px) 1fr;
-    gap: 2rem;
-    padding-block: 2rem;
+    grid-template-columns: minmax(220px, 300px) 1fr;
+    gap: clamp(2rem, 5vw, 3.5rem);
+    padding-block: 2.5rem;
     border-bottom: 1px solid var(--color-border);
   }
 
-  .experience-item span {
+  .experience-left {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    align-content: start;
+  }
+
+  .company-logo-wrap {
+    display: inline-flex;
+    align-self: start;
+    margin-bottom: 0.6rem;
+  }
+
+  .company-logo {
+    display: block;
+    height: 1.75rem;
+    width: auto;
+    max-width: 140px;
+    object-fit: contain;
+  }
+
+  .experience-period {
     color: var(--color-primary);
     font-family: var(--font-mono);
-    font-size: 0.85rem;
+    font-size: 0.82rem;
   }
 
-  .experience-item h3 {
-    margin: 0.5rem 0;
-    font-size: clamp(1.45rem, 4vw, 2rem);
-    letter-spacing: -0.05em;
+  .experience-role {
+    margin: 0;
+    color: var(--color-primary);
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
   }
 
-  .experience-item p,
-  .experience-item li {
+  .experience-stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 0.85rem;
+  }
+
+  .stack-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.18rem 0;
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+  }
+
+  .stack-pill img {
+    width: 0.85rem;
+    height: 0.85rem;
+    flex-shrink: 0;
+  }
+
+  .experience-right p {
+    margin: 0;
     color: var(--color-text-muted);
     line-height: 1.7;
+  }
+
+  .experience-right li {
+    color: var(--color-text-muted);
+    line-height: 1.7;
+  }
+
+  .experience-right ul {
+    margin-top: 1rem;
+    padding-left: 1.1rem;
   }
 
   .principle-card {
@@ -805,14 +939,165 @@ const principles = [
   }
 
   .authority-card {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 2rem;
-    align-items: end;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(1.5rem, 3vw, 2rem);
     background:
       linear-gradient(135deg, rgba(52, 211, 153, 0.15), transparent 36%),
       linear-gradient(315deg, rgba(248, 199, 126, 0.12), transparent 42%),
       rgba(13, 19, 34, 0.92);
+  }
+
+  .authority-intro p:not(.eyebrow) {
+    max-width: 600px;
+    color: var(--color-text-muted);
+    font-size: 1.08rem;
+    line-height: 1.75;
+  }
+
+  .authority-items {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .authority-item {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    padding: clamp(1.25rem, 3vw, 1.75rem);
+    border: 1px solid var(--color-border);
+    border-radius: calc(var(--radius-lg) - 0.25rem);
+    background: rgba(5, 7, 13, 0.5);
+    overflow: hidden;
+  }
+
+  .authority-item::before {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 3px;
+    border-radius: 0 2px 2px 0;
+    content: '';
+  }
+
+  .authority-item--book::before {
+    background: linear-gradient(180deg, #34d399, transparent 80%);
+  }
+
+  .authority-item--yt::before {
+    background: linear-gradient(180deg, #ff4e45, transparent 80%);
+  }
+
+  .authority-item-tag {
+    display: inline-flex;
+    align-self: start;
+    padding: 0.2rem 0.55rem;
+    border-radius: 999px;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .authority-item--book .authority-item-tag {
+    color: #34d399;
+    background: rgba(52, 211, 153, 0.1);
+    border: 1px solid rgba(52, 211, 153, 0.22);
+  }
+
+  .authority-item--yt .authority-item-tag {
+    color: #ff4e45;
+    background: rgba(255, 78, 69, 0.1);
+    border: 1px solid rgba(255, 78, 69, 0.22);
+  }
+
+  .authority-item h3 {
+    margin: 0;
+    font-size: clamp(1.1rem, 2vw, 1.35rem);
+    line-height: 1.15;
+    letter-spacing: -0.03em;
+  }
+
+  .authority-item p {
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: 0.95rem;
+    line-height: 1.65;
+    flex: 1;
+  }
+
+  .authority-stat {
+    display: flex;
+    align-items: baseline;
+    gap: 0.45rem;
+  }
+
+  .authority-stat strong {
+    font-size: clamp(2.2rem, 4vw, 2.85rem);
+    line-height: 1;
+    letter-spacing: -0.05em;
+    color: #ff4e45;
+  }
+
+  .authority-stat > span {
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+  }
+
+  .authority-item a {
+    display: inline-flex;
+    align-self: start;
+    margin-top: 0.25rem;
+    color: var(--color-accent);
+    font-size: 0.9rem;
+    font-weight: 800;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+  }
+
+  .authority-item a:hover {
+    opacity: 0.7;
+  }
+
+  .book-covers {
+    display: flex;
+    align-items: flex-end;
+    gap: 0;
+    margin: 0.25rem 0 0.5rem;
+  }
+
+  .book-cover {
+    height: clamp(110px, 14vw, 150px);
+    width: auto;
+    border-radius: 3px;
+    object-fit: cover;
+    box-shadow: 0 6px 22px rgba(0, 0, 0, 0.6);
+  }
+
+  .book-cover--back {
+    position: relative;
+    z-index: 1;
+    opacity: 0.65;
+    transform: rotate(-5deg) translateX(12px);
+    height: clamp(90px, 11vw, 120px);
+  }
+
+  .book-cover--front {
+    position: relative;
+    z-index: 2;
+    transform: rotate(2deg);
+  }
+
+  .authority-item--book:hover .book-cover--front {
+    transform: rotate(2deg) scale(1.03);
+    transition: transform 0.3s ease;
+  }
+
+  .yt-logo {
+    width: clamp(2.75rem, 5vw, 3.75rem);
+    height: auto;
   }
 
   .project-row {
@@ -840,7 +1125,6 @@ const principles = [
     .stack-heading-row,
     .practice-panel,
     .section-heading-row,
-    .authority-card,
     .experience-item {
       grid-template-columns: 1fr;
     }
@@ -908,12 +1192,15 @@ const principles = [
       letter-spacing: -0.018em;
     }
 
-    .hero-actions,
-    .authority-actions {
+    .hero-actions {
       display: grid;
       gap: 0.75rem;
       width: 100%;
       margin-top: 1.45rem;
+    }
+
+    .authority-items {
+      grid-template-columns: 1fr;
     }
 
     .hero-profile-content {
@@ -936,7 +1223,7 @@ const principles = [
       padding: 1.15rem;
     }
 
-    .authority-card p {
+    .authority-intro p:not(.eyebrow) {
       font-size: 1rem;
       line-height: 1.7;
     }
@@ -964,7 +1251,11 @@ const principles = [
       padding-block: 1.5rem;
     }
 
-    .experience-item ul {
+    .experience-role {
+      padding-bottom: 0.75rem;
+    }
+
+    .experience-right ul {
       padding-left: 1.1rem;
     }
 
@@ -988,6 +1279,26 @@ const principles = [
     .technology-card,
     .practice-card {
       min-height: auto;
+    }
+  }
+
+  @keyframes card-reveal {
+    from {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .technology-card {
+      opacity: 1;
+      transform: none;
+      animation: none;
+      transition: none;
     }
   }
 </style>
