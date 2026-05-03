@@ -2,12 +2,14 @@
 type Props = {
   href: string;
   variant?: 'primary' | 'secondary';
+  target?: string;
+  rel?: string;
 };
 
-const { href, variant = 'primary' } = Astro.props;
+const { href, variant = 'primary', target, rel } = Astro.props;
 ---
 
-<a class:list={['button', variant]} href={href}>
+<a class:list={['button', variant]} href={href} {target} {rel}>
   <slot />
 </a>
 

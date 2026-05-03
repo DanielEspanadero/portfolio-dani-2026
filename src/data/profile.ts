@@ -14,8 +14,8 @@ export const profile = {
     'Residente en Barcelona desde 2013, según bio pública de autor.',
   ],
   links: {
-    github: '#',
-    linkedin: '#',
+    github: 'https://github.com/DanielEspanadero',
+    linkedin: 'https://www.linkedin.com/in/daniel-espanadero/',
     youtube: 'https://www.youtube.com/@danielespanadero',
     book: 'https://www.amazon.es/GU%C3%8DA-PARA-APRENDER-PROGRAMAR-Primer/dp/B0CRPPD8CJ',
   },

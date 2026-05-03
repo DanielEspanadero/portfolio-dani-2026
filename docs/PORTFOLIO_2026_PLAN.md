@@ -1312,8 +1312,3 @@ Construir un portfolio que diga:
 > Sé diseñar backend serio con Java y Spring Boot, entiendo arquitectura, estoy incorporando IA aplicada y además tengo capacidad de enseñar, comunicar y generar comunidad.
 
 Ese posicionamiento es mucho más fuerte, más memorable y más difícil de copiar.
-
-
-
-
-Quiero que generes una pagina web moderna, con tonos oscuros, que sirva como portfolio de presentacion como ingeniero de software para Daniel Españadero. Busca informacion actualizada sobre el y diseña al completo
