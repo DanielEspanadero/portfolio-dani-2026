@@ -98,10 +98,16 @@ const featuredVideos = [
 ];
 
 const bookStats = [
-  { value: '4.5/5', label: 'valoración media en Amazon' },
-  { value: '26', label: 'reseñas de lectores' },
-  { value: '140', label: 'páginas en español' },
+  { value: '4.5/5', label: 'valoración media en Amazon', icon: 'star', rating: 4.5 },
+  { value: '26', label: 'reseñas de lectores', icon: 'readers' },
+  { value: '140', label: 'páginas en español', icon: 'pages' },
 ];
+
+function starType(pos: number, rating: number): 'full' | 'half' | 'empty' {
+  if (rating >= pos) return 'full';
+  if (rating >= pos - 0.5) return 'half';
+  return 'empty';
+}
 
 const bookHighlights = [
   'Elegir un camino realista para aprender programación.',
@@ -162,17 +168,17 @@ const bookHighlights = [
       </blockquote>
 
       <div class="profile-proof" aria-label="Pruebas profesionales de Daniel Españadero">
-        <article>
+        <article class="reveal-item" style="--i: 0">
           <span>01</span>
           <h3>Ingeniería backend</h3>
           <p>Java, Spring Boot, Spring Security, APIs REST y sistemas mantenibles.</p>
         </article>
-        <article>
+        <article class="reveal-item" style="--i: 1">
           <span>02</span>
           <h3>Arquitectura aplicada</h3>
           <p>Hexagonal Architecture, testing, diseño de APIs y evolución de software.</p>
         </article>
-        <article>
+        <article class="reveal-item" style="--i: 2">
           <span>03</span>
           <h3>Autoridad técnica</h3>
           <p>Autor de un libro de programación y creador de contenido técnico para más de <strong>24.000 desarrolladores en YouTube</strong>.</p>
@@ -215,7 +221,7 @@ const bookHighlights = [
       </div>
       <div class="practice-grid">
         {technicalPractices.map((practice, index) => (
-          <article class="practice-card surface">
+          <article class="practice-card surface reveal-item" style={`--i: ${index}`}>
             <span>0{index + 1}</span>
             <h4>{practice.title}</h4>
             <p>{practice.description}</p>
@@ -236,10 +242,10 @@ const bookHighlights = [
       </p>
     </div>
     <div class="experience-list">
-      {experiences.map((experience) => {
+      {experiences.map((experience, index) => {
         const logo = companyLogos[experience.company];
         return (
-          <article class="experience-item">
+          <article class="experience-item reveal-item" style={`--i: ${index}`}>
             <div class="experience-left">
               {logo && (
                 <div class="company-logo-wrap">
@@ -310,7 +316,7 @@ const bookHighlights = [
 
       <div class="featured-video-grid" aria-label="Vídeos destacados del canal">
         {featuredVideos.map((video, index) => (
-          <article class="featured-video-card">
+          <article class="featured-video-card reveal-item" style={`--i: ${index}`}>
             <span>0{index + 1}</span>
             <p>{video.meta}</p>
             <h3>{video.title}</h3>
@@ -347,16 +353,52 @@ const bookHighlights = [
         </p>
 
         <div class="book-stat-grid" aria-label="Datos del libro en Amazon">
-          {bookStats.map((stat) => (
-            <article>
-              <strong>{stat.value}</strong>
+          {bookStats.map((stat, index) => (
+            <article class:list={['reveal-item', { 'stat-book': stat.icon === 'pages' }]} style={`--i: ${index}`}>
               <span>{stat.label}</span>
+              <strong>
+                {stat.value}
+                {stat.icon === 'readers' && (
+                  <svg width="0.75em" height="0.75em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="stat-icon">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                    <circle cx="9" cy="7" r="4"/>
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                  </svg>
+                )}
+                {stat.icon === 'pages' && (
+                  <svg width="0.75em" height="0.75em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="stat-icon">
+                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+                    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+                  </svg>
+                )}
+              </strong>
+              <div class="star-row" role={stat.icon === 'star' ? 'img' : undefined} aria-label={stat.icon === 'star' ? `${stat.rating} de 5 estrellas` : undefined} aria-hidden={stat.icon !== 'star' ? 'true' : undefined}>
+                {stat.icon === 'star' && [1,2,3,4,5].map((pos) => {
+                  const type = starType(pos, stat.rating ?? 0);
+                  const p = 'M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z';
+                  return (
+                    <svg width="1em" height="1em" viewBox="0 0 24 24" aria-hidden="true">
+                      {type === 'half' && (
+                        <defs>
+                          <clipPath id="star-left">
+                            <rect x="0" y="0" width="12" height="24"/>
+                          </clipPath>
+                        </defs>
+                      )}
+                      {type === 'full' && <path fill="currentColor" d={p}/>}
+                      {type === 'half' && <path fill="currentColor" clip-path="url(#star-left)" d={p}/>}
+                      {type !== 'full' && <path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" d={p}/>}
+                    </svg>
+                  );
+                })}
+              </div>
             </article>
           ))}
         </div>
 
         <ul class="book-highlight-list" aria-label="Temas principales del libro">
-          {bookHighlights.map((highlight) => <li>{highlight}</li>)}
+          {bookHighlights.map((highlight, index) => <li class="reveal-item" style={`--i: ${index}`}>{highlight}</li>)}
         </ul>
 
         <div class="book-actions">
@@ -370,7 +412,6 @@ const bookHighlights = [
 </BaseLayout>
 
 <script>
-  const cards = document.querySelectorAll('.technology-card');
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
@@ -382,7 +423,7 @@ const bookHighlights = [
     },
     { rootMargin: '0px 0px -40px 0px', threshold: 0.08 }
   );
-  cards.forEach((card) => observer.observe(card));
+  document.querySelectorAll('.technology-card, .reveal-item').forEach((el) => observer.observe(el));
 </script>
 
 <style>
@@ -463,6 +504,22 @@ const bookHighlights = [
       radial-gradient(circle at 18% 16%, rgba(52, 211, 153, 0.2), transparent 14rem),
       linear-gradient(180deg, rgba(255, 255, 255, 0.06), transparent 42%),
       rgba(13, 19, 34, 0.9);
+    animation: profile-glow 5s ease-in-out infinite;
+  }
+
+  @keyframes profile-glow {
+    0%, 100% {
+      box-shadow:
+        0 28px 90px rgba(0, 0, 0, 0.34),
+        0 0 70px rgba(52, 211, 153, 0.08),
+        0 0 90px rgba(167, 243, 208, 0.05);
+    }
+    50% {
+      box-shadow:
+        0 28px 90px rgba(0, 0, 0, 0.34),
+        0 0 90px rgba(52, 211, 153, 0.22),
+        0 0 130px rgba(167, 243, 208, 0.13);
+    }
   }
 
   .hero-photo-frame {
@@ -522,6 +579,12 @@ const bookHighlights = [
     border-radius: 999px;
     background: currentColor;
     content: '';
+    animation: status-pulse 2.4s ease-in-out infinite;
+  }
+
+  @keyframes status-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.35; }
   }
 
   .hero-profile h2 {
@@ -1261,21 +1324,45 @@ const bookHighlights = [
   }
 
   .book-stat-grid article {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
     padding: 1rem;
+    text-align: center;
     background: rgba(8, 13, 22, 0.68);
   }
 
   .book-stat-grid strong {
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.3em;
     color: var(--color-text);
     font-size: clamp(1.35rem, 3vw, 2rem);
     line-height: 1;
     letter-spacing: -0.055em;
   }
 
+  .book-stat-grid .star-row {
+    display: flex;
+    justify-content: center;
+    gap: 0.15em;
+    min-height: 1rem;
+    margin-top: 0.5rem;
+    font-size: 1rem;
+    color: var(--color-accent);
+  }
+
+  .book-stat-grid .stat-icon {
+    flex-shrink: 0;
+    color: var(--color-accent);
+  }
+
+
   .book-stat-grid span {
     display: block;
-    margin-top: 0.35rem;
+    margin-bottom: 0.35rem;
     color: var(--color-text-muted);
     font-size: 0.88rem;
     line-height: 1.35;
@@ -1328,6 +1415,21 @@ const bookHighlights = [
     .featured-video-grid,
     .book-stat-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .book-stat-grid article {
+      text-align: center;
+    }
+
+    .book-stat-grid strong {
+      justify-content: center;
+    }
+
+
+    .book-stat-grid article:last-child {
+      grid-column: 1 / -1;
+      max-width: 50%;
+      margin-inline: auto;
     }
 
     .hero::before {
@@ -1466,8 +1568,7 @@ const bookHighlights = [
 
     .technology-grid,
     .practice-grid,
-    .featured-video-grid,
-    .book-stat-grid {
+    .featured-video-grid {
       grid-template-columns: 1fr;
     }
 
@@ -1475,6 +1576,36 @@ const bookHighlights = [
     .practice-card,
     .featured-video-card {
       min-height: auto;
+    }
+  }
+
+  .reveal-item {
+    opacity: 0;
+    transform: translateY(18px);
+    transition:
+      opacity 0.48s ease,
+      transform 0.48s ease;
+    transition-delay: calc(var(--i, 0) * 70ms);
+  }
+
+  .reveal-item.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal-item {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+
+    .hero-profile {
+      animation: none;
+    }
+
+    .hero-status::before {
+      animation: none;
     }
   }
 
