@@ -6,6 +6,39 @@ import Contact from '@components/home/Contact.astro';
 import Button from '@components/ui/Button.astro';
 import { profile } from '@data/profile';
 import { technicalPractices, technologies } from '@data/skills';
+
+const techIcons: Record<string, string> = {
+  'Java':            '/icons/tech/java.svg',
+  'Spring Boot':     '/icons/tech/spring-boot.svg',
+  'Spring Security': '/icons/tech/spring-security.svg',
+  'MySQL':           '/icons/tech/mysql.svg',
+  'Docker':          '/icons/tech/docker.svg',
+  'AWS':             '/icons/tech/aws.svg',
+  'Linux':           '/icons/tech/linux.svg',
+  'Angular':         '/icons/tech/angular.svg',
+  'SQL':             '/icons/tech/mysql.svg',
+  'MongoDB':         '/icons/tech/mongodb.svg',
+  'React':           '/icons/tech/react.svg',
+  'Node.js':         '/icons/tech/nodejs.svg',
+  'Express':         '/icons/tech/express.svg',
+};
+
+const companyLogos: Record<string, string> = {
+  'Optimissa':    '/icons/companies/optimissa.png',
+  'Mytic Innova': '/icons/companies/mytic.png',
+  'Malt':         '/icons/companies/malt.svg',
+};
+
+const techColors: Record<string, string> = {
+  'Java': '#f89820',
+  'Spring Boot': '#6db33f',
+  'Spring Security': '#5ba033',
+  'MySQL': '#1a9ae0',
+  'Docker': '#2496ed',
+  'AWS': '#ff9900',
+  'Linux': '#fcc624',
+  'Angular': '#dd0031',
+};
 import { experiences } from '@data/experience';
 
 const title = 'Daniel Españadero | Software Engineer Java, Spring Boot e IA';
@@ -65,10 +98,16 @@ const featuredVideos = [
 ];
 
 const bookStats = [
-  { value: '4.5/5', label: 'valoración media en Amazon' },
-  { value: '26', label: 'reseñas de lectores' },
-  { value: '140', label: 'páginas en español' },
+  { value: '4.5/5', label: 'valoración media en Amazon', icon: 'star', rating: 4.5 },
+  { value: '26', label: 'reseñas de lectores', icon: 'readers' },
+  { value: '140', label: 'páginas en español', icon: 'pages' },
 ];
+
+function starType(pos: number, rating: number): 'full' | 'half' | 'empty' {
+  if (rating >= pos) return 'full';
+  if (rating >= pos - 0.5) return 'half';
+  return 'empty';
+}
 
 const bookHighlights = [
   'Elegir un camino realista para aprender programación.',
@@ -129,17 +168,17 @@ const bookHighlights = [
       </blockquote>
 
       <div class="profile-proof" aria-label="Pruebas profesionales de Daniel Españadero">
-        <article>
+        <article class="reveal-item" style="--i: 0">
           <span>01</span>
           <h3>Ingeniería backend</h3>
           <p>Java, Spring Boot, Spring Security, APIs REST y sistemas mantenibles.</p>
         </article>
-        <article>
+        <article class="reveal-item" style="--i: 1">
           <span>02</span>
           <h3>Arquitectura aplicada</h3>
           <p>Hexagonal Architecture, testing, diseño de APIs y evolución de software.</p>
         </article>
-        <article>
+        <article class="reveal-item" style="--i: 2">
           <span>03</span>
           <h3>Autoridad técnica</h3>
           <p>Autor de un libro de programación y creador de contenido técnico para más de <strong>24.000 desarrolladores en YouTube</strong>.</p>
@@ -164,8 +203,8 @@ const bookHighlights = [
         <p>Stack curado para backend Java/Spring, soporte enterprise y entrega de software real.</p>
       </div>
       <div class="technology-grid">
-        {technologies.map((technology) => (
-          <article class="technology-card" style={`--technology-color: ${technology.color}`}>
+        {technologies.map((technology, index) => (
+          <article class="technology-card" style={`--tc: ${techColors[technology.name] ?? '#34d399'}; --i: ${index}`}>
             <img src={technology.icon} alt="" width="64" height="64" loading="lazy" decoding="async" />
             <strong>{technology.name}</strong>
             <span>{technology.category}</span>
@@ -182,7 +221,7 @@ const bookHighlights = [
       </div>
       <div class="practice-grid">
         {technicalPractices.map((practice, index) => (
-          <article class="practice-card surface">
+          <article class="practice-card surface reveal-item" style={`--i: ${index}`}>
             <span>0{index + 1}</span>
             <h4>{practice.title}</h4>
             <p>{practice.description}</p>
@@ -203,21 +242,38 @@ const bookHighlights = [
       </p>
     </div>
     <div class="experience-list">
-      {experiences.map((experience) => (
-        <article class="experience-item">
-          <div>
-            <span>{experience.period}</span>
-            <h3>{experience.company}</h3>
-            <p>{experience.role}</p>
-          </div>
-          <div>
-            <p>{experience.description}</p>
-            <ul>
-              {experience.highlights.map((highlight) => <li>{highlight}</li>)}
-            </ul>
-          </div>
-        </article>
-      ))}
+      {experiences.map((experience, index) => {
+        const logo = companyLogos[experience.company];
+        return (
+          <article class="experience-item reveal-item" style={`--i: ${index}`}>
+            <div class="experience-left">
+              {logo && (
+                <div class="company-logo-wrap">
+                  <img src={logo} alt={experience.company} class="company-logo" width="160" height="48" loading="lazy" decoding="async" />
+                </div>
+              )}
+              <span class="experience-period">{experience.period}</span>
+              <p class="experience-role">{experience.role}</p>
+              <div class="experience-stack">
+                {experience.stack.map((s) => (
+                  <span class="stack-pill">
+                    {techIcons[s] && (
+                      <img src={techIcons[s]} alt="" width="14" height="14" aria-hidden="true" />
+                    )}
+                    {s}
+                  </span>
+                ))}
+              </div>
+            </div>
+            <div class="experience-right">
+              <p>{experience.description}</p>
+              <ul>
+                {experience.highlights.map((highlight) => <li>{highlight}</li>)}
+              </ul>
+            </div>
+          </article>
+        );
+      })}
     </div>
   </section>
 
@@ -260,7 +316,7 @@ const bookHighlights = [
 
       <div class="featured-video-grid" aria-label="Vídeos destacados del canal">
         {featuredVideos.map((video, index) => (
-          <article class="featured-video-card">
+          <article class="featured-video-card reveal-item" style={`--i: ${index}`}>
             <span>0{index + 1}</span>
             <p>{video.meta}</p>
             <h3>{video.title}</h3>
@@ -297,16 +353,52 @@ const bookHighlights = [
         </p>
 
         <div class="book-stat-grid" aria-label="Datos del libro en Amazon">
-          {bookStats.map((stat) => (
-            <article>
-              <strong>{stat.value}</strong>
+          {bookStats.map((stat, index) => (
+            <article class:list={['reveal-item', { 'stat-book': stat.icon === 'pages' }]} style={`--i: ${index}`}>
               <span>{stat.label}</span>
+              <strong>
+                {stat.value}
+                {stat.icon === 'readers' && (
+                  <svg width="0.75em" height="0.75em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="stat-icon">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                    <circle cx="9" cy="7" r="4"/>
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                  </svg>
+                )}
+                {stat.icon === 'pages' && (
+                  <svg width="0.75em" height="0.75em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="stat-icon">
+                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+                    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+                  </svg>
+                )}
+              </strong>
+              <div class="star-row" role={stat.icon === 'star' ? 'img' : undefined} aria-label={stat.icon === 'star' ? `${stat.rating} de 5 estrellas` : undefined} aria-hidden={stat.icon !== 'star' ? 'true' : undefined}>
+                {stat.icon === 'star' && [1,2,3,4,5].map((pos) => {
+                  const type = starType(pos, stat.rating ?? 0);
+                  const p = 'M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z';
+                  return (
+                    <svg width="1em" height="1em" viewBox="0 0 24 24" aria-hidden="true">
+                      {type === 'half' && (
+                        <defs>
+                          <clipPath id="star-left">
+                            <rect x="0" y="0" width="12" height="24"/>
+                          </clipPath>
+                        </defs>
+                      )}
+                      {type === 'full' && <path fill="currentColor" d={p}/>}
+                      {type === 'half' && <path fill="currentColor" clip-path="url(#star-left)" d={p}/>}
+                      {type !== 'full' && <path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" d={p}/>}
+                    </svg>
+                  );
+                })}
+              </div>
             </article>
           ))}
         </div>
 
         <ul class="book-highlight-list" aria-label="Temas principales del libro">
-          {bookHighlights.map((highlight) => <li>{highlight}</li>)}
+          {bookHighlights.map((highlight, index) => <li class="reveal-item" style={`--i: ${index}`}>{highlight}</li>)}
         </ul>
 
         <div class="book-actions">
@@ -318,6 +410,21 @@ const bookHighlights = [
 
   <Contact />
 </BaseLayout>
+
+<script>
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { rootMargin: '0px 0px -40px 0px', threshold: 0.08 }
+  );
+  document.querySelectorAll('.technology-card, .reveal-item').forEach((el) => observer.observe(el));
+</script>
 
 <style>
   .hero {
@@ -397,6 +504,22 @@ const bookHighlights = [
       radial-gradient(circle at 18% 16%, rgba(52, 211, 153, 0.2), transparent 14rem),
       linear-gradient(180deg, rgba(255, 255, 255, 0.06), transparent 42%),
       rgba(13, 19, 34, 0.9);
+    animation: profile-glow 5s ease-in-out infinite;
+  }
+
+  @keyframes profile-glow {
+    0%, 100% {
+      box-shadow:
+        0 28px 90px rgba(0, 0, 0, 0.34),
+        0 0 70px rgba(52, 211, 153, 0.08),
+        0 0 90px rgba(167, 243, 208, 0.05);
+    }
+    50% {
+      box-shadow:
+        0 28px 90px rgba(0, 0, 0, 0.34),
+        0 0 90px rgba(52, 211, 153, 0.22),
+        0 0 130px rgba(167, 243, 208, 0.13);
+    }
   }
 
   .hero-photo-frame {
@@ -456,6 +579,12 @@ const bookHighlights = [
     border-radius: 999px;
     background: currentColor;
     content: '';
+    animation: status-pulse 2.4s ease-in-out infinite;
+  }
+
+  @keyframes status-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.35; }
   }
 
   .hero-profile h2 {
@@ -637,6 +766,7 @@ const bookHighlights = [
     line-height: 1.65;
   }
 
+
   .profile-proof strong {
     color: var(--color-text);
   }
@@ -724,43 +854,47 @@ const bookHighlights = [
   }
 
   .technology-card {
+    --tc: #34d399;
     position: relative;
     display: flex;
-    min-height: 10.75rem;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-end;
-    padding: 1.5rem;
-    background: rgba(31, 41, 55, 0.84);
-    text-align: center;
-    transition:
-      background 180ms ease,
-      transform 180ms ease;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: clamp(1rem, 2.5vw, 1.5rem);
+    min-height: 160px;
+    background: rgba(5, 7, 13, 0.58);
+    cursor: pointer;
+    opacity: 0;
+    transform: translateY(14px);
+    transition: background 0.3s ease;
   }
 
-  .technology-card:hover,
-  .technology-card:focus-within {
-    transform: translateY(-1px);
-    background:
-      radial-gradient(circle at 50% 24%, rgb(var(--technology-color) / 0.18), transparent 42%),
-      linear-gradient(180deg, rgb(var(--technology-color) / 0.1), rgba(31, 41, 55, 0.86) 58%),
-      rgba(31, 41, 55, 0.9);
+  .technology-card.is-visible {
+    animation: card-reveal 0.45s ease forwards;
+    animation-delay: calc(var(--i, 0) * 55ms);
   }
 
- .technology-card img {
-    width: 3.6rem;
-    height: 3.6rem;
-    margin-bottom: 0.75rem;
-    filter: brightness(0) invert(1);
-    transition:
-      filter 180ms ease,
-      transform 180ms ease;
+  .technology-card:hover {
+    background: color-mix(in srgb, var(--tc) 18%, rgba(5, 7, 13, 0.92));
   }
 
-  .technology-card:hover img,
-  .technology-card:focus-within img {
-    transform: translateY(-2px);
-    filter: brightness(0) invert(1) drop-shadow(0 0 18px rgb(var(--technology-color) / 0.24));
+  .technology-card:hover::before {
+    opacity: 1;
+  }
+
+  .technology-card:hover img {
+    filter: drop-shadow(0 0 8px var(--tc)) brightness(1.15);
+  }
+
+  .technology-card:hover strong {
+    color: color-mix(in srgb, var(--tc) 80%, var(--color-text));
+  }
+
+  .technology-card img {
+    width: 3rem;
+    height: 3rem;
+    transition: filter 0.3s ease;
   }
 
   .technology-card::before {
@@ -768,23 +902,18 @@ const bookHighlights = [
     inset: auto auto -1px -1px;
     width: 60%;
     height: 1px;
-    background: linear-gradient(90deg, rgb(var(--technology-color) / 0.6), transparent);
+    background: linear-gradient(90deg, color-mix(in srgb, var(--tc) 70%, transparent), transparent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
     content: '';
   }
 
   .technology-card strong {
-    display: block;
-    font-size: clamp(1.15rem, 2vw, 1.45rem);
+    font-size: clamp(1rem, 1.8vw, 1.25rem);
     line-height: 1;
-    letter-spacing: -0.04em;
-  }
-
-  .technology-card span {
-    display: block;
-    margin-top: 0.35rem;
-    color: var(--color-text-muted);
-    font-family: var(--font-mono);
-    font-size: 0.78rem;
+    letter-spacing: -0.03em;
+    text-align: center;
+    transition: color 0.3s ease;
   }
 
   .practice-panel {
@@ -848,26 +977,76 @@ const bookHighlights = [
 
   .experience-item {
     display: grid;
-    grid-template-columns: minmax(220px, 320px) 1fr;
-    gap: 2rem;
-    padding-block: 2rem;
+    grid-template-columns: minmax(220px, 300px) 1fr;
+    gap: clamp(2rem, 5vw, 3.5rem);
+    padding-block: 2.5rem;
     border-bottom: 1px solid var(--color-border);
   }
 
-  .experience-item span {
+  .experience-left {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    align-content: start;
+  }
+
+  .company-logo-wrap {
+    display: inline-flex;
+    align-self: start;
+    margin-bottom: 0.6rem;
+  }
+
+  .company-logo {
+    display: block;
+    height: 1.75rem;
+    width: auto;
+    max-width: 140px;
+    object-fit: contain;
+  }
+
+  .experience-period {
     color: var(--color-primary);
     font-family: var(--font-mono);
-    font-size: 0.85rem;
+    font-size: 0.82rem;
   }
 
-  .experience-item h3 {
-    margin: 0.5rem 0;
-    font-size: clamp(1.45rem, 4vw, 2rem);
-    letter-spacing: -0.05em;
+  .experience-role {
+    margin: 0;
+    color: var(--color-primary);
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
   }
 
-  .experience-item p,
-  .experience-item li {
+  .experience-stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 0.85rem;
+  }
+
+  .stack-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.18rem 0;
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+  }
+
+  .stack-pill img {
+    width: 0.85rem;
+    height: 0.85rem;
+    flex-shrink: 0;
+  }
+
+  .experience-right p {
+    margin: 0;
     color: var(--color-text-muted);
     line-height: 1.7;
   }
@@ -1145,21 +1324,45 @@ const bookHighlights = [
   }
 
   .book-stat-grid article {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
     padding: 1rem;
+    text-align: center;
     background: rgba(8, 13, 22, 0.68);
   }
 
   .book-stat-grid strong {
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.3em;
     color: var(--color-text);
     font-size: clamp(1.35rem, 3vw, 2rem);
     line-height: 1;
     letter-spacing: -0.055em;
   }
 
+  .book-stat-grid .star-row {
+    display: flex;
+    justify-content: center;
+    gap: 0.15em;
+    min-height: 1rem;
+    margin-top: 0.5rem;
+    font-size: 1rem;
+    color: var(--color-accent);
+  }
+
+  .book-stat-grid .stat-icon {
+    flex-shrink: 0;
+    color: var(--color-accent);
+  }
+
+
   .book-stat-grid span {
     display: block;
-    margin-top: 0.35rem;
+    margin-bottom: 0.35rem;
     color: var(--color-text-muted);
     font-size: 0.88rem;
     line-height: 1.35;
@@ -1212,6 +1415,21 @@ const bookHighlights = [
     .featured-video-grid,
     .book-stat-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .book-stat-grid article {
+      text-align: center;
+    }
+
+    .book-stat-grid strong {
+      justify-content: center;
+    }
+
+
+    .book-stat-grid article:last-child {
+      grid-column: 1 / -1;
+      max-width: 50%;
+      margin-inline: auto;
     }
 
     .hero::before {
@@ -1279,6 +1497,10 @@ const bookHighlights = [
       margin-top: 1.45rem;
     }
 
+    .authority-items {
+      grid-template-columns: 1fr;
+    }
+
     .hero-profile-content {
       padding: 1.15rem;
     }
@@ -1336,14 +1558,17 @@ const bookHighlights = [
       padding-block: 1.5rem;
     }
 
-    .experience-item ul {
+    .experience-role {
+      padding-bottom: 0.75rem;
+    }
+
+    .experience-right ul {
       padding-left: 1.1rem;
     }
 
     .technology-grid,
     .practice-grid,
-    .featured-video-grid,
-    .book-stat-grid {
+    .featured-video-grid {
       grid-template-columns: 1fr;
     }
 
@@ -1351,6 +1576,56 @@ const bookHighlights = [
     .practice-card,
     .featured-video-card {
       min-height: auto;
+    }
+  }
+
+  .reveal-item {
+    opacity: 0;
+    transform: translateY(18px);
+    transition:
+      opacity 0.48s ease,
+      transform 0.48s ease;
+    transition-delay: calc(var(--i, 0) * 70ms);
+  }
+
+  .reveal-item.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal-item {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+
+    .hero-profile {
+      animation: none;
+    }
+
+    .hero-status::before {
+      animation: none;
+    }
+  }
+
+  @keyframes card-reveal {
+    from {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .technology-card {
+      opacity: 1;
+      transform: none;
+      animation: none;
+      transition: none;
     }
   }
 </style>
