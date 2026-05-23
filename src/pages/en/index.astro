@@ -5,29 +5,91 @@ import BaseLayout from '@layouts/BaseLayout.astro';
 import Contact from '@components/home/Contact.astro';
 import Button from '@components/ui/Button.astro';
 import JsonLd from '@components/seo/JsonLd.astro';
+import { experiences } from '@data/experience';
 import { profile } from '@data/profile';
-import { technicalPractices, technologies } from '@data/skills';
+import { technologies } from '@data/skills';
+
+const lang = 'en';
+const alternatePath = '/';
+const title = 'Daniel Españadero | Backend Software Engineer Java, Spring Boot and AI';
+const description = 'Professional portfolio of Daniel Españadero, a Backend Software Engineer specialized in Java, Spring Boot, Spring Security, backend architecture and applied AI.';
+
+const profilePageSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfilePage',
+  name: title,
+  description,
+  url: `${profile.website}/en/`,
+  inLanguage: 'en',
+  about: {
+    '@type': 'Person',
+    name: profile.name,
+    jobTitle: profile.role,
+    url: profile.website,
+    image: `${profile.website}/images/dani.png`,
+    sameAs: Object.values(profile.links),
+    knowsAbout: [
+      'Java',
+      'Spring Boot',
+      'Spring Security',
+      'Backend architecture',
+      'Hexagonal Architecture',
+      'Microservices',
+      'Spring AI',
+      'Applied AI',
+    ],
+  },
+};
+
+const experienceCopy: Record<string, { period: string; description: string; highlights: string[] }> = {
+  Optimissa: {
+    period: 'July 2025 - Present',
+    description: 'Backend development for the banking sector in enterprise environments, mainly with Java and Spring Boot.',
+    highlights: [
+      'Development and evolution of Java/Spring Boot backend solutions for banking context.',
+      'Application of architecture, security and testing best practices in enterprise software.',
+      'Work on financial systems with real maintainability, integration and reliability needs.',
+    ],
+  },
+  'Mytic Innova': {
+    period: 'September 2022 - July 2025',
+    description: 'Application and service development for business projects using Java, Spring Boot, Angular, MySQL, Docker and AWS.',
+    highlights: [
+      'Creation and maintenance of RESTful services.',
+      'Work with microservices, SQL databases and cloud deployments.',
+      'Interface development with Angular in a Java/Spring stack.',
+    ],
+  },
+  Malt: {
+    period: 'September 2021 - September 2022',
+    description: 'Freelance full-stack development for custom web applications and business projects.',
+    highlights: [
+      'Building full-stack web applications.',
+      'Direct communication with clients and adaptation to business needs.',
+    ],
+  },
+};
 
 const techIcons: Record<string, string> = {
-  'Java':            '/icons/tech/java.svg',
-  'Spring Boot':     '/icons/tech/spring-boot.svg',
+  'Java': '/icons/tech/java.svg',
+  'Spring Boot': '/icons/tech/spring-boot.svg',
   'Spring Security': '/icons/tech/spring-security.svg',
-  'MySQL':           '/icons/tech/mysql.svg',
-  'Docker':          '/icons/tech/docker.svg',
-  'AWS':             '/icons/tech/aws.svg',
-  'Linux':           '/icons/tech/linux.svg',
-  'Angular':         '/icons/tech/angular.svg',
-  'SQL':             '/icons/tech/mysql.svg',
-  'MongoDB':         '/icons/tech/mongodb.svg',
-  'React':           '/icons/tech/react.svg',
-  'Node.js':         '/icons/tech/nodejs.svg',
-  'Express':         '/icons/tech/express.svg',
+  'MySQL': '/icons/tech/mysql.svg',
+  'Docker': '/icons/tech/docker.svg',
+  'AWS': '/icons/tech/aws.svg',
+  'Linux': '/icons/tech/linux.svg',
+  'Angular': '/icons/tech/angular.svg',
+  'SQL': '/icons/tech/mysql.svg',
+  'MongoDB': '/icons/tech/mongodb.svg',
+  'React': '/icons/tech/react.svg',
+  'Node.js': '/icons/tech/nodejs.svg',
+  'Express': '/icons/tech/express.svg',
 };
 
 const companyLogos: Record<string, string> = {
-  'Optimissa':    '/icons/companies/optimissa.png',
+  'Optimissa': '/icons/companies/optimissa.png',
   'Mytic Innova': '/icons/companies/mytic.png',
-  'Malt':         '/icons/companies/malt.svg',
+  'Malt': '/icons/companies/malt.svg',
 };
 
 const techColors: Record<string, string> = {
@@ -40,145 +102,124 @@ const techColors: Record<string, string> = {
   'Linux': '#fcc624',
   'Angular': '#dd0031',
 };
-import { experiences } from '@data/experience';
 
-const title = 'Daniel Españadero | Backend Software Engineer Java, Spring Boot e IA';
-const description = 'Portfolio profesional de Daniel Españadero, Backend Software Engineer especializado en Java, Spring Boot, Spring Security, arquitectura backend e IA aplicada.';
-const alternatePath = '/en/';
-
-const profilePageSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'ProfilePage',
-  name: title,
-  description,
-  url: profile.website,
-  inLanguage: 'es',
-  about: {
-    '@type': 'Person',
-    name: profile.name,
-    jobTitle: profile.role,
-    url: profile.website,
-    image: `${profile.website}/images/dani.png`,
-    sameAs: Object.values(profile.links),
-    knowsAbout: [
-      'Java',
-      'Spring Boot',
-      'Spring Security',
-      'Arquitectura backend',
-      'Arquitectura hexagonal',
-      'Microservicios',
-      'Spring AI',
-      'IA aplicada',
-    ],
-  },
+const technologyCategoryCopy: Record<string, string> = {
+  Infraestructura: 'Infrastructure',
 };
 
-const youtubeStats = [
-  { value: '+24k', label: 'desarrolladores en la comunidad' },
-  { value: '+500', label: 'vídeos publicados' },
-  { value: '+4M', label: 'visualizaciones acumuladas' },
+const technicalPractices = [
+  {
+    title: 'Backend architecture',
+    description: 'Hexagonal Architecture, clear boundaries, API design and separation of responsibilities.',
+  },
+  {
+    title: 'Quality and evolution',
+    description: 'Clean Code, testing with JUnit/Mockito and code designed to change without breaking.',
+  },
+  {
+    title: 'Applied AI',
+    description: 'Spring AI, LLM integrations, RAG and useful workflows for real systems.',
+  },
+  {
+    title: 'Enterprise systems',
+    description: 'Security, SQL, Docker, Linux and deployment in contexts where maintainability matters.',
+  },
 ];
 
-const youtubePillars = [
-  'Java y Spring Boot',
-  'Arquitectura hexagonal',
-  'Spring Security',
-  'IA aplicada',
-  'Carrera técnica',
+const youtubeStats = [
+  { value: '+24k', label: 'developers in the community' },
+  { value: '+500', label: 'published videos' },
+  { value: '+4M', label: 'total views' },
 ];
+
+const youtubePillars = ['Java and Spring Boot', 'Hexagonal architecture', 'Spring Security', 'Applied AI', 'Technical career'];
 
 const featuredVideos = [
   {
-    title: 'Arquitectura Hexagonal con Java y Spring',
-    description: 'Una explicación larga, práctica y con proyecto sobre cómo separar dominio, aplicación e infraestructura sin caer en teoría vacía.',
-    meta: '+82k visualizaciones',
+    title: 'Hexagonal Architecture with Java and Spring',
+    description: 'A long, practical explanation with a project on separating domain, application and infrastructure without falling into empty theory.',
+    meta: '+82k views',
     href: 'https://www.youtube.com/watch?v=JD_ZL3Bnaog',
   },
   {
-    title: 'API REST con Java, Spring Boot y MySQL',
-    description: 'Backend completo, CRUD real y persistencia: contenido técnico alineado con el tipo de sistemas que construyo profesionalmente.',
-    meta: '+89k visualizaciones',
+    title: 'REST API with Java, Spring Boot and MySQL',
+    description: 'Complete backend, real CRUD and persistence: technical content aligned with the kind of systems I build professionally.',
+    meta: '+89k views',
     href: 'https://www.youtube.com/watch?v=M7lhQMzzHWU',
   },
   {
-    title: 'Spring Security de 0 a proyecto completo',
-    description: 'Seguridad aplicada a backend Java explicada paso a paso, desde los conceptos hasta una implementación usable.',
-    meta: '+17k visualizaciones',
+    title: 'Spring Security from zero to complete project',
+    description: 'Applied Java backend security explained step by step, from core concepts to a usable implementation.',
+    meta: '+17k views',
     href: 'https://www.youtube.com/watch?v=Qu3soRF168I',
   },
   {
-    title: 'Concurrencia en Java con proyecto completo',
-    description: 'Threads, sincronización y ejecución concurrente explicados desde la práctica para entender cómo se comporta Java en escenarios reales.',
-    meta: '+13k visualizaciones',
+    title: 'Java Concurrency with a complete project',
+    description: 'Threads, synchronization and concurrent execution explained from practice to understand how Java behaves in real scenarios.',
+    meta: '+13k views',
     href: 'https://www.youtube.com/watch?v=cskoNJCWMws',
   },
   {
-    title: 'Spring Boot + MySQL desplegado en AWS',
-    description: 'Despliegue completo usando EC2 y RDS para llevar una aplicación backend Java desde local hasta infraestructura cloud.',
-    meta: '+16k visualizaciones',
+    title: 'Spring Boot + MySQL deployed on AWS',
+    description: 'Complete deployment using EC2 and RDS to take a Java backend application from local development to cloud infrastructure.',
+    meta: '+16k views',
     href: 'https://www.youtube.com/watch?v=gEWqXYlC4ak',
   },
   {
-    title: 'AWS S3 con Java: CRUD completo',
-    description: 'Subida, descarga, modificación y borrado de archivos con Java y S3, conectando backend con servicios cloud de forma práctica.',
-    meta: '+9k visualizaciones',
+    title: 'AWS S3 with Java: complete CRUD',
+    description: 'Upload, download, update and delete files with Java and S3, connecting backend with cloud services in a practical way.',
+    meta: '+9k views',
     href: 'https://www.youtube.com/watch?v=b186cnroYyc',
   },
 ];
 
 const bookStats = [
-  { value: '4.5/5', label: 'valoración media en Amazon', icon: 'star', rating: 4.5 },
-  { value: '26', label: 'reseñas de lectores', icon: 'readers' },
-  { value: '140', label: 'páginas en español', icon: 'pages' },
+  { value: '4.5/5', label: 'average Amazon rating' },
+  { value: '26', label: 'reader reviews' },
+  { value: '140', label: 'pages in Spanish' },
 ];
 
-function starType(pos: number, rating: number): 'full' | 'half' | 'empty' {
-  if (rating >= pos) return 'full';
-  if (rating >= pos - 0.5) return 'half';
-  return 'empty';
-}
-
 const bookHighlights = [
-  'Elegir un camino realista para aprender programación.',
-  'Construir proyectos, GitHub, LinkedIn y portfolio con intención.',
-  'Preparar entrevistas y dar los primeros pasos en el primer empleo.',
+  'Choose a realistic path to learning programming.',
+  'Build projects, GitHub, LinkedIn and portfolio with intention.',
+  'Prepare for interviews and the first steps into a first job.',
 ];
 ---
 
-<BaseLayout {title} {description} {alternatePath} type="profile">
+<BaseLayout {title} {description} {lang} {alternatePath} type="profile">
   <JsonLd data={profilePageSchema} />
   <section class="hero container" aria-labelledby="hero-title">
     <div class="hero-statement">
-      <p class="eyebrow">Backend · Java · Spring Boot · IA aplicada</p>
+      <p class="eyebrow">Backend · Java · Spring Boot · Applied AI</p>
       <h1 id="hero-title" class="hero-title" aria-label="Software Engineer">
         <span class="hero-title-line">SOFTWARE</span>
         <span class="hero-title-line">ENGINEER</span>
       </h1>
       <div class="hero-actions">
-        <Button href="#contacto">Contactar</Button>
-        <Button href="#perfil" variant="secondary">Conocer mi perfil</Button>
+        <Button href="#contacto">Contact</Button>
+        <Button href="#perfil" variant="secondary">Learn about my profile</Button>
       </div>
     </div>
 
-    <aside class="hero-profile surface" aria-label="Perfil de Daniel Españadero">
+    <aside class="hero-profile surface" aria-label="Daniel Españadero profile">
       <div class="hero-photo-frame">
-        <img src="/images/dani.png" alt="Retrato profesional de Daniel Españadero" width="420" height="520" loading="eager" decoding="async" />
+        <img src="/images/dani.png" alt="Professional portrait of Daniel Españadero" width="420" height="520" loading="eager" decoding="async" />
       </div>
       <div class="hero-profile-content">
         <div class="hero-profile-heading">
-          <p class="hero-profile-label">Perfil</p>
+          <p class="hero-profile-label">Profile</p>
           <span class="hero-status">Backend</span>
         </div>
         <h2>Daniel Españadero</h2>
         <p class="hero-role">Backend Software Engineer</p>
-        <ul aria-label="Tecnologías principales">
+        <ul aria-label="Main technologies">
           <li>Java</li>
           <li>Spring Boot</li>
           <li>Spring Security</li>
-          <li>Arquitectura backend</li>
-          <li>IA aplicada</li>
+          <li>Backend architecture</li>
+          <li>Applied AI</li>
         </ul>
-        <p class="hero-profile-note">Autor de un libro de programación y creador de contenido técnico.</p>
+        <p class="hero-profile-note">Author of a programming book and creator of technical content.</p>
       </div>
     </aside>
   </section>
@@ -186,58 +227,58 @@ const bookHighlights = [
   <section id="perfil" class="profile-section container" aria-labelledby="profile-title">
     <div class="profile-shell surface">
       <div class="profile-copy">
-        <p class="eyebrow">Perfil</p>
-        <h2 id="profile-title" class="section-title">Backend engineer con criterio de arquitectura, producto y comunicación técnica.</h2>
+        <p class="eyebrow">Profile</p>
+        <h2 id="profile-title" class="section-title">Backend engineer with architecture, product and technical communication judgment.</h2>
         <p>
-          Soy Daniel Españadero, Backend Software Engineer especializado en Java, Spring Boot, arquitectura backend e IA aplicada. Construyo software mantenible para sistemas reales, no demos bonitas.
+          I’m Daniel Españadero, a Backend Software Engineer specialized in Java, Spring Boot, backend architecture and applied AI. I build maintainable software for real systems, not pretty demos.
         </p>
       </div>
 
       <blockquote class="profile-manifesto">
-        <p>Construir backend no va de acumular frameworks. Va de tomar buenas decisiones bajo restricciones reales.</p>
+        <p>Building backend is not about accumulating frameworks. It is about making good decisions under real constraints.</p>
       </blockquote>
 
-      <div class="profile-proof" aria-label="Pruebas profesionales de Daniel Españadero">
+      <div class="profile-proof" aria-label="Professional proof points for Daniel Españadero">
         <article class="reveal-item" style="--i: 0">
           <span>01</span>
-          <h3>Ingeniería backend</h3>
-          <p>Java, Spring Boot, Spring Security, APIs REST y sistemas mantenibles.</p>
+          <h3>Backend engineering</h3>
+          <p>Java, Spring Boot, Spring Security, REST APIs and maintainable systems.</p>
         </article>
         <article class="reveal-item" style="--i: 1">
           <span>02</span>
-          <h3>Arquitectura aplicada</h3>
-          <p>Hexagonal Architecture, testing, diseño de APIs y evolución de software.</p>
+          <h3>Applied architecture</h3>
+          <p>Hexagonal Architecture, testing, API design and software evolution.</p>
         </article>
         <article class="reveal-item" style="--i: 2">
           <span>03</span>
-          <h3>Autoridad técnica</h3>
-          <p>Autor de un libro de programación y creador de contenido técnico para más de <strong>24.000 desarrolladores en YouTube</strong>.</p>
+          <h3>Technical authority</h3>
+          <p>Author of a programming book and technical content creator for more than <strong>24,000 developers on YouTube</strong>.</p>
         </article>
       </div>
     </div>
   </section>
 
   <section id="stack" class="stack-section container" aria-labelledby="stack-title">
-    <p class="eyebrow">Stack y criterio técnico</p>
+    <p class="eyebrow">Stack and technical judgment</p>
     <div class="stack-heading-row">
-      <h2 id="stack-title" class="section-title">Herramientas visibles. Criterio invisible. Las dos cosas importan.</h2>
+      <h2 id="stack-title" class="section-title">Visible tools. Invisible judgment. Both matter.</h2>
       <p>
-        Separar tecnologías de habilidades no es estético: es arquitectura de comunicación. Una cosa es con qué construyo; otra, cómo tomo decisiones.
+        Separating technologies from skills is not aesthetic: it is communication architecture. One thing is what I build with; another is how I make decisions.
       </p>
     </div>
 
     <div class="technology-panel surface" aria-labelledby="technologies-title">
       <div class="stack-subheading">
         <span>01</span>
-        <h3 id="technologies-title">Tecnologías principales</h3>
-        <p>Stack curado para backend Java/Spring, soporte enterprise y entrega de software real.</p>
+        <h3 id="technologies-title">Main technologies</h3>
+        <p>A curated stack for Java/Spring backend, enterprise support and real software delivery.</p>
       </div>
       <div class="technology-grid">
         {technologies.map((technology, index) => (
           <article class="technology-card" style={`--tc: ${techColors[technology.name] ?? '#34d399'}; --i: ${index}`}>
             <img src={technology.icon} alt="" width="64" height="64" loading="lazy" decoding="async" />
             <strong>{technology.name}</strong>
-            <span>{technology.category}</span>
+            <span>{technologyCategoryCopy[technology.category] ?? technology.category}</span>
           </article>
         ))}
       </div>
@@ -246,8 +287,8 @@ const bookHighlights = [
     <div class="practice-panel" aria-labelledby="practices-title">
       <div class="stack-subheading">
         <span>02</span>
-        <h3 id="practices-title">Habilidades técnicas</h3>
-        <p>La parte que no cabe en un logo: arquitectura, calidad, integración y criterio para mantener sistemas vivos.</p>
+        <h3 id="practices-title">Technical skills</h3>
+        <p>The part that does not fit in a logo: architecture, quality, integration and judgment to keep systems alive.</p>
       </div>
       <div class="practice-grid">
         {technicalPractices.map((practice, index) => (
@@ -264,15 +305,16 @@ const bookHighlights = [
   <section id="experiencia" class="experience-section container" aria-labelledby="experience-title">
     <div class="section-heading-row">
       <div>
-        <p class="eyebrow">Experiencia</p>
-        <h2 id="experience-title" class="section-title">Software en entornos reales, no solo demos bonitas.</h2>
+        <p class="eyebrow">Experience</p>
+        <h2 id="experience-title" class="section-title">Software in real environments, not just pretty demos.</h2>
       </div>
       <p>
-        Experiencia profesional orientada a desarrollo backend, integración de sistemas y construcción de soluciones mantenibles en contexto empresarial.
+        Professional experience focused on backend development, system integration and building maintainable solutions in business contexts.
       </p>
     </div>
     <div class="experience-list">
       {experiences.map((experience, index) => {
+        const copy = experienceCopy[experience.company];
         const logo = companyLogos[experience.company];
         return (
           <article class="experience-item reveal-item" style={`--i: ${index}`}>
@@ -282,7 +324,7 @@ const bookHighlights = [
                   <img src={logo} alt={experience.company} class="company-logo" width="160" height="48" loading="lazy" decoding="async" />
                 </div>
               )}
-              <span class="experience-period">{experience.period}</span>
+              <span class="experience-period">{copy?.period ?? experience.period}</span>
               <p class="experience-role">{experience.role}</p>
               <div class="experience-stack">
                 {experience.stack.map((s) => (
@@ -296,9 +338,9 @@ const bookHighlights = [
               </div>
             </div>
             <div class="experience-right">
-              <p>{experience.description}</p>
+              <p>{copy?.description ?? experience.description}</p>
               <ul>
-                {experience.highlights.map((highlight) => <li>{highlight}</li>)}
+                {(copy?.highlights ?? experience.highlights).map((highlight) => <li>{highlight}</li>)}
               </ul>
             </div>
           </article>
@@ -311,24 +353,24 @@ const bookHighlights = [
     <div class="youtube-shell surface">
       <div class="youtube-hero">
         <div class="youtube-copy">
-          <p class="eyebrow">Creador de contenido técnico</p>
-          <h2 id="youtube-title" class="section-title">Enseñar backend también es parte de mi ingeniería.</h2>
+          <p class="eyebrow">Technical content creator</p>
+          <h2 id="youtube-title" class="section-title">Teaching backend is also part of my engineering work.</h2>
           <p>
-            En mi canal comparto Java, Spring Boot, arquitectura backend, fundamentos de software e IA aplicada con una comunidad de más de <strong>24.000 desarrolladores</strong>. No es contenido decorativo: es una forma de ordenar ideas, bajar conceptos complejos a tierra y construir criterio técnico en público.
+            On my channel I share Java, Spring Boot, backend architecture, software fundamentals and applied AI with a community of more than <strong>24,000 developers</strong>. It is not decorative content: it is a way to organize ideas, bring complex concepts down to earth and build technical judgment in public.
           </p>
           <div class="youtube-actions">
-            <Button href={profile.links.youtube} target="_blank" rel="noreferrer">Ver canal</Button>
+            <Button href={profile.links.youtube} target="_blank" rel="noreferrer">Visit channel</Button>
           </div>
         </div>
 
-        <aside class="youtube-proof" aria-label="Datos del canal de YouTube de Daniel Españadero">
+        <aside class="youtube-proof" aria-label="Daniel Españadero YouTube channel data">
           <div class="youtube-logo" aria-hidden="true">
             <svg viewBox="0 0 28 20" role="img" focusable="false">
               <path d="M27.42 3.12A3.5 3.5 0 0 0 24.96.64C22.78.05 14 .05 14 .05S5.22.05 3.04.64A3.5 3.5 0 0 0 .58 3.12C0 5.32 0 9.9 0 9.9s0 4.58.58 6.78a3.5 3.5 0 0 0 2.46 2.48c2.18.59 10.96.59 10.96.59s8.78 0 10.96-.59a3.5 3.5 0 0 0 2.46-2.48C28 14.48 28 9.9 28 9.9s0-4.58-.58-6.78Z" />
               <path d="M11.2 14.1V5.7l7.28 4.2-7.28 4.2Z" />
             </svg>
           </div>
-          <p class="youtube-proof-label">Daniel Españadero en YouTube</p>
+          <p class="youtube-proof-label">Daniel Españadero on YouTube</p>
           <div class="youtube-stat-grid">
             {youtubeStats.map((stat) => (
               <article>
@@ -340,18 +382,18 @@ const bookHighlights = [
         </aside>
       </div>
 
-      <div class="youtube-pillar-row" aria-label="Temas principales del canal">
+      <div class="youtube-pillar-row" aria-label="Main channel topics">
         {youtubePillars.map((pillar) => <span>{pillar}</span>)}
       </div>
 
-      <div class="featured-video-grid" aria-label="Vídeos destacados del canal">
+      <div class="featured-video-grid" aria-label="Featured channel videos">
         {featuredVideos.map((video, index) => (
           <article class="featured-video-card reveal-item" style={`--i: ${index}`}>
             <span>0{index + 1}</span>
             <p>{video.meta}</p>
             <h3>{video.title}</h3>
             <p>{video.description}</p>
-            <a href={video.href} target="_blank" rel="noreferrer">Ver vídeo</a>
+            <a href={video.href} target="_blank" rel="noreferrer">Watch video</a>
           </article>
         ))}
       </div>
@@ -360,11 +402,11 @@ const bookHighlights = [
 
   <section id="libro" class="book-section container" aria-labelledby="book-title">
     <div class="book-shell surface">
-      <div class="book-visual" aria-label="Portada del libro Guía para aprender a programar">
+      <div class="book-visual" aria-label="Cover of the book Guía para aprender a programar">
         <img
           class="book-cover"
           src="/images/guia-para-aprender-a-programar.png"
-          alt="Portada del libro Guía para aprender a programar: Desde Cero Hasta tu Primer Empleo, de Daniel Españadero Fernández"
+          alt="Cover of the book Guía para aprender a programar: Desde Cero Hasta tu Primer Empleo, by Daniel Españadero Fernández"
           width="1294"
           height="2000"
           loading="lazy"
@@ -373,72 +415,36 @@ const bookHighlights = [
       </div>
 
       <div class="book-copy">
-        <p class="eyebrow">Autor técnico</p>
-        <h2 id="book-title" class="section-title">Un libro para convertir el aprendizaje en dirección.</h2>
+        <p class="eyebrow">Technical author</p>
+        <h2 id="book-title" class="section-title">A book for turning learning into direction.</h2>
         <p>
-          <strong>“Guía para aprender a programar: Desde Cero Hasta tu Primer Empleo”</strong> condensa una parte clave de mi trabajo como divulgador: ayudar a personas que empiezan a ordenar el caos, elegir un camino y construir un perfil profesional con criterio.
+          <strong>“Guía para aprender a programar: Desde Cero Hasta tu Primer Empleo”</strong> helps beginners organize the chaos, choose a path and build a professional profile with intention.
         </p>
         <p>
-          No es un libro sobre memorizar sintaxis. Es una guía práctica sobre mentalidad, proyectos, marca personal, entrevistas y primeros pasos para entrar en programación sin vender atajos mágicos.
+          It is not a book about memorizing syntax. It is a practical guide about mindset, projects, personal brand, interviews and first steps into programming without selling magic shortcuts.
         </p>
 
-        <div class="book-stat-grid" aria-label="Datos del libro en Amazon">
+        <div class="book-stat-grid" aria-label="Book data on Amazon">
           {bookStats.map((stat, index) => (
-            <article class:list={['reveal-item', { 'stat-book': stat.icon === 'pages' }]} style={`--i: ${index}`}>
+            <article class="reveal-item" style={`--i: ${index}`}>
               <span>{stat.label}</span>
-              <strong>
-                {stat.value}
-                {stat.icon === 'readers' && (
-                  <svg width="0.75em" height="0.75em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="stat-icon">
-                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-                    <circle cx="9" cy="7" r="4"/>
-                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
-                    <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-                  </svg>
-                )}
-                {stat.icon === 'pages' && (
-                  <svg width="0.75em" height="0.75em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="stat-icon">
-                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
-                    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
-                  </svg>
-                )}
-              </strong>
-              <div class="star-row" role={stat.icon === 'star' ? 'img' : undefined} aria-label={stat.icon === 'star' ? `${stat.rating} de 5 estrellas` : undefined} aria-hidden={stat.icon !== 'star' ? 'true' : undefined}>
-                {stat.icon === 'star' && [1,2,3,4,5].map((pos) => {
-                  const type = starType(pos, stat.rating ?? 0);
-                  const p = 'M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z';
-                  return (
-                    <svg width="1em" height="1em" viewBox="0 0 24 24" aria-hidden="true">
-                      {type === 'half' && (
-                        <defs>
-                          <clipPath id="star-left">
-                            <rect x="0" y="0" width="12" height="24"/>
-                          </clipPath>
-                        </defs>
-                      )}
-                      {type === 'full' && <path fill="currentColor" d={p}/>}
-                      {type === 'half' && <path fill="currentColor" clip-path="url(#star-left)" d={p}/>}
-                      {type !== 'full' && <path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" d={p}/>}
-                    </svg>
-                  );
-                })}
-              </div>
+              <strong>{stat.value}</strong>
             </article>
           ))}
         </div>
 
-        <ul class="book-highlight-list" aria-label="Temas principales del libro">
+        <ul class="book-highlight-list" aria-label="Main book topics">
           {bookHighlights.map((highlight, index) => <li class="reveal-item" style={`--i: ${index}`}>{highlight}</li>)}
         </ul>
 
         <div class="book-actions">
-          <Button href={profile.links.book} target="_blank" rel="noreferrer">Ver libro en Amazon</Button>
+          <Button href={profile.links.book} target="_blank" rel="noreferrer">View book on Amazon</Button>
         </div>
       </div>
     </div>
   </section>
 
-  <Contact />
+  <Contact lang="en" />
 </BaseLayout>
 
 <script>
@@ -522,6 +528,13 @@ const bookHighlights = [
   .hero-title-line {
     display: block;
     white-space: nowrap;
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 1.75rem;
   }
 
   .hero-profile {
@@ -666,13 +679,6 @@ const bookHighlights = [
     color: var(--color-text-muted);
   }
 
-  .hero-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    margin-top: 1.75rem;
-  }
-
   .profile-section,
   .stack-section,
   .experience-section,
@@ -796,7 +802,6 @@ const bookHighlights = [
     line-height: 1.65;
   }
 
-
   .profile-proof strong {
     color: var(--color-text);
   }
@@ -891,8 +896,8 @@ const bookHighlights = [
     align-items: center;
     justify-content: center;
     gap: 0.75rem;
-    padding: clamp(1rem, 2.5vw, 1.5rem);
     min-height: 160px;
+    padding: clamp(1rem, 2.5vw, 1.5rem);
     background: rgba(5, 7, 13, 0.58);
     cursor: pointer;
     opacity: 0;
@@ -909,10 +914,6 @@ const bookHighlights = [
     background: color-mix(in srgb, var(--tc) 18%, rgba(5, 7, 13, 0.92));
   }
 
-  .technology-card:hover::before {
-    opacity: 1;
-  }
-
   .technology-card:hover img {
     filter: drop-shadow(0 0 8px var(--tc)) brightness(1.15);
   }
@@ -927,17 +928,6 @@ const bookHighlights = [
     transition: filter 0.3s ease;
   }
 
-  .technology-card::before {
-    position: absolute;
-    inset: auto auto -1px -1px;
-    width: 60%;
-    height: 1px;
-    background: linear-gradient(90deg, color-mix(in srgb, var(--tc) 70%, transparent), transparent);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    content: '';
-  }
-
   .technology-card strong {
     font-size: clamp(1rem, 1.8vw, 1.25rem);
     line-height: 1;
@@ -946,12 +936,16 @@ const bookHighlights = [
     transition: color 0.3s ease;
   }
 
+  .technology-card span {
+    color: var(--color-text-muted);
+  }
+
   .practice-panel {
     display: grid;
     grid-template-columns: minmax(260px, 0.42fr) minmax(0, 1fr);
     gap: clamp(1.5rem, 4vw, 2.5rem);
-    margin-top: clamp(2rem, 5vw, 3rem);
     align-items: start;
+    margin-top: clamp(2rem, 5vw, 3rem);
   }
 
   .practice-grid {
@@ -963,8 +957,7 @@ const bookHighlights = [
   .practice-card {
     min-height: 220px;
     padding: clamp(1rem, 2.5vw, 1.35rem);
-    background:
-      linear-gradient(145deg, rgba(16, 24, 39, 0.9), rgba(8, 13, 22, 0.76));
+    background: linear-gradient(145deg, rgba(16, 24, 39, 0.9), rgba(8, 13, 22, 0.76));
   }
 
   .practice-card > span {
@@ -984,7 +977,7 @@ const bookHighlights = [
   .practice-card p {
     margin: 0;
     color: var(--color-text-muted);
-    line-height: 1.65;
+    line-height: 1.7;
   }
 
   .section-heading-row {
@@ -995,8 +988,8 @@ const bookHighlights = [
   }
 
   .section-heading-row > p {
-    line-height: 1.75;
     font-size: 1.1rem;
+    line-height: 1.75;
   }
 
   .experience-list {
@@ -1028,8 +1021,8 @@ const bookHighlights = [
 
   .company-logo {
     display: block;
-    height: 1.75rem;
     width: auto;
+    height: 1.75rem;
     max-width: 140px;
     object-fit: contain;
   }
@@ -1296,7 +1289,7 @@ const bookHighlights = [
   .book-shell {
     display: grid;
     grid-template-columns: minmax(260px, 0.42fr) minmax(0, 1fr);
-    gap: clamp(1.5rem, 5vw, 3.5rem);
+    gap: clamp(1.5rem, 5vw, 3rem);
     align-items: stretch;
     overflow: hidden;
     padding: clamp(1.25rem, 4vw, 2.5rem);
@@ -1319,11 +1312,16 @@ const bookHighlights = [
 
   .book-cover {
     display: block;
-    width: min(100%, 18.5rem);
+    width: min(100%, 18rem);
     height: auto;
     border: 1px solid rgba(255, 255, 255, 0.16);
     border-radius: 0.8rem;
     box-shadow: 24px 28px 64px rgba(0, 0, 0, 0.4);
+  }
+
+  .book-copy {
+    align-self: center;
+    padding-block: clamp(0.5rem, 2vw, 1rem);
   }
 
   .book-copy p:not(.eyebrow) {
@@ -1331,11 +1329,6 @@ const bookHighlights = [
     color: var(--color-text-muted);
     font-size: clamp(1.02rem, 2vw, 1.16rem);
     line-height: 1.8;
-  }
-
-  .book-copy {
-    align-self: center;
-    padding-block: clamp(0.5rem, 2vw, 1rem);
   }
 
   .book-copy strong {
@@ -1373,22 +1366,6 @@ const bookHighlights = [
     line-height: 1;
     letter-spacing: -0.055em;
   }
-
-  .book-stat-grid .star-row {
-    display: flex;
-    justify-content: center;
-    gap: 0.15em;
-    min-height: 1rem;
-    margin-top: 0.5rem;
-    font-size: 1rem;
-    color: var(--color-accent);
-  }
-
-  .book-stat-grid .stat-icon {
-    flex-shrink: 0;
-    color: var(--color-accent);
-  }
-
 
   .book-stat-grid span {
     display: block;
@@ -1447,15 +1424,6 @@ const bookHighlights = [
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
-    .book-stat-grid article {
-      text-align: center;
-    }
-
-    .book-stat-grid strong {
-      justify-content: center;
-    }
-
-
     .book-stat-grid article:last-child {
       grid-column: 1 / -1;
       max-width: 50%;
@@ -1504,7 +1472,7 @@ const bookHighlights = [
   @media (max-width: 620px) {
     .hero {
       gap: 2rem;
-      padding-block: 2.75rem 2.75rem;
+      padding-block: 2.75rem;
     }
 
     .hero-statement,
@@ -1525,10 +1493,6 @@ const bookHighlights = [
       gap: 0.75rem;
       width: 100%;
       margin-top: 1.45rem;
-    }
-
-    .authority-items {
-      grid-template-columns: 1fr;
     }
 
     .hero-profile-content {
@@ -1627,22 +1591,6 @@ const bookHighlights = [
     transform: translateY(0);
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    .reveal-item {
-      opacity: 1;
-      transform: none;
-      transition: none;
-    }
-
-    .hero-profile {
-      animation: none;
-    }
-
-    .hero-status::before {
-      animation: none;
-    }
-  }
-
   @keyframes card-reveal {
     from {
       opacity: 0;
@@ -1655,11 +1603,17 @@ const bookHighlights = [
   }
 
   @media (prefers-reduced-motion: reduce) {
+    .reveal-item,
     .technology-card {
       opacity: 1;
       transform: none;
       animation: none;
       transition: none;
+    }
+
+    .hero-profile,
+    .hero-status::before {
+      animation: none;
     }
   }
 </style>

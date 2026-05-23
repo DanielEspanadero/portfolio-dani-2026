@@ -7,7 +7,8 @@ import JsonLd from '@components/seo/JsonLd.astro';
 import { profile } from '@data/profile';
 
 const title = 'Libro de Daniel Españadero | Guía para aprender programación';
-const description = 'Libro de Daniel Españadero para aprender programación desde cero y preparar el camino hacia el primer empleo como programador.';
+const description = 'Libro de Daniel Españadero para aprender programación desde cero, crear proyectos, preparar entrevistas y orientar el camino hacia el primer empleo como programador.';
+const alternatePath = '/en/book/';
 
 const bookSchema = {
   '@context': 'https://schema.org',
@@ -16,13 +17,18 @@ const bookSchema = {
   author: {
     '@type': 'Person',
     name: profile.name,
+    url: profile.website,
   },
   url: profile.links.book,
+  image: `${profile.website}/images/guia-para-aprender-a-programar.png`,
   inLanguage: 'es',
+  bookFormat: 'https://schema.org/Paperback',
+  genre: 'Programming education',
+  about: ['Aprender programación', 'Primer empleo como programador', 'Carrera técnica'],
 };
 ---
 
-<BaseLayout {title} {description}>
+<BaseLayout {title} {description} {alternatePath}>
   <JsonLd data={bookSchema} />
   <section class="container page">
     <p class="eyebrow">Libro</p>

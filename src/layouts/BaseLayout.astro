@@ -3,22 +3,29 @@ import SEO from '@components/seo/SEO.astro';
 import JsonLd from '@components/seo/JsonLd.astro';
 import Header from '@components/layout/Header.astro';
 import Footer from '@components/layout/Footer.astro';
+import { layoutCopy, localeMeta, type Locale } from '@data/i18n';
 import { profile } from '@data/profile';
 import '@styles/global.css';
 
 type Props = {
   title?: string;
   description?: string;
+  lang?: Locale;
+  alternatePath?: string;
+  type?: 'website' | 'article' | 'profile';
+  image?: string;
+  imageAlt?: string;
 };
 
-const { title, description } = Astro.props;
+const { title, description, lang = 'es', alternatePath, type = 'website', image, imageAlt } = Astro.props;
+const copy = layoutCopy[lang];
 
 const personSchema = {
   '@context': 'https://schema.org',
   '@type': 'Person',
   name: profile.name,
   url: profile.website,
-  jobTitle: profile.role,
+  jobTitle: 'Backend Software Engineer',
   email: profile.email,
   address: {
     '@type': 'PostalAddress',
@@ -43,11 +50,16 @@ const websiteSchema = {
   '@type': 'WebSite',
   name: profile.name,
   url: profile.website,
+  inLanguage: localeMeta[lang].htmlLang,
+  publisher: {
+    '@type': 'Person',
+    name: profile.name,
+  },
 };
 ---
 
 <!doctype html>
-<html lang="es">
+<html lang={localeMeta[lang].htmlLang}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -57,16 +69,16 @@ const websiteSchema = {
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&display=swap" />
-    <SEO {title} {description} />
+    <SEO {title} {description} {lang} {alternatePath} {type} {image} {imageAlt} />
     <JsonLd data={personSchema} />
     <JsonLd data={websiteSchema} />
   </head>
   <body>
-    <a class="skip-link" href="#main-content">Saltar al contenido principal</a>
-    <Header />
-    <main id="main-content">
+    <a class="skip-link" href="#main-content">{copy.skip}</a>
+    <Header {lang} {alternatePath} />
+    <main id="main-content" lang={localeMeta[lang].htmlLang}>
       <slot />
     </main>
-    <Footer />
+    <Footer {lang} />
   </body>
 </html>

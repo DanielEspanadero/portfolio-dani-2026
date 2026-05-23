@@ -1,31 +1,53 @@
 ---
 import { profile } from '@data/profile';
+import { layoutCopy, localeMeta, localizedRoutes, type Locale } from '@data/i18n';
+
+type Props = {
+  lang?: Locale;
+  alternatePath?: string;
+};
+
+const { lang = 'es', alternatePath } = Astro.props;
+const copy = layoutCopy[lang];
+const routes = localizedRoutes[lang];
+const alternateLang = lang === 'es' ? 'en' : 'es';
+const languageHref = alternatePath ?? localizedRoutes[alternateLang].home;
 ---
 
 <header class="site-header">
-  <nav class="container nav" aria-label="Navegación principal">
-    <a class="brand" href="/" aria-label="Inicio - Daniel Españadero">
+  <nav class="container nav" aria-label={copy.navigationLabel}>
+    <a class="brand" href={routes.home} aria-label={copy.brandLabel}>
       <span class="brand-mark">DE</span>
       <span>{profile.name}</span>
     </a>
     <div class="nav-links">
-      <a href="/#perfil">Perfil</a>
-      <a href="/#stack">Stack</a>
-      <a href="/#experiencia">Experiencia</a>
-      <a href="/#autoridad">Autoridad</a>
-      <a class="contact-link" href="/#contacto">Contacto</a>
+      <a href={`${routes.home}#perfil`}>{copy.profile}</a>
+      <a href={`${routes.home}#stack`}>{copy.stack}</a>
+      <a href={`${routes.home}#experiencia`}>{copy.experience}</a>
+      <a href={`${routes.home}#youtube`}>{copy.authority}</a>
+      <a class="language-link" href={languageHref} hreflang={localeMeta[alternateLang].htmlLang} aria-label={copy.languageLabel}>{localeMeta[alternateLang].label}</a>
+      <a class="contact-link" href={`${routes.home}#contacto`}>{copy.contact}</a>
     </div>
   </nav>
 </header>
+<div class="site-header-spacer" aria-hidden="true"></div>
 
 <style>
   .site-header {
-    position: sticky;
-    z-index: 20;
+    position: fixed;
     top: 0;
+    right: 0;
+    left: 0;
+    z-index: 100;
+    width: 100%;
     border-bottom: 1px solid var(--color-border);
     background: rgba(7, 11, 18, 0.78);
     backdrop-filter: blur(18px);
+    box-shadow: 0 18px 60px rgba(0, 0, 0, 0.18);
+  }
+
+  .site-header-spacer {
+    height: 73px;
   }
 
   .nav {
@@ -71,18 +93,27 @@ import { profile } from '@data/profile';
     color: var(--color-text);
   }
 
-  .contact-link {
+  .contact-link,
+  .language-link {
     padding: 0.65rem 0.9rem;
     border: 1px solid var(--color-border);
     border-radius: 999px;
-    color: #06101a;
-    background: var(--color-primary);
     font-weight: 800;
   }
 
+  .contact-link {
+    color: #06101a;
+    background: var(--color-primary);
+  }
+
+  .language-link {
+    color: var(--color-text);
+    background: rgba(255, 255, 255, 0.04);
+  }
+
   @media (max-width: 840px) {
-    .site-header {
-      position: relative;
+    .site-header-spacer {
+      height: 132px;
     }
 
     .nav {
@@ -122,7 +153,8 @@ import { profile } from '@data/profile';
       font-size: 0.88rem;
     }
 
-    .contact-link {
+    .contact-link,
+    .language-link {
       padding: 0.55rem 0.75rem;
     }
   }

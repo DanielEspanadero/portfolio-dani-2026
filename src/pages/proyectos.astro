@@ -2,16 +2,50 @@
 export const prerender = true;
 
 import BaseLayout from '@layouts/BaseLayout.astro';
+import JsonLd from '@components/seo/JsonLd.astro';
 import { projects } from '@data/projects';
+import { profile } from '@data/profile';
 
-const title = 'Proyectos de Daniel Españadero | Java, Spring Boot y arquitectura';
-const description = 'Proyectos y contenido técnico de Daniel Españadero sobre Java, Spring Boot, arquitectura backend, AWS y desarrollo de software.';
+const title = 'Proyectos backend de Daniel Españadero | Java, Spring Boot y arquitectura';
+const description = 'Proyectos y contenido técnico de Daniel Españadero sobre Java, Spring Boot, arquitectura hexagonal, AWS, concurrencia y desarrollo backend.';
+const alternatePath = '/en/projects/';
+
+const projectsSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: title,
+  description,
+  url: `${profile.website}/proyectos/`,
+  inLanguage: 'es',
+  mainEntity: {
+    '@type': 'ItemList',
+    itemListElement: projects.map((project, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      item: {
+        '@type': 'CreativeWork',
+        name: project.title,
+        description: project.description,
+        url: project.href,
+        keywords: project.tags.join(', '),
+        author: {
+          '@type': 'Person',
+          name: profile.name,
+        },
+      },
+    })),
+  },
+};
 ---
 
-<BaseLayout {title} {description}>
+<BaseLayout {title} {description} {alternatePath}>
+  <JsonLd data={projectsSchema} />
   <section class="container page">
     <p class="eyebrow">Proyectos</p>
     <h1>Contenido y proyectos que demuestran criterio técnico.</h1>
+    <p class="lead">
+      Selección de recursos centrados en backend Java, Spring Boot, arquitectura hexagonal, concurrencia e infraestructura cloud aplicada a sistemas reales.
+    </p>
     <div class="grid">
       {projects.map((project) => (
         <article class="surface card">
@@ -42,6 +76,13 @@ const description = 'Proyectos y contenido técnico de Daniel Españadero sobre 
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: clamp(0.85rem, 2vw, 1rem);
     margin-top: clamp(2rem, 5vw, 3rem);
+  }
+
+  .lead {
+    max-width: 760px;
+    color: var(--color-text-muted);
+    font-size: clamp(1rem, 2.4vw, 1.18rem);
+    line-height: 1.7;
   }
 
   .card {
