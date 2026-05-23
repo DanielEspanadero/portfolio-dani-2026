@@ -7,8 +7,15 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 96px;
   background: var(--color-bg);
   overflow-x: hidden;
+}
+
+@media (max-width: 840px) {
+  html {
+    scroll-padding-top: 156px;
+  }
 }
 
 body {

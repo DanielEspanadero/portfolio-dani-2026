@@ -1,6 +1,6 @@
 export const profile = {
   name: 'Daniel Españadero',
-  role: 'Software Engineer',
+  role: 'Backend Software Engineer',
   headline: 'Software Engineer especializado en backend, arquitectura e IA aplicada.',
   description:
     'Diseño y desarrollo soluciones software con foco en Java, Spring Boot, arquitectura limpia, seguridad y nuevas capacidades basadas en inteligencia artificial.',

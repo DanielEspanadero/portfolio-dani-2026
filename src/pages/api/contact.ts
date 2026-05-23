@@ -46,7 +46,7 @@ export const POST: APIRoute = async ({ request }) => {
   const to = import.meta.env.CONTACT_TO_EMAIL;
   const from = import.meta.env.CONTACT_FROM_EMAIL;
   const turnstileSecret = import.meta.env.TURNSTILE_SECRET_KEY;
-  const expectedHostname = import.meta.env.TURNSTILE_EXPECTED_HOSTNAME;
+  const expectedHostnames = getExpectedHostnames(import.meta.env.TURNSTILE_EXPECTED_HOSTNAME);
 
   if (!apiKey || !to || !from || !turnstileSecret) {
     console.error('Missing contact environment variables');
@@ -54,7 +54,7 @@ export const POST: APIRoute = async ({ request }) => {
   }
 
   const remoteIp = getClientIp(request);
-  const turnstile = await verifyTurnstile(turnstileToken, turnstileSecret, remoteIp, expectedHostname);
+  const turnstile = await verifyTurnstile(turnstileToken, turnstileSecret, remoteIp, expectedHostnames);
 
   if (!turnstile.success) {
     console.warn('Turnstile validation failed', turnstile['error-codes']);
@@ -197,7 +197,14 @@ function getClientIp(request: Request) {
   );
 }
 
-async function verifyTurnstile(token: string, secret: string, remoteIp?: string, expectedHostname?: string): Promise<TurnstileResponse> {
+function getExpectedHostnames(value?: string) {
+  return value
+    ?.split(',')
+    .map((hostname) => hostname.trim().toLowerCase())
+    .filter(Boolean);
+}
+
+async function verifyTurnstile(token: string, secret: string, remoteIp?: string, expectedHostnames?: string[]): Promise<TurnstileResponse> {
   if (!token || token.length > maxTurnstileTokenLength) {
     return { success: false, 'error-codes': ['missing-or-invalid-token'] };
   }
@@ -227,7 +234,7 @@ async function verifyTurnstile(token: string, secret: string, remoteIp?: string,
       return { success: false, 'error-codes': ['action-mismatch'] };
     }
 
-    if (expectedHostname && result.hostname !== expectedHostname) {
+    if (expectedHostnames?.length && (!result.hostname || !expectedHostnames.includes(result.hostname.toLowerCase()))) {
       return { success: false, 'error-codes': ['hostname-mismatch'] };
     }
 

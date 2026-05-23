@@ -1,0 +1,49 @@
+---
+export const prerender = true;
+
+import BaseLayout from '@layouts/BaseLayout.astro';
+import Button from '@components/ui/Button.astro';
+import JsonLd from '@components/seo/JsonLd.astro';
+import { profile } from '@data/profile';
+
+const lang = 'en';
+const alternatePath = '/youtube/';
+const title = 'Daniel Españadero on YouTube | Java, Spring Boot and backend';
+const description = 'Daniel Españadero’s YouTube channel about Java, Spring Boot, backend, hexagonal architecture, Spring Security, applied AI and technical career growth.';
+
+const youtubeSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfilePage',
+  name: title,
+  description,
+  url: `${profile.website}/en/youtube/`,
+  inLanguage: 'en',
+  mainEntity: {
+    '@type': 'Person',
+    name: profile.name,
+    jobTitle: profile.role,
+    url: profile.website,
+    sameAs: [profile.links.youtube, profile.links.linkedin, profile.links.github],
+    knowsAbout: ['Java', 'Spring Boot', 'Spring Security', 'Hexagonal Architecture', 'Applied AI'],
+  },
+};
+---
+
+<BaseLayout {title} {description} {lang} {alternatePath}>
+  <JsonLd data={youtubeSchema} />
+  <section class="container page">
+    <p class="eyebrow">YouTube</p>
+    <h1>Technical content about programming, backend and architecture.</h1>
+    <p>
+      The channel reinforces a key part of the profile: explaining Java, Spring Boot, backend architecture and applied AI with clarity and technical judgment.
+    </p>
+    <Button href={profile.links.youtube} target="_blank" rel="noreferrer">Visit channel</Button>
+  </section>
+</BaseLayout>
+
+<style>
+  .page { min-height: 70vh; padding-block: var(--section-space); }
+  h1 { max-width: 860px; margin: 0; font-size: clamp(2.6rem, 10vw, 6rem); line-height: 0.98; letter-spacing: clamp(-0.07em, -0.8vw, -0.035em); }
+  p:not(.eyebrow) { max-width: 720px; color: var(--color-text-muted); font-size: clamp(1rem, 2.4vw, 1.2rem); line-height: 1.7; }
+  @media (max-width: 620px) { .page { min-height: auto; padding-block: var(--section-space-sm); } }
+</style>

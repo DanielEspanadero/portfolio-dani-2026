@@ -3,18 +3,38 @@ export const prerender = true;
 
 import BaseLayout from '@layouts/BaseLayout.astro';
 import Button from '@components/ui/Button.astro';
+import JsonLd from '@components/seo/JsonLd.astro';
 import { profile } from '@data/profile';
 
-const title = 'YouTube de Daniel Españadero | Programación, Java y backend';
-const description = 'Canal de YouTube de Daniel Españadero sobre programación, backend, Java, arquitectura de software y desarrollo profesional.';
+const title = 'YouTube de Daniel Españadero | Java, Spring Boot y backend';
+const description = 'Canal de YouTube de Daniel Españadero sobre Java, Spring Boot, backend, arquitectura hexagonal, Spring Security, IA aplicada y carrera técnica.';
+const alternatePath = '/en/youtube/';
+
+const youtubeSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfilePage',
+  name: title,
+  description,
+  url: `${profile.website}/youtube/`,
+  inLanguage: 'es',
+  mainEntity: {
+    '@type': 'Person',
+    name: profile.name,
+    jobTitle: profile.role,
+    url: profile.website,
+    sameAs: [profile.links.youtube, profile.links.linkedin, profile.links.github],
+    knowsAbout: ['Java', 'Spring Boot', 'Spring Security', 'Arquitectura hexagonal', 'IA aplicada'],
+  },
+};
 ---
 
-<BaseLayout {title} {description}>
+<BaseLayout {title} {description} {alternatePath}>
+  <JsonLd data={youtubeSchema} />
   <section class="container page">
     <p class="eyebrow">YouTube</p>
     <h1>Contenido técnico sobre programación, backend y arquitectura.</h1>
     <p>
-      El canal refuerza una parte clave del perfil: capacidad de explicar conceptos técnicos complejos de forma clara.
+      El canal refuerza una parte clave del perfil: capacidad de explicar Java, Spring Boot, arquitectura backend e IA aplicada con claridad y criterio técnico.
     </p>
     <Button href={profile.links.youtube}>Ver canal</Button>
   </section>
