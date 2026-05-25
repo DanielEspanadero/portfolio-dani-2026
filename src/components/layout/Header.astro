@@ -12,6 +12,10 @@ const copy = layoutCopy[lang];
 const routes = localizedRoutes[lang];
 const alternateLang = lang === 'es' ? 'en' : 'es';
 const languageHref = alternatePath ?? localizedRoutes[alternateLang].home;
+const menuOpenLabel = lang === 'es' ? 'Abrir menú' : 'Open menu';
+const menuCloseLabel = lang === 'es' ? 'Cerrar menú' : 'Close menu';
+const menuOpenText = lang === 'es' ? 'Menú' : 'Menu';
+const menuCloseText = lang === 'es' ? 'Cerrar' : 'Close';
 ---
 
 <header class="site-header">
@@ -20,7 +24,22 @@ const languageHref = alternatePath ?? localizedRoutes[alternateLang].home;
       <span class="brand-mark">DE</span>
       <span>{profile.name}</span>
     </a>
-    <div class="nav-links">
+    <button
+      class="menu-toggle"
+      type="button"
+      aria-controls="primary-navigation"
+      aria-expanded="false"
+      aria-label={menuOpenLabel}
+      data-menu-toggle
+      data-open-label={menuOpenLabel}
+      data-close-label={menuCloseLabel}
+      data-open-text={menuOpenText}
+      data-close-text={menuCloseText}
+    >
+      <span class="menu-toggle__label" data-menu-label>{menuOpenText}</span>
+      <span class="menu-toggle__mark" aria-hidden="true"></span>
+    </button>
+    <div id="primary-navigation" class="nav-links" data-nav-menu>
       <a href={`${routes.home}#perfil`}>{copy.profile}</a>
       <a href={`${routes.home}#stack`}>{copy.stack}</a>
       <a href={`${routes.home}#experiencia`}>{copy.experience}</a>
@@ -31,6 +50,44 @@ const languageHref = alternatePath ?? localizedRoutes[alternateLang].home;
   </nav>
 </header>
 <div class="site-header-spacer" aria-hidden="true"></div>
+
+<script>
+  const menuToggle = document.querySelector('[data-menu-toggle]');
+  const navMenu = document.querySelector('[data-nav-menu]');
+
+  if (menuToggle instanceof HTMLButtonElement && navMenu instanceof HTMLElement) {
+    const openLabel = menuToggle.dataset.openLabel ?? 'Open menu';
+    const closeLabel = menuToggle.dataset.closeLabel ?? 'Close menu';
+    const openText = menuToggle.dataset.openText ?? 'Menu';
+    const closeText = menuToggle.dataset.closeText ?? 'Close';
+    const menuLabel = menuToggle.querySelector('[data-menu-label]');
+
+    const setMenuOpen = (isOpen: boolean) => {
+      menuToggle.setAttribute('aria-expanded', String(isOpen));
+      menuToggle.setAttribute('aria-label', isOpen ? closeLabel : openLabel);
+      menuToggle.classList.toggle('is-open', isOpen);
+      navMenu.classList.toggle('is-open', isOpen);
+
+      if (menuLabel instanceof HTMLElement) {
+        menuLabel.textContent = isOpen ? closeText : openText;
+      }
+    };
+
+    menuToggle.addEventListener('click', () => {
+      setMenuOpen(menuToggle.getAttribute('aria-expanded') !== 'true');
+    });
+
+    navMenu.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', () => setMenuOpen(false));
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        setMenuOpen(false);
+      }
+    });
+  }
+</script>
 
 <style>
   .site-header {
@@ -51,6 +108,7 @@ const languageHref = alternatePath ?? localizedRoutes[alternateLang].home;
   }
 
   .nav {
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -93,6 +151,64 @@ const languageHref = alternatePath ?? localizedRoutes[alternateLang].home;
     color: var(--color-text);
   }
 
+  .menu-toggle {
+    display: none;
+    align-items: center;
+    gap: 0.55rem;
+    min-width: 92px;
+    height: 44px;
+    justify-content: center;
+    padding: 0 0.85rem;
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    color: var(--color-text);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+    cursor: pointer;
+    font: inherit;
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition:
+      border-color 0.2s ease,
+      background 0.2s ease,
+      color 0.2s ease;
+  }
+
+  .menu-toggle:hover,
+  .menu-toggle.is-open {
+    border-color: rgba(125, 249, 255, 0.42);
+    color: var(--color-primary);
+    background: rgba(125, 249, 255, 0.08);
+  }
+
+  .menu-toggle__mark {
+    position: relative;
+    width: 12px;
+    height: 12px;
+    transition: transform 0.2s ease;
+  }
+
+  .menu-toggle__mark::before,
+  .menu-toggle__mark::after {
+    position: absolute;
+    content: '';
+    inset: 50% auto auto 0;
+    width: 100%;
+    height: 1.5px;
+    border-radius: 999px;
+    background: currentColor;
+    transform: translateY(-50%);
+  }
+
+  .menu-toggle__mark::after {
+    transform: translateY(-50%) rotate(90deg);
+  }
+
+  .menu-toggle.is-open .menu-toggle__mark {
+    transform: rotate(45deg);
+  }
+
   .contact-link,
   .language-link {
     padding: 0.65rem 0.9rem;
@@ -112,28 +228,44 @@ const languageHref = alternatePath ?? localizedRoutes[alternateLang].home;
   }
 
   @media (max-width: 840px) {
-    .site-header-spacer {
-      height: 132px;
-    }
-
-    .nav {
-      align-items: flex-start;
-      flex-direction: column;
-      gap: 0.85rem;
-      padding-block: 0.9rem;
+    .menu-toggle {
+      display: inline-flex;
     }
 
     .nav-links {
-      overflow-x: auto;
-      width: 100%;
-      gap: 0.75rem;
-      padding-bottom: 0.45rem;
-      scroll-padding-inline: var(--container-gutter);
-      scrollbar-width: none;
+      position: absolute;
+      top: calc(100% + 0.75rem);
+      right: var(--container-gutter);
+      left: var(--container-gutter);
+      z-index: 1;
+      display: grid;
+      gap: 0.35rem;
+      padding: 0.75rem;
+      border: 1px solid var(--color-border);
+      border-radius: 1.25rem;
+      background: rgba(7, 11, 18, 0.96);
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.32);
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(-8px);
+      transition:
+        opacity 0.2s ease,
+        transform 0.2s ease;
     }
 
-    .nav-links::-webkit-scrollbar {
-      display: none;
+    .nav-links.is-open {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+
+    .nav-links a {
+      padding: 0.75rem 0.85rem;
+      border-radius: 0.9rem;
+    }
+
+    .nav-links a:hover {
+      background: rgba(255, 255, 255, 0.05);
     }
   }
 
@@ -147,10 +279,6 @@ const languageHref = alternatePath ?? localizedRoutes[alternateLang].home;
       width: 34px;
       height: 34px;
       border-radius: 0.75rem;
-    }
-
-    .nav-links {
-      font-size: 0.88rem;
     }
 
     .contact-link,
