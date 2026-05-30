@@ -20,6 +20,8 @@ const copy = {
     warning: 'La verificación anti spam no está configurada.',
     success: 'Mensaje enviado correctamente. Gracias, te responderé pronto.',
     invalid: 'No se pudo enviar el mensaje. Revisá los campos y completá la verificación anti spam.',
+    invalidFields: 'No se pudo enviar el mensaje. Revisá que nombre, email y mensaje tengan contenido válido.',
+    invalidTurnstile: 'No se pudo validar la verificación anti spam. Recargá la página e intentalo de nuevo.',
     error: 'Hubo un problema enviando el mensaje. Probá de nuevo en unos minutos.',
     submit: 'Enviar mensaje',
   },
@@ -35,6 +37,8 @@ const copy = {
     warning: 'The anti-spam verification is not configured.',
     success: 'Message sent successfully. Thanks, I will reply soon.',
     invalid: 'The message could not be sent. Check the fields and complete the anti-spam verification.',
+    invalidFields: 'The message could not be sent. Check that name, email and message are valid.',
+    invalidTurnstile: 'The anti-spam verification could not be validated. Reload the page and try again.',
     error: 'There was a problem sending the message. Try again in a few minutes.',
     submit: 'Send message',
   },
@@ -77,7 +81,17 @@ const copy = {
       ) : (
         <p class="form-warning">{copy.warning}</p>
       )}
-      <p class="form-status" data-form-status hidden aria-live="polite" data-success={copy.success} data-invalid={copy.invalid} data-error={copy.error}></p>
+      <p
+        class="form-status"
+        data-form-status
+        hidden
+        aria-live="polite"
+        data-success={copy.success}
+        data-invalid={copy.invalid}
+        data-invalid-fields={copy.invalidFields}
+        data-invalid-turnstile={copy.invalidTurnstile}
+        data-error={copy.error}
+      ></p>
       <button type="submit">{copy.submit}</button>
     </form>
   </div>
@@ -168,7 +182,14 @@ const copy = {
   const contactStatus = new URLSearchParams(window.location.search).get('contact');
 
   if (status && contactStatus) {
-    const state = contactStatus === 'ok' ? 'success' : contactStatus === 'invalid' || contactStatus === 'error' ? contactStatus : undefined;
+    const stateMap: Record<string, keyof DOMStringMap> = {
+      ok: 'success',
+      invalid: 'invalid',
+      'invalid-fields': 'invalidFields',
+      'invalid-turnstile': 'invalidTurnstile',
+      error: 'error',
+    };
+    const state = stateMap[contactStatus];
     const message = state ? status.dataset[state] : undefined;
 
     if (message) {

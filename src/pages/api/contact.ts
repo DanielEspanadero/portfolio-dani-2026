@@ -23,7 +23,8 @@ export const POST: APIRoute = async ({ request }) => {
   const contentLength = Number(request.headers.get('content-length') ?? '0');
 
   if (Number.isFinite(contentLength) && contentLength > maxBodySize) {
-    return redirectWithStatus('/?contact=invalid#contacto');
+    console.warn('Invalid contact form submission', ['body-too-large']);
+    return redirectWithStatus('/?contact=invalid-fields#contacto');
   }
 
   const formData = await request.formData();
@@ -42,7 +43,7 @@ export const POST: APIRoute = async ({ request }) => {
 
   if (fieldErrors.length > 0) {
     console.warn('Invalid contact form submission', fieldErrors);
-    return redirectWithStatus('/?contact=invalid#contacto');
+    return redirectWithStatus('/?contact=invalid-fields#contacto');
   }
 
   const apiKey = getContactEnv('RESEND_API_KEY');
@@ -60,8 +61,13 @@ export const POST: APIRoute = async ({ request }) => {
   const turnstile = await verifyTurnstile(turnstileToken, turnstileSecret, remoteIp, expectedHostnames);
 
   if (!turnstile.success) {
-    console.warn('Turnstile validation failed', turnstile['error-codes']);
-    return redirectWithStatus('/?contact=invalid#contacto');
+    console.warn('Turnstile validation failed', {
+      action: turnstile.action,
+      errorCodes: turnstile['error-codes'],
+      hasToken: Boolean(turnstileToken),
+      hostname: turnstile.hostname,
+    });
+    return redirectWithStatus('/?contact=invalid-turnstile#contacto');
   }
 
   const resend = new Resend(apiKey);
