@@ -1,4 +1,5 @@
 import type { APIRoute } from 'astro';
+import { env as cloudflareEnv } from 'cloudflare:workers';
 import { Resend } from 'resend';
 
 export const prerender = false;
@@ -8,6 +9,8 @@ const nameRegex = /^[A-Za-zÀ-ÿÑñ0-9][A-Za-zÀ-ÿÑñ0-9 .'-]{1,78}[A-Za-zÀ-
 const maxBodySize = 16_384;
 const maxTurnstileTokenLength = 2048;
 const turnstileVerifyUrl = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
+
+type ContactEnvKey = 'RESEND_API_KEY' | 'CONTACT_TO_EMAIL' | 'CONTACT_FROM_EMAIL' | 'TURNSTILE_SECRET_KEY' | 'TURNSTILE_EXPECTED_HOSTNAME';
 
 type TurnstileResponse = {
   success: boolean;
@@ -42,11 +45,11 @@ export const POST: APIRoute = async ({ request }) => {
     return redirectWithStatus('/?contact=invalid#contacto');
   }
 
-  const apiKey = import.meta.env.RESEND_API_KEY;
-  const to = import.meta.env.CONTACT_TO_EMAIL;
-  const from = import.meta.env.CONTACT_FROM_EMAIL;
-  const turnstileSecret = import.meta.env.TURNSTILE_SECRET_KEY;
-  const expectedHostnames = getExpectedHostnames(import.meta.env.TURNSTILE_EXPECTED_HOSTNAME);
+  const apiKey = getContactEnv('RESEND_API_KEY');
+  const to = getContactEnv('CONTACT_TO_EMAIL');
+  const from = getContactEnv('CONTACT_FROM_EMAIL');
+  const turnstileSecret = getContactEnv('TURNSTILE_SECRET_KEY');
+  const expectedHostnames = getExpectedHostnames(getContactEnv('TURNSTILE_EXPECTED_HOSTNAME'));
 
   if (!apiKey || !to || !from || !turnstileSecret) {
     console.error('Missing contact environment variables');
@@ -92,6 +95,12 @@ function redirectWithStatus(location: string) {
       Location: location,
     },
   });
+}
+
+function getContactEnv(key: ContactEnvKey) {
+  const runtimeEnv = cloudflareEnv as Partial<Record<ContactEnvKey, string>>;
+
+  return runtimeEnv[key] ?? import.meta.env[key];
 }
 
 function escapeHtml(value: string) {
