@@ -1,0 +1,188 @@
+<section class="slide title-slide" data-slide data-title="SDD sin humo" data-chapter="Fundamentos" id="1" aria-labelledby="slide-title-1">
+  <p class="eyebrow">Desarrollo con IA · Del problema a la evidencia</p>
+  <h1 id="slide-title-1">SDD sin humo</h1>
+  <p class="lede">Especificar mejor. Delegar con límites. Verificar de verdad.</p>
+  <p>Una guía conceptual y directa sobre Spec-Driven Development: qué es, cómo aplicarlo y cuándo no conviene usarlo.</p>
+</section>
+
+<section class="slide" data-slide data-title="El problema real" data-chapter="Fundamentos" id="2" aria-labelledby="slide-title-2">
+  <p class="eyebrow">Por qué falla el desarrollo guiado por intuición</p>
+  <h2 id="slide-title-2">La IA completa nuestros silencios</h2>
+  <p class="quote">«Crea una API para gestionar reservas».</p>
+  <div class="grid-three">
+    <div class="card"><h3>Ambigüedad</h3><p>Sin reglas explícitas, el modelo asume convenciones que rara vez encajan con tu negocio real.</p></div>
+    <div class="card"><h3>Falsa seguridad</h3><p>Que el código compile o pase una prueba superficial no significa que el producto sea correcto.</p></div>
+    <div class="card"><h3>Erosión</h3><p>Corregir a ciegas con prompts sucesivos introduce contradicciones y deuda técnica oculta.</p></div>
+  </div>
+  <p class="takeaway">La sintaxis puede ser impecable y el comportamiento, completamente equivocado.</p>
+</section>
+
+<section class="slide" data-slide data-title="Qué es SDD" data-chapter="Fundamentos" id="3" aria-labelledby="slide-title-3">
+  <p class="eyebrow">Definición esencial</p>
+  <h2 id="slide-title-3">Una especificación que dirige el trabajo</h2>
+  <p class="lede">Hacer explícito el acuerdo de negocio antes de generar código, y usarlo como ancla inmutable para implementar y verificar.</p>
+  <ul class="checklist">
+    <li><strong>Acuerdo previo:</strong> Entradas, salidas, invariantes y exclusiones claras.</li>
+    <li><strong>Límites para delegar:</strong> El agente trabaja sobre un perímetro cerrado, no improvisa decisiones.</li>
+    <li><strong>Verificación determinista:</strong> Cada regla acordada cuenta con una prueba independiente que la valida.</li>
+  </ul>
+  <p class="callout">No es redactar documentos infinitos. Es fijar el criterio antes de gastar recursos programando.</p>
+</section>
+
+<section class="slide" data-slide data-title="El ciclo de trabajo" data-chapter="Metodología" id="4" aria-labelledby="slide-title-4">
+  <p class="eyebrow">Flujo iterativo</p>
+  <h2 id="slide-title-4">Un ciclo corto con puertas humanas</h2>
+  <div class="diagram-sdd-cycle" aria-label="Diagrama del ciclo SDD">
+    <div class="cycle-step"><span class="step-num">01</span><strong>Aclarar</strong><p>Alcance, casos límite y restricciones</p></div>
+    <div class="cycle-arrow">→</div>
+    <div class="cycle-step highlight"><span class="step-num">02</span><strong>Especificar</strong><p>Contrato, ejemplos y criterios de aceptación</p></div>
+    <div class="cycle-arrow">→</div>
+    <div class="cycle-step"><span class="step-num">03</span><strong>Implementar</strong><p>Cambio mínimo guiado por pruebas</p></div>
+    <div class="cycle-arrow">→</div>
+    <div class="cycle-step"><span class="step-num">04</span><strong>Verificar</strong><p>Contraste objetivo contra el acuerdo</p></div>
+  </div>
+  <p class="takeaway">Si surge una contradicción, se ajusta el acuerdo de forma visible; jamás se oculta en un prompt posterior.</p>
+</section>
+
+<section class="slide" data-slide data-title="Tres formas de implementarlo" data-chapter="Arquitectura" id="5" aria-labelledby="slide-title-5">
+  <p class="eyebrow">Niveles de rigor y compromiso</p>
+  <h2 id="slide-title-5">Tres grados de adopción de SDD</h2>
+  <div class="grid-three">
+    <div class="card">
+      <span class="pill">Nivel 1</span>
+      <h3>Spec-First</h3>
+      <p>Redactar y pactar la especificación antes de escribir una sola línea. Sirve de guía inicial, pero puede desincronizarse con el tiempo si no se mantiene.</p>
+    </div>
+    <div class="card pink">
+      <span class="pill">Nivel 2 · Recomendado</span>
+      <h3>Spec-Anchored</h3>
+      <p>La especificación es la referencia viva durante toda la evolución. Cada cambio exige actualizar primero el acuerdo y validar contra él.</p>
+    </div>
+    <div class="card">
+      <span class="pill">Nivel 3</span>
+      <h3>Spec-as-Source</h3>
+      <p>La especificación es la fuente de verdad definitiva desde la cual se generan o regeneran automáticamente código, esquemas y pruebas.</p>
+    </div>
+  </div>
+  <p class="muted">Elige el nivel según el coste de un error: a mayor riesgo de negocio, mayor disciplina de anclaje.</p>
+</section>
+
+<section class="slide" data-slide data-title="Cómo aplicarlo en la práctica" data-chapter="Práctica" id="6" aria-labelledby="slide-title-6">
+  <p class="eyebrow">De la teoría al flujo de trabajo real</p>
+  <h2 id="slide-title-6">Dos caminos: a mano o con herramientas</h2>
+  <div class="grid-two">
+    <div class="card">
+      <span class="pill">Opción A · Sin dependencias</span>
+      <h3>A mano en Markdown</h3>
+      <p>Creas un archivo estructurado (<code>spec.md</code>) con requisitos numerados, límites y casos de prueba antes de programar.</p>
+      <ul class="checklist">
+        <li><strong>Ventaja:</strong> Cero curva de aprendizaje, funciona en cualquier editor y con cualquier modelo o chat.</li>
+        <li><strong>Riesgo:</strong> Disciplina puramente manual; exige rigor para no olvidar actualizar la spec tras cada cambio.</li>
+      </ul>
+    </div>
+    <div class="card pink">
+      <span class="pill">Opción B · Automatizado</span>
+      <h3>Con herramientas y CLI</h3>
+      <p>Frameworks que integran especificación y ejecución directamente en el ciclo del agente (Spec Kit, Kiro, OpenSpec).</p>
+      <ul class="checklist">
+        <li><strong>Ventaja:</strong> Flujo asistido con comandos, plantillas estandarizadas y trazabilidad entre requisitos y tareas.</li>
+        <li><strong>Riesgo:</strong> Añade herramientas al proyecto; no sustituye el criterio de validar si la spec está bien planteada.</li>
+      </ul>
+    </div>
+  </div>
+  <p class="callout">Empieza a mano con un único archivo en tu próximo ticket. Si el hábito cuaja en el equipo, evalúa estandarizar con una herramienta.</p>
+</section>
+
+<section class="slide" data-slide data-title="Beneficios" data-chapter="Evaluación" id="7" aria-labelledby="slide-title-7">
+  <p class="eyebrow">Ventajas demostrables</p>
+  <h2 id="slide-title-7">Lo bueno: control y calidad sostenida</h2>
+  <div class="grid-two">
+    <div class="card">
+      <h3>Menos desvío de contexto</h3>
+      <p>El agente no delira ni añade funcionalidades inventadas porque su objetivo está formalmente acotado en la especificación.</p>
+    </div>
+    <div class="card">
+      <h3>Revisión humana eficiente</h3>
+      <p>Revisar un diff contra una especificación aprobada es infinitamente más rápido y seguro que auditar código generado al azar.</p>
+    </div>
+    <div class="card">
+      <h3>Calidad técnica superior</h3>
+      <p>Forzar la definición de casos límite y errores antes de implementar evita huecos de seguridad, condiciones de carrera e inconsistencias.</p>
+    </div>
+    <div class="card">
+      <h3>Documentación viva y real</h3>
+      <p>La especificación describe fielmente el sistema actual porque las pruebas automatizadas rompen si el código se desvía del contrato.</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-slide data-title="Inconvenientes y costes" data-chapter="Evaluación" id="8" aria-labelledby="slide-title-8">
+  <p class="eyebrow">Costes honestos</p>
+  <h2 id="slide-title-8">Lo malo: fricción y esfuerzo inicial</h2>
+  <div class="grid-two">
+    <div class="card">
+      <h3>Inversión por adelantado</h3>
+      <p>Pensar y acordar casos límite requiere tiempo humano. No hay gratificación inmediata ni código funcionando en 30 segundos.</p>
+    </div>
+    <div class="card">
+      <h3>Riesgo de burocracia (Spec Bloat)</h3>
+      <p>Si la especificación se vuelve excesivamente rígida o verbose, mantenerla actualizada puede costar más tiempo que programar la solución.</p>
+    </div>
+    <div class="card">
+      <h3>Exige madurez de equipo</h3>
+      <p>Si el equipo o el cliente no tienen claro qué quieren construir, formalizar especificaciones tempranas puede generar frustración.</p>
+    </div>
+    <div class="card">
+      <h3>Consumo de tokens de contexto</h3>
+      <p>Alimentar a los agentes con especificaciones muy grandes incrementa el coste y puede saturar la ventana de atención si no se dividen bien.</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-slide data-title="Cuándo sí y cuándo no usarlo" data-chapter="Criterio" id="9" aria-labelledby="slide-title-9">
+  <p class="eyebrow">Guía de decisión práctica</p>
+  <h2 id="slide-title-9">Elige el método según el coste del error</h2>
+  <table class="comparison">
+    <thead>
+      <tr>
+        <th>Contexto</th>
+        <th>Enfoque recomendado</th>
+        <th>Por qué</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Lógica de negocio crítica, pagos, APIs públicas o datos sensibles</strong></td>
+        <td><span class="pill">SDD Estricto</span></td>
+        <td>Un fallo en producción cuesta miles de euros o daña la reputación. La ambigüedad no es tolerable.</td>
+      </tr>
+      <tr>
+        <td><strong>Evolución de sistemas existentes (Brownfield)</strong></td>
+        <td><span class="pill">SDD Acotado</span></td>
+        <td>Se especifican únicamente los límites y contratos que toca el cambio para evitar romper dependencias previas.</td>
+      </tr>
+      <tr>
+        <td><strong>Prototipos desechables o exploración visual</strong></td>
+        <td><span class="muted">Exploración / Prototipado</span></td>
+        <td>Cuando se busca descubrir posibilidades y el código se va a tirar, formalizar especificaciones añade fricción inútil.</td>
+      </tr>
+      <tr>
+        <td><strong>Scripts de usar y tirar o automatizaciones menores</strong></td>
+        <td><span class="muted">Prompt directo</span></td>
+        <td>La sobrecarga de gestión supera con creces el beneficio de la especificación.</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="slide section-slide" data-slide data-title="Conclusión" data-chapter="Cierre" id="10" aria-labelledby="slide-title-10">
+  <p class="eyebrow">Regla de oro para trabajar con IA</p>
+  <h2 id="slide-title-10">Sin criterio no hay aceleración</h2>
+  <p class="lede">La IA no sustituye al ingeniero de software: multiplica la claridad de quien sabe especificar o la confusión de quien no sabe lo que busca.</p>
+  <div class="callout">
+    <p><strong>Para recordar:</strong></p>
+    <p>1. Nunca pidas «implementa» sin haber acordado entradas, salidas y exclusiones.<br>
+    2. Exige pruebas que demuestren el comportamiento acordado de forma independiente.<br>
+    3. Si la IA te entrega algo que no esperabas, el fallo ocurrió en la especificación.</p>
+  </div>
+</section>
