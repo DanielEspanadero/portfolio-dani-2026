@@ -142,7 +142,8 @@ final class BrowserProbe: NSObject, WKNavigationDelegate, WKScriptMessageHandler
             }
             check('all slides readable within scrollable canvas', clipped.length === 0);
             await go('#' + (window.__sddCaptureSlide || 1));
-            document.getAnimations().forEach(animation => animation.finish());
+            // Decks may run decorative infinite animations; those cannot be finished.
+            document.getAnimations().forEach(animation => { try { animation.finish(); } catch { animation.pause(); animation.currentTime = 1200; } });
             window.webkit.messageHandlers.result.postMessage({checks, failures, slides: slides.length, viewport: [innerWidth,innerHeight], clipped, title:document.title});
           } catch (error) {
             failures.push(String(error.stack || error));
