@@ -138,9 +138,12 @@ final class BrowserProbe: NSObject, WKNavigationDelegate, WKScriptMessageHandler
               const rect = slide.getBoundingClientRect();
               if (slide.scrollWidth > slide.clientWidth + 3) clipped.push(slide.id + ':horizontal');
               if (rect.bottom > innerHeight + 3) clipped.push(slide.id + ':belowViewport');
-              if (slide.scrollHeight > slide.clientHeight + 3 && !['auto','scroll'].includes(getComputedStyle(slide).overflowY)) clipped.push(slide.id + ':unscrollable');
+              // A fixed-stage deck must never need to scroll inside a slide: a
+              // slide that overflows hides its own content instead of failing
+              // loudly, so tolerate only the 1px border rounding.
+              if (slide.scrollHeight > slide.clientHeight + 4) clipped.push(slide.id + ':vertical-overflow');
             }
-            check('all slides readable within scrollable canvas', clipped.length === 0);
+            check('no slide needs internal scrolling', clipped.length === 0);
             await go('#' + (window.__sddCaptureSlide || 1));
             // Decks may run decorative infinite animations; those cannot be finished.
             document.getAnimations().forEach(animation => { try { animation.finish(); } catch { animation.pause(); animation.currentTime = 1200; } });

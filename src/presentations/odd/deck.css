@@ -619,27 +619,30 @@ p, li, td, th { font-size: 28px; line-height: 1.5; color: var(--ink-soft); }
   padding: 0;
   display: flex;
   flex-direction: column;
-  counter-reset: neg;
 }
+/* Exactly two grid children per row: the number and the sentence. Anything
+   else (an anonymous text item) would wrap into the 92px column. */
 .negations li {
-  counter-increment: neg;
   display: grid;
   grid-template-columns: 92px 1fr;
   align-items: baseline;
   gap: 28px;
-  padding: 26px 0;
+  padding: 22px 0;
   border-bottom: 1px solid var(--line);
-  font-size: 32px;
-  color: var(--ink-soft);
   max-width: 1560px;
 }
 .negations li:first-child { border-top: 1px solid var(--line); }
-.negations li::before {
-  content: counter(neg, decimal-leading-zero);
+.neg-num {
   font-family: var(--mono);
   font-size: 17px;
   letter-spacing: .12em;
   color: var(--fuchsia);
+}
+.negations p {
+  margin: 0;
+  font-size: 31px;
+  line-height: 1.38;
+  color: var(--ink-soft);
 }
 .negations strong { color: #fff; font-weight: 600; }
 

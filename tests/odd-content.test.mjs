@@ -67,6 +67,22 @@ test('progressive reveals only ever hide whole blocks, never inline fragments', 
   for (const tag of tags) assert.ok(['li', 'p', 'tr'].includes(tag), `data-step found on <${tag}>`);
 });
 
+test('negation rows keep exactly two grid children: the number and the sentence', () => {
+  const list = /<ul class="negations">([\s\S]*?)<\/ul>/.exec(content())?.[1];
+  assert.ok(list, 'negations list missing');
+  const rows = [...list.matchAll(/<li\b[^>]*>([\s\S]*?)<\/li>/g)];
+  assert.equal(rows.length, 4);
+  for (const [, row] of rows) {
+    // A third grid child (or bare text) would fall into the 92px number column,
+    // wrap word by word and push the slide past its fixed height.
+    const withNumber = row.replace(/<span class="neg-num">\d{2}<\/span>/, '');
+    assert.notEqual(withNumber, row, 'row needs an explicit number span');
+    const withSentence = withNumber.replace(/<p>[\s\S]*?<\/p>/, '');
+    assert.notEqual(withSentence, withNumber, 'row needs its sentence inside a <p>');
+    assert.equal(withSentence.trim(), '', `stray grid content: "${withSentence.trim().slice(0, 60)}"`);
+  }
+});
+
 test('protocol names the seven steps in order', () => {
   const ordered = ['Autorizar', 'Explorar', 'Resolver', 'Clasificar', 'Registrar', 'Implementar', 'Cerrar'];
   const position = ordered.map((step) => content().indexOf(`class="p-name">${step}<`));
