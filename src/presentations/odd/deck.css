@@ -290,6 +290,20 @@ h1 {
 }
 h1 .rise { display: block; }
 h1 .italic { font-style: italic; color: var(--fuchsia); text-shadow: 0 0 90px rgba(255, 42, 133, .45); }
+/* The acronym carries the room; the name underneath says what it stands for. */
+.cover h1 .acronym {
+  font-size: 340px;
+  line-height: .8;
+  letter-spacing: -.045em;
+  margin-left: -.03em;
+  color: #fff;
+}
+.cover h1 .italic {
+  font-size: 78px;
+  line-height: 1;
+  letter-spacing: -.012em;
+  margin-top: 30px;
+}
 
 h2 {
   font-size: 92px;
@@ -660,6 +674,65 @@ p, li, td, th { font-size: 28px; line-height: 1.5; color: var(--ink-soft); }
 .comparison th:nth-child(1), .comparison td:nth-child(1) { width: 24%; }
 .comparison th:nth-child(2), .comparison td:nth-child(2) { width: 36%; }
 
+/* === THREE-WAY COMPARISON =============================================== */
+
+.three-way {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 4px;
+}
+.three-way th,
+.three-way td { text-align: left; vertical-align: top; }
+.three-way .tw-sr {
+  position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%);
+}
+.three-way thead th {
+  padding: 0 24px 16px 0;
+  border-bottom: 1px solid var(--line-strong);
+  font-weight: 400;
+}
+.three-way thead th:first-child { width: 16%; }
+.three-way thead th:nth-child(2),
+.three-way thead th:nth-child(3) { width: 27%; }
+.three-way .tw-name {
+  display: block;
+  font-family: var(--serif);
+  font-size: 36px;
+  line-height: 1.05;
+  letter-spacing: -.01em;
+  color: #fff;
+}
+.three-way .tw-tag {
+  display: block;
+  margin-top: 7px;
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.three-way thead th.odd { border-bottom-color: var(--fuchsia); }
+.three-way thead th.odd .tw-name { color: var(--fuchsia); }
+.three-way thead th.odd .tw-tag { color: rgba(255, 42, 133, .8); }
+.three-way tbody th {
+  padding: 17px 24px 17px 0;
+  border-bottom: 1px solid var(--line);
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.three-way tbody td {
+  padding: 17px 24px 17px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 23px;
+  line-height: 1.36;
+  color: var(--ink-soft);
+}
+.three-way tbody td:nth-child(4) { color: #fff; }
+
 /* === MANIFESTO ========================================================== */
 
 .manifesto {
@@ -844,6 +917,10 @@ p, li, td, th { font-size: 28px; line-height: 1.5; color: var(--ink-soft); }
 .slide.active .manifesto li { animation: none; }
 
 /* Tables read as one object: reveal the rows in a short stagger instead. */
+.slide.active .three-way tbody tr:nth-child(1) { animation: riseUp .7s ease .45s backwards; }
+.slide.active .three-way tbody tr:nth-child(2) { animation: riseUp .7s ease .58s backwards; }
+.slide.active .three-way tbody tr:nth-child(3) { animation: riseUp .7s ease .71s backwards; }
+.slide.active .three-way tbody tr:nth-child(4) { animation: riseUp .7s ease .84s backwards; }
 .slide.active .comparison tbody tr:nth-child(1) { animation: riseUp .7s ease .42s backwards; }
 .slide.active .comparison tbody tr:nth-child(2) { animation: riseUp .7s ease .52s backwards; }
 .slide.active .comparison tbody tr:nth-child(3) { animation: riseUp .7s ease .62s backwards; }

@@ -49,11 +49,11 @@ test('ships the shared player without a download route it does not have', () => 
 
 test('every slide reaches the document with its heading and chapter', () => {
   const sections = sectionsOf(html);
-  assert.equal(sections.length, 17);
+  assert.equal(sections.length, 18);
   assert.equal(sections[0].chapter, 'Portada');
   assert.equal(sections.at(-1).chapter, 'Cierre');
   for (const [index, section] of sections.entries()) {
     assert.equal(section.id, String(index + 1));
-    assert.equal((html.match(/id="slide-title-(\d+)"/g) || []).length, 17);
+    assert.equal((html.match(/id="slide-title-(\d+)"/g) || []).length, sections.length);
   }
 });
