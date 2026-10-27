@@ -1,0 +1,198 @@
+---
+export const prerender = true;
+
+import BaseLayout from '@layouts/BaseLayout.astro';
+import JsonLd from '@components/seo/JsonLd.astro';
+import { profile } from '@data/profile';
+
+const title = 'Presentaciones | Daniel Españadero';
+const description =
+  'Presentaciones interactivas de Daniel Españadero sobre ingeniería de software y trabajo con IA: Spec-Driven Development y Organic Driven Development, explicados desde cero.';
+
+const decks = [
+  {
+    href: '/presentaciones/odd/',
+    tag: 'Metodología',
+    title: 'Desarrollo Orgánico',
+    description:
+      'Organic Driven Development en siete pasos: hacer que el proceso crezca con el problema, sin burocracia y con el humano al mando.',
+    meta: ['17 diapositivas', 'Divulgación', 'En vivo'],
+    accent: true,
+  },
+  {
+    href: '/presentaciones/sdd/',
+    tag: 'Ingeniería',
+    title: 'SDD con IA',
+    description:
+      'Spec-Driven Development aplicado: especificar antes de generar código, delegar con límites y verificar contra el acuerdo.',
+    meta: ['10 diapositivas', 'Caso práctico', 'Descargable'],
+    accent: false,
+  },
+] as const;
+
+const collectionSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: title,
+  description,
+  url: `${profile.website}/presentaciones/`,
+  inLanguage: 'es',
+  hasPart: decks.map((deck) => ({
+    '@type': 'CreativeWork',
+    name: deck.title,
+    description: deck.description,
+    url: `${profile.website}${deck.href}`,
+    author: { '@type': 'Person', name: profile.name },
+  })),
+};
+---
+
+<BaseLayout {title} {description}>
+  <JsonLd data={collectionSchema} />
+  <section class="container page">
+    <header class="intro">
+      <p class="eyebrow">Presentaciones</p>
+      <h1>Charlas que explico de punta a punta.</h1>
+      <p class="section-description">
+        Material de divulgación sobre cómo se construye software con IA sin perder el criterio: qué se decide, qué se delega y cómo se comprueba. Se pueden leer en orden o proyectar en directo.
+      </p>
+    </header>
+
+    <ul class="deck-grid">
+      {decks.map((deck) => (
+        <li>
+          <a class:list={['deck-card surface', { accent: deck.accent }]} href={deck.href}>
+            <span class="deck-tag">{deck.tag}</span>
+            <h2>{deck.title}</h2>
+            <p>{deck.description}</p>
+            <ul class="deck-meta">
+              {deck.meta.map((item) => <li>{item}</li>)}
+            </ul>
+            <span class="deck-cta">Abrir presentación <span aria-hidden="true">→</span></span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+</BaseLayout>
+
+<style>
+  .page {
+    min-height: 70vh;
+    padding-block: var(--section-space);
+  }
+
+  .intro {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    margin-bottom: var(--section-space-sm);
+  }
+
+  h1 {
+    max-width: 900px;
+    margin: 0;
+    font-size: clamp(2.6rem, 10vw, 6rem);
+    line-height: 0.98;
+    letter-spacing: clamp(-0.07em, -0.8vw, -0.035em);
+  }
+
+  .deck-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
+    gap: 1.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .deck-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    height: 100%;
+    padding: clamp(1.6rem, 3vw, 2.25rem);
+    transition: transform 220ms ease, border-color 220ms ease, box-shadow 220ms ease;
+  }
+
+  .deck-card:hover,
+  .deck-card:focus-visible {
+    transform: translateY(-4px);
+    border-color: rgba(52, 211, 153, 0.45);
+    box-shadow: 0 32px 90px rgba(0, 0, 0, 0.42);
+  }
+
+  .deck-card.accent {
+    border-color: rgba(52, 211, 153, 0.28);
+    background: linear-gradient(145deg, rgba(20, 36, 40, 0.95), rgba(12, 22, 30, 0.85));
+  }
+
+  .deck-tag {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-primary);
+  }
+
+  .deck-card h2 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(1.6rem, 4vw, 2.3rem);
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+  }
+
+  .deck-card p {
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+
+  .deck-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 0.35rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .deck-meta li {
+    padding: 0.28rem 0.65rem;
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .deck-cta {
+    margin-top: auto;
+    padding-top: 1.1rem;
+    color: var(--color-accent);
+    font-size: 0.95rem;
+    font-weight: 600;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .deck-card {
+      transition: none;
+    }
+
+    .deck-card:hover,
+    .deck-card:focus-visible {
+      transform: none;
+    }
+  }
+
+  @media (max-width: 620px) {
+    .page {
+      min-height: auto;
+      padding-block: var(--section-space-sm);
+    }
+  }
+</style>
