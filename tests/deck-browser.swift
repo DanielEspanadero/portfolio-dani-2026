@@ -1,11 +1,12 @@
 // macOS-only functional browser probe using the system WebKit; no package install.
-// Usage: swift tests/sdd-browser.swift <URL-or-file-path> <artifact-directory> [width] [height]
+// Shared by every deck; the slide-count window is a per-deck argument.
+// Usage: swift tests/deck-browser.swift <URL-or-file-path> <artifact-directory> [width] [height] [captureSlide] [minSlides] [maxSlides]
 import AppKit
 import WebKit
 
 let arguments = CommandLine.arguments
 if arguments.count < 3 {
-    fputs("Usage: swift tests/sdd-browser.swift <URL-or-file-path> <artifact-directory> [width] [height]\n", stderr)
+    fputs("Usage: swift tests/deck-browser.swift <URL-or-file-path> <artifact-directory> [width] [height] [captureSlide] [minSlides] [maxSlides]\n", stderr)
     exit(2)
 }
 let input = arguments[1]
@@ -13,6 +14,8 @@ let destination = URL(fileURLWithPath: arguments[2], isDirectory: true)
 let width = Double(arguments.count > 3 ? arguments[3] : "1440") ?? 1440
 let height = Double(arguments.count > 4 ? arguments[4] : "900") ?? 900
 let captureSlide = Int(arguments.count > 5 ? arguments[5] : "1") ?? 1
+let minSlides = Int(arguments.count > 6 ? arguments[6] : "8") ?? 8
+let maxSlides = Int(arguments.count > 7 ? arguments[7] : "15") ?? 15
 try FileManager.default.createDirectory(at: destination, withIntermediateDirectories: true)
 
 final class BrowserProbe: NSObject, WKNavigationDelegate, WKScriptMessageHandler {
@@ -76,15 +79,15 @@ final class BrowserProbe: NSObject, WKNavigationDelegate, WKScriptMessageHandler
             check('exactly one visible slide', visible().length === 1);
             check('one semantic h1', document.querySelectorAll('h1').length === 1);
             const slides = [...document.querySelectorAll('[data-slide]')];
-            check('complete course', slides.length >= 8 && slides.length <= 15);
-            await go('#7');
+            check('complete deck', slides.length >= \#(minSlides) && slides.length <= \#(maxSlides));
+            await go('#' + Math.min(7, slides.length));
             check('numeric deep link #7', visible()[0]?.id === '7' && location.hash === '#7');
             const select = document.querySelector('#slide-select');
             select.value = '3';
             select.dispatchEvent(new Event('change', {bubbles: true}));
             await settle();
             check('selector navigation', visible()[0]?.id === '3');
-            await go('#7');
+            await go('#' + Math.min(7, slides.length));
             history.back();
             await settle();
             check('browser back', visible()[0]?.id === '3');
@@ -124,7 +127,7 @@ final class BrowserProbe: NSObject, WKNavigationDelegate, WKScriptMessageHandler
             check('invalid hash recovers', visible().length === 1 && /^#\d+$/.test(location.hash));
             await go('#999999');
             check('out-of-range hash recovers', visible().length === 1 && Number(location.hash.slice(1)) <= slides.length);
-            await go('#7');
+            await go('#' + Math.min(7, slides.length));
             key('ArrowRight'); key('ArrowRight'); key('ArrowLeft'); await settle();
             check('rapid navigation leaves one slide', visible().length === 1);
             check('no horizontal page overflow', document.documentElement.scrollWidth <= innerWidth + 2);

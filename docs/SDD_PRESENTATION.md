@@ -40,8 +40,9 @@ La preferencia del sistema **reducir movimiento** desactiva las transiciones. En
 | --- | --- |
 | `src/content/sdd/slides.html` | Contenido, títulos, capítulos y notas |
 | `src/presentations/sdd/deck.css` | Diseño, transiciones, responsive e impresión |
-| `src/presentations/sdd/controller.js` | URL, teclado, índice, notas y revelado progresivo |
-| `src/presentations/sdd/render.mjs` | Documento HTML y metadatos compartidos |
+| `src/presentations/shared/player.js` | URL, teclado, índice, notas, revelado progresivo y modo inmersivo (compartido con la presentación de ODD) |
+| `src/presentations/shared/render.mjs` | Documento HTML y metadatos, parametrizado por deck |
+| `src/presentations/sdd/render.mjs` | Metadatos de este deck sobre el renderer compartido |
 | `src/presentations/sdd/document.ts` | Ensamblado de los recursos inline |
 | `src/pages/presentaciones/sdd/index.astro` | Ruta pública prerenderizada |
 | `src/pages/presentaciones/sdd/descargar.html.ts` | Descarga del mismo contenido como HTML autónomo |
@@ -62,9 +63,9 @@ Las pruebas HTTP usan por defecto el puerto 4322 (puedes cambiarlo con `SDD_BASE
 ```sh
 # En una terminal: pnpm dev --host 127.0.0.1 --port 4322
 node --test tests/sdd-http.mjs
-swift tests/sdd-browser.swift http://127.0.0.1:4322/presentaciones/sdd/#12 .artifacts/browser-desktop 1440 900
-swift tests/sdd-browser.swift http://127.0.0.1:4322/presentaciones/sdd/#12 .artifacts/browser-mobile 390 844
-swift tests/sdd-browser.swift .artifacts/sdd-con-ia.html .artifacts/browser-offline 1440 900
+swift tests/deck-browser.swift http://127.0.0.1:4322/presentaciones/sdd/#12 .artifacts/browser-desktop 1440 900 12 8 15
+swift tests/deck-browser.swift http://127.0.0.1:4322/presentaciones/sdd/#12 .artifacts/browser-mobile 390 844 12 8 15
+swift tests/deck-browser.swift .artifacts/sdd-con-ia.html .artifacts/browser-offline 1440 900 12 8 15
 ```
 
 La prueba HTTP guarda el HTML descargado en `.artifacts/`; los comprobadores de navegador guardan allí sus informes y capturas. No publiques esos archivos de comprobación como código fuente. El comprobador automatizado cubre navegación y dimensiones; revisa también legibilidad, animaciones y la captura real de OBS con tus propios ojos.

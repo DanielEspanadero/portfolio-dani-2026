@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { parseSlideHash, canonicalSlideHash, navigationIntent, advancePosition } from '../src/presentations/sdd/controller.js';
+import { parseSlideHash, canonicalSlideHash, navigationIntent, advancePosition } from '../src/presentations/shared/player.js';
 
 const event = (key, extra = {}) => ({ key, target: { closest: () => null }, ...extra });
 

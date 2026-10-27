@@ -174,7 +174,11 @@ export function initDeck(doc = document, win = window) {
   index.addEventListener('close', () => indexOpener?.focus({ preventScroll: true }));
   fullscreen.addEventListener('click', toggleFullscreen);
   doc.addEventListener('fullscreenchange', () => {
-    fullscreen.setAttribute('aria-pressed', String(Boolean(doc.fullscreenElement)));
+    const immersive = Boolean(doc.fullscreenElement);
+    fullscreen.setAttribute('aria-pressed', String(immersive));
+    // Decks may drop their chrome in fullscreen and refit the stage to the new box.
+    doc.body.classList.toggle('immersive', immersive);
+    fitStage();
   });
   doc.addEventListener('keydown', event => {
     const intent = navigationIntent(event, Boolean(doc.querySelector('dialog[open]')));
