@@ -1,0 +1,2156 @@
+<section id="1" data-slide data-chapter="Fundamentos" data-title="Patrones de diseño desde cero" class="cover">
+<p class="cover-top"><span class="eyebrow">Fundamentos / 01</span><span class="live"><span class="live-dot" aria-hidden="true"></span>En directo</span></p>
+<h1>Patrones de diseño<br><em>desde cero.</em>
+</h1>
+<ul class="cover-stats">
+<li class="stat-count"><b>23</b><span>patrones GoF</span></li>
+<li class="stat-gloss"><b>Gang of Four</b><span>Los cuatro autores del catálogo de 1994: soluciones que se repiten en cualquier lenguaje orientado a objetos.</span></li>
+</ul>
+<p class="cover-author"><b>Daniel Españadero</b> · Backend Software Engineer</p>
+</section>
+
+<section id="2" data-slide data-chapter="Fundamentos" data-title="Qué es un patrón de diseño">
+<p class="eyebrow">Fundamentos / 02</p>
+<h2>Un nombre para una solución que se repite</h2>
+<div class="book-grid">
+<div>
+<p class="lead">Un patrón describe una solución habitual a un problema que aparece una y otra vez en un contexto concreto. No es una biblioteca ni una receta obligatoria: le pone nombre a una decisión que ya sabes tomar.</p>
+<p class="note">El libro habla de C++ y Smalltalk de 1994 y sigue sirviendo en Java de hoy. No describe un lenguaje: describe cómo colaboran los objetos.</p>
+</div>
+<aside class="book">
+<p class="book-kind">El catálogo original · 1994</p>
+<p class="book-title">Design Patterns</p>
+<p class="book-sub">Elements of Reusable Object-Oriented Software</p>
+<ol class="book-authors">
+<li>Erich Gamma</li>
+<li>Richard Helm</li>
+<li>Ralph Johnson</li>
+<li>John Vlissides</li>
+</ol>
+<p class="book-count">23 patrones · 5 creacionales · 7 estructurales · 11 de comportamiento</p>
+</aside>
+</div>
+</section>
+
+<section id="3" data-slide data-chapter="Fundamentos" data-title="Por qué surgieron los patrones">
+<p class="eyebrow">Fundamentos / 03</p>
+<h2>Cuando todos resolvían lo mismo con nombres distintos</h2>
+<div class="grid">
+<article>
+<h3>El problema</h3>
+<p>A principios de los noventa la orientación a objetos se volvió el paradigma dominante. Cada equipo resolvía la misma familia de problemas con nombres propios, y no había forma de comparar una solución con otra.</p>
+</article>
+<article>
+<h3>La idea</h3>
+<p>Buscar en proyectos reales las soluciones que se repetían y catalogarlas por el problema que resuelven, no por la técnica que usan.</p>
+</article>
+<article>
+<h3>El resultado</h3>
+<p>Un vocabulario común. Decir «Adapter» u «Observer» deja de ser jerga y pasa a ser un contrato de conversación entre dos personas que nunca trabajaron juntas.</p>
+</article>
+<article>
+<h3>Lo que no hicieron</h3>
+<p>No inventaron las soluciones: las encontraron. El catálogo no patenta patrones, los ordena para que se puedan enseñar y discutir.</p>
+</article>
+</div>
+</section>
+
+<section id="4" data-slide data-chapter="Fundamentos" data-title="Por qué es buena práctica usar patrones">
+<p class="eyebrow">Fundamentos / 04</p>
+<h2>Lo que compra un patrón, y lo que no</h2>
+<div class="grid">
+<article>
+<h3>Lo que compra</h3>
+<p>Vocabulario compartido: una conversación sobre diseño avanza sin explicar la solución entera.</p>
+<p>Experiencia que no tienes que repetir: el patrón ya acumula los errores de quienes lo aplicaron antes.</p>
+<p>Decisiones documentadas: el nombre en el código explica por qué esa clase existe.</p>
+</article>
+<article>
+<h3>Lo que no compra</h3>
+<p>No es una bala de plata: un patrón mal aplicado añade clases, indirección y ceremonia sin resolver nada.</p>
+<p>No justifica sobrediseño: si una función resuelve el problema, el patrón sobra.</p>
+<p>No es obligatorio: la mayoría del código de producción no necesita ninguno de los 23.</p>
+</article>
+</div>
+<p class="note">El criterio va primero y el patrón después. Todo el resto de esta presentación es ese criterio.</p>
+</section>
+
+<section id="5" data-slide data-chapter="Fundamentos" data-title="Los tres tipos de patrón">
+<p class="eyebrow">Fundamentos / 05</p>
+<h2>Tres familias, tres preguntas</h2>
+<p class="analogy"><b>Mapa</b>Los 23 patrones del catálogo no son 23 temas sueltos: son tres familias, y cada una responde una pregunta distinta.</p>
+<div class="trio">
+<article>
+<h3>Creacionales</h3>
+<p class="trio-q">¿Cómo creo objetos sin acoplarme a la clase concreta?</p>
+<p class="trio-count">5 patrones</p>
+<ol class="trio-list">
+<li>Singleton</li>
+<li>Factory Method</li>
+<li>Abstract Factory</li>
+<li>Builder</li>
+<li>Prototype</li>
+</ol>
+</article>
+<article>
+<h3>Estructurales</h3>
+<p class="trio-q">¿Cómo conecto objetos para que colaboren sin quedar rígidos?</p>
+<p class="trio-count">7 patrones</p>
+<ol class="trio-list">
+<li>Adapter</li>
+<li>Bridge</li>
+<li>Composite</li>
+<li>Decorator</li>
+<li>Facade</li>
+<li>Flyweight</li>
+<li>Proxy</li>
+</ol>
+</article>
+<article>
+<h3>Comportamiento</h3>
+<p class="trio-q">¿Cómo coordino quién hace qué y cuándo?</p>
+<p class="trio-count">11 patrones</p>
+<ol class="trio-list">
+<li>Chain of Responsibility</li>
+<li>Command</li>
+<li>Interpreter</li>
+<li>Iterator</li>
+<li>Mediator</li>
+<li>Memento</li>
+<li>Observer</li>
+<li>State</li>
+<li>Strategy</li>
+<li>Template Method</li>
+<li>Visitor</li>
+</ol>
+</article>
+</div>
+<p class="note">Un patrón no se elige por su nombre: se elige por el problema que tienes delante. Los nombres vuelven uno por uno, cada uno con su código.</p>
+</section>
+
+<section id="6" data-slide data-chapter="GoF / Creacionales" data-title="Singleton · concepto" data-family="creational" data-pattern="singleton" data-kind="concept">
+<p class="eyebrow">GoF / Creacionales / 06</p>
+<h2>Singleton</h2>
+<p class="analogy"><b>Analogía</b>Un edificio tiene una única dirección oficial, aunque muchas personas la consulten.</p>
+<div class="concept-grid concept-pilot">
+<article>
+<h3>Problema</h3>
+<p>Varias partes necesitan la misma tabla de configuración y no deben crear copias divergentes.</p>
+<pre class="mini-code" tabindex="0" aria-label="Código ingenuo: dos configuraciones que divergen"><code>class Settings { String language = "es"; }
+class App {
+  Settings menu = new Settings();
+  Settings checkout = new Settings();
+  void switchLanguage() { menu.language = "en"; }
+  // El pago sigue en español.
+}</code></pre>
+</article>
+<article>
+<h3>Intención y roles</h3>
+<p>La propia clase controla su instancia única; los clientes acceden a ella por un punto común.</p>
+</article>
+<article>
+<h3>Cuándo usarlo</h3>
+<p>Cuando la identidad única es una restricción real y el ciclo de vida está bien definido.</p>
+<p class="smell"><b>Cómo reconocerlo</b>Cambias el idioma en una copia de la configuración y descubres que otra pantalla conserva el anterior.</p>
+</article>
+<article data-step="">
+<h3>Coste y cuándo no</h3>
+<p>Introduce acceso global y dificulta aislar pruebas. Un enum se inicializa de forma segura entre hilos, pero eso no vuelve seguro un estado mutable que añadas. El scope singleton de Spring es por bean y contenedor, no una instancia GoF universal.</p>
+</article>
+</div>
+</section>
+
+<section id="7" data-slide data-chapter="GoF / Creacionales" data-title="Singleton · Java" data-family="creational" data-pattern="singleton" data-kind="code">
+<p class="eyebrow">GoF / Creacionales / 07</p>
+<h2>Singleton <span>en Java</span>
+</h2>
+<div class="code-grid"><pre tabindex="0" aria-label="Ejemplo Java 25; desplazamiento horizontal disponible"><code data-java="singleton" data-output="true
+es">enum Settings {
+  INSTANCE;
+  String language() { return &quot;es&quot;; }
+}
+public static void main(String[] args) {
+  Settings first = Settings.INSTANCE;
+  Settings second = Settings.INSTANCE;
+  System.out.println(first == second);
+  System.out.println(first.language());
+}</code></pre>
+<aside data-step="">
+<h3>Recorrido</h3>
+<p>El enum crea INSTANCE una sola vez. Ambas referencias apuntan a esa instancia y devuelven el idioma. Aquí no hay estado mutable compartido.</p>
+<h3>Resultado</h3><pre class="result">true
+es</pre><p class="note">Java 25 · ejemplo mínimo pedagógico. Importaciones: <code>java.util.*</code> y <code>java.util.function.*</code>.</p>
+</aside>
+</div>
+</section>
+
+<section id="8" data-slide data-chapter="GoF / Creacionales" data-title="Factory Method · concepto" data-family="creational" data-pattern="factory-method" data-kind="concept">
+<p class="eyebrow">GoF / Creacionales / 08</p>
+<h2>Factory Method</h2>
+<p class="analogy"><b>Analogía</b>Cada sucursal decide qué vehículo ofrece, pero el procedimiento de envío es común.</p>
+<div class="concept-grid concept-pilot">
+<article>
+<h3>Problema</h3>
+<p>Un proceso de envío necesita crear un transporte sin fijar su clase concreta.</p>
+<pre class="mini-code" tabindex="0" aria-label="Código ingenuo: envío atado a un camión"><code>class Truck { void deliver() {} }
+class Logistics {
+  void send() {
+    Truck transport = new Truck();
+    transport.deliver();
+  }
+}</code></pre>
+</article>
+<article>
+<h3>Intención y roles</h3>
+<figure class="roles">
+<svg viewBox="0 0 600 190" role="img" aria-label="El creador usa el transporte; el creador concreto redefine la creación y devuelve un camión que implementa transporte">
+<defs><marker id="fm-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#ff2a85"></path></marker></defs>
+<rect class="box" x="10" y="8" width="150" height="54" rx="10"></rect>
+<text class="faint" x="24" y="26">creador</text><text x="24" y="48">Logística</text>
+<rect class="box box-iface" x="430" y="8" width="150" height="54" rx="10"></rect>
+<text class="faint" x="444" y="26">producto</text><text x="444" y="48">Transporte</text>
+<text class="faint" x="272" y="27">usa</text>
+<line class="edge" x1="160" y1="35" x2="428" y2="35" marker-end="url(#fm-arrow)"></line>
+<rect class="box" x="10" y="130" width="150" height="54" rx="10"></rect>
+<text class="faint" x="24" y="148">creador concreto</text><text x="24" y="170">Por carretera</text>
+<text class="faint" x="18" y="96">redefine creación</text>
+<line class="edge" x1="85" y1="130" x2="85" y2="64" marker-end="url(#fm-arrow)"></line>
+<rect class="box" x="430" y="130" width="150" height="54" rx="10"></rect>
+<text class="faint" x="444" y="148">producto concreto</text><text x="444" y="170">Camión</text>
+<text class="faint" x="454" y="96">implementa</text>
+<line class="edge-dash" x1="505" y1="130" x2="505" y2="64" marker-end="url(#fm-arrow)"></line>
+<text class="faint" x="266" y="149">crea</text>
+<line class="edge" x1="160" y1="157" x2="428" y2="157" marker-end="url(#fm-arrow)"></line>
+</svg>
+</figure>
+<p>El creador define el proceso y un método de creación; una subclase redefine ese método y devuelve el producto concreto.</p>
+</article>
+<article>
+<h3>Cuándo usarlo</h3>
+<p>Cuando un proceso extensible debe dejar la creación de un colaborador a las subclases.</p>
+<p class="smell"><b>Cómo reconocerlo</b>Quieres reutilizar el envío por barco, pero el proceso lleva un new Truck incrustado.</p>
+</article>
+<article data-step="">
+<h3>Coste y cuándo no</h3>
+<p>Exige herencia y más clases. Un método con switch que elige productos es una fábrica simple; no es este mecanismo por redefinición. No lo introduzcas si no hay variantes del proceso.</p>
+</article>
+</div>
+</section>
+
+<section id="9" data-slide data-chapter="GoF / Creacionales" data-title="Factory Method · Java" data-family="creational" data-pattern="factory-method" data-kind="code">
+<p class="eyebrow">GoF / Creacionales / 09</p>
+<h2>Factory Method <span>en Java</span>
+</h2>
+<div class="code-grid"><pre tabindex="0" aria-label="Ejemplo Java 25; desplazamiento horizontal disponible"><code data-java="factory-method" data-output="carretera">interface Transport { String deliver(); }
+static class Truck implements Transport {
+  public String deliver() { return &quot;carretera&quot;; }
+}
+static abstract class Logistics {
+  abstract Transport createTransport();
+  String send() { return createTransport().deliver(); }
+}
+static class RoadLogistics extends Logistics {
+  @Override Transport createTransport() {
+    return new Truck();
+  }
+}
+public static void main(String[] args) {
+  Logistics logistics = new RoadLogistics();
+  System.out.println(logistics.send());
+}</code></pre>
+<aside data-step="">
+<h3>Recorrido</h3>
+<p>send pertenece al creador base. Invoca createTransport y Java despacha a la redefinición de RoadLogistics. El camión creado realiza la entrega.</p>
+<h3>Resultado</h3><pre class="result">carretera</pre><p class="note">Java 25 · ejemplo mínimo pedagógico. Importaciones: <code>java.util.*</code> y <code>java.util.function.*</code>.</p>
+</aside>
+</div>
+</section>
+
+<section id="10" data-slide data-chapter="GoF / Creacionales" data-title="Abstract Factory · concepto" data-family="creational" data-pattern="abstract-factory" data-kind="concept">
+<p class="eyebrow">GoF / Creacionales / 10</p>
+<h2>Abstract Factory</h2>
+<p class="analogy"><b>Analogía</b>Una tienda vende conjuntos de muebles que combinan, no piezas elegidas al azar.</p>
+<div class="concept-grid concept-pilot">
+<article>
+<h3>Problema</h3>
+<p>La interfaz visual mezcla botones claros con menús oscuros porque cada elemento se crea por separado.</p>
+<pre class="mini-code" tabindex="0" aria-label="Código ingenuo: controles de temas incompatibles"><code>record Button(String theme) {}
+record Menu(String theme) {}
+class Screen {
+  Button button = new Button("claro");
+  Menu menu = new Menu("oscuro");
+}</code></pre>
+</article>
+<article>
+<h3>Intención y roles</h3>
+<p>Una fábrica abstracta ofrece varios productos relacionados; cada fábrica concreta produce una familia compatible.</p>
+</article>
+<article>
+<h3>Cuándo usarlo</h3>
+<p>Cuando necesitas cambiar una familia completa manteniendo la coherencia entre sus productos.</p>
+<p class="smell"><b>Cómo reconocerlo</b>Cambias el tema del botón y olvidas cambiar el menú que debe combinar con él.</p>
+</article>
+<article data-step="">
+<h3>Coste y cuándo no</h3>
+<p>Añadir un nuevo tipo de producto obliga a cambiar todas las fábricas. Factory Method delega una creación mediante herencia; Abstract Factory entrega una familia mediante un objeto colaborador.</p>
+</article>
+</div>
+</section>
+
+<section id="11" data-slide data-chapter="GoF / Creacionales" data-title="Abstract Factory · Java" data-family="creational" data-pattern="abstract-factory" data-kind="code">
+<p class="eyebrow">GoF / Creacionales / 11</p>
+<h2>Abstract Factory <span>en Java</span>
+</h2>
+<div class="code-grid"><pre tabindex="0" aria-label="Ejemplo Java 25; desplazamiento horizontal disponible"><code data-java="abstract-factory" data-output="botón oscuro
+menú oscuro">interface Button { String paint(); }
+interface Menu { String paint(); }
+interface ThemeFactory {
+  Button button();
+  Menu menu();
+}
+static class DarkTheme implements ThemeFactory {
+  public Button button() { return () -&gt; &quot;botón oscuro&quot;; }
+  public Menu menu() { return () -&gt; &quot;menú oscuro&quot;; }
+}
+public static void main(String[] args) {
+  ThemeFactory theme = new DarkTheme();
+  System.out.println(theme.button().paint());
+  System.out.println(theme.menu().paint());
+}</code></pre>
+<aside data-step="">
+<h3>Recorrido</h3>
+<p>El cliente recibe una sola fábrica. Pide dos tipos de producto sin conocer sus clases y ambos pertenecen a la familia oscura. Las lambdas implementan las interfaces de un método.</p>
+<h3>Resultado</h3><pre class="result">botón oscuro
+menú oscuro</pre><p class="note">Java 25 · ejemplo mínimo pedagógico. Importaciones: <code>java.util.*</code> y <code>java.util.function.*</code>.</p>
+</aside>
+</div>
+</section>
+
+<section id="12" data-slide data-chapter="GoF / Creacionales" data-title="Builder · concepto" data-family="creational" data-pattern="builder" data-kind="concept">
+<p class="eyebrow">GoF / Creacionales / 12</p>
+<h2>Builder</h2>
+<p class="analogy"><b>Analogía</b>Preparar un bocadillo por pasos: elegir pan y después añadir ingredientes.</p>
+<div class="concept-grid concept-pilot">
+<article>
+<h3>Problema</h3>
+<p>Un constructor con muchos parámetros opcionales resulta difícil de leer y fácil de usar mal.</p>
+<pre class="mini-code" tabindex="0" aria-label="Código ingenuo: opciones posicionales difíciles de distinguir"><code>record Sandwich(String bread, boolean cheese,
+    boolean tomato, boolean onion, boolean sauce) {}
+class Order {
+  Sandwich lunch = new Sandwich(
+      "integral", true, false, false, true);
+}</code></pre>
+</article>
+<article>
+<h3>Intención y roles</h3>
+<figure class="roles">
+<svg viewBox="0 0 600 110" role="img" aria-label="El cliente usa el constructor por pasos, que crea el bocadillo final">
+<defs><marker id="builder-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#ff2a85"></path></marker></defs>
+<rect class="box" x="5" y="34" width="150" height="54" rx="10"></rect>
+<text class="faint" x="19" y="52">cliente</text><text x="19" y="74">Pedido</text>
+<rect class="box" x="225" y="34" width="150" height="54" rx="10"></rect>
+<text class="faint" x="239" y="52">constructor</text><text x="239" y="74">Por pasos</text>
+<text class="faint" x="168" y="47">usa</text>
+<line class="edge" x1="155" y1="61" x2="223" y2="61" marker-end="url(#builder-arrow)"></line>
+<rect class="box" x="445" y="34" width="150" height="54" rx="10"></rect>
+<text class="faint" x="459" y="52">producto</text><text x="459" y="74">Bocadillo</text>
+<text class="faint" x="385" y="47">crea</text>
+<line class="edge" x1="375" y1="61" x2="443" y2="61" marker-end="url(#builder-arrow)"></line>
+</svg>
+</figure>
+<p>Un constructor por pasos acumula opciones y produce el objeto final. Un director de pasos es opcional.</p>
+</article>
+<article>
+<h3>Cuándo usarlo</h3>
+<p>Para objetos con muchas opciones o reglas de construcción, preferiblemente inmutables al terminar.</p>
+<p class="smell"><b>Cómo reconocerlo</b>Necesitas consultar la firma para saber qué ingrediente activa cada true del constructor.</p>
+</article>
+<article data-step="">
+<h3>Coste y cuándo no</h3>
+<p>Añade una clase y puede permitir combinaciones inválidas si no valida. Con dos datos obligatorios, un constructor o record suele bastar.</p>
+</article>
+</div>
+</section>
+
+<section id="13" data-slide data-chapter="GoF / Creacionales" data-title="Builder · Java" data-family="creational" data-pattern="builder" data-kind="code">
+<p class="eyebrow">GoF / Creacionales / 13</p>
+<h2>Builder <span>en Java</span>
+</h2>
+<div class="code-grid"><pre tabindex="0" aria-label="Ejemplo Java 25; desplazamiento horizontal disponible"><code data-java="builder" data-output="integral: true">record Sandwich(String bread, boolean cheese) {}
+static class SandwichBuilder {
+  private String bread = &quot;integral&quot;;
+  private boolean cheese;
+  SandwichBuilder bread(String value) {
+    bread = Objects.requireNonNull(value); return this;
+  }
+  SandwichBuilder cheese() { cheese = true; return this; }
+  Sandwich build() { return new Sandwich(bread, cheese); }
+}
+public static void main(String[] args) {
+  Sandwich lunch = new SandwichBuilder().cheese().build();
+  System.out.println(lunch.bread() + &quot;: &quot; + lunch.cheese());
+}</code></pre>
+<aside data-step="">
+<h3>Recorrido</h3>
+<p>Cada paso devuelve el builder para encadenar llamadas. build crea un valor final independiente; modificar otro builder no altera ese bocadillo.</p>
+<h3>Resultado</h3><pre class="result">integral: true</pre><p class="note">Java 25 · ejemplo mínimo pedagógico. Importaciones: <code>java.util.*</code> y <code>java.util.function.*</code>.</p>
+</aside>
+</div>
+</section>
+
+<section id="14" data-slide data-chapter="GoF / Creacionales" data-title="Prototype · concepto" data-family="creational" data-pattern="prototype" data-kind="concept">
+<p class="eyebrow">GoF / Creacionales / 14</p>
+<h2>Prototype</h2>
+<p class="analogy"><b>Analogía</b>Fotocopiar una ficha y modificar el nombre en la copia.</p>
+<div class="concept-grid concept-pilot">
+<article>
+<h3>Problema</h3>
+<p>Crear configuraciones parecidas desde cero repite valores y hace perder ajustes ya elegidos.</p>
+<pre class="mini-code" tabindex="0" aria-label="Código ingenuo: reconstrucción manual que pierde un ajuste"><code>class Badge {
+  String name, color; int fontSize = 12;
+  Badge forLuis() {
+    Badge next = new Badge();
+    next.name = "Luis"; next.color = color;
+    return next; // Olvida el tamaño elegido.
+  }
+}</code></pre>
+</article>
+<article>
+<h3>Intención y roles</h3>
+<p>Un prototipo ofrece una operación de copia; el cliente parte de un objeto existente sin reconstruirlo campo por campo.</p>
+</article>
+<article>
+<h3>Cuándo usarlo</h3>
+<p>Cuando la configuración inicial es costosa o solo se conoce el objeto que debe copiarse.</p>
+<p class="smell"><b>Cómo reconocerlo</b>Reconstruyes una ficha campo por campo y pierdes un ajuste que ya tenía la original.</p>
+</article>
+<article data-step="">
+<h3>Coste y cuándo no</h3>
+<p>Hay que decidir copia superficial o profunda: compartir listas mutables puede causar sorpresas. Evita clonar recursos externos; para valores pequeños, un record y un constructor pueden ser más claros.</p>
+</article>
+</div>
+</section>
+
+<section id="15" data-slide data-chapter="GoF / Creacionales" data-title="Prototype · Java" data-family="creational" data-pattern="prototype" data-kind="code">
+<p class="eyebrow">GoF / Creacionales / 15</p>
+<h2>Prototype <span>en Java</span>
+</h2>
+<div class="code-grid"><pre tabindex="0" aria-label="Ejemplo Java 25; desplazamiento horizontal disponible"><code data-java="prototype" data-output="Ana/Luis">record Badge(String name, List&lt;String&gt; colors) {
+  Badge { colors = List.copyOf(colors); }
+  Badge copyFor(String newName) {
+    return new Badge(newName, colors);
+  }
+}
+public static void main(String[] args) {
+  Badge original = new Badge(&quot;Ana&quot;, List.of(&quot;azul&quot;));
+  Badge copy = original.copyFor(&quot;Luis&quot;);
+  System.out.println(original.name() + &quot;/&quot; + copy.name());
+}</code></pre>
+<aside data-step="">
+<h3>Recorrido</h3>
+<p>copyFor crea otra ficha conservando los colores. List.copyOf impide modificar la lista compartida y los String son inmutables: aquí compartirlos es seguro.</p>
+<h3>Resultado</h3><pre class="result">Ana/Luis</pre><p class="note">Java 25 · ejemplo mínimo pedagógico. Importaciones: <code>java.util.*</code> y <code>java.util.function.*</code>.</p>
+</aside>
+</div>
+</section>
+
+<section id="16" data-slide data-chapter="GoF / Estructurales" data-title="Adapter · concepto" data-family="structural" data-pattern="adapter" data-kind="concept">
+<p class="eyebrow">GoF / Estructurales / 16</p>
+<h2>Adapter</h2>
+<p class="analogy"><b>Analogía</b>Un adaptador de enchufe conecta dos formatos incompatibles sin rehacer el aparato.</p>
+<div class="concept-grid concept-pilot">
+<article>
+<h3>Problema</h3>
+<p>Nuestro cliente espera una temperatura en Celsius, pero el sensor existente entrega Fahrenheit.</p>
+<pre class="mini-code" tabindex="0" aria-label="Código ingenuo: conversión del sensor repetida en cada pantalla"><code>class OldSensor { int fahrenheit() { return 68; } }
+class Dashboard {
+  OldSensor sensor = new OldSensor();
+  int room() { return (sensor.fahrenheit() - 32) * 5 / 9; }
+  int chart() { return (sensor.fahrenheit() - 32) * 5 / 9; }
+}</code></pre>
+</article>
+<article>
+<h3>Intención y roles</h3>
+<figure class="roles">
+<svg viewBox="0 0 600 190" role="img" aria-label="El panel usa el termómetro; el adaptador implementa ese contrato y usa el sensor Fahrenheit">
+<defs><marker id="adapter-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#ff2a85"></path></marker></defs>
+<rect class="box" x="10" y="8" width="150" height="54" rx="10"></rect>
+<text class="faint" x="24" y="26">cliente</text><text x="24" y="48">Panel</text>
+<rect class="box box-iface" x="430" y="8" width="150" height="54" rx="10"></rect>
+<text class="faint" x="444" y="26">contrato</text><text x="444" y="48">Termómetro</text>
+<text class="faint" x="275" y="27">usa</text>
+<line class="edge" x1="160" y1="35" x2="428" y2="35" marker-end="url(#adapter-arrow)"></line>
+<rect class="box" x="430" y="130" width="150" height="54" rx="10"></rect>
+<text class="faint" x="444" y="148">adaptador</text><text x="444" y="170">A Celsius</text>
+<text class="faint" x="454" y="96">implementa</text>
+<line class="edge-dash" x1="505" y1="130" x2="505" y2="64" marker-end="url(#adapter-arrow)"></line>
+<rect class="box" x="10" y="130" width="150" height="54" rx="10"></rect>
+<text class="faint" x="24" y="148">adaptado</text><text x="24" y="170">Sensor °F</text>
+<text class="faint" x="275" y="149">usa</text>
+<line class="edge" x1="430" y1="157" x2="162" y2="157" marker-end="url(#adapter-arrow)"></line>
+</svg>
+</figure>
+<p>El adaptador cumple el contrato esperado y traduce las llamadas al objeto adaptado.</p>
+</article>
+<article>
+<h3>Cuándo usarlo</h3>
+<p>Al integrar una biblioteca o sistema existente cuyo contrato no puedes cambiar.</p>
+<p class="smell"><b>Cómo reconocerlo</b>Repites la conversión de Fahrenheit a Celsius en cada pantalla que consulta el sensor.</p>
+</article>
+<article data-step="">
+<h3>Coste y cuándo no</h3>
+<p>Oculta diferencias de formato, no incompatibilidades de significado. Si controlas ambos contratos y pueden unificarse, quizá no necesitas esta capa.</p>
+</article>
+</div>
+</section>
+
+<section id="17" data-slide data-chapter="GoF / Estructurales" data-title="Adapter · Java" data-family="structural" data-pattern="adapter" data-kind="code">
+<p class="eyebrow">GoF / Estructurales / 17</p>
+<h2>Adapter <span>en Java</span>
+</h2>
+<div class="code-grid"><pre tabindex="0" aria-label="Ejemplo Java 25; desplazamiento horizontal disponible"><code data-java="adapter" data-output="20">interface Thermometer { int celsius(); }
+static class OldSensor {
+  int fahrenheit() { return 68; }
+}
+record SensorAdapter(OldSensor sensor) implements Thermometer {
+  public int celsius() {
+    return (sensor.fahrenheit() - 32) * 5 / 9;
+  }
+}
+public static void main(String[] args) {
+  Thermometer thermometer = new SensorAdapter(new OldSensor());
+  System.out.println(thermometer.celsius());
+}</code></pre>
+<aside data-step="">
+<h3>Recorrido</h3>
+<p>El cliente solo conoce celsius. SensorAdapter llama al sensor viejo y convierte 68 °F en 20 °C. El redondeo entero se acepta para esta demostración.</p>
+<h3>Resultado</h3><pre class="result">20</pre><p class="note">Java 25 · ejemplo mínimo pedagógico. Importaciones: <code>java.util.*</code> y <code>java.util.function.*</code>.</p>
+</aside>
+</div>
+</section>
+
+<section id="18" data-slide data-chapter="GoF / Estructurales" data-title="Bridge · concepto" data-family="structural" data-pattern="bridge" data-kind="concept">
+<p class="eyebrow">GoF / Estructurales / 18</p>
+<h2>Bridge</h2>
+<p class="analogy"><b>Analogía</b>Un mando y un televisor evolucionan por separado si comparten un protocolo de control.</p>
+<div class="concept-grid concept-pilot">
+<article>
+<h3>Problema</h3>
+<p>Combinar tipos de aviso y canales de entrega mediante herencia crea una clase por cada combinación.</p>
+<pre class="mini-code" tabindex="0" aria-label="Código ingenuo: una subclase por tipo de aviso y canal"><code>abstract class Notice { abstract String send(); }
+class AlertEmail extends Notice {
+  String send() { return "email: alerta"; }
+}
+class AlertSms extends Notice {
+  String send() { return "sms: alerta"; }
+}
+// Un recordatorio necesita otras dos subclases.</code></pre>
+</article>
+<article>
+<h3>Intención y roles</h3>
+<p>La abstracción de alto nivel mantiene una referencia a una implementación; ambas dimensiones pueden variar de forma independiente.</p>
+</article>
+<article>
+<h3>Cuándo usarlo</h3>
+<p>Si prevés dos ejes de variación: qué se hace y con qué mecanismo se realiza.</p>
+<p class="smell"><b>Cómo reconocerlo</b>Añades SMS y tienes que crear una subclase nueva por cada tipo de aviso que ya tienes.</p>
+</article>
+<article data-step="">
+<h3>Coste y cuándo no</h3>
+<p>Añade indirección. Adapter hace compatible algo ya existente; Bridge separa dimensiones por diseño. Con un único eje estable, una función sencilla puede bastar.</p>
+</article>
+</div>
+</section>
+
+<section id="19" data-slide data-chapter="GoF / Estructurales" data-title="Bridge · Java" data-family="structural" data-pattern="bridge" data-kind="code">
+<p class="eyebrow">GoF / Estructurales / 19</p>
+<h2>Bridge <span>en Java</span>
+</h2>
+<div class="code-grid"><pre tabindex="0" aria-label="Ejemplo Java 25; desplazamiento horizontal disponible"><code data-java="bridge" data-output="email: alerta">interface Channel { String send(String text); }
+static class Email implements Channel {
+  public String send(String text) { return &quot;email: &quot; + text; }
+}
+static abstract class Notice {
+  final Channel channel;
+  Notice(Channel channel) { this.channel = channel; }
+  abstract String publish();
+}
+static class Alert extends Notice {
+  Alert(Channel channel) { super(channel); }
+  String publish() { return channel.send(&quot;alerta&quot;); }
+}
+public static void main(String[] args) {
+  Notice notice = new Alert(new Email());
+  System.out.println(notice.publish());
+}</code></pre>
+<aside data-step="">
+<h3>Recorrido</h3>
+<p>Alert define el mensaje; Email define la entrega. Otra clase Notice o Channel puede añadirse sin crear una subclase para cada combinación.</p>
+<h3>Resultado</h3><pre class="result">email: alerta</pre><p class="note">Java 25 · ejemplo mínimo pedagógico. Importaciones: <code>java.util.*</code> y <code>java.util.function.*</code>.</p>
+</aside>
+</div>
+</section>
+
+<section id="20" data-slide data-chapter="GoF / Estructurales" data-title="Composite · concepto" data-family="structural" data-pattern="composite" data-kind="concept">
+<p class="eyebrow">GoF / Estructurales / 20</p>
+<h2>Composite</h2>
+<p class="analogy"><b>Analogía</b>Una caja puede contener productos o más cajas: todo tiene un peso total.</p>
+<div class="concept-grid concept-pilot">
+<article>
+<h3>Problema</h3>
+<p>Calcular el total de una cesta requiere tratar artículos y cajas de artículos con lógica distinta.</p>
+<pre class="mini-code" tabindex="0" aria-label="Código ingenuo: el cliente distingue productos y cajas"><code>record Product(int price) {}
+record Box(Product[] products) {}
+class Checkout {
+  int total(Object item) {
+    if (item instanceof Product p) return p.price();
+    int sum = 0; for (Product p : ((Box) item).products()) sum += p.price();
+    return sum;
+  } }</code></pre>
+</article>
+<article>
+<h3>Intención y roles</h3>
+<p>Hoja y contenedor cumplen el mismo contrato. El contenedor delega recursivamente en sus hijos.</p>
+</article>
+<article>
+<h3>Cuándo usarlo</h3>
+<p>Para árboles donde una operación tiene sentido tanto en elementos individuales como en grupos.</p>
+<p class="smell"><b>Cómo reconocerlo</b>Preguntas si recibes un producto o una caja y debes reescribir el total al anidar otra caja.</p>
+</article>
+<article data-step="">
+<h3>Coste y cuándo no</h3>
+<p>Hay que controlar ciclos y definir qué operaciones pertenecen realmente a una hoja. Para listas planas, el árbol solo añade complejidad.</p>
+</article>
+</div>
+</section>
+
+<section id="21" data-slide data-chapter="GoF / Estructurales" data-title="Composite · Java" data-family="structural" data-pattern="composite" data-kind="code">
+<p class="eyebrow">GoF / Estructurales / 21</p>
+<h2>Composite <span>en Java</span>
+</h2>
+<div class="code-grid"><pre tabindex="0" aria-label="Ejemplo Java 25; desplazamiento horizontal disponible"><code data-java="composite" data-output="7">interface Item { int price(); }
+record Product(int price) implements Item {}
+record Box(List&lt;Item&gt; children) implements Item {
+  Box { children = List.copyOf(children); }
+  public int price() {
+    return children.stream().mapToInt(Item::price).sum();
+  }
+}
+public static void main(String[] args) {
+  Item box = new Box(List.of(new Product(3),
+      new Box(List.of(new Product(4)))));
+  System.out.println(box.price());
+}</code></pre>
+<aside data-step="">
+<h3>Recorrido</h3>
+<p>La caja exterior suma un producto de 3 y otra caja. Esa caja devuelve 4. El cliente llama price sin preguntar si recibe una hoja o un grupo.</p>
+<h3>Resultado</h3><pre class="result">7</pre><p class="note">Java 25 · ejemplo mínimo pedagógico. Importaciones: <code>java.util.*</code> y <code>java.util.function.*</code>.</p>
+</aside>
+</div>
+</section>
+
+<section id="22" data-slide data-chapter="GoF / Estructurales" data-title="Decorator · concepto" data-family="structural" data-pattern="decorator" data-kind="concept">
+<p class="eyebrow">GoF / Estructurales / 22</p>
+<h2>Decorator</h2>
+<p class="analogy"><b>Analogía</b>Vestirse por capas: cada capa añade algo y conserva lo anterior.</p>
+<div class="concept-grid concept-pilot">
+<article>
+<h3>Problema</h3>
+<p>Queremos añadir extras a una bebida sin crear clases para todas las combinaciones posibles.</p>
+<pre class="mini-code" tabindex="0" aria-label="Código ingenuo: precios fijos para cada combinación de extras"><code>class CoffeeMenu {
+  int coffee() { return 2; }
+  int withMilk() { return 3; }
+  int withSyrup() { return 4; }
+  int withMilkAndSyrup() { return 5; }
+  // La nata obliga a duplicar las combinaciones.
+}</code></pre>
+</article>
+<article>
+<h3>Intención y roles</h3>
+<figure class="roles">
+<svg viewBox="0 0 600 190" role="img" aria-label="Café y Leche implementan Bebida; Leche envuelve y usa otra Bebida para añadir su precio">
+<defs><marker id="decorator-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#ff2a85"></path></marker></defs>
+<rect class="box box-iface" x="225" y="8" width="150" height="54" rx="10"></rect>
+<text class="faint" x="239" y="26">contrato</text><text x="239" y="48">Bebida</text>
+<rect class="box" x="10" y="130" width="150" height="54" rx="10"></rect>
+<text class="faint" x="24" y="148">componente</text><text x="24" y="170">Café</text>
+<rect class="box" x="430" y="130" width="150" height="54" rx="10"></rect>
+<text class="faint" x="444" y="148">decorador</text><text x="444" y="170">Leche</text>
+<text class="faint" x="38" y="96">implementa</text>
+<path class="edge-dash" d="M 85 130 L 85 35 L 223 35" marker-end="url(#decorator-arrow)"></path>
+<text class="faint" x="430" y="96">implementa</text>
+<path class="edge-dash" d="M 505 130 L 505 35 L 377 35" marker-end="url(#decorator-arrow)"></path>
+<text class="faint" x="267" y="110">envuelve / usa</text>
+<path class="edge" d="M 430 157 L 300 157 L 300 64" marker-end="url(#decorator-arrow)"></path>
+</svg>
+</figure>
+<p>Un decorador cumple el mismo contrato que el componente, lo envuelve y añade comportamiento antes o después de delegar.</p>
+</article>
+<article>
+<h3>Cuándo usarlo</h3>
+<p>Cuando necesitas combinar responsabilidades opcionales por instancia y en tiempo de ejecución.</p>
+<p class="smell"><b>Cómo reconocerlo</b>Añades nata al menú y debes escribir una variante por cada combinación de leche y sirope.</p>
+</article>
+<article data-step="">
+<h3>Coste y cuándo no</h3>
+<p>El orden importa y depurar muchas capas cuesta. Decorator añade responsabilidades; Proxy controla acceso o ciclo de vida. Para una sola opción estable, un parámetro puede ser suficiente.</p>
+</article>
+</div>
+</section>
+
+<section id="23" data-slide data-chapter="GoF / Estructurales" data-title="Decorator · Java" data-family="structural" data-pattern="decorator" data-kind="code">
+<p class="eyebrow">GoF / Estructurales / 23</p>
+<h2>Decorator <span>en Java</span>
+</h2>
+<div class="code-grid"><pre tabindex="0" aria-label="Ejemplo Java 25; desplazamiento horizontal disponible"><code data-java="decorator" data-output="3">interface Drink { int price(); }
+static class Coffee implements Drink {
+  public int price() { return 2; }
+}
+record Milk(Drink inner) implements Drink {
+  public int price() { return inner.price() + 1; }
+}
+public static void main(String[] args) {
+  Drink plain = new Coffee();
+  Drink enriched = new Milk(plain);
+  System.out.println(enriched.price());
+}</code></pre>
+<aside data-step="">
+<h3>Recorrido</h3>
+<p>Milk recibe cualquier Drink. Cuando el cliente pide el precio, delega al café y añade uno. El contrato sigue siendo Drink y podrían apilarse más extras.</p>
+<h3>Resultado</h3><pre class="result">3</pre><p class="note">Java 25 · ejemplo mínimo pedagógico. Importaciones: <code>java.util.*</code> y <code>java.util.function.*</code>.</p>
+</aside>
+</div>
+</section>
+
+<section id="24" data-slide data-chapter="GoF / Estructurales" data-title="Facade · concepto" data-family="structural" data-pattern="facade" data-kind="concept">
+<p class="eyebrow">GoF / Estructurales / 24</p>
+<h2>Facade</h2>
+<p class="analogy"><b>Analogía</b>La recepción de un hotel coordina varios servicios desde un único mostrador.</p>
+<div class="concept-grid concept-pilot">
+<article>
+<h3>Problema</h3>
+<p>El cliente debe recordar muchas llamadas y su orden para iniciar una actividad.</p>
+<pre class="mini-code" tabindex="0" aria-label="Código ingenuo: el espectador coordina cada equipo del cine"><code>class Screen { void on() {} }
+class Speaker { void on() {} }
+class Viewer {
+  void play(Screen screen, Speaker speaker) {
+    screen.on();
+    speaker.on();
+  }
+}</code></pre>
+</article>
+<article>
+<h3>Intención y roles</h3>
+<figure class="roles">
+<svg viewBox="0 0 600 190" role="img" aria-label="El espectador usa la fachada Cine, que coordina los subsistemas Pantalla y Audio">
+<defs><marker id="facade-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#ff2a85"></path></marker></defs>
+<rect class="box" x="5" y="8" width="150" height="54" rx="10"></rect>
+<text class="faint" x="19" y="26">cliente</text><text x="19" y="48">Espectador</text>
+<rect class="box" x="225" y="8" width="150" height="54" rx="10"></rect>
+<text class="faint" x="239" y="26">fachada</text><text x="239" y="48">Cine</text>
+<text class="faint" x="171" y="21">usa</text>
+<line class="edge" x1="155" y1="35" x2="223" y2="35" marker-end="url(#facade-arrow)"></line>
+<rect class="box" x="445" y="8" width="150" height="54" rx="10"></rect>
+<text class="faint" x="459" y="26">subsistema</text><text x="459" y="48">Pantalla</text>
+<text class="faint" x="388" y="21">usa</text>
+<line class="edge" x1="375" y1="35" x2="443" y2="35" marker-end="url(#facade-arrow)"></line>
+<rect class="box" x="445" y="130" width="150" height="54" rx="10"></rect>
+<text class="faint" x="459" y="148">subsistema</text><text x="459" y="170">Audio</text>
+<text class="faint" x="338" y="149">usa</text>
+<path class="edge" d="M 300 62 L 300 157 L 443 157" marker-end="url(#facade-arrow)"></path>
+</svg>
+</figure>
+<p>Una fachada ofrece una operación sencilla y coordina subsistemas. No obliga a ocultar todas sus APIs.</p>
+</article>
+<article>
+<h3>Cuándo usarlo</h3>
+<p>Para dar una entrada estable a un conjunto de componentes y reducir el conocimiento del cliente.</p>
+<p class="smell"><b>Cómo reconocerlo</b>Repites la secuencia de encender pantalla y audio en cada lugar desde el que inicias una película.</p>
+</article>
+<article data-step="">
+<h3>Coste y cuándo no</h3>
+<p>Puede convertirse en un objeto que hace demasiado. No debe absorber todas las reglas del sistema; si solo cambia nombres sin simplificar, no aporta valor.</p>
+</article>
+</div>
+</section>
+
+<section id="25" data-slide data-chapter="GoF / Estructurales" data-title="Facade · Java" data-family="structural" data-pattern="facade" data-kind="code">
+<p class="eyebrow">GoF / Estructurales / 25</p>
+<h2>Facade <span>en Java</span>
+</h2>
+<div class="code-grid"><pre tabindex="0" aria-label="Ejemplo Java 25; desplazamiento horizontal disponible"><code data-java="facade" data-output="pantalla lista, audio listo">static class Screen {
+  String on() { return &quot;pantalla lista&quot;; }
+}
+static class Speaker {
+  String on() { return &quot;audio listo&quot;; }
+}
+record Cinema(Screen screen, Speaker speaker) {
+  String start() {
+    return screen.on() + &quot;, &quot; + speaker.on();
+  }
+}
+public static void main(String[] args) {
+  Cinema cinema = new Cinema(new Screen(), new Speaker());
+  System.out.println(cinema.start());
+}</code></pre>
+<aside data-step="">
+<h3>Recorrido</h3>
+<p>El cliente llama start una vez. Cinema enciende primero la pantalla y luego el sonido. La coordinación queda en un lugar, no repetida en cada cliente.</p>
+<h3>Resultado</h3><pre class="result">pantalla lista, audio listo</pre><p class="note">Java 25 · ejemplo mínimo pedagógico. Importaciones: <code>java.util.*</code> y <code>java.util.function.*</code>.</p>
+</aside>
+</div>
+</section>
+
+<section id="26" data-slide data-chapter="GoF / Estructurales" data-title="Flyweight · concepto" data-family="structural" data-pattern="flyweight" data-kind="concept">
+<p class="eyebrow">GoF / Estructurales / 26</p>
+<h2>Flyweight</h2>
+<p class="analogy"><b>Analogía</b>Un sello comparte su dibujo; cada estampación decide dónde colocarlo.</p>
+<div class="concept-grid concept-pilot">
+<article>
+<h3>Problema</h3>
+<p>Miles de caracteres repiten la misma información tipográfica y consumen memoria innecesaria.</p>
+<pre class="mini-code" tabindex="0" aria-label="Código ingenuo: cada letra reserva su propia imagen del glifo"><code>class Letter {
+  char symbol = 'A'; int x;
+  byte[] glyphPixels = new byte[4096];
+}
+class Page {
+  Letter first = new Letter(), second = new Letter();
+  // Dos letras A reservan dos imágenes iguales.
+}</code></pre>
+</article>
+<article>
+<h3>Intención y roles</h3>
+<p>La fábrica comparte estado intrínseco inmutable; el cliente aporta el estado extrínseco que varía en cada uso.</p>
+</article>
+<article>
+<h3>Cuándo usarlo</h3>
+<p>Cuando hay muchos objetos y una parte importante de sus datos puede compartirse de forma segura.</p>
+<p class="smell"><b>Cómo reconocerlo</b>Guardas miles de letras A y reservas una copia de la misma imagen tipográfica en cada una.</p>
+</article>
+<article data-step="">
+<h3>Coste y cuándo no</h3>
+<p>Gestionar la caché y separar estados tiene coste. No compartas coordenadas u otros datos mutables por accidente. Mide memoria antes de añadir esta optimización.</p>
+</article>
+</div>
+</section>
+
+<section id="27" data-slide data-chapter="GoF / Estructurales" data-title="Flyweight · Java" data-family="structural" data-pattern="flyweight" data-kind="code">
+<p class="eyebrow">GoF / Estructurales / 27</p>
+<h2>Flyweight <span>en Java</span>
+</h2>
+<div class="code-grid"><pre tabindex="0" aria-label="Ejemplo Java 25; desplazamiento horizontal disponible"><code data-java="flyweight" data-output="true
+A@10">record Glyph(char symbol) {
+  String draw(int x) { return symbol + &quot;@&quot; + x; }
+}
+static class GlyphPool {
+  private final Map&lt;Character, Glyph&gt; cache = new HashMap&lt;&gt;();
+  Glyph get(char symbol) {
+    return cache.computeIfAbsent(symbol, Glyph::new);
+  }
+}
+public static void main(String[] args) {
+  GlyphPool pool = new GlyphPool();
+  Glyph first = pool.get(&#x27;A&#x27;);
+  System.out.println(first == pool.get(&#x27;A&#x27;));
+  System.out.println(first.draw(10));
+}</code></pre>
+<aside data-step="">
+<h3>Recorrido</h3>
+<p>El símbolo inmutable se comparte. La posición 10 se pasa a draw y no se guarda en el Glyph. La caché es local y este ejemplo no promete seguridad concurrente.</p>
+<h3>Resultado</h3><pre class="result">true
+A@10</pre><p class="note">Java 25 · ejemplo mínimo pedagógico. Importaciones: <code>java.util.*</code> y <code>java.util.function.*</code>.</p>
+</aside>
+</div>
+</section>
+
+<section id="28" data-slide data-chapter="GoF / Estructurales" data-title="Proxy · concepto" data-family="structural" data-pattern="proxy" data-kind="concept">
+<p class="eyebrow">GoF / Estructurales / 28</p>
+<h2>Proxy</h2>
+<p class="analogy"><b>Analogía</b>Un portero deja pasar solo a quien tiene autorización.</p>
+<div class="concept-grid concept-pilot">
+<article>
+<h3>Problema</h3>
+<p>Queremos controlar el acceso a un documento sin cambiar el contrato que conoce su lector.</p>
+<pre class="mini-code" tabindex="0" aria-label="Código ingenuo: un lector comprueba permisos y otro los olvida"><code>class Report { String read() { return "informe"; } }
+class Readers {
+  String preview(Report doc, boolean allowed) {
+    return allowed ? doc.read() : "acceso denegado";
+  }
+  String download(Report doc) {
+    return doc.read(); // Aquí olvidaste el permiso.
+  } }</code></pre>
+</article>
+<article>
+<h3>Intención y roles</h3>
+<p>El sustituto implementa el contrato del objeto real y decide si, cuándo o cómo delegar.</p>
+</article>
+<article>
+<h3>Cuándo usarlo</h3>
+<p>Para permisos, carga diferida, acceso remoto o caché detrás de una interfaz común.</p>
+<p class="smell"><b>Cómo reconocerlo</b>Compruebas el permiso al previsualizar el informe, pero olvidas hacerlo al descargarlo.</p>
+</article>
+<article data-step="">
+<h3>Coste y cuándo no</h3>
+<p>Puede esconder latencia o errores que el cliente debe conocer. A diferencia de Decorator, su intención central es controlar acceso. Evítalo si una llamada directa resulta suficiente.</p>
+</article>
+</div>
+</section>
+
+<section id="29" data-slide data-chapter="GoF / Estructurales" data-title="Proxy · Java" data-family="structural" data-pattern="proxy" data-kind="code">
+<p class="eyebrow">GoF / Estructurales / 29</p>
+<h2>Proxy <span>en Java</span>
+</h2>
+<div class="code-grid"><pre tabindex="0" aria-label="Ejemplo Java 25; desplazamiento horizontal disponible"><code data-java="proxy" data-output="acceso denegado">interface Document { String read(); }
+static class Report implements Document {
+  public String read() { return &quot;informe&quot;; }
+}
+record Guarded(Document target, boolean allowed)
+    implements Document {
+  public String read() {
+    if (!allowed) return &quot;acceso denegado&quot;;
+    return target.read();
+  }
+}
+public static void main(String[] args) {
+  Document doc = new Guarded(new Report(), false);
+  System.out.println(doc.read());
+}</code></pre>
+<aside data-step="">
+<h3>Recorrido</h3>
+<p>El lector usa Document. Guarded comprueba la autorización y no llama a Report cuando se deniega. El booleano ilustra la decisión; no es un sistema real de seguridad.</p>
+<h3>Resultado</h3><pre class="result">acceso denegado</pre><p class="note">Java 25 · ejemplo mínimo pedagógico. Importaciones: <code>java.util.*</code> y <code>java.util.function.*</code>.</p>
+</aside>
+</div>
+</section>
+
+<section id="30" data-slide data-chapter="GoF / Comportamiento" data-title="Chain of Responsibility · concepto" data-family="behavioral" data-pattern="chain-of-responsibility" data-kind="concept">
+<p class="eyebrow">GoF / Comportamiento / 30</p>
+<h2>Chain of Responsibility</h2>
+<p class="analogy"><b>Analogía</b>En una oficina, cada mesa resuelve un trámite o lo pasa a la siguiente.</p>
+<div class="concept-grid concept-pilot">
+<article>
+<h3>Problema</h3>
+<p>Una petición necesita pasar por comprobaciones configurables sin que el emisor conozca todas.</p>
+<pre class="mini-code" tabindex="0" aria-label="Código ingenuo: validaciones fijadas dentro del envío"><code>class Form {
+  String submit(String text, boolean loggedIn) {
+    if (!loggedIn) return "inicia sesión";
+    if (text.isBlank()) return "vacío";
+    if (text.length() &gt; 10) return "demasiado largo";
+    return "aceptado";
+  }
+}</code></pre>
+</article>
+<article>
+<h3>Intención y roles</h3>
+<p>Cada manejador atiende o rechaza la petición; si corresponde, delega en el siguiente eslabón.</p>
+</article>
+<article>
+<h3>Cuándo usarlo</h3>
+<p>Para filtros o validaciones cuyo orden y composición pueden cambiar.</p>
+<p class="smell"><b>Cómo reconocerlo</b>Quieres cambiar el orden de los filtros y tienes que editar el método que envía el formulario.</p>
+</article>
+<article data-step="">
+<h3>Coste y cuándo no</h3>
+<p>El orden puede alterar el resultado y una petición puede quedar sin atender. Define un final explícito; con dos comprobaciones fijas, un método puede ser más legible.</p>
+</article>
+</div>
+</section>
+
+<section id="31" data-slide data-chapter="GoF / Comportamiento" data-title="Chain of Responsibility · Java" data-family="behavioral" data-pattern="chain-of-responsibility" data-kind="code">
+<p class="eyebrow">GoF / Comportamiento / 31</p>
+<h2>Chain of Responsibility <span>en Java</span>
+</h2>
+<div class="code-grid"><pre tabindex="0" aria-label="Ejemplo Java 25; desplazamiento horizontal disponible"><code data-java="chain-of-responsibility" data-output="aceptado
+vacío">interface Handler { String handle(String text); }
+record LengthCheck(Handler next) implements Handler {
+  public String handle(String text) {
+    return text.length() &gt; 10 ? &quot;demasiado largo&quot; : next.handle(text);
+  }
+}
+record EmptyCheck(Handler next) implements Handler {
+  public String handle(String text) {
+    return text.isBlank() ? &quot;vacío&quot; : next.handle(text);
+  }
+}
+public static void main(String[] args) {
+  Handler end = text -&gt; &quot;aceptado&quot;;
+  Handler chain = new EmptyCheck(new LengthCheck(end));
+  System.out.println(chain.handle(&quot;hola&quot;));
+  System.out.println(chain.handle(&quot;&quot;));
+}</code></pre>
+<aside data-step="">
+<h3>Recorrido</h3>
+<p>EmptyCheck puede detener la cadena. Si el texto no está vacío, LengthCheck decide y al final end acepta. El cliente no necesita conocer los pasos internos.</p>
+<h3>Resultado</h3><pre class="result">aceptado
+vacío</pre><p class="note">Java 25 · ejemplo mínimo pedagógico. Importaciones: <code>java.util.*</code> y <code>java.util.function.*</code>.</p>
+</aside>
+</div>
+</section>
+
+<section id="32" data-slide data-chapter="GoF / Comportamiento" data-title="Command · concepto" data-family="behavioral" data-pattern="command" data-kind="concept">
+<p class="eyebrow">GoF / Comportamiento / 32</p>
+<h2>Command</h2>
+<p class="analogy"><b>Analogía</b>Una comanda escrita guarda qué se debe preparar y puede entregarse después.</p>
+<div class="concept-grid concept-pilot">
+<article>
+<h3>Problema</h3>
+<p>Un botón debe ejecutar una acción sin conocer el objeto y los argumentos que necesita.</p>
+<pre class="mini-code" tabindex="0" aria-label="Código ingenuo: el botón conoce la lámpara y su intensidad"><code>class Lamp { void turnOn(int brightness) {} }
+class Button {
+  Lamp lamp = new Lamp();
+  void press() {
+    lamp.turnOn(80);
+  }
+}</code></pre>
+</article>
+<article>
+<h3>Intención y roles</h3>
+<p>Un comando encapsula una petición. El invocador lo ejecuta y el receptor realiza el trabajo.</p>
+</article>
+<article>
+<h3>Cuándo usarlo</h3>
+<p>Para colas de acciones, botones configurables, registro de operaciones o deshacer si existe una inversa válida.</p>
+<p class="smell"><b>Cómo reconocerlo</b>Para reutilizar el botón con otra acción, tienes que cambiar su receptor y sus argumentos dentro de press.</p>
+</article>
+<article data-step="">
+<h3>Coste y cuándo no</h3>
+<p>Guardar una petición no hace que pueda deshacerse automáticamente. Añade objetos y estado; para una llamada inmediata fija, basta llamar al método.</p>
+</article>
+</div>
+</section>
+
+<section id="33" data-slide data-chapter="GoF / Comportamiento" data-title="Command · Java" data-family="behavioral" data-pattern="command" data-kind="code">
+<p class="eyebrow">GoF / Comportamiento / 33</p>
+<h2>Command <span>en Java</span>
+</h2>
+<div class="code-grid"><pre tabindex="0" aria-label="Ejemplo Java 25; desplazamiento horizontal disponible"><code data-java="command" data-output="encendida">interface Command { void execute(); }
+static class Lamp {
+  void turnOn() { System.out.println(&quot;encendida&quot;); }
+}
+record TurnOn(Lamp lamp) implements Command {
+  public void execute() { lamp.turnOn(); }
+}
+record Button(Command command) {
+  void press() { command.execute(); }
+}
+public static void main(String[] args) {
+  Lamp lamp = new Lamp();
+  Button button = new Button(new TurnOn(lamp));
+  button.press();
+}</code></pre>
+<aside data-step="">
+<h3>Recorrido</h3>
+<p>El botón invoca execute sin saber qué es una lámpara. TurnOn recuerda el receptor y transforma la petición en lamp.turnOn. No se implementa deshacer en este ejemplo.</p>
+<h3>Resultado</h3><pre class="result">encendida</pre><p class="note">Java 25 · ejemplo mínimo pedagógico. Importaciones: <code>java.util.*</code> y <code>java.util.function.*</code>.</p>
+</aside>
+</div>
+</section>
+
+<section id="34" data-slide data-chapter="GoF / Comportamiento" data-title="Interpreter · concepto" data-family="behavioral" data-pattern="interpreter" data-kind="concept">
+<p class="eyebrow">GoF / Comportamiento / 34</p>
+<h2>Interpreter</h2>
+<p class="analogy"><b>Analogía</b>Una frase se entiende al combinar palabras según unas reglas de gramática.</p>
+<div class="concept-grid concept-pilot">
+<article>
+<h3>Problema</h3>
+<p>Queremos evaluar reglas pequeñas combinando expresiones sin escribir un método para cada combinación.</p>
+<pre class="mini-code" tabindex="0" aria-label="Código ingenuo: un método por cada combinación de hechos"><code>class ShippingRules {
+  boolean paidAndReady(boolean paid, boolean ready) {
+    return paid &amp;&amp; ready;
+  }
+  boolean paidOrGift(boolean paid, boolean gift) {
+    return paid || gift;
+  }
+}</code></pre>
+</article>
+<article>
+<h3>Intención y roles</h3>
+<p>Cada expresión representa una regla del lenguaje; las compuestas evalúan sus subexpresiones sobre un contexto.</p>
+</article>
+<article>
+<h3>Cuándo usarlo</h3>
+<p>Para lenguajes diminutos y estables, como reglas booleanas configuradas por código.</p>
+<p class="smell"><b>Cómo reconocerlo</b>Creas otro método cada vez que necesitas combinar los mismos hechos con un «y» o un «o» distinto.</p>
+</article>
+<article data-step="">
+<h3>Coste y cuándo no</h3>
+<p>Una gramática grande dispara el número de clases. No es un analizador de texto completo; para lenguajes complejos, usa herramientas adecuadas y no evalúes texto arbitrario.</p>
+</article>
+</div>
+</section>
+
+<section id="35" data-slide data-chapter="GoF / Comportamiento" data-title="Interpreter · Java" data-family="behavioral" data-pattern="interpreter" data-kind="code">
+<p class="eyebrow">GoF / Comportamiento / 35</p>
+<h2>Interpreter <span>en Java</span>
+</h2>
+<div class="code-grid"><pre tabindex="0" aria-label="Ejemplo Java 25; desplazamiento horizontal disponible"><code data-java="interpreter" data-output="true">interface Expression { boolean test(Set&lt;String&gt; facts); }
+record Word(String value) implements Expression {
+  public boolean test(Set&lt;String&gt; facts) {
+    return facts.contains(value);
+  }
+}
+record And(Expression left, Expression right)
+    implements Expression {
+  public boolean test(Set&lt;String&gt; facts) {
+    return left.test(facts) &amp;&amp; right.test(facts);
+  }
+}
+public static void main(String[] args) {
+  Expression rule = new And(new Word(&quot;paid&quot;), new Word(&quot;ready&quot;));
+  System.out.println(rule.test(Set.of(&quot;paid&quot;, &quot;ready&quot;)));
+}</code></pre>
+<aside data-step="">
+<h3>Recorrido</h3>
+<p>El conjunto es el contexto de hechos. Word consulta uno y And exige ambos. Construimos el árbol de expresión directamente: analizar una cadena de entrada sería otro trabajo.</p>
+<h3>Resultado</h3><pre class="result">true</pre><p class="note">Java 25 · ejemplo mínimo pedagógico. Importaciones: <code>java.util.*</code> y <code>java.util.function.*</code>.</p>
+</aside>
+</div>
+</section>
+
+<section id="36" data-slide data-chapter="GoF / Comportamiento" data-title="Iterator · concepto" data-family="behavioral" data-pattern="iterator" data-kind="concept">
+<p class="eyebrow">GoF / Comportamiento / 36</p>
+<h2>Iterator</h2>
+<p class="analogy"><b>Analogía</b>Un dispensador entrega la siguiente ficha sin mostrar el mecanismo interior.</p>
+<div class="concept-grid concept-pilot">
+<article>
+<h3>Problema</h3>
+<p>El cliente necesita recorrer datos sin depender de cómo están almacenados.</p>
+<pre class="mini-code" tabindex="0" aria-label="Código ingenuo: el cliente recorre los nodos internos"><code>class Node { String name; Node next; }
+class GuestList { Node head; }
+class Printer {
+  void print(GuestList guests) {
+    for (Node n = guests.head; n != null; n = n.next)
+      System.out.println(n.name);
+  }
+}</code></pre>
+</article>
+<article>
+<h3>Intención y roles</h3>
+<p>El iterador mantiene la posición de recorrido; la colección conserva los datos. hasNext consulta y next avanza.</p>
+</article>
+<article>
+<h3>Cuándo usarlo</h3>
+<p>Para exponer recorridos uniformes o varios recorridos independientes sobre una colección.</p>
+<p class="smell"><b>Cómo reconocerlo</b>Cambias la lista enlazada por un array y tienes que reescribir cada cliente que seguía sus nodos.</p>
+</article>
+<article data-step="">
+<h3>Coste y cuándo no</h3>
+<p>Hay que definir agotamiento y cambios durante el recorrido. next debe lanzar NoSuchElementException al agotarse; no devolver null. Para listas normales, usa los iteradores de Java.</p>
+</article>
+</div>
+</section>
+
+<section id="37" data-slide data-chapter="GoF / Comportamiento" data-title="Iterator · Java" data-family="behavioral" data-pattern="iterator" data-kind="code">
+<p class="eyebrow">GoF / Comportamiento / 37</p>
+<h2>Iterator <span>en Java</span>
+</h2>
+<div class="code-grid"><pre tabindex="0" aria-label="Ejemplo Java 25; desplazamiento horizontal disponible"><code data-java="iterator" data-output="Ana
+Luis
+fin">static class Names implements Iterator&lt;String&gt; {
+  private final List&lt;String&gt; values = List.of(&quot;Ana&quot;, &quot;Luis&quot;);
+  private int index;
+  public boolean hasNext() { return index &lt; values.size(); }
+  public String next() {
+    if (!hasNext()) throw new NoSuchElementException();
+    return values.get(index++);
+  }
+}
+public static void main(String[] args) {
+  Iterator&lt;String&gt; names = new Names();
+  while (names.hasNext()) System.out.println(names.next());
+  try { names.next(); }
+  catch (NoSuchElementException exhausted) {
+    System.out.println(&quot;fin&quot;);
+  }
+}</code></pre>
+<aside data-step="">
+<h3>Recorrido</h3>
+<p>Cada next devuelve un elemento y avanza una posición. Tras Luis, hasNext es falso. La llamada adicional demuestra el contrato de agotamiento con una excepción específica.</p>
+<h3>Resultado</h3><pre class="result">Ana
+Luis
+fin</pre><p class="note">Java 25 · ejemplo mínimo pedagógico. Importaciones: <code>java.util.*</code> y <code>java.util.function.*</code>.</p>
+</aside>
+</div>
+</section>
+
+<section id="38" data-slide data-chapter="GoF / Comportamiento" data-title="Mediator · concepto" data-family="behavioral" data-pattern="mediator" data-kind="concept">
+<p class="eyebrow">GoF / Comportamiento / 38</p>
+<h2>Mediator</h2>
+<p class="analogy"><b>Analogía</b>Una torre de control coordina aviones que no negocian cada movimiento entre ellos.</p>
+<div class="concept-grid concept-pilot">
+<article>
+<h3>Problema</h3>
+<p>Los componentes de una pantalla se llaman entre sí y forman una red difícil de cambiar.</p>
+<pre class="mini-code" tabindex="0" aria-label="Código ingenuo: campo y botón se modifican mutuamente"><code>class NameField {
+  SaveButton save; String text = "";
+  void input(String value) {
+    text = value; save.enabled = !text.isBlank();
+  }
+}
+class SaveButton { NameField name; boolean enabled;
+  void reset() { name.text = ""; enabled = false; } }</code></pre>
+</article>
+<article>
+<h3>Intención y roles</h3>
+<p>Un mediador concentra la coordinación; los colegas se comunican a través de él en lugar de conocerse todos.</p>
+</article>
+<article>
+<h3>Cuándo usarlo</h3>
+<p>Cuando las interacciones entre varios objetos pesan más que su comportamiento individual.</p>
+<p class="smell"><b>Cómo reconocerlo</b>Añades un campo y tienes que enseñarle qué botones cambiar y a esos botones cómo limpiar el campo.</p>
+</article>
+<article data-step="">
+<h3>Coste y cuándo no</h3>
+<p>El mediador puede convertirse en un objeto enorme. Separa coordinaciones por caso de uso y evita añadirlo si los objetos casi no interactúan.</p>
+</article>
+</div>
+</section>
+
+<section id="39" data-slide data-chapter="GoF / Comportamiento" data-title="Mediator · Java" data-family="behavioral" data-pattern="mediator" data-kind="code">
+<p class="eyebrow">GoF / Comportamiento / 39</p>
+<h2>Mediator <span>en Java</span>
+</h2>
+<div class="code-grid"><pre tabindex="0" aria-label="Ejemplo Java 25; desplazamiento horizontal disponible"><code data-java="mediator" data-output="Listo">static class Label {
+  String text = &quot;&quot;;
+}
+record FormMediator(Label label) {
+  void nameChanged(String name) {
+    label.text = name.isBlank() ? &quot;Falta nombre&quot; : &quot;Listo&quot;;
+  }
+}
+record NameField(FormMediator mediator) {
+  void input(String value) { mediator.nameChanged(value); }
+}
+public static void main(String[] args) {
+  Label label = new Label();
+  NameField field = new NameField(new FormMediator(label));
+  field.input(&quot;Ana&quot;);
+  System.out.println(label.text);
+}</code></pre>
+<aside data-step="">
+<h3>Recorrido</h3>
+<p>NameField no conoce Label. Notifica al mediador, que decide qué mostrar. La regla de coordinación está centralizada y el campo no modifica directamente a su vecino.</p>
+<h3>Resultado</h3><pre class="result">Listo</pre><p class="note">Java 25 · ejemplo mínimo pedagógico. Importaciones: <code>java.util.*</code> y <code>java.util.function.*</code>.</p>
+</aside>
+</div>
+</section>
+
+<section id="40" data-slide data-chapter="GoF / Comportamiento" data-title="Memento · concepto" data-family="behavioral" data-pattern="memento" data-kind="concept">
+<p class="eyebrow">GoF / Comportamiento / 40</p>
+<h2>Memento</h2>
+<p class="analogy"><b>Analogía</b>Un sobre sellado conserva una versión anterior que solo su dueño sabe restaurar.</p>
+<div class="concept-grid concept-pilot">
+<article>
+<h3>Problema</h3>
+<p>Necesitamos deshacer una edición sin permitir que quien guarda el historial manipule el estado interno.</p>
+<pre class="mini-code" tabindex="0" aria-label="Código ingenuo: el historial accede al estado del editor"><code>class Editor { String text = ""; int cursor; }
+class History {
+  String oldText; int oldCursor;
+  void save(Editor e) {
+    oldText = e.text; oldCursor = e.cursor;
+  }
+  void undo(Editor e) { e.text = oldText; e.cursor = oldCursor; }
+}</code></pre>
+</article>
+<article>
+<h3>Intención y roles</h3>
+<p>El originador produce una instantánea; el cuidador la conserva; el originador la restaura sin exponer detalles mutables.</p>
+</article>
+<article>
+<h3>Cuándo usarlo</h3>
+<p>Para puntos de restauración o deshacer local cuando copiar el estado es viable.</p>
+<p class="smell"><b>Cómo reconocerlo</b>Añades la selección al editor y tienes que modificar el historial para que sepa guardarla y restaurarla.</p>
+</article>
+<article data-step="">
+<h3>Coste y cuándo no</h3>
+<p>Las copias consumen memoria y no revierten correos ni otros efectos externos. Una instantánea de listas mutables necesita copias defensivas; no basta con guardar su referencia.</p>
+</article>
+</div>
+</section>
+
+<section id="41" data-slide data-chapter="GoF / Comportamiento" data-title="Memento · Java" data-family="behavioral" data-pattern="memento" data-kind="code">
+<p class="eyebrow">GoF / Comportamiento / 41</p>
+<h2>Memento <span>en Java</span>
+</h2>
+<div class="code-grid"><pre tabindex="0" aria-label="Ejemplo Java 25; desplazamiento horizontal disponible"><code data-java="memento" data-output="uno">static class Editor {
+  private List&lt;String&gt; lines = new ArrayList&lt;&gt;();
+  record Snapshot(List&lt;String&gt; lines) {
+    Snapshot { lines = List.copyOf(lines); }
+  }
+  void add(String line) { lines.add(line); }
+  Snapshot save() { return new Snapshot(lines); }
+  void restore(Snapshot saved) {
+    lines = new ArrayList&lt;&gt;(saved.lines());
+  }
+  String text() { return String.join(&quot;,&quot;, lines); }
+}
+public static void main(String[] args) {
+  Editor editor = new Editor(); editor.add(&quot;uno&quot;);
+  Editor.Snapshot saved = editor.save();
+  editor.add(&quot;dos&quot;); editor.restore(saved);
+  System.out.println(editor.text());
+}</code></pre>
+<aside data-step="">
+<h3>Recorrido</h3>
+<p>save copia la lista a una instantánea inmutable de String. restore crea otra lista mutable para el editor. Ni el historial ni futuras ediciones comparten una lista modificable.</p>
+<h3>Resultado</h3><pre class="result">uno</pre><p class="note">Java 25 · ejemplo mínimo pedagógico. Importaciones: <code>java.util.*</code> y <code>java.util.function.*</code>.</p>
+</aside>
+</div>
+</section>
+
+<section id="42" data-slide data-chapter="GoF / Comportamiento" data-title="Observer · concepto" data-family="behavioral" data-pattern="observer" data-kind="concept">
+<p class="eyebrow">GoF / Comportamiento / 42</p>
+<h2>Observer</h2>
+<p class="analogy"><b>Analogía</b>Una suscripción a un boletín permite recibir novedades y darse de baja.</p>
+<div class="concept-grid concept-pilot">
+<article>
+<h3>Problema</h3>
+<p>Varios interesados deben reaccionar a un cambio sin que el emisor conozca sus clases.</p>
+<pre class="mini-code" tabindex="0" aria-label="Código ingenuo: News llama directamente a cada canal"><code>class News {
+  void publish(String text) {
+    email.send(text);
+    sms.send(text);
+    slack.send(text);
+  }
+}</code></pre>
+</article>
+<article>
+<h3>Intención y roles</h3>
+<figure class="roles">
+<svg viewBox="0 0 600 200" role="img" aria-label="El sujeto News notifica a la interfaz Observador, que implementan Email, SMS y Slack">
+<defs>
+<marker id="obs-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+<path d="M 0 0 L 10 5 L 0 10 z" fill="#ff2a85"></path>
+</marker>
+</defs>
+<rect class="box" x="6" y="66" width="150" height="54" rx="10"></rect>
+<text class="faint" x="20" y="84">sujeto</text>
+<text x="20" y="106">News</text>
+<text class="faint" x="164" y="87">notifica</text>
+<line class="edge" x1="158" y1="93" x2="240" y2="93" marker-end="url(#obs-arrow)"></line>
+<rect class="box box-iface" x="246" y="66" width="170" height="54" rx="10"></rect>
+<text class="faint" x="260" y="84">interface</text>
+<text x="260" y="106">Observador</text>
+<text class="faint" x="338" y="136">implementa</text>
+<path class="edge-dash" d="M 331 120 L 331 142 L 110 142 L 110 158"></path>
+<path class="edge-dash" d="M 331 142 L 300 142 L 300 158"></path>
+<path class="edge-dash" d="M 331 142 L 490 142 L 490 158"></path>
+<rect class="box" x="50" y="158" width="120" height="36" rx="8"></rect>
+<text x="76" y="181">Email</text>
+<rect class="box" x="240" y="158" width="120" height="36" rx="8"></rect>
+<text x="272" y="181">SMS</text>
+<rect class="box" x="430" y="158" width="120" height="36" rx="8"></rect>
+<text x="460" y="181">Slack</text>
+</svg>
+</figure>
+<p>El sujeto mantiene suscriptores y los notifica; cada observador decide cómo reaccionar.</p>
+</article>
+<article>
+<h3>Cuándo usarlo</h3>
+<p>Para eventos locales con varios consumidores que pueden entrar y salir.</p>
+<p class="smell"><b>Cómo reconocerlo</b>Cada canal nuevo obliga a editar el que avisa: mañana push o webhook, y el sujeto acaba conociéndolos a todos.</p>
+</article>
+<article data-step="">
+<h3>Coste y cuándo no</h3>
+<p>Las suscripciones olvidadas retienen memoria. Define orden, errores y sincronía; este ejemplo es síncrono y local, no una cola distribuida ni una solución concurrente.</p>
+</article>
+</div>
+</section>
+
+<section id="43" data-slide data-chapter="GoF / Comportamiento" data-title="Observer · Java" data-family="behavioral" data-pattern="observer" data-kind="code">
+<p class="eyebrow">GoF / Comportamiento / 43</p>
+<h2>Observer <span>en Java</span>
+</h2>
+<div class="code-grid"><pre tabindex="0" aria-label="Ejemplo Java 25; desplazamiento horizontal disponible"><code data-java="observer" data-output="nuevo artículo">static class News {
+  private final List&lt;Consumer&lt;String&gt;&gt; readers = new ArrayList&lt;&gt;();
+  void subscribe(Consumer&lt;String&gt; reader) { readers.add(reader); }
+  void unsubscribe(Consumer&lt;String&gt; reader) { readers.remove(reader); }
+  void publish(String text) {
+    List.copyOf(readers).forEach(reader -&gt; reader.accept(text));
+  }
+}
+public static void main(String[] args) {
+  News news = new News();
+  Consumer&lt;String&gt; reader = System.out::println;
+  news.subscribe(reader);
+  news.publish(&quot;nuevo artículo&quot;);
+  news.unsubscribe(reader);
+  news.publish(&quot;no se recibe&quot;);
+}</code></pre>
+<aside data-step="">
+<h3>Recorrido</h3>
+<p>Conservamos la misma referencia reader para cancelar la suscripción. publish recorre una copia para tolerar bajas durante esa notificación; un observador que lance una excepción detendría el envío.</p>
+<h3>Resultado</h3><pre class="result">nuevo artículo</pre><p class="note">Java 25 · ejemplo mínimo pedagógico. Importaciones: <code>java.util.*</code> y <code>java.util.function.*</code>.</p>
+</aside>
+</div>
+</section>
+
+<section id="44" data-slide data-chapter="GoF / Comportamiento" data-title="State · concepto" data-family="behavioral" data-pattern="state" data-kind="concept">
+<p class="eyebrow">GoF / Comportamiento / 44</p>
+<h2>State</h2>
+<p class="analogy"><b>Analogía</b>Un semáforo decide qué viene después según el color actual.</p>
+<div class="concept-grid concept-pilot">
+<article>
+<h3>Problema</h3>
+<p>Un reproductor responde de forma distinta al mismo botón según esté detenido o reproduciendo.</p>
+<pre class="mini-code" tabindex="0" aria-label="Código ingenuo: cada botón comprueba el modo actual"><code>class Player {
+  boolean playing;
+  String press() { playing = !playing;
+    return playing ? "reproduce" : "detiene"; }
+  String next() {
+    return playing ? "reproduce siguiente" : "selecciona siguiente";
+  }
+}</code></pre>
+</article>
+<article>
+<h3>Intención y roles</h3>
+<p>El contexto delega en su estado actual. Los estados representan modos y pueden provocar transiciones a otros estados.</p>
+</article>
+<article>
+<h3>Cuándo usarlo</h3>
+<p>Cuando hay varios modos con reglas y transiciones que crecen más allá de un condicional pequeño.</p>
+<p class="smell"><b>Cómo reconocerlo</b>Añades el modo pausa y tienes que revisar los condicionales de cada botón del reproductor.</p>
+</article>
+<article data-step="">
+<h3>Coste y cuándo no</h3>
+<p>Más clases y transiciones implícitas pueden dificultar el seguimiento. Strategy cambia un algoritmo elegido por el cliente; State modela una evolución interna. Para dos estados simples, un enum puede bastar.</p>
+</article>
+</div>
+</section>
+
+<section id="45" data-slide data-chapter="GoF / Comportamiento" data-title="State · Java" data-family="behavioral" data-pattern="state" data-kind="code">
+<p class="eyebrow">GoF / Comportamiento / 45</p>
+<h2>State <span>en Java</span>
+</h2>
+<div class="code-grid"><pre tabindex="0" aria-label="Ejemplo Java 25; desplazamiento horizontal disponible"><code data-java="state" data-output="reproduce
+detiene">interface Mode { String press(Player player); }
+static class Stopped implements Mode {
+  public String press(Player player) {
+    player.mode = new Playing(); return &quot;reproduce&quot;;
+  }
+}
+static class Playing implements Mode {
+  public String press(Player player) {
+    player.mode = new Stopped(); return &quot;detiene&quot;;
+  }
+}
+static class Player {
+  private Mode mode = new Stopped();
+  String press() { return mode.press(this); }
+}
+public static void main(String[] args) {
+  Player player = new Player();
+  System.out.println(player.press());
+  System.out.println(player.press());
+}</code></pre>
+<aside data-step="">
+<h3>Recorrido</h3>
+<p>Player empieza en Stopped. La primera pulsación cambia su estado a Playing; la segunda se ejecuta en Playing y vuelve a Stopped. El mismo método produce respuestas según el modo.</p>
+<h3>Resultado</h3><pre class="result">reproduce
+detiene</pre><p class="note">Java 25 · ejemplo mínimo pedagógico. Importaciones: <code>java.util.*</code> y <code>java.util.function.*</code>.</p>
+</aside>
+</div>
+</section>
+
+<section id="46" data-slide data-chapter="GoF / Comportamiento" data-title="Strategy · concepto" data-family="behavioral" data-pattern="strategy" data-kind="concept">
+<p class="eyebrow">GoF / Comportamiento / 46</p>
+<h2>Strategy</h2>
+<p class="analogy"><b>Analogía</b>Para llegar al mismo destino eliges caminar o ir en autobús: cambia el método, no el objetivo.</p>
+<div class="concept-grid concept-pilot">
+<article>
+<h3>Problema</h3>
+<p>Un pedido debe aplicar distintas políticas de precio sin reescribir su cálculo cada vez.</p>
+<pre class="mini-code" tabindex="0" aria-label="Código ingenuo: políticas de precio incrustadas en el pedido"><code>class Checkout {
+  int total(int base, String customer) {
+    return switch (customer) {
+      case "socio" -&gt; base - 2;
+      case "empresa" -&gt; base * 9 / 10;
+      default -&gt; base;
+    };
+  } }</code></pre>
+</article>
+<article>
+<h3>Intención y roles</h3>
+<figure class="roles">
+<svg viewBox="0 0 600 190" role="img" aria-label="El pedido usa la estrategia de precio; las políticas Normal y Descuento implementan ese contrato">
+<defs><marker id="strategy-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#ff2a85"></path></marker></defs>
+<rect class="box" x="10" y="8" width="150" height="54" rx="10"></rect>
+<text class="faint" x="24" y="26">contexto</text><text x="24" y="48">Pedido</text>
+<rect class="box box-iface" x="430" y="8" width="150" height="54" rx="10"></rect>
+<text class="faint" x="444" y="26">estrategia</text><text x="444" y="48">Precio</text>
+<text class="faint" x="275" y="27">usa</text>
+<line class="edge" x1="160" y1="35" x2="428" y2="35" marker-end="url(#strategy-arrow)"></line>
+<rect class="box" x="225" y="130" width="150" height="54" rx="10"></rect>
+<text class="faint" x="239" y="148">política concreta</text><text x="239" y="170">Normal</text>
+<rect class="box" x="430" y="130" width="150" height="54" rx="10"></rect>
+<text class="faint" x="444" y="148">política concreta</text><text x="444" y="170">Descuento</text>
+<text class="faint" x="272" y="96">implementa</text>
+<path class="edge-dash" d="M 300 130 L 300 80 L 470 80 L 470 64" marker-end="url(#strategy-arrow)"></path>
+<text class="faint" x="470" y="108">implementa</text>
+<line class="edge-dash" x1="535" y1="130" x2="535" y2="64" marker-end="url(#strategy-arrow)"></line>
+</svg>
+</figure>
+<p>El contexto recibe una estrategia con un contrato estable; cada implementación ofrece un algoritmo intercambiable.</p>
+</article>
+<article>
+<h3>Cuándo usarlo</h3>
+<p>Cuando la política varía entre clientes, configuraciones o pruebas y merece cambiarse por separado.</p>
+<p class="smell"><b>Cómo reconocerlo</b>Añades una tarifa y tienes que abrir el switch del pedido para insertar otra fórmula de precio.</p>
+</article>
+<article data-step="">
+<h3>Coste y cuándo no</h3>
+<p>El cliente debe conocer las alternativas y elegir. No hay transiciones internas obligatorias, a diferencia de State. Si una única fórmula es estable, extraer estrategias añade ruido.</p>
+</article>
+</div>
+</section>
+
+<section id="47" data-slide data-chapter="GoF / Comportamiento" data-title="Strategy · Java" data-family="behavioral" data-pattern="strategy" data-kind="code">
+<p class="eyebrow">GoF / Comportamiento / 47</p>
+<h2>Strategy <span>en Java</span>
+</h2>
+<div class="code-grid"><pre tabindex="0" aria-label="Ejemplo Java 25; desplazamiento horizontal disponible"><code data-java="strategy" data-output="10
+8">interface Pricing { int total(int base); }
+record Checkout(Pricing pricing) {
+  int total(int base) { return pricing.total(base); }
+}
+public static void main(String[] args) {
+  Pricing regular = base -&gt; base;
+  Pricing discount = base -&gt; base - 2;
+  System.out.println(new Checkout(regular).total(10));
+  System.out.println(new Checkout(discount).total(10));
+}</code></pre>
+<aside data-step="">
+<h3>Recorrido</h3>
+<p>Checkout delega el cálculo. El cliente proporciona dos implementaciones mediante lambdas y obtiene precios diferentes. Usamos unidades enteras y un precio fijo válido; el dinero real requiere reglas de redondeo.</p>
+<h3>Resultado</h3><pre class="result">10
+8</pre><p class="note">Java 25 · ejemplo mínimo pedagógico. Importaciones: <code>java.util.*</code> y <code>java.util.function.*</code>.</p>
+</aside>
+</div>
+</section>
+
+<section id="48" data-slide data-chapter="GoF / Comportamiento" data-title="Template Method · concepto" data-family="behavioral" data-pattern="template-method" data-kind="concept">
+<p class="eyebrow">GoF / Comportamiento / 48</p>
+<h2>Template Method</h2>
+<p class="analogy"><b>Analogía</b>Una receta fija preparar, cocinar y servir; cada cocinero concreta cómo cocinar.</p>
+<div class="concept-grid concept-pilot">
+<article>
+<h3>Problema</h3>
+<p>Varios procesos siguen los mismos pasos generales pero uno de esos pasos cambia.</p>
+<pre class="mini-code" tabindex="0" aria-label="Código ingenuo: dos exportaciones duplican el orden de los pasos"><code>class Exports {
+  String text(String value) {
+    return "inicio|" + value + "|fin";
+  }
+  String html(String value) {
+    return "inicio|&lt;p&gt;" + value + "&lt;/p&gt;|fin";
+  }
+}</code></pre>
+</article>
+<article>
+<h3>Intención y roles</h3>
+<figure class="roles">
+<svg viewBox="0 0 600 200" role="img" aria-label="La clase base Exportador fija inicio, formato y fin; Texto y HTML heredan y redefinen el paso de formato">
+<defs><marker id="template-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#ff2a85"></path></marker></defs>
+<rect class="box box-iface" x="225" y="8" width="150" height="54" rx="10"></rect>
+<text class="faint" x="239" y="26">clase base</text><text x="239" y="48">Exportador</text>
+<text class="faint" x="388" y="27">orden fijo</text>
+<text x="388" y="49">inicio → formato → fin</text>
+<rect class="box" x="10" y="140" width="150" height="54" rx="10"></rect>
+<text class="faint" x="24" y="158">subclase</text><text x="24" y="180">Texto</text>
+<rect class="box" x="430" y="140" width="150" height="54" rx="10"></rect>
+<text class="faint" x="444" y="158">subclase</text><text x="444" y="180">HTML</text>
+<text class="faint" x="96" y="126">redefine formato</text>
+<path class="edge" d="M 85 140 L 85 108 L 260 108 L 260 66" marker-end="url(#template-arrow)"></path>
+<text class="faint" x="418" y="126">redefine formato</text>
+<path class="edge" d="M 505 140 L 505 108 L 340 108 L 340 66" marker-end="url(#template-arrow)"></path>
+</svg>
+</figure>
+<p>La clase base fija el esqueleto del algoritmo y llama a operaciones que redefinen las subclases.</p>
+</article>
+<article>
+<h3>Cuándo usarlo</h3>
+<p>Para procesos con orden estable y pocos puntos de extensión bien definidos.</p>
+<p class="smell"><b>Cómo reconocerlo</b>Cambias el inicio de la exportación y tienes que repetir el cambio en texto y HTML, aunque solo difiere el formato.</p>
+</article>
+<article data-step="">
+<h3>Coste y cuándo no</h3>
+<p>Acopla a la jerarquía y puede exigir demasiados métodos protegidos. Strategy usa composición para sustituir un algoritmo; aquí varía un paso por herencia. No fuerces una base común si los procesos divergen.</p>
+</article>
+</div>
+</section>
+
+<section id="49" data-slide data-chapter="GoF / Comportamiento" data-title="Template Method · Java" data-family="behavioral" data-pattern="template-method" data-kind="code">
+<p class="eyebrow">GoF / Comportamiento / 49</p>
+<h2>Template Method <span>en Java</span>
+</h2>
+<div class="code-grid"><pre tabindex="0" aria-label="Ejemplo Java 25; desplazamiento horizontal disponible"><code data-java="template-method" data-output="inicio|texto|fin">static abstract class Exporter {
+  final String export() {
+    return &quot;inicio|&quot; + format() + &quot;|fin&quot;;
+  }
+  abstract String format();
+}
+static class TextExporter extends Exporter {
+  @Override String format() { return &quot;texto&quot;; }
+}
+public static void main(String[] args) {
+  Exporter exporter = new TextExporter();
+  System.out.println(exporter.export());
+}</code></pre>
+<aside data-step="">
+<h3>Recorrido</h3>
+<p>export es final: la subclase no cambia el orden general. La llamada a format utiliza la versión TextExporter y el proceso común conserva inicio y fin.</p>
+<h3>Resultado</h3><pre class="result">inicio|texto|fin</pre><p class="note">Java 25 · ejemplo mínimo pedagógico. Importaciones: <code>java.util.*</code> y <code>java.util.function.*</code>.</p>
+</aside>
+</div>
+</section>
+
+<section id="50" data-slide data-chapter="GoF / Comportamiento" data-title="Visitor · concepto" data-family="behavioral" data-pattern="visitor" data-kind="concept">
+<p class="eyebrow">GoF / Comportamiento / 50</p>
+<h2>Visitor</h2>
+<p class="analogy"><b>Analogía</b>Un inspector visita distintas instalaciones y sabe hacer una revisión específica para cada tipo.</p>
+<div class="concept-grid concept-pilot">
+<article>
+<h3>Problema</h3>
+<p>Queremos añadir operaciones sobre tipos de elementos estables sin meter cada operación en esos elementos.</p>
+<pre class="mini-code" tabindex="0" aria-label="Código ingenuo: cada figura acumula informes y exportaciones"><code>class Dot {
+  int points() { return 1; }
+  String xml() { return "&lt;punto/&gt;"; }
+}
+class Line {
+  int points() { return 2; }
+  String xml() { return "&lt;linea/&gt;"; }
+}</code></pre>
+</article>
+<article>
+<h3>Intención y roles</h3>
+<p>Cada elemento acepta un visitante y llama a la operación correspondiente a su tipo concreto: doble despacho.</p>
+</article>
+<article>
+<h3>Cuándo usarlo</h3>
+<p>Cuando los tipos de elementos cambian poco pero aparecen nuevas operaciones, como informes o cálculos.</p>
+<p class="smell"><b>Cómo reconocerlo</b>Añades una exportación JSON y tienes que volver a editar todas las clases de figuras que ya funcionaban.</p>
+</article>
+<article data-step="">
+<h3>Coste y cuándo no</h3>
+<p>Añadir un nuevo tipo obliga a actualizar todos los visitantes. Puede exponer detalles internos. Si cambian mucho los tipos o una operación cabe naturalmente en cada clase, evita esta estructura.</p>
+</article>
+</div>
+</section>
+
+<section id="51" data-slide data-chapter="GoF / Comportamiento" data-title="Visitor · Java" data-family="behavioral" data-pattern="visitor" data-kind="code">
+<p class="eyebrow">GoF / Comportamiento / 51</p>
+<h2>Visitor <span>en Java</span>
+</h2>
+<div class="code-grid"><pre tabindex="0" aria-label="Ejemplo Java 25; desplazamiento horizontal disponible"><code data-java="visitor" data-output="2">interface Shape { int accept(Visitor visitor); }
+interface Visitor {
+  int visit(Dot dot);
+  int visit(Line line);
+}
+record Dot() implements Shape {
+  public int accept(Visitor visitor) { return visitor.visit(this); }
+}
+record Line() implements Shape {
+  public int accept(Visitor visitor) { return visitor.visit(this); }
+}
+static class Points implements Visitor {
+  public int visit(Dot dot) { return 1; }
+  public int visit(Line line) { return 2; }
+}
+public static void main(String[] args) {
+  Visitor points = new Points();
+  Shape shape = new Line();
+  System.out.println(shape.accept(points));
+}</code></pre>
+<aside data-step="">
+<h3>Recorrido</h3>
+<p>El cliente conoce Shape. Line.accept usa this como Line y selecciona visit(Line); el objeto Points ejecuta esa operación. Un visitante nuevo añadiría otro cálculo sin cambiar Dot ni Line.</p>
+<h3>Resultado</h3><pre class="result">2</pre><p class="note">Java 25 · ejemplo mínimo pedagógico. Importaciones: <code>java.util.*</code> y <code>java.util.function.*</code>.</p>
+</aside>
+</div>
+</section>
+
+<section id="52" data-slide data-chapter="Java y Spring / No GoF" data-title="Dependency Injection · concepto" data-family="modern" data-pattern="dependency-injection" data-kind="concept">
+<p class="eyebrow">Complemento moderno / No GoF / 52</p>
+<h2>Dependency Injection</h2>
+<p class="analogy"><b>Analogía</b>Una herramienta recibe su batería en lugar de fabricar una por dentro.</p>
+<div class="concept-grid concept-pilot">
+<article>
+<h3>Problema</h3>
+<p>Un servicio crea internamente el correo que usa; probarlo obliga a enviar mensajes reales.</p>
+<pre class="mini-code" tabindex="0" aria-label="Código ingenuo: el servicio construye su propio emisor de correo"><code>class Mail {
+  void send(String text) { System.out.println("SMTP: " + text); }
+}
+class WelcomeService {
+  private final Mail mail = new Mail();
+  void welcome(String name) { mail.send("Hola " + name); }
+}</code></pre>
+</article>
+<article>
+<h3>Intención y roles</h3>
+<p>Inyección de dependencias: el consumidor recibe colaboradores desde fuera, preferiblemente por constructor. Un ensamblador elige las implementaciones.</p>
+</article>
+<article>
+<h3>Cuándo usarlo</h3>
+<p>Para separar construcción y uso, sustituir servicios externos en pruebas y declarar dependencias obligatorias.</p>
+<p class="smell"><b>Cómo reconocerlo</b>Quieres probar el saludo sin enviar correo, pero el servicio construye el emisor y no puedes sustituirlo.</p>
+</article>
+<article data-step="">
+<h3>Coste y cuándo no</h3>
+<p>No requiere Spring ni es uno de los 23 GoF. Evita un contenedor para dos objetos sencillos. En Spring, el contenedor crea y conecta beans; singleton es por definición de bean y contenedor, no una instancia global garantizada por la clase.</p>
+</article>
+</div>
+</section>
+
+<section id="53" data-slide data-chapter="Java y Spring / No GoF" data-title="Dependency Injection · Java" data-family="modern" data-pattern="dependency-injection" data-kind="code">
+<p class="eyebrow">Complemento moderno / No GoF / 53</p>
+<h2>Dependency Injection <span>en Java</span>
+</h2>
+<div class="code-grid"><pre tabindex="0" aria-label="Ejemplo Java 25; desplazamiento horizontal disponible"><code data-java="dependency-injection" data-output="simulado: Hola Ana">interface Sender { String send(String text); }
+record WelcomeService(Sender sender) {
+  String welcome(String name) { return sender.send(&quot;Hola &quot; + name); }
+}
+public static void main(String[] args) {
+  Sender fake = text -&gt; &quot;simulado: &quot; + text;
+  WelcomeService service = new WelcomeService(fake);
+  System.out.println(service.welcome(&quot;Ana&quot;));
+}</code></pre>
+<aside data-step="">
+<h3>Recorrido</h3>
+<p>main es el ensamblador: crea un sustituto y lo inyecta por constructor. WelcomeService no decide cómo enviar. En Spring un bean podría recibir Sender por ese mismo constructor, sin cambiar esta lógica.</p>
+<h3>Resultado</h3><pre class="result">simulado: Hola Ana</pre><p class="note">Java 25 · ejemplo mínimo pedagógico. Importaciones: <code>java.util.*</code> y <code>java.util.function.*</code>.</p>
+</aside>
+</div>
+</section>
+
+<section id="54" data-slide data-chapter="Java y Spring / No GoF" data-title="Repository · concepto" data-family="modern" data-pattern="repository" data-kind="concept">
+<p class="eyebrow">Complemento moderno / No GoF / 54</p>
+<h2>Repository</h2>
+<p class="analogy"><b>Analogía</b>Un archivo permite pedir una ficha por su identificador sin conocer sus estanterías.</p>
+<div class="concept-grid concept-pilot">
+<article>
+<h3>Problema</h3>
+<p>La lógica de negocio se mezcla con consultas y no puede probarse sin una base de datos.</p>
+<pre class="mini-code" tabindex="0" aria-label="Código ingenuo: una regla de préstamo consulta SQL directamente"><code>class LoanPolicy {
+  boolean canBorrow(java.sql.Connection db) throws java.sql.SQLException {
+    try (var query = db.createStatement();
+         var row = query.executeQuery("SELECT stock FROM books WHERE id = 1")) {
+      return row.next() &amp;&amp; row.getInt("stock") &gt; 0;
+    }
+  }
+}</code></pre>
+</article>
+<article>
+<h3>Intención y roles</h3>
+<p>Un repositorio ofrece acceso a objetos con un vocabulario del dominio; una implementación se encarga del almacenamiento.</p>
+</article>
+<article>
+<h3>Cuándo usarlo</h3>
+<p>Para aislar decisiones de persistencia y probar reglas con una implementación en memoria.</p>
+<p class="smell"><b>Cómo reconocerlo</b>Para probar si puedes prestar un libro, tienes que preparar tablas y ejecutar SQL dentro de la regla.</p>
+</article>
+<article data-step="">
+<h3>Coste y cuándo no</h3>
+<p>No es GoF ni equivale a ocultar cualquier consulta tras una interfaz genérica. Las consultas complejas y transacciones necesitan diseño explícito. Spring Data puede generar implementaciones, pero este ejemplo es Java puro, no una base de datos real.</p>
+</article>
+</div>
+</section>
+
+<section id="55" data-slide data-chapter="Java y Spring / No GoF" data-title="Repository · Java" data-family="modern" data-pattern="repository" data-kind="code">
+<p class="eyebrow">Complemento moderno / No GoF / 55</p>
+<h2>Repository <span>en Java</span>
+</h2>
+<div class="code-grid"><pre tabindex="0" aria-label="Ejemplo Java 25; desplazamiento horizontal disponible"><code data-java="repository" data-output="Java
+true">record Book(int id, String title) {}
+interface Books { Optional&lt;Book&gt; find(int id); }
+static class MemoryBooks implements Books {
+  private final Map&lt;Integer, Book&gt; data = new HashMap&lt;&gt;();
+  void save(Book book) { data.put(book.id(), book); }
+  public Optional&lt;Book&gt; find(int id) {
+    return Optional.ofNullable(data.get(id));
+  }
+}
+public static void main(String[] args) {
+  MemoryBooks memory = new MemoryBooks();
+  memory.save(new Book(1, &quot;Java&quot;));
+  Books books = memory;
+  System.out.println(books.find(1).orElseThrow().title());
+  System.out.println(books.find(2).isEmpty());
+}</code></pre>
+<aside data-step="">
+<h3>Recorrido</h3>
+<p>Books expresa la búsqueda. MemoryBooks guarda valores en un mapa; Optional representa presencia o ausencia. En Spring podrías inyectar Books e implementar esa frontera con persistencia, manteniendo las reglas fuera de ella.</p>
+<h3>Resultado</h3><pre class="result">Java
+true</pre><p class="note">Java 25 · ejemplo mínimo pedagógico. Importaciones: <code>java.util.*</code> y <code>java.util.function.*</code>.</p>
+</aside>
+</div>
+</section>
+
+<section id="56" data-slide data-chapter="Java y Spring / No GoF" data-title="DTO y mapping · concepto" data-family="modern" data-pattern="dto-mapping" data-kind="concept">
+<p class="eyebrow">Complemento moderno / No GoF / 56</p>
+<h2>DTO y mapping</h2>
+<p class="analogy"><b>Analogía</b>Un recibo muestra lo necesario de una compra, no todo el archivo de la tienda.</p>
+<div class="concept-grid concept-pilot">
+<article>
+<h3>Problema</h3>
+<p>Devolver el objeto interno expone campos privados de negocio y acopla la respuesta a su estructura.</p>
+<pre class="mini-code" tabindex="0" aria-label="Código ingenuo: la respuesta pública incluye la nota interna"><code>record Member(String name, String internalNote) {}
+class ProfileEndpoint {
+  Member getProfile() {
+    return new Member("Ana", "revisar deuda");
+  }
+}</code></pre>
+</article>
+<article>
+<h3>Intención y roles</h3>
+<p>DTO significa objeto de transferencia de datos: lleva información a través de una frontera. El mapper o conversor transforma el modelo interno a la forma pública acordada.</p>
+</article>
+<article>
+<h3>Cuándo usarlo</h3>
+<p>Para contratos de API, mensajes o vistas con campos distintos del modelo de negocio.</p>
+<p class="smell"><b>Cómo reconocerlo</b>Devuelves el socio tal como lo guardas y descubres que la respuesta también incluye su nota interna.</p>
+</article>
+<article data-step="">
+<h3>Coste y cuándo no</h3>
+<p>No es GoF. Duplicar modelos sin una frontera real aumenta mantenimiento. Un DTO no es automáticamente seguro: valida entradas y selecciona explícitamente campos de salida; no copies secretos a ciegas.</p>
+</article>
+</div>
+</section>
+
+<section id="57" data-slide data-chapter="Java y Spring / No GoF" data-title="DTO y mapping · Java" data-family="modern" data-pattern="dto-mapping" data-kind="code">
+<p class="eyebrow">Complemento moderno / No GoF / 57</p>
+<h2>DTO y mapping <span>en Java</span>
+</h2>
+<div class="code-grid"><pre tabindex="0" aria-label="Ejemplo Java 25; desplazamiento horizontal disponible"><code data-java="dto-mapping" data-output="Ana">record Member(String name, String internalNote) {}
+record MemberDto(String name) {}
+static MemberDto toDto(Member member) {
+  return new MemberDto(member.name());
+}
+public static void main(String[] args) {
+  Member member = new Member(&quot;Ana&quot;, &quot;solo uso interno&quot;);
+  MemberDto response = toDto(member);
+  System.out.println(response.name());
+}</code></pre>
+<aside data-step="">
+<h3>Recorrido</h3>
+<p>El mapper copia únicamente el nombre. El DTO no contiene internalNote y no depende de cómo se guarda Member. Spring MVC, la capa web de Spring, podría convertir este DTO en una respuesta para el cliente; aquí no añadimos dependencias web.</p>
+<h3>Resultado</h3><pre class="result">Ana</pre><p class="note">Java 25 · ejemplo mínimo pedagógico. Importaciones: <code>java.util.*</code> y <code>java.util.function.*</code>.</p>
+</aside>
+</div>
+</section>
+
+<section id="58" data-slide data-chapter="Java y Spring / No GoF" data-title="Service Layer · concepto" data-family="modern" data-pattern="service-layer" data-kind="concept">
+<p class="eyebrow">Complemento moderno / No GoF / 58</p>
+<h2>Service Layer</h2>
+<p class="analogy"><b>Analogía</b>Un coordinador organiza un trámite completo sin obligarte a hablar con cada departamento.</p>
+<div class="concept-grid concept-pilot">
+<article>
+<h3>Problema</h3>
+<p>Cada punto de entrada repite la secuencia de comprobar datos y guardar una reserva.</p>
+<pre class="mini-code" tabindex="0" aria-label="Código ingenuo: web y consola repiten el caso de uso de reserva"><code>class BookingEntries {
+  java.util.List&lt;String&gt; names = new java.util.ArrayList&lt;&gt;();
+  void web(String name) {
+    if (!name.isBlank()) names.add(name);
+  }
+  void console(String name) {
+    if (!name.isBlank()) names.add(name);
+  } }</code></pre>
+</article>
+<article>
+<h3>Intención y roles</h3>
+<p>La capa de servicio ofrece casos de uso y coordina colaboradores; las reglas propias de los objetos pueden seguir en el dominio.</p>
+</article>
+<article>
+<h3>Cuándo usarlo</h3>
+<p>Cuando una operación de aplicación se usa desde varios canales o coordina varias dependencias.</p>
+<p class="smell"><b>Cómo reconocerlo</b>Añades una validación a la reserva web y tienes que acordarte de repetirla en la entrada por consola.</p>
+</article>
+<article data-step="">
+<h3>Coste y cuándo no</h3>
+<p>No es GoF ni exige un servicio por cada clase. Evita servicios gigantes o meros pasamanos. En Spring, las transacciones necesitan configuración y límites explícitos; este ejemplo en memoria no implementa transacciones ni reservas concurrentes.</p>
+</article>
+</div>
+</section>
+
+<section id="59" data-slide data-chapter="Java y Spring / No GoF" data-title="Service Layer · Java" data-family="modern" data-pattern="service-layer" data-kind="code">
+<p class="eyebrow">Complemento moderno / No GoF / 59</p>
+<h2>Service Layer <span>en Java</span>
+</h2>
+<div class="code-grid"><pre tabindex="0" aria-label="Ejemplo Java 25; desplazamiento horizontal disponible"><code data-java="service-layer" data-output="reserva confirmada
+1">interface Reservations { void save(String name); }
+record BookingService(Reservations reservations) {
+  String book(String name) {
+    if (name.isBlank()) throw new IllegalArgumentException(&quot;nombre&quot;);
+    reservations.save(name);
+    return &quot;reserva confirmada&quot;;
+  }
+}
+public static void main(String[] args) {
+  List&lt;String&gt; names = new ArrayList&lt;&gt;();
+  BookingService service = new BookingService(names::add);
+  System.out.println(service.book(&quot;Ana&quot;));
+  System.out.println(names.size());
+}</code></pre>
+<aside data-step="">
+<h3>Recorrido</h3>
+<p>book valida antes de delegar el guardado. El cliente recibe el resultado del caso de uso. En Spring este servicio podría ser un bean inyectado por constructor; una anotación por sí sola no define la consistencia del sistema.</p>
+<h3>Resultado</h3><pre class="result">reserva confirmada
+1</pre><p class="note">Java 25 · ejemplo mínimo pedagógico. Importaciones: <code>java.util.*</code> y <code>java.util.function.*</code>.</p>
+</aside>
+</div>
+</section>
+
+<section id="60" data-slide data-chapter="Java y Spring / No GoF" data-title="Specification · concepto" data-family="modern" data-pattern="specification" data-kind="concept">
+<p class="eyebrow">Complemento moderno / No GoF / 60</p>
+<h2>Specification</h2>
+<p class="analogy"><b>Analogía</b>Un filtro de búsqueda combina requisitos: barato y disponible.</p>
+<div class="concept-grid concept-pilot">
+<article>
+<h3>Problema</h3>
+<p>Las reglas para seleccionar productos se repiten y queremos combinarlas sin copiar condiciones.</p>
+<pre class="mini-code" tabindex="0" aria-label="Código ingenuo: dos selecciones copian el criterio de precio"><code>record Product(int price, boolean available) {}
+class Offers {
+  void homepage(Product[] items) {
+    for (var p : items) if (p.price() &lt;= 10) System.out.println(p);
+  }
+  void newsletter(Product[] items) {
+    for (var p : items) if (p.price() &lt;= 10 &amp;&amp; p.available()) System.out.println(p);
+  } }</code></pre>
+</article>
+<article>
+<h3>Intención y roles</h3>
+<p>Una especificación encapsula una condición de negocio y puede componerse con otras mediante operadores lógicos.</p>
+</article>
+<article>
+<h3>Cuándo usarlo</h3>
+<p>Para criterios reutilizables con significado y combinaciones reales en el dominio.</p>
+<p class="smell"><b>Cómo reconocerlo</b>Cambias el límite de precio y debes buscar cada condición copiada, sola o combinada con disponibilidad.</p>
+</article>
+<article data-step="">
+<h3>Coste y cuándo no</h3>
+<p>No pertenece a GoF. Para una condición aislada basta un if. Un Predicate en memoria no se convierte automáticamente en SQL, el lenguaje de consulta de bases de datos. La API Specification de Spring Data JPA requiere criterios traducibles a consultas.</p>
+</article>
+</div>
+</section>
+
+<section id="61" data-slide data-chapter="Java y Spring / No GoF" data-title="Specification · Java" data-family="modern" data-pattern="specification" data-kind="code">
+<p class="eyebrow">Complemento moderno / No GoF / 61</p>
+<h2>Specification <span>en Java</span>
+</h2>
+<div class="code-grid"><pre tabindex="0" aria-label="Ejemplo Java 25; desplazamiento horizontal disponible"><code data-java="specification" data-output="true
+false">record Product(int price, boolean available) {}
+public static void main(String[] args) {
+  Predicate&lt;Product&gt; affordable = product -&gt; product.price() &lt;= 10;
+  Predicate&lt;Product&gt; available = Product::available;
+  Predicate&lt;Product&gt; eligible = affordable.and(available);
+  Product book = new Product(8, true);
+  Product expensive = new Product(20, true);
+  System.out.println(eligible.test(book));
+  System.out.println(eligible.test(expensive));
+}</code></pre>
+<aside data-step="">
+<h3>Recorrido</h3>
+<p>Cada Predicate es una condición ejecutable. and crea una regla compuesta y test la evalúa. El producto de 8 cumple ambas; el de 20 no. Java ya ofrece esta composición, no hace falta inventar una jerarquía.</p>
+<h3>Resultado</h3><pre class="result">true
+false</pre><p class="note">Java 25 · ejemplo mínimo pedagógico. Importaciones: <code>java.util.*</code> y <code>java.util.function.*</code>.</p>
+</aside>
+</div>
+</section>
+
+<section id="62" data-slide data-chapter="Java y Spring / No GoF" data-title="Circuit Breaker y Retry · concepto" data-family="modern" data-pattern="circuit-breaker-retry" data-kind="concept">
+<p class="eyebrow">Complemento moderno / No GoF / 62</p>
+<h2>Circuit Breaker y Retry</h2>
+<p class="analogy"><b>Analogía</b>Retry vuelve a llamar unas pocas veces. Un fusible abierto deja de llamar hasta que pueda probarse la recuperación.</p>
+<div class="concept-grid concept-pilot">
+<article>
+<h3>Problema</h3>
+<p>Una lectura remota falla temporalmente; insistir sin límite sobre un servicio caído empeora la sobrecarga.</p>
+<pre class="mini-code" tabindex="0" aria-label="Código ingenuo: lectura remota reintentada sin límite ni pausa"><code>class StockClient {
+  String read(java.util.concurrent.Callable&lt;String&gt; remote) {
+    while (true) { try { return remote.call(); }
+      catch (Exception failure) {} } // Sin pausa ni límite.
+  } }</code></pre>
+</article>
+<article>
+<h3>Intención y roles</h3>
+<p>Retry limita intentos ante fallos transitorios; Circuit Breaker registra fallos y corta llamadas. Un circuito real usa cerrado, abierto y semiabierto para probar recuperación.</p>
+</article>
+<article>
+<h3>Cuándo usarlo</h3>
+<p>En integraciones remotas con tiempos límite y operaciones idempotentes: repetirlas no debe duplicar efectos. Las lecturas suelen encajar; un cobro exige clave de idempotencia y garantías del receptor.</p>
+<p class="smell"><b>Cómo reconocerlo</b>El proveedor de stock cae y sigues llamándolo sin pausa ni límite, aunque ninguna lectura responde.</p>
+</article>
+<article data-step="">
+<h3>Coste y cuándo no</h3>
+<p>No son GoF ni capacidades automáticas de Spring. El ejemplo abre tras una operación agotada y no se recupera: omite temporización, semiabierto, esperas crecientes con variación aleatoria, métricas y concurrencia. No es producción. No reintentes errores de validación ni operaciones no idempotentes sin garantías.</p>
+</article>
+</div>
+</section>
+
+<section id="63" data-slide data-chapter="Java y Spring / No GoF" data-title="Circuit Breaker y Retry · Java" data-family="modern" data-pattern="circuit-breaker-retry" data-kind="code">
+<p class="eyebrow">Complemento moderno / No GoF / 63</p>
+<h2>Circuit Breaker y Retry <span>en Java</span>
+</h2>
+<div class="code-grid"><pre tabindex="0" aria-label="Ejemplo Java 25; desplazamiento horizontal disponible"><code data-java="circuit-breaker-retry" data-output="intento
+intento
+intento
+agotado
+abierto">static class Circuit {
+  private boolean open;
+  String read(Supplier&lt;String&gt; remote) {
+    if (open) return &quot;abierto&quot;;
+    for (int attempt = 1; attempt &lt;= 3; attempt++) {
+      try { return remote.get(); }
+      catch (IllegalStateException transientFailure) {
+        if (attempt == 3) { open = true; return &quot;agotado&quot;; }
+      }
+    }
+    throw new AssertionError();
+  }
+}
+public static void main(String[] args) {
+  Circuit circuit = new Circuit();
+  Supplier&lt;String&gt; failingRead = () -&gt; {
+    System.out.println(&quot;intento&quot;);
+    throw new IllegalStateException(&quot;fallo transitorio simulado&quot;);
+  };
+  System.out.println(circuit.read(failingRead));
+  System.out.println(circuit.read(failingRead));
+}</code></pre>
+<aside data-step="">
+<h3>Recorrido</h3>
+<p>Tras tres fallos se abre el circuito: la siguiente lectura no llama al remoto. IllegalStateException representa aquí solo el fallo transitorio simulado. No hay recuperación automática ni seguridad concurrente.</p>
+<h3>Resultado</h3><pre class="result">intento
+intento
+intento
+agotado
+abierto</pre><p class="note">Java 25 · ejemplo mínimo pedagógico. Importaciones: <code>java.util.*</code> y <code>java.util.function.*</code>.</p>
+</aside>
+</div>
+</section>
+
+<section id="64" data-slide data-chapter="Práctica y criterio" data-title="Guía de decisión">
+<p class="eyebrow">Práctica y criterio / 64</p>
+<h2>Empieza por lo que cambia</h2>
+<div class="grid">
+<article>
+<h3>¿Cómo nace el objeto?</h3>
+<p>Un método de subclase → Factory Method.<br>Una familia compatible → Abstract Factory.<br>Muchos pasos u opciones → Builder.<br>Copiar configuración → Prototype.<br>Identidad única imprescindible → Singleton.</p>
+</article>
+<article>
+<h3>¿Cómo se conecta?</h3>
+<p>Contrato incompatible → Adapter.<br>Dos ejes independientes → Bridge.<br>Árbol uniforme → Composite.<br>Capas opcionales → Decorator.<br>Entrada sencilla → Facade.<br>Compartir datos inmutables → Flyweight.<br>Controlar acceso → Proxy.</p>
+</article>
+</div>
+<p class="note">Primero escribe el problema sin nombres de patrones. Si el cambio no es real ni probable, conserva la solución más pequeña.</p>
+</section>
+
+<section id="65" data-slide data-chapter="Práctica y criterio" data-title="Guía de colaboración">
+<p class="eyebrow">Práctica y criterio / 65</p>
+<h2>¿Quién decide y quién recuerda?</h2>
+<div class="grid">
+<article>
+<h3>Variar o coordinar</h3>
+<p>Elegir algoritmo → Strategy.<br>Cambiar de modo → State.<br>Fijar pasos → Template Method.<br>Centralizar interacciones → Mediator.<br>Pasar por filtros → Chain of Responsibility.<br>Notificar cambios → Observer.</p>
+</article>
+<article>
+<h3>Representar trabajo o estado</h3>
+<p>Petición como objeto → Command.<br>Instantánea para restaurar → Memento.<br>Recorrido independiente → Iterator.<br>Pequeño lenguaje de reglas → Interpreter.<br>Nueva operación sobre tipos estables → Visitor.</p>
+</article>
+</div>
+<p class="note">No existe una correspondencia automática. Pregunta por el orden, los errores, el ciclo de vida y las pruebas. Dos patrones pueden colaborar, pero cada uno debe justificar su coste.</p>
+</section>
+
+<section id="66" data-slide data-chapter="Práctica y criterio" data-title="Ejercicio 1 · reconocer la intención">
+<p class="eyebrow">Práctica y criterio / 66</p>
+<h2>Misma forma, motivos distintos</h2>
+<div class="grid">
+<article>
+<h3>Piensa primero</h3>
+<p>A. Una capa comprueba permisos antes de leer un archivo.</p>
+<p>B. Una capa comprime el contenido y otra lo cifra.</p>
+<p>C. Un adaptador conecta una librería antigua a tu interfaz.</p>
+</article>
+<article>
+<h3>Respuesta razonada</h3>
+<p><strong>A → Proxy:</strong> controla el acceso al objeto real.</p>
+<p><strong>B → Decorator:</strong> combina responsabilidades. El orden de comprimir y cifrar importa.</p>
+<p><strong>C → Adapter:</strong> traduce un contrato existente. No es Bridge: no estamos diseñando dos dimensiones independientes.</p>
+</article>
+</div>
+<p class="note">Pregunta extra: ¿poner logging en una capa la convierte siempre en Decorator? No: depende de su intención dentro del diseño, no solo de su estructura.</p>
+</section>
+
+<section id="67" data-slide data-chapter="Práctica y criterio" data-title="Ejercicio 2 · predecir y corregir">
+<p class="eyebrow">Práctica y criterio / 67</p>
+<h2>Lee el cambio de responsabilidad</h2>
+<div class="grid">
+<article>
+<h3>Resuelve</h3>
+<ol>
+<li>En State, pulsas tres veces el reproductor desde detenido. ¿Qué imprime?</li>
+<li>En Observer, eliminas unsubscribe. ¿Qué sucede con el segundo mensaje?</li>
+<li>En Memento, guardas la lista mutable sin copiarla. ¿Qué contiene el historial después de add?</li>
+</ol>
+</article>
+<article>
+<h3>Respuesta</h3>
+<ol>
+<li>reproduce, detiene, reproduce. Cada pulsación cambia el modo que atiende la siguiente.</li>
+<li>También se entrega: la referencia sigue suscrita y puede quedar retenida en memoria.</li>
+<li>Comparte la lista editada y deja de ser una instantánea. Copia al guardar y al restaurar; evita elementos mutables compartidos.</li>
+</ol>
+</article>
+</div>
+</section>
+
+<section id="68" data-slide data-chapter="Práctica y criterio" data-title="Ejercicio 3 · elegir menos">
+<p class="eyebrow">Práctica y criterio / 68</p>
+<h2>Diseñar también es decir que no</h2>
+<div class="grid">
+<article>
+<h3>Escenario</h3>
+<p>Una pequeña tienda tiene un único descuento fijo y solo acepta reservas locales. Se propone crear diez estrategias, un Singleton global y reintentar cada reserva cinco veces.</p>
+<p>¿Qué mantendrías? ¿Qué riesgo concreto introduce cada propuesta?</p>
+</article>
+<article>
+<h3>Respuesta</h3>
+<p>Empezaría con una función para el descuento y un caso de uso claro. Introduciría Strategy al aparecer políticas realmente diferentes.</p>
+<p>Inyectaría el almacenamiento en vez de hacerlo global. Reintentar una escritura puede duplicar reservas: primero hace falta una garantía de idempotencia, no más intentos.</p>
+<p>Una prueba que verifica una sola reserva aporta más que varias capas sin un problema real.</p>
+</article>
+</div>
+</section>
+
+<section id="69" data-slide data-chapter="Práctica y criterio" data-title="Glosario y siguiente paso">
+<p class="eyebrow">Práctica y criterio / 69</p>
+<h2>Aprende los nombres; conserva el criterio</h2>
+<div class="grid glossary">
+<article>
+<h3>Vocabulario esencial</h3>
+<dl>
+<dt>Acoplamiento</dt>
+<dd>Cuánto necesita saber una pieza sobre otra.</dd>
+<dt>Contrato</dt>
+<dd>Operaciones y garantías que el cliente puede esperar.</dd>
+<dt>Inmutable</dt>
+<dd>Un valor cuyo estado no cambia después de crearse.</dd>
+<dt>Contexto</dt>
+<dd>Objeto que usa una estrategia o un estado.</dd>
+</dl>
+</article>
+<article>
+<h3>En aplicaciones reales</h3>
+<dl>
+<dt>Dominio</dt>
+<dd>Conceptos y reglas del problema que resuelve la aplicación.</dd>
+<dt>Bean</dt>
+<dd>Objeto que el contenedor de Spring crea y gestiona.</dd>
+<dt>Idempotencia</dt>
+<dd>Repetir una operación conserva el efecto de ejecutarla una sola vez.</dd>
+<dt>Tradeoff</dt>
+<dd>Una mejora que exige pagar un coste en otra dimensión.</dd>
+</dl>
+</article>
+</div>
+<p class="note">Siguiente paso: elige un problema pequeño, escribe una prueba de comportamiento y aplica un único patrón. Compara claridad antes y después. Referencia: <cite>Design Patterns</cite>, Gamma, Helm, Johnson y Vlissides (1994). <a href="/presentaciones/">Volver a las presentaciones →</a>
+</p>
+</section>
