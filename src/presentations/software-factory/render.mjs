@@ -47,7 +47,7 @@ function composition(slide) {
     case 'flow': case 'loop':
       return `<div class="diagram ${slide.kind}">${connectors(slide)}<div class="stations main-panels" style="--count:${slide.items.length}">${items}</div></div>`;
     case 'gate':
-      return `<div class="gate-banner">⊣ DECISIÓN HUMANA · aceptar / corregir / detener</div>
+      return `<div class="gate-banner">Compuerta de integración · aceptar o devolver el lote</div>
         <div class="gate main-panels" style="--count:${slide.items.length}">${items}</div><div class="diagram-mini">${connectors(slide)}</div>`;
     case 'risk':
       return `<div class="risk main-panels">${items}</div>`;
