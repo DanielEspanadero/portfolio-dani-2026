@@ -289,7 +289,8 @@ function composition(slide) {
   if (slide.illustrated && slide.kind === 'timeline') return `<div class="diagram day">${dayDiagram(slide)}</div>`;
   switch (slide.kind) {
     case 'hero':
-      return `<svg class="hero-route" viewBox="0 0 1680 40" aria-label="Línea de producción de tres estaciones" role="img"><path d="M0 20H1660M530 10L550 20L530 30M1090 10L1110 20L1090 30" fill="none" stroke="#94c9d2" stroke-width="3"/></svg><div class="hero-line main-panels">${items}</div>`;
+      // The plant is generated at runtime: the document only reserves its decorative box.
+      return `<div class="hero-scene" data-hero-scene aria-hidden="true"></div><svg class="hero-route" viewBox="0 0 1680 40" aria-label="Línea de producción de tres estaciones" role="img"><path d="M0 20H1660M530 10L550 20L530 30M1090 10L1110 20L1090 30" fill="none" stroke="#94c9d2" stroke-width="3"/></svg><div class="hero-line main-panels">${items}</div>`;
     case 'timeline':
       return `<div class="timeline main-panels" style="--count:${slide.items.length}">${items}</div>`;
     case 'comparison':
@@ -341,7 +342,7 @@ function renderSlide(slide, index) {
   return `<section class="${classes.join(' ')}" data-slide="${index + 1}" data-kind="${e(slide.kind)}" id="${e(slide.id)}" data-title="${e(slide.title)}" data-chapter="${e(chapter.title)}" aria-labelledby="title-${e(slide.id)}">
     ${slide.figure?.mode === 'wash' ? plate(slide) : ''}<div class="registration" aria-hidden="true"></div>
     <header class="slide-heading"><p class="eyebrow">${eyebrow}</p>
-    <${heading} id="title-${e(slide.id)}">${e(slide.title)}</${heading}>${slide.alias ? `<p class="hero-alias">${e(slide.alias)}</p>` : ''}<p class="lead">${e(slide.lead)}</p>${slide.plain ? `<p class="plain">${e(slide.plain)}</p>` : ''}</header>
+    <${heading} id="title-${e(slide.id)}">${e(slide.title)}</${heading}>${slide.alias ? `<p class="hero-alias">${e(slide.alias)}</p>` : ''}<p class="lead">${e(slide.lead)}</p>${slide.terms ? `<ul class="hero-terms">${slide.terms.map(term => `<li>${e(term)}</li>`).join('')}</ul>` : ''}${slide.plain ? `<p class="plain">${e(slide.plain)}</p>` : ''}</header>
     <div class="composition">${composition(slide)}${slide.figure && slide.figure.mode !== 'wash' ? plate(slide) : ''}</div>
     <footer class="slide-footer"><span class="footer-author">Daniel Españadero</span><span class="footer-page">${pad(index + 1)} / ${pad(total)}</span></footer>
   </section>`;

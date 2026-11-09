@@ -6,7 +6,7 @@ export default {
  id: 'factory-01', title: 'Fábrica de software con IA', kind: 'hero',
  alias: 'AI Software Factory',
  lead: 'Un sistema de producción repetible que convierte intención en software verificado.',
- figure: { src: '01-planta.png', mode: 'feature', alt: 'Plano isométrico de línea fina: tres módulos de producción unidos por una cinta, con una bandeja ámbar de inspección al costado.' },
+ terms: ['Agentes', 'Automatización', 'Verificación'],
  items: [
  { label: 'Entrada', detail: 'Una petición se convierte en orden de trabajo con especificación y criterios de aceptación.' },
  { label: 'Estaciones', detail: 'Agentes especializados construyen, prueban y revisan piezas pequeñas de software.' },

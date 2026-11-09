@@ -19,11 +19,14 @@ const read = file => fs.readFileSync(`src/presentations/software-factory/${file}
 const css = ['fonts.css', 'viewport-base.css', 'deck.css'].map(read).join('\n');
 assert.ok(css.includes(fs.readFileSync('/Users/daniel/.gentle-shell/agent/skills/frontend-slides/viewport-base.css', 'utf8')));
 const controller = fs.readFileSync('src/presentations/shared/player.js', 'utf8');
+// The hero plant is the deck's only per-slide script; it rides with the shared player exactly
+// as the production document inlines it, so the visual check proves the shipped composition.
+const heroScene = fs.readFileSync('src/presentations/software-factory/hero-scene.mjs', 'utf8');
 const file = path.join(output, 'standalone.html');
 // The deck addresses art from the site root. When it is opened from disk for the
 // visual check, point the same approved files at their local absolute URL instead.
 const artDir = `${pathToFileURL(path.resolve('public/resources/software-factory-art')).href}/`;
-fs.writeFileSync(file, renderPresentation({ css, controller, offline: true })
+fs.writeFileSync(file, renderPresentation({ css, controller: `${controller}\n${heroScene}`, offline: true })
   .replaceAll('src="/resources/software-factory-art/', `src="${artDir}`));
 fs.writeFileSync(path.join(output, 'guide.html'), renderGuide({ css: read('fonts.css') + read('guide.css') }));
 let scratch, chrome, socket, sessionId;
@@ -94,7 +97,7 @@ const geometry = `(() => {
   for(let n=walker.nextNode();n;n=walker.nextNode()){if(!n.nodeValue.trim())continue;
    const range=document.createRange();range.selectNodeContents(n);rects.push(...range.getClientRects());}
   return rects;};
- for(const el of s.querySelectorAll('h1,h2,h3,p,pre,th,td,.station-number,.checkpoint,.closing-stamp,.integration strong,.gate-banner')) {
+ for(const el of s.querySelectorAll('h1,h2,h3,p,pre,th,td,.station-number,.hero-terms,.hero-terms li,.checkpoint,.closing-stamp,.integration strong,.gate-banner')) {
   if(getComputedStyle(el).visibility==='hidden'||el.getClientRects().length===0)continue;
   const b=rect(el);
   if(!within(b,r))errors.push('stage overflow: '+el.textContent);
@@ -214,6 +217,66 @@ try {
       check(await evaluate("location.hash==='#2'"), `${mode}: native arrow navigation`);
       await evaluate('history.back()'); await frame();
       check(await evaluate("location.hash==='#1'"), `${mode}: browser history`);
+      // === HERO PLANT: the deck's only per-slide script is judged by its governance ===
+      const plantRead = "Number(document.querySelector('[data-hero-scene]').dataset.draws||0)";
+      await go(1);
+      await evaluate('new Promise(r=>setTimeout(r,700))');
+      await capture(`hero-plant-${mode}.png`);
+      const plant = await evaluate(`(() => {const host=document.querySelector('[data-hero-scene]');
+        const svg=host.querySelector('svg'), box=svg.getBBox(), view=svg.viewBox.baseVal;
+        return {nodes:host.querySelectorAll('*').length,text:host.textContent.trim().length,
+          hidden:host.getAttribute('aria-hidden'),focusable:host.querySelectorAll('a,button,input,[tabindex]').length,
+          inside:box.x>=view.x-1&&box.y>=view.y-1&&box.x+box.width<=view.x+view.width+1&&box.y+box.height<=view.y+view.height+1};})()`);
+      check(plant.nodes > 100 && plant.text === 0 && plant.hidden === 'true' && plant.focusable === 0 && plant.inside,
+        `${mode}: the hero draws its plant (${plant.nodes} nodes), decorative, wordless and inside its viewBox`);
+      const redrawStart = await evaluate(plantRead);
+      await evaluate('new Promise(r=>setTimeout(r,1200))');
+      const redrawEnd = await evaluate(plantRead);
+      const budget = redrawEnd - redrawStart;
+      check(redrawEnd > redrawStart && budget >= 15 && budget <= 45,
+        `${mode}: the plant redraws while the hero is active at about 30 fps (${budget} frames in 1.2s)`);
+      await evaluate("location.hash='#2'"); await frame();
+      const parked = await evaluate(plantRead);
+      await evaluate('new Promise(r=>setTimeout(r,500))');
+      check(await evaluate(plantRead) === parked, `${mode}: leaving the hero stops the loop`);
+      await go(1); await frame();
+      const resumed = await evaluate(plantRead);
+      await evaluate('new Promise(r=>setTimeout(r,400))');
+      check(await evaluate(plantRead) > resumed, `${mode}: returning to the hero resumes the loop`);
+      // CDP cannot hide a page without freezing it, so visibility is stubbed and announced.
+      const hiddenDocument = await evaluate(`(() => {const host=document.querySelector('[data-hero-scene]');
+        Object.defineProperty(document,'visibilityState',{configurable:true,get:()=>'hidden'});
+        document.dispatchEvent(new Event('visibilitychange'));
+        return new Promise(resolve=>setTimeout(()=>{const frozen=Number(host.dataset.draws);
+          setTimeout(()=>{const second=Number(host.dataset.draws);
+            delete document.visibilityState;document.dispatchEvent(new Event('visibilitychange'));
+            resolve({frozen,second});},450);},200));})()`);
+      check(hiddenDocument.frozen === hiddenDocument.second, `${mode}: a hidden document stops the loop`);
+      await evaluate('new Promise(r=>setTimeout(r,400))');
+      check(await evaluate(plantRead) > hiddenDocument.second, `${mode}: a visible document resumes the loop`);
+      // Reduced motion: one static frame, drawn once, and no frame ever scheduled.
+      await command('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-reduced-motion', value: 'reduce' }] });
+      await load(pathToFileURL(file).href);
+      await evaluate('window.__heroFrames=0; const heroRequest=window.requestAnimationFrame.bind(window); window.requestAnimationFrame=cb=>{window.__heroFrames+=1;return heroRequest(cb)}');
+      const stillState = await evaluate(`(() => {const host=document.querySelector('[data-hero-scene]');
+        return {stills:Number(host.dataset.stills||0),draws:Number(host.dataset.draws||0),
+          nodes:host.querySelectorAll('*').length,length:host.querySelector('.hero-plant-parts').innerHTML.length};})()`);
+      check(stillState.stills === 1 && stillState.draws === 0 && stillState.nodes > 100,
+        `${mode}: reduced motion paints one still frame and starts no loop`);
+      await capture(`hero-plant-still-${mode}.png`);
+      await evaluate("location.hash='#2'"); await frame();
+      await evaluate("location.hash='#1'"); await frame();
+      // Ignore the probe's own frames: the wrapper counts the page's rAF calls, so the
+      // counter is reset once the navigation helper is done and then left alone.
+      await evaluate('window.__heroFrames=0');
+      await evaluate('new Promise(r=>setTimeout(r,600))');
+      const stillAfter = await evaluate(`(() => {const host=document.querySelector('[data-hero-scene]');
+        return {stills:Number(host.dataset.stills||0),draws:Number(host.dataset.draws||0),frames:window.__heroFrames,
+          length:host.querySelector('.hero-plant-parts').innerHTML.length};})()`);
+      check(stillAfter.frames === 0 && stillAfter.draws === 0 && stillAfter.stills === 1 && stillAfter.length === stillState.length,
+        `${mode}: reduced motion never rebuilds the still or schedules a frame`);
+      await command('Emulation.setEmulatedMedia', { features: [] });
+      await load(pathToFileURL(file).href);
       const stepSlide = slides.findIndex(slide => slide.kind === 'flow') + 1;
       const stepCount = slides[stepSlide - 1].items.length;
       await go(stepSlide);

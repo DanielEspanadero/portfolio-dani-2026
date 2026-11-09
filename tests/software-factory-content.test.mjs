@@ -63,6 +63,8 @@ test('contrato de datos, densidad escénica y notas entre 90 y 150 palabras', ()
     // S9 annotations: one plain sentence, one running-case label, one English alias.
     if (s.plain !== undefined) check(typeof s.plain === 'string' && words(s.plain) <= 18, `plain=${words(s.plain ?? '')}`);
     if (s.alias !== undefined) check(typeof s.alias === 'string' && words(s.alias) <= 4, `alias=${s.alias}`);
+    if (s.terms !== undefined) check(Array.isArray(s.terms) && s.terms.length === 3
+      && s.terms.every(term => typeof term === 'string' && words(term) <= 2), 'terms');
     if (s.quote !== undefined) check(typeof s.quote === 'string' && words(s.quote) >= 25, 'quote statement');
     if (s.sources !== undefined) {
       check(Array.isArray(s.sources), 'sources array');
@@ -282,6 +284,14 @@ test('portada en español con el alias inglés para la búsqueda', () => {
   assert.equal(hero.title, 'Fábrica de software con IA');
   assert.equal(hero.alias, 'AI Software Factory');
   assert.ok(!/[A-Z]{2,} SOFTWARE FACTORY/.test(hero.title));
+  // La portada dibuja su propia planta animada: ya no lleva lámina raster.
+  assert.equal(hero.figure, undefined);
+  // Las tres palabras del autor son texto de escenario, no parte del dibujo.
+  assert.deepEqual(hero.terms, ['Agentes', 'Automatización', 'Verificación']);
+  assert.equal(new Set(hero.terms).size, 3);
+  for (const term of hero.terms) assert.ok(!/[·•⋅]/.test(term), term);
+  // Ninguna otra diapositiva declara la fila de palabras.
+  assert.deepEqual(slides.filter(s => s.terms).map(s => s.id), ['factory-01']);
 });
 
 test('los ocho modos de fallo siguen presentes en el capítulo de riesgos', () => {

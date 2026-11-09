@@ -113,7 +113,7 @@ test('every content context is escaped, including code, notes and source attribu
     Object.assign(s, original);
     // Remove only the fields this test invented: the hero legitimately owns an alias now,
     // so a blanket delete would leak a mutated fixture into later tests.
-    for (const key of ['code', 'sources', 'alias', 'plain', 'story']) if (!(key in original)) delete s[key];
+    for (const key of ['code', 'sources', 'alias', 'plain', 'story', 'figure']) if (!(key in original)) delete s[key];
   }
 });
 
@@ -147,7 +147,8 @@ test('figures use the approved plates with factual Spanish alt text and reserved
   }
   const feature = id => slides.find(slide => slide.id === id).figure;
   // Artwork is pinned to its subject, not to a page number: ids move as slides are inserted.
-  assert.equal(feature('factory-01').mode, 'feature');
+  // The hero is the exception: it draws its own animated plant, so it carries no raster plate.
+  assert.equal(feature('factory-01'), undefined);
   assert.equal(feature('factory-31').src, '05-evidencia.png');
   assert.equal(feature('factory-34').src, '08-circulo.png');
   assert.equal(feature('factory-32').src, '06-carriles.png');
@@ -244,8 +245,9 @@ test('assets retain fixed base, licensed fonts and reduced motion, with no extra
   assert.match(css, /\.step-pending/);
   // Every motion added by this unit is CSS; the shared player stays untouched.
   assert.match(css, /prefers-reduced-motion: reduce/);
-  // Deck behaviour is the shared player plus the content itself; nothing local to hide.
+  // Deck behaviour is the shared player plus the hero plant module; nothing else to hide.
   assert.throws(() => read(`${base}enhancements.js`));
+  assert.ok(existsSync(`${base}hero-scene.mjs`));
   assert.doesNotMatch(css, /\.local-tools|\.checkpoint|\.closing-stamp|\.download-link/);
 });
 
@@ -313,6 +315,93 @@ test('the hero leads in Spanish and keeps the English term as a quiet alias', as
   }
   assert.match(renderGuide(), /AI Software Factory/);
   assert.match(read(`${base}deck.css`), /\.hero-alias \{[^}]*'/s);
+});
+
+test('the hero draws its own plant instead of a static plate', async () => {
+  const { renderPresentation } = await renderer();
+  const html = renderPresentation({ css: '', controller: '' });
+  const css = read(`${base}deck.css`);
+  const hero = byId(html, 'factory-01');
+  const slide = slides[0];
+  assert.equal(slide.figure, undefined);
+  assert.doesNotMatch(hero, /class="plate/);
+  // The drawing is a runtime container: decorative, empty in the document, never focusable.
+  assert.match(hero, /<div class="hero-scene" data-hero-scene aria-hidden="true"><\/div>/);
+  assert.doesNotMatch(hero, /<div class="hero-scene"[^>]*(?:tabindex|role=|aria-label)/);
+  // The author's tagline becomes stage text: three items, hairline separators, no middle dots.
+  assert.deepEqual(slide.terms, ['Agentes', 'Automatización', 'Verificación']);
+  assert.match(hero, /<ul class="hero-terms"><li>Agentes<\/li><li>Automatización<\/li><li>Verificación<\/li><\/ul>/);
+  // Each tagline word is listed once in the row, and the row exists once in the document.
+  const terms = hero.match(/<ul class="hero-terms">([\s\S]*?)<\/ul>/)[1];
+  for (const term of slide.terms) assert.equal(terms.split(`<li>${term}</li>`).length - 1, 1, term);
+  assert.equal((html.match(/<ul class="hero-terms">/g) || []).length, 1);
+  assert.doesNotMatch(html, /Agentes\s*[·•⋅]\s*Automatización/);
+  assert.doesNotMatch(hero, /[·•⋅]/);
+  assert.match(css, /\.hero-terms \{[^}]*display: flex/s);
+  assert.match(css, /\.hero-terms li \+ li \{[^}]*border-left: 1px solid #557077/s);
+  // The plant keeps the right side; the title block keeps the left and the station row.
+  assert.match(css, /\.hero-scene \{[^}]*right: 0[^}]*width: 700px/s);
+  assert.match(css, /\.kind-hero \.slide-heading \{[^}]*right: 860px/s);
+  // The hero keeps no plate styles; the closing plate keeps its slow drift (PRESERVE).
+  assert.doesNotMatch(css, /\.kind-hero \.plate|\.kind-hero\.has-plate/);
+  assert.match(css, /\.slide\.active \.kind-closing \.plate img \{ animation: drift/s);
+  assert.equal((hero.match(/<h1\b/g) || []).length, 1);
+  assert.match(hero, /<p class="hero-alias">AI Software Factory<\/p>/);
+  // The source's own eyebrow, title, subtitle and signature never enter the drawing.
+  assert.doesNotMatch(hero, /De la intención|AGENTES ·|Portada/);
+});
+
+test('the hero plant module stays isolated, token-coloured and governed', () => {
+  const source = read(`${base}hero-scene.mjs`);
+  // Palette: the drawing carries deck literals only; every shade is derived from them.
+  const hexes = new Set([...source.matchAll(/#[0-9a-fA-F]{6}/g)].map(match => match[0].toLowerCase()));
+  assert.deepEqual([...hexes].sort(), ['#101719', '#4f6b73', '#557077', '#94c9d2', '#e9eeeb', '#ffc36a']);
+  assert.match(source, /shade\(CYAN, \.55\)|shade = \(base, weight\) => mix\(base, DEEP, weight\)/);
+  // No external references, no words, no raster, no filters: one soft ground glow only.
+  assert.doesNotMatch(source, /https?:|xlink|<image|<text|<use|href=|filter:|linearGradient/);
+  assert.match(source, /radialGradient id="hero-ground"/);
+  // Governance: slide activation, page visibility, about 30 fps, still frame on reduce.
+  assert.match(source, /1000 \/ 30/);
+  assert.match(source, /requestAnimationFrame\(tick\)/);
+  assert.match(source, /cancelAnimationFrame/);
+  assert.match(source, /visibilitychange/);
+  assert.match(source, /prefers-reduced-motion: reduce/);
+  assert.match(source, /new win\.MutationObserver/);
+  assert.match(source, /attributeFilter: \['class', 'hidden'\]/);
+  assert.match(source, /pagehide/);
+  assert.match(source, /dataset\.draws/);
+  // It may not touch the shared player or any other slide.
+  for (const forbidden of ['#deck', 'slide-select', 'slide-index', 'deck-controls', 'document.body', 'querySelectorAll(\'[data-slide']) {
+    assert.ok(!source.includes(forbidden), forbidden);
+  }
+  // Online and downloadable documents both inline the module after the shared player.
+  const document = read(`${base}document.ts`);
+  assert.match(document, /shared\/player\.js\?raw/);
+  assert.match(document, /hero-scene\.mjs\?raw/);
+  assert.match(document, /controller: `\$\{controller\}\\n\$\{heroScene\}`/);
+});
+
+test('the hero plant generates one deterministic, wordless frame per moment', async () => {
+  const scene = await import('../src/presentations/software-factory/hero-scene.mjs');
+  const still = scene.heroScene(scene.HERO_STILL);
+  // Deterministic: the same instant always produces the same drawing.
+  assert.equal(scene.heroScene(scene.HERO_STILL), still);
+  assert.ok((still.match(/<(?:polygon|circle|path|g)\b/g) || []).length > 100, 'una planta vacía');
+  // No words, no ids, no accessibility roles inside the drawing: the meaning is in the HTML.
+  assert.doesNotMatch(still, /<text|<title|<desc|aria-|data-|id=|font-/);
+  // Motion: the dwell (arms and scan) and the indexed advance are different instants.
+  assert.notEqual(scene.heroScene(0.5), scene.heroScene(0.9));
+  assert.match(still, /opacity="\.15"/);
+  assert.doesNotMatch(scene.heroScene(0.5), /opacity="\.15"/);
+  // One frame per cycle: 6 s of drawing, sampled at the deck's own still instant.
+  assert.equal(scene.HERO_CYCLE, 6000);
+  assert.ok(scene.HERO_STILL > 0.04 && scene.HERO_STILL < 0.37, String(scene.HERO_STILL));
+  // The shell is the only place with a gradient: one soft ground glow, no words.
+  const shell = scene.heroShell();
+  assert.match(shell, /viewBox="[\d\s.-]+"/);
+  assert.match(shell, /aria-hidden="true"/);
+  assert.equal((shell.match(/<radialGradient/g) || []).length, 1);
+  assert.doesNotMatch(shell, /<text|<image|https?:/);
 });
 
 test('draw-in connectors stay on their three subjects after renumbering', async () => {
