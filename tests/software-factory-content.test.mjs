@@ -20,25 +20,27 @@ const sources = [
 ];
 
 // Structural guarantees complement, not replace, editorial and later visual review.
-test('54 diapositivas, siete capítulos ordenados y composición variada', () => {
+test('32 diapositivas, siete capítulos ordenados y composición variada', () => {
   assert.equal(chapters.length, 7);
-  assert.ok(slides.length >= 52 && slides.length <= 56);
+  assert.ok(slides.length >= 30 && slides.length <= 32, String(slides.length));
+  assert.deepEqual(chapters.map(c => c.slides.length), [6, 6, 4, 5, 4, 4, 3]);
+  assert.deepEqual(chapters.map(c => c.id), ['foundations', 'line', 'loop', 'risks', 'build', 'parallel', 'closing']);
   assert.equal(new Set(chapters.map(c => c.id)).size, 7);
   assert.equal(new Set(slides.map(s => s.id)).size, slides.length);
+  assert.deepEqual(slides.map(s => s.id), slides.map((_, index) => `factory-${String(index + 1).padStart(2, '0')}`));
   assert.deepEqual(slides, chapters.flatMap(c => c.slides));
   assert.equal(slides.filter(s => s.kind === 'hero').length, 1);
   assert.equal(slides[0].kind, 'hero');
   assert.equal(slides.filter(s => s.kind === 'closing').length, 1);
   assert.equal(slides.at(-1).kind, 'closing');
-  assert.ok(new Set(slides.map(s => s.kind)).size >= 9);
-  assert.ok(slides.filter(s => s.pause).length >= 2 && slides.filter(s => s.pause).length <= 3);
-  for (const chapter of chapters) {
-    assert.ok(chapter.title && chapter.slides.length >= 7 && chapter.slides.length <= 8);
-  }
+  assert.equal(new Set(slides.map(s => s.kind)).size, 15);
+  assert.ok(slides.filter(s => s.pause).length >= 1 && slides.filter(s => s.pause).length <= 2);
+  // Una sola composición de compuerta: la integración no vuelve a ser el tema del deck.
+  assert.equal(slides.filter(s => s.kind === 'gate').length, 1);
 });
 
 test('contrato de datos, densidad escénica y notas entre 90 y 150 palabras', () => {
-  const kinds = new Set('hero timeline comparison flow loop gate risk code table parallel checklist exercise quote closing'.split(' '));
+  const kinds = new Set('hero timeline comparison flow loop gate risk code table parallel checklist exercise quote closing files circle'.split(' '));
   const issues = [];
   for (const s of slides) {
     const check = (ok, description) => { if (!ok) issues.push(`${s.id}: ${description}`); };
@@ -63,7 +65,8 @@ test('contrato de datos, densidad escénica y notas entre 90 y 150 palabras', ()
 });
 
 test('módulos legibles y fuentes presentes en datos y bibliografía', async () => {
-  const modules = ['01-foundations', '02-anatomy', '03-risks', '04-create', '05-execute', '06-parallel', '07-workshop'];
+  const modules = ['01-foundations', '02-production-line', '03-loop-state', '04-failure-modes',
+    '05-build-yours', '06-example-parallel', '07-closing'];
   for (const name of modules) {
     const content = await read(`src/content/software-factory/${name}.mjs`);
     assert.ok(content.split('\n').length <= 351, name);
@@ -82,12 +85,12 @@ test('módulos legibles y fuentes presentes en datos y bibliografía', async () 
   assert.match(docs, /\/presentaciones\/software-factory/);
 });
 
-test('temario requerido: la fábrica como sistema de producción', () => {
+test('temario requerido: la fábrica como sistema de producción y su bucle', () => {
   const context = slide => `${slide.title} ${slide.lead} ${slide.items.map(i => `${i.label} ${i.detail}`).join(' ')} ${slide.notes}`;
   const all = slides.map(context).join('\n');
   const topics = [
-    // contexto histórico y vocabulario
-    [/McIlroy/, /Garmisch/, /1968/, /2001/, /diciembre de 2024/i,
+    // contexto histórico: dos orígenes de 1968 y su vocabulario
+    [/Bemer/, /General Electric/, /McIlroy/, /Garmisch/, /1968/, /2001/, /diciembre de 2024/i,
       /predefinid/, /dinámicamente/, /AGENTS\.md/],
     // la orden de trabajo y la especialización de estaciones
     [/orden de trabajo/i, /criterios de aceptación/i, /especificaci[oó]n|\bspec\b/i,
@@ -95,9 +98,17 @@ test('temario requerido: la fábrica como sistema de producción', () => {
     // estándares, activos reutilizables, compuertas automáticas y evidencia
     [/est[aá]ndar|convenci/i, /reutiliz|plantilla/i, /compuerta/i, /integraci[oó]n continua/i,
       /evidencia/i, /c[oó]digo de salida/i, /handoff/i],
+    // el bucle como maquinaria y su estado compartido
+    [/bucle/i, /tope de reintentos|n[uú]mero fijo de reintentos/i, /backlog/i,
+      /registro de estado|tablero/i, /markdown/i],
+    // política del aprobador: fusionar o escalar, con reglas explícitas
+    [/aprobador/i, /escala|escalado/i, /pagos/i, /accesos|credenciales/i,
+      /invalidaci[oó]n de cach[eé]|migraciones/i, /irreversible/i],
     // flujo, integración y medición
     [/integrar|integraci[oó]n/i, /rollback|vuelta atr[aá]s/i, /tiempo de ciclo/i, /lote/i,
-      /trabajo en curso/i],
+      /trabajo en curso/i, /coste/i, /tokens/i, /defectos? escapad/i],
+    // observabilidad y cierre del círculo
+    [/observabilidad|en qu[eé] fase|caja negra/i, /telemetr[ií]a/i, /alerta/i, /nueva orden|nuevas órdenes/i],
     // paralelismo y sus límites
     [/independiente/i, /worktree/i, /no.*sandbox/i, /puertos/, /base.*datos/,
       /capacidad de (?:revisi[oó]n|inspecci[oó]n)/i],
@@ -105,12 +116,16 @@ test('temario requerido: la fábrica como sistema de producción', () => {
     [/autenticaci[oó]n/, /autorizaci[oó]n/, /concurrencia/, /modo manual|trabajo manual/i],
   ];
   for (const pattern of topics.flat()) assert.match(all, pattern);
-  assert.ok(chapters.findIndex(c => c.id === 'risks') < chapters.findIndex(c => c.id === 'create'));
+  assert.ok(chapters.findIndex(c => c.id === 'risks') < chapters.findIndex(c => c.id === 'build'));
   assert.match(all, /no garantiza.*independiente/i);
+  // Los modelos se reparten esfuerzo y la fábrica se mejora con el mejor de ellos.
+  assert.match(all, /modelo (?:barato|m[aá]s (?:fuerte|capaz))/i);
+  assert.match(all, /subagente/i);
 });
 
 test('los ocho modos de fallo siguen presentes en el capítulo de riesgos', () => {
   const chapter = chapters.find(c => c.id === 'risks');
+  assert.equal(chapter.slides.length, 5);
   const text = chapter.slides.map(s => `${s.title} ${s.lead} ${s.items.map(i => `${i.label} ${i.detail}`).join(' ')} ${s.notes}`).join('\n');
   const families = [
     [/falso verde|correlacionad/i, 'fallos correlacionados'],
@@ -127,6 +142,17 @@ test('los ocho modos de fallo siguen presentes en el capítulo de riesgos', () =
   assert.doesNotMatch(`${chapter.slides[0].title} ${chapter.slides[0].lead}`, /aprob|human/i);
 });
 
+test('tres fallos reales de la fábrica como incidentes docentes', () => {
+  const text = slides.map(s => `${s.title} ${s.lead} ${s.items.map(i => `${i.label} ${i.detail}`).join(' ')} ${s.notes}`).join('\n');
+  // Árbol sucio, orden marcada como «necesita persona» sin acción y metadatos que bloquean el merge.
+  assert.match(text, /[aá]rbol (?:de trabajo )?sucio/i);
+  assert.match(text, /necesita (?:persona|intervenci[oó]n humana)/i);
+  assert.match(text, /metadatos/i);
+  assert.match(text, /impid\w* fusionar|impide fusionar/i);
+  // Cada incidente deja una lección, no una burla.
+  assert.match(text, /lecci[oó]n|escalar exige|versiona la configuraci[oó]n/i);
+});
+
 test('sin eslóganes heredados ni aprobación humana como tema dominante', () => {
   const removed = [
     /construir con criterio/i,
@@ -141,14 +167,14 @@ test('sin eslóganes heredados ni aprobación humana como tema dominante', () =>
   }
   // La decisión humana es un control entre varios: si domina los titulares, el deck vuelve a ser de gobernanza.
   const approval = slides.filter(s => /aprob|human/i.test(`${s.title} ${s.lead}`)).map(s => s.id);
-  assert.ok(approval.length <= 2, `aprobación/humano en titulares: ${approval.join(', ')}`);
+  assert.ok(approval.length <= 1, `aprobación/humano en titulares: ${approval.join(', ')}`);
   const stops = slides.filter(s => /\bSTOP\b|decisi[oó]n humana|control humano/i.test(`${s.title} ${s.lead}`)).map(s => s.id);
   assert.ok(stops.length <= 1, `paradas humanas en titulares: ${stops.join(', ')}`);
   // El flujo principal se explica con los verbos de producción, no con una compuerta humana al final.
   const spine = slides.map(s => `${s.title} ${s.lead}`).join(' ');
   assert.match(spine, /orden de trabajo/i);
   assert.match(spine, /integrar|integraci[oó]n/i);
-  assert.match(spine, /medir|medici[oó]n|tiempo de ciclo/i);
+  assert.match(spine, /medir|medici[oó]n|tiempo de ciclo|coste/i);
 });
 
 test('kit completo, sin plantillas ocultas ni resultados inventados y contrato coherente', async () => {
@@ -160,7 +186,7 @@ test('kit completo, sin plantillas ocultas ni resultados inventados y contrato c
   const agents = await read(kit + 'AGENTS.md');
   const worker = await read(kit + 'factory/worker.md');
   const handoff = await read(kit + 'factory/handoff.md');
-  const stageRules = slides.find(s => s.id === 'factory-28').items.map(i => `${i.label} ${i.detail}`).join(' ');
+  const stageRules = slides.find(s => s.id === 'factory-26').items.map(i => `${i.label} ${i.detail}`).join(' ');
   for (const text of [spec, readme, stageRules]) {
     assert.match(text, />=24h/);
     assert.match(text, /100%/);

@@ -1,10 +1,10 @@
 import foundations from './01-foundations.mjs';
-import anatomy from './02-anatomy.mjs';
-import risks from './03-risks.mjs';
-import create from './04-create.mjs';
-import execute from './05-execute.mjs';
-import parallel from './06-parallel.mjs';
-import workshop from './07-workshop.mjs';
+import line from './02-production-line.mjs';
+import loop from './03-loop-state.mjs';
+import risks from './04-failure-modes.mjs';
+import build from './05-build-yours.mjs';
+import parallel from './06-example-parallel.mjs';
+import closing from './07-closing.mjs';
 
-export const chapters = [foundations, anatomy, risks, create, execute, parallel, workshop];
+export const chapters = [foundations, line, loop, risks, build, parallel, closing];
 export const slides = chapters.flatMap(chapter => chapter.slides);

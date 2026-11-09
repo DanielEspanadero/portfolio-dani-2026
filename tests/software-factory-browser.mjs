@@ -20,7 +20,11 @@ const css = ['fonts.css', 'viewport-base.css', 'deck.css'].map(read).join('\n');
 assert.ok(css.includes(fs.readFileSync('/Users/daniel/.gentle-shell/agent/skills/frontend-slides/viewport-base.css', 'utf8')));
 const controller = fs.readFileSync('src/presentations/shared/player.js', 'utf8');
 const file = path.join(output, 'standalone.html');
-fs.writeFileSync(file, renderPresentation({ css, controller, offline: true }));
+// The deck addresses art from the site root. When it is opened from disk for the
+// visual check, point the same approved files at their local absolute URL instead.
+const artDir = `${pathToFileURL(path.resolve('public/resources/software-factory-art')).href}/`;
+fs.writeFileSync(file, renderPresentation({ css, controller, offline: true })
+  .replaceAll('src="/resources/software-factory-art/', `src="${artDir}`));
 fs.writeFileSync(path.join(output, 'guide.html'), renderGuide({ css: read('fonts.css') + read('guide.css') }));
 let scratch, chrome, socket, sessionId;
 let sequence = 0;
@@ -85,19 +89,41 @@ const geometry = `(() => {
  const errors=[], rect=el=>el.getBoundingClientRect();
  const within=(a,b,t=1)=>a.left>=b.left-t&&a.top>=b.top-t&&a.right<=b.right+t&&a.bottom<=b.bottom+t;
  const overlaps=(a,b)=>Math.min(a.right,b.right)-Math.max(a.left,b.left)>scale*2&&Math.min(a.bottom,b.bottom)-Math.max(a.top,b.top)>scale*2;
+ // Ink means text nodes only: an absolutely positioned ornament inside a block is not text.
+ const ink=el=>{const rects=[];const walker=document.createTreeWalker(el,NodeFilter.SHOW_TEXT);
+  for(let n=walker.nextNode();n;n=walker.nextNode()){if(!n.nodeValue.trim())continue;
+   const range=document.createRange();range.selectNodeContents(n);rects.push(...range.getClientRects());}
+  return rects;};
  for(const el of s.querySelectorAll('h1,h2,h3,p,pre,th,td,.station-number,.checkpoint,.closing-stamp,.integration strong,.gate-banner')) {
   if(getComputedStyle(el).visibility==='hidden'||el.getClientRects().length===0)continue;
   const b=rect(el);
   if(!within(b,r))errors.push('stage overflow: '+el.textContent);
   const panel=el.closest('.station,.code-panel,.integration,th,td');
   if(panel&&panel!==el&&!within(b,rect(panel)))errors.push('panel overflow: '+el.textContent);
-  const range=document.createRange();range.selectNodeContents(el);
-  for(const textRect of range.getClientRects()) {
+  for(const textRect of ink(el)) {
    if(!within(textRect,r,scale*2))errors.push('text ink outside stage: '+el.textContent);
    if(panel && !within(textRect,rect(panel),scale*2))errors.push('text ink outside panel: '+el.textContent);
    // Font ascenders/descenders can exceed a CSS line box. Horizontal escape is not legitimate.
    if(textRect.left<b.left-scale*2||textRect.right>b.right+scale*2)errors.push('text horizontally escapes box: '+el.textContent);
   }
+ }
+ // A plate may never sit on top of readable text or leave the stage.
+ const textNodes=[...s.querySelectorAll('.slide-heading h1,.slide-heading h2,.slide-heading .lead,.composition h3,.composition p,.composition pre,.composition th,.composition td')];
+ for(const plate of s.querySelectorAll('.plate')) {
+  const b=rect(plate);
+  if(!within(b,r))errors.push('plate outside stage: '+plate.dataset.plate);
+  // Only a visible plate can cover something: a wash sits behind the scrim by design.
+  if(!plate.classList.contains('plate-feature'))continue;
+  for(const el of textNodes) {
+   if(el===plate||plate.contains(el)||getComputedStyle(el).visibility==='hidden'||el.getClientRects().length===0)continue;
+   for(const textRect of ink(el)) {
+    if(overlaps(b,textRect))errors.push('plate covers text: '+el.textContent.slice(0,40));
+   }
+  }
+ }
+ for(const el of s.querySelectorAll('.composition p,.slide-heading .lead')) {
+  if(!el.getClientRects().length)continue;
+  if(parseFloat(getComputedStyle(el).fontSize)<28)errors.push('stage text below 28px: '+el.textContent.slice(0,40));
  }
  const panels=[...s.querySelectorAll('.panel')];
  for(let i=0;i<panels.length;i++)for(let j=i+1;j<panels.length;j++) {
@@ -161,7 +187,9 @@ try {
         check(result.errors.length === 0, `${mode}/#${number}: text bounds + panel separation ${JSON.stringify(result.errors)}`);
         check(JSON.stringify(initial.steps) === JSON.stringify(result.steps), `${mode}/#${number}: reserved step geometry`);
         check(await evaluate("document.querySelectorAll('.slide:not([hidden])').length===1 && [...document.querySelectorAll('.slide[hidden]')].every(s=>s.inert)"), `${mode}/#${number}: single active stage + inert siblings`);
-        if ([1, 3, 9, 13, 16, 18, 26, 28, 36, 41, 54].includes(number)) await capture(`slide-${number}-${mode}.png`);
+        // Hero, wash openers, flow, both exercises, table, loop, files, gate, parallel, circle, closing.
+        if ([1, 3, 7, 9, 10, 12, 13, 14, 17, 21, 22, 23, 25, 26, 28, 29, 30, 32].includes(number)) await capture(`slide-${number}-${mode}.png`);
+        check(await evaluate("location.hash==='#"+number+"' && [...document.querySelectorAll('.slide.active img')].every(img=>img.complete&&img.naturalWidth>0)"), `${mode}/#${number}: plate files resolve`);
       }
     } else if (selector.endsWith('interaction')) {
       await evaluate("window.trusted=[];document.addEventListener('click',e=>{if(e.isTrusted)window.trusted.push(e.target.id)})");
@@ -172,25 +200,41 @@ try {
       check(await evaluate("location.hash==='#2'"), `${mode}: native arrow navigation`);
       await evaluate('history.back()'); await frame();
       check(await evaluate("location.hash==='#1'"), `${mode}: browser history`);
-      await go(9);
+      const stepSlide = slides.findIndex(slide => slide.kind === 'flow') + 1;
+      const stepCount = slides[stepSlide - 1].items.length;
+      await go(stepSlide);
       await key(' ', 'Space', 32, ' ');
-      check(await evaluate("location.hash==='#9' && document.querySelectorAll('.active [data-step]:not(.step-pending)').length===1"), `${mode}: Space reveals before advancing`);
+      check(await evaluate(`location.hash==='#${stepSlide}' && document.querySelectorAll('.active [data-step]:not(.step-pending)').length===1`), `${mode}: Space reveals before advancing`);
       await key('ArrowLeft', 'ArrowLeft', 37);
-      check(await evaluate("location.hash==='#9' && document.querySelectorAll('.active .step-pending').length===4"), `${mode}: previous unwinds step`);
+      check(await evaluate(`location.hash==='#${stepSlide}' && document.querySelectorAll('.active .step-pending').length===${stepCount}`), `${mode}: previous unwinds step`);
       await key('i', 'KeyI', 73, 'i');
-      check(await evaluate("document.querySelector('#slide-index').open && document.activeElement.getAttribute('href')==='#9'"), `${mode}: index keyboard + focus`);
+      check(await evaluate(`document.querySelector('#slide-index').open && document.activeElement.getAttribute('href')==='#${stepSlide}'`), `${mode}: index keyboard + focus`);
       await capture(`index-${mode}.png`);
       await key('Escape', 'Escape', 27);
       check(await evaluate("!document.querySelector('#slide-index').open && document.activeElement.id==='deck'"), `${mode}: index Escape restores focus`);
+      // A missing plate file keeps the reserved box, the frame and the caption strip.
+      const missingPlate = await evaluate(`(() => {
+        const slide=[...document.querySelectorAll('.slide')].find(s=>s.querySelector('.plate-feature'));
+        const figure=slide.querySelector('.plate'), img=figure.querySelector('img');
+        const before={width:figure.getBoundingClientRect().width,height:figure.getBoundingClientRect().height,src:img.src};
+        img.src='/resources/software-factory-art/does-not-exist.png';
+        return new Promise(resolve=>setTimeout(()=>{
+          const after={width:figure.getBoundingClientRect().width,height:figure.getBoundingClientRect().height};
+          const frame=figure.querySelector('.plate-frame'), caption=figure.querySelector('.plate-caption');
+          img.src=before.src;
+          resolve({before,after,frame:!!frame,caption:getComputedStyle(caption).minHeight});
+        },150));
+      })()`);
+      check(missingPlate.before.width>0 && Math.abs(missingPlate.before.height-missingPlate.after.height)<1 && missingPlate.frame && missingPlate.caption!=='0px', `${mode}: missing plate keeps frame, box and caption`);
       // No notes drawer, animation pause or download chrome: the deck is slides only.
       check(await evaluate("!document.querySelector('#notes-dialog') && !document.querySelector('#notes-toggle') && !document.querySelector('#animation-pause') && !document.querySelector('#animation-restart') && !document.querySelector('.local-tools') && !document.querySelector('.download-link')"), `${mode}: no extra deck chrome`);
       const stillAnimates = await evaluate("[...document.querySelectorAll('.active .packet')].every(p=>p.getAnimations().length===0 || p.getAnimations().every(a=>a.playState==='running'))");
       await command('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-reduced-motion', value: 'reduce' }] });
-      await go(9); await frame();
+      await go(stepSlide); await frame();
       check(stillAnimates && await evaluate("document.querySelector('#deck').getAnimations({subtree:true}).length===0"), `${mode}: reduced motion removes CSS + WAAPI motion`);
       await command('Emulation.setEmulatedMedia', { features: [] });
-      await go(54); await key('ArrowRight', 'ArrowRight', 39);
-      check(await evaluate("location.hash==='#54' && document.querySelector('#next-slide').disabled"), `${mode}: last boundary`);
+      await go(slides.length); await key('ArrowRight', 'ArrowRight', 39);
+      check(await evaluate(`location.hash==='#${slides.length}' && document.querySelector('#next-slide').disabled`), `${mode}: last boundary`);
       await enter('fullscreen-toggle');
       check(await evaluate("!!document.fullscreenElement && document.querySelector('#fullscreen-toggle').getAttribute('aria-pressed')==='true'"), `${mode}: trusted fullscreen`);
       const full = await evaluate(geometry);
@@ -208,7 +252,7 @@ try {
       await capture(`no-script-${mode}.png`);
       await command('Emulation.setScriptExecutionDisabled', { value: false });
       await load(pathToFileURL(path.join(output, 'guide.html')).href);
-      check(await evaluate("document.querySelectorAll('h1').length===1 && document.querySelectorAll('article').length===54 && document.documentElement.scrollWidth<=innerWidth"), `${mode}: responsive guide, 54 notes, no horizontal overflow`);
+      check(await evaluate(`document.querySelectorAll('h1').length===1 && document.querySelectorAll('article').length===${slides.length} && document.documentElement.scrollWidth<=innerWidth`), `${mode}: responsive guide, ${slides.length} notes, no horizontal overflow`);
       await capture(`guide-${mode}.png`);
       await command('Emulation.setEmulatedMedia', { media: 'print' });
       check(await evaluate("getComputedStyle(document.body).backgroundColor==='rgb(255, 255, 255)'"), `${mode}: printable guide`);
