@@ -1,6 +1,6 @@
 # AI Software Factory: contenido para enseñar y practicar
 
-32 diapositivas en español, notas de ponente separadas y un kit local ejecutable. La densidad se recortó a propósito: cada diapositiva sostiene una idea y el directo se apoya en las notas, no en paredes de texto. El hilo conductor es la fábrica como sistema de producción —orden de trabajo, estaciones especializadas, estándares, compuertas automáticas, evidencia, integración y medición— y no la aprobación humana: ésta aparece una sola vez, en la compuerta de integración, y como una de ocho familias de riesgo (S7). El renderer local integra ese currículo con la dirección elegida «Plano de fábrica» (S4), sin modificar otros decks ni el player compartido (S5). **Ruta implementada:** `/presentaciones/software-factory` (S6); lectura en `/presentaciones/software-factory/guia` y HTML autónomo en `/presentaciones/software-factory/descargar.html`. Son rutas Astro prerenderizadas; su respuesta HTTP en el hosting requiere la verificación posterior del orquestador. No se ha ejecutado build ni despliegue.
+34 diapositivas en español, notas de ponente separadas y un kit local ejecutable. La densidad se recortó a propósito: cada diapositiva sostiene una idea y el directo se apoya en las notas, no en paredes de texto. La entrada es explícita para público no técnico: definición en la segunda diapositiva, una línea «en criollo» en las diapositivas con jerga, un caso único que atraviesa el recorrido y dos diapositivas de contexto (un día normal y qué problema resuelve). El hilo conductor es la fábrica como sistema de producción —orden de trabajo, estaciones especializadas, estándares, compuertas automáticas, evidencia, integración y medición— y no la aprobación humana: ésta aparece una sola vez, en la compuerta de integración, y como una de ocho familias de riesgo (S7). El renderer local integra ese currículo con la dirección elegida «Plano de fábrica» (S4), sin modificar otros decks ni el player compartido (S5). **Ruta implementada:** `/presentaciones/software-factory` (S6); lectura en `/presentaciones/software-factory/guia` y HTML autónomo en `/presentaciones/software-factory/descargar.html`. Son rutas Astro prerenderizadas; su respuesta HTTP en el hosting requiere la verificación posterior del orquestador. No se ha ejecutado build ni despliegue.
 
 ## Camino rápido
 
@@ -28,7 +28,7 @@ La portada usa una línea de producción de tres estaciones (entrada, estaciones
 
 ## Arquitectura y contrato para el renderer
 
-Cada capítulo `.mjs` exporta por defecto `{ id, title, slides: [...] }`. `index.mjs` exporta con nombre `chapters` en orden narrativo y `slides` como concatenación de sus arrays. No hay side effects, HTML ni imports de herramientas de presentación. IDs estables `factory-01` a `factory-32`; no reconstruir IDs a partir de títulos.
+Cada capítulo `.mjs` exporta por defecto `{ id, title, slides: [...] }`. `index.mjs` exporta con nombre `chapters` en orden narrativo y `slides` como concatenación de sus arrays. No hay side effects, HTML ni imports de herramientas de presentación. IDs estables `factory-01` a `factory-34`; no reconstruir IDs a partir de títulos.
 
 | Campo de slide | Tipo y regla |
 |---|---|
@@ -41,10 +41,13 @@ Cada capítulo `.mjs` exporta por defecto `{ id, title, slides: [...] }`. `index
 | `sources?` | array de URLs de referencia; enlaces de consulta, no recursos necesarios para renderizar |
 | `code?` | string con máximo 12 líneas; escapar como texto, nunca evaluar ni inyectar como HTML |
 | `steps?` | boolean; sugiere recorrido ordenado para flow/loop/ejercicio; no autoriza ejecución |
-| `pause?` | boolean; marca una pausa intencional de chat (IDs 12 y 21) |
+| `pause?` | boolean; marca una pausa intencional de chat (IDs 14 y 23) |
+| `plain?` | string de ≤18 palabras, sin jerga; se dibuja como anotación bajo la entrada. Obligatoria en las diapositivas con vocabulario pesado |
+| `story?` | string de ≤6 palabras, idéntico en todas las diapositivas donde aparece (07–25); recuerda el caso en curso en el pie |
+| `alias?` | string corta con el término en inglés, solo en la portada, para búsqueda |
 | `figure?` | objeto `{src, alt, mode}`; `mode` es `feature` (lámina visible) o `wash` (fondo muy tenue detrás de paneles opacos). `src` apunta a `public/resources/software-factory-art/` y `alt` describe el diagrama en español, nunca repite el título |
 
-No se usan otros campos específicos de kind en esta entrega. `quote` está permitido para evolución, sin obligación de usarlo. Existen 15 kinds utilizados, incluidos `files` (árbol de archivos state) y `circle` (ciclo producción→telemetría→backlog). Cada item puede convertirse en nodo, fila, columna o estación según kind: no resolver todo con la misma card repetida. Las fuentes completas no deben apretarse en el escenario; ofrecerlas en notas o lectura. Las plantillas extensas pertenecen al kit.
+No se usan otros campos específicos de kind en esta entrega. Existen 16 kinds utilizados, incluidos `files` (árbol de archivos de estado), `circle` (ciclo producción→telemetría→backlog) y `quote` (la definición de la diapositiva 02). Cada item puede convertirse en nodo, fila, columna o estación según kind: no resolver todo con la misma card repetida. Las fuentes completas no deben apretarse en el escenario; ofrecerlas en notas o lectura. Las plantillas extensas pertenecen al kit.
 
 ### Límites para la siguiente unidad
 
@@ -60,27 +63,29 @@ Duración orientativa: **90–120 minutos ajustables**, no una garantía. Acorta
 
 | Módulo | IDs | Recorrido y atención del ponente | Tiempo orientativo |
 |---|---|---|---|
-| `01-foundations.mjs` | 01–06 | Qué es y qué no es; 1968 con dos orígenes (Bemer en GE y McIlroy en Garmisch); de cascada a CI/CD a agentes; vocabulario mínimo; asistente, workflow o agente | 10–13 min |
-| `02-production-line.mjs` | 07–12 | Mapa de planta; de petición a orden de trabajo; estaciones especializadas; estándares y activos reutilizables; compuertas automáticas; pausa de evidencia y lote pequeño | 10–13 min |
-| `03-loop-state.mjs` | 13–16 | El bucle completo con rondas acotadas; estado en archivos markdown; quién decide y cuándo escalar; política de modelos y esfuerzo | 9–12 min |
-| `04-failure-modes.mjs` | 17–21 | Dos fábricas con la misma pinta; falso verde correlacionado; texto hostil y permisos; coste y conocimiento; pausa con tres fallos reales de una corrida | 12–15 min |
-| `05-build-yours.mjs` | 22–25 | Los ocho archivos; reglas operativas; primera corrida; observabilidad de la línea | 9–12 min |
-| `06-example-parallel.mjs` | 26–29 | Fronteras de la cancelación; RED antes de la solución; el lote aterriza integrado; worktrees y contrato compartido | 11–14 min |
-| `07-closing.mjs` | 30–32 | Del despliegue a la siguiente orden; medir coste, calidad y ciclo; cierre y checklist de arranque | 8–11 min |
+| `01-foundations.mjs` | 01–07 | Portada en español con alias; definición en una frase; qué no es; 1968 con dos orígenes; qué problema resuelve y qué no; vocabulario mínimo; asistente, workflow o agente | 11–14 min |
+| `02-production-line.mjs` | 08–14 | Un día en la fábrica; mapa de planta; de petición a orden de trabajo; estaciones especializadas; estándares y activos; compuertas automáticas; pausa de evidencia | 11–14 min |
+| `03-loop-state.mjs` | 15–18 | El bucle completo; estado en archivos; quién decide y cuándo escalar; política de modelos y esfuerzo | 9–12 min |
+| `04-failure-modes.mjs` | 19–23 | Dos fábricas; falso verde; texto hostil y permisos; coste y conocimiento; pausa con tres fallos reales | 12–15 min |
+| `05-build-yours.mjs` | 24–27 | Los ocho archivos; reglas operativas; primera corrida; observabilidad de la línea | 9–12 min |
+| `06-example-parallel.mjs` | 28–31 | Fronteras de la cancelación; RED antes de la solución; el lote aterriza integrado; worktrees y contrato compartido | 11–14 min |
+| `07-closing.mjs` | 32–34 | Del despliegue a la siguiente orden; medir coste, calidad y ciclo; cierre y checklist de arranque | 8–11 min |
 
 Los rangos permiten elegir ritmo; no deben sumarse como una promesa exacta. Para un directo corto, dar la práctica como continuación local. Para uno largo, ampliar preguntas sin añadir permisos ni servicios reales.
 
 ### Puntos que no deben perderse al presentar
 
-- 03–04: no atribuir fechas no verificadas a Hitachi/SDC ni páginas no comprobadas a las actas. CI se presenta como antecedente sin fecha fundacional.
-- 06–07: Anthropic (diciembre de 2024) distingue rutas predefinidas de decisiones dinámicas y recomienda simplicidad. No es una norma universal.
-- 14, 18, 30: separar revisión no garantiza independencia de razonamiento. Código y tests pueden tener el mismo error.
-- 17–24, 39: el capítulo de fallos es la parte negativa del método; el control humano se trata como una familia de riesgo («firma vacía o línea sin freno») y como la única compuerta explícita, sin convertirla en el tema de toda la presentación.
-- 28, 36–37: >=24h devuelve 100%; <24h antes devuelve 0%; inicio exacto o después rechaza intacta. Repetir conserva outcome, pero events vacío hace que la respuesta completa pueda diferir.
-- 33–34: autenticación y autorización están fuera de alcance; tiempos UTC canónicos e importes válidos se verifican antes de eventos. No exponer el ejemplo como API de producción.
-- 35, 38: expectativas de terminal se etiquetan como tales; cada participante registra su resultado real. No prometer una suite pasada sin observarla.
-- 40, 43: rollback de código no deshace efectos externos; worktree no aísla puertos, procesos, bases de datos ni permisos.
-- 46, 50: atención humana como cuello de botella; medir ciclo completo y calidad, no líneas ni ahorro prometido.
+- 02: leer la definición entera y sin prisa. Si la audiencia solo retiene una idea, que sea esa frase y las tres claves.
+- 04: dos orígenes en 1968 (Bemer en GE y McIlroy en Garmisch) sin fechas ni páginas no comprobadas; CI se presenta como antecedente sin fecha fundacional.
+- 07: Anthropic (diciembre de 2024) distingue rutas predefinidas de decisiones dinámicas y recomienda simplicidad. No es una norma universal.
+- 08: los horarios del día normal son ilustrativos, no una medición.
+- 11, 20, 31: separar revisión no garantiza independencia de razonamiento; código y prueba pueden compartir el mismo error.
+- 19–23, 30: el capítulo de fallos es la parte negativa del método; el control humano es una familia de riesgo más y la única compuerta explícita, nunca el tema de la presentación.
+- 28: >=24h devuelve 100%; <24h antes devuelve 0%; inicio exacto o después rechaza intacta. Repetir conserva el resultado, pero sin eventos nuevos.
+- 29: autenticación y autorización están fuera de alcance; tiempos UTC canónicos e importes válidos se verifican antes de emitir eventos. No exponer el ejemplo como API de producción.
+- 29, 30: las expectativas de terminal se etiquetan como tales; cada participante registra su resultado real.
+- 30, 31: rollback de código no deshace efectos externos; worktree no aísla puertos, procesos, bases de datos ni permisos.
+- 33: capacidad de revisión como cuello de botella; medir ciclo completo y calidad, no líneas ni ahorro prometido.
 
 ## Kit: archivos y distribución
 

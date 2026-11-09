@@ -1,0 +1,80 @@
+{
+  "selector": "--chapter=5",
+  "probes": [
+    {
+      "mode": "desktop",
+      "slide": "24",
+      "kind": "code",
+      "ratio": 1.7777776718139648,
+      "fit": true,
+      "errors": [],
+      "steps": []
+    },
+    {
+      "mode": "desktop",
+      "slide": "25",
+      "kind": "checklist",
+      "ratio": 1.7777776718139648,
+      "fit": true,
+      "errors": [],
+      "steps": []
+    },
+    {
+      "mode": "desktop",
+      "slide": "26",
+      "kind": "code",
+      "ratio": 1.7777776718139648,
+      "fit": true,
+      "errors": [],
+      "steps": []
+    },
+    {
+      "mode": "desktop",
+      "slide": "27",
+      "kind": "table",
+      "ratio": 1.7777776718139648,
+      "fit": true,
+      "errors": [],
+      "steps": []
+    },
+    {
+      "mode": "phone",
+      "slide": "24",
+      "kind": "code",
+      "ratio": 1.7777777777777777,
+      "fit": true,
+      "errors": [],
+      "steps": []
+    },
+    {
+      "mode": "phone",
+      "slide": "25",
+      "kind": "checklist",
+      "ratio": 1.7777777777777777,
+      "fit": true,
+      "errors": [],
+      "steps": []
+    },
+    {
+      "mode": "phone",
+      "slide": "26",
+      "kind": "code",
+      "ratio": 1.7777777777777777,
+      "fit": true,
+      "errors": [],
+      "steps": []
+    },
+    {
+      "mode": "phone",
+      "slide": "27",
+      "kind": "table",
+      "ratio": 1.7777777777777777,
+      "fit": true,
+      "errors": [],
+      "steps": []
+    }
+  ],
+  "failures": [],
+  "requests": [],
+  "errors": []
+}
