@@ -167,7 +167,10 @@ test('un día normal en la fábrica: cinco paradas con hora y detalle llano', ()
   const all = `${day.lead} ${day.items.map(i => `${i.label} ${i.detail}`).join(' ')}`;
   // Mundana, no mágica: entra la orden, se escribe la spec, se construye, se revisa y se decide.
   assert.match(all, /martes|normal|rutina/i);
-  for (const stop of [/entra la orden/i, /spec|se escribe/i, /constru/i, /revisi[oó]n/i, /decisi[oó]n/i]) assert.match(all, stop);
+  // La quinta parada no es una decisión humana: la compuerta aplica la regla y escala la excepción.
+  for (const stop of [/entra la orden/i, /spec|se escribe/i, /constru/i, /revisi[oó]n/i, /compuerta|est[aá]ndar/i]) assert.match(all, stop);
+  assert.match(all, /escala|excepci[oó]n/i);
+  assert.doesNotMatch(all, /decisi[oó]n humana|criterio humano|una persona decide/i);
   for (const entry of day.items) assert.match(entry.label, /\b\d\d:\d\d\b/);
   // Cinco horas de reloj distintas y en orden ascendente: es un día, no un diagrama abstracto.
   const clocks = day.items.map(entry => entry.label.match(/\d\d:\d\d/)[0]);
@@ -344,4 +347,29 @@ test('la pieza del flujo completo se lee dentro del diagrama, sin letra por deba
   }
   assert.deepEqual(flow.items.map(entry => entry.label),
     ['Entrada', 'Orden y spec', 'Construcción', 'Revisión y compuertas', 'Integración y operación']);
+});
+
+test('el día ilustrado cabe en el dibujo: cinco horas, rótulos cortos y la compuerta al final', () => {
+  // The ordinary day is drawn, so its text has to fit three 22-character lines at 28px.
+  // If a detail stops fitting, the wording is shortened: the type never shrinks.
+  const day = slides.find(s => s.id === 'factory-08');
+  assert.equal(day.kind, 'timeline');
+  assert.equal(day.illustrated, true);
+  assert.equal(slides.filter(s => s.illustrated).length, 1, 'solo el día lleva el diagrama');
+  assert.equal(day.items.length, 5);
+  for (const entry of day.items) {
+    const match = entry.label.match(/^(\d{2}:\d{2}), (.+)$/);
+    assert.ok(match, entry.label);
+    assert.ok(words(match[2]) <= 4, `${entry.label}`);
+    assert.ok(entry.detail.length <= 68, `${entry.label}: ${entry.detail.length}`);
+    assert.ok(words(entry.detail) <= 12, `${entry.label}: ${words(entry.detail)}`);
+  }
+  // La quinta parada es la compuerta aplicando la regla escrita: la excepción se escala.
+  assert.match(day.items[4].label, /compuerta/i);
+  assert.match(day.items[4].detail, /regla|est[aá]ndar/i);
+  assert.match(day.items[4].detail, /escala|excepci[oó]n/i);
+  assert.doesNotMatch(`${day.title} ${day.lead} ${day.items.map(i => `${i.label} ${i.detail}`).join(' ')}`,
+    /persona|humano|decide|aprueba|aprobaci[oó]n/i);
+  // Las horas son ilustrativas: la nota lo dice para que nadie las lea como medición.
+  assert.match(day.notes, /ilustrativ/i);
 });

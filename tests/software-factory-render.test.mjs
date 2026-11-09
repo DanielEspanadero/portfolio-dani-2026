@@ -369,3 +369,83 @@ test('the loopback flow is one drawn journey, not five cards plus a pseudo-arc',
   assert.doesNotMatch(diagram, /<script|requestAnimationFrame|setTimeout/);
   assert.match(diagram, /<path class="flow-rail" d="M30 190H1650"\/>/);
 });
+
+test('the ordinary day is one clock-like drawing, not five timeline cards', async () => {
+  const { renderPresentation } = await renderer();
+  const html = renderPresentation({ css: '', controller: '' });
+  const css = read(`${base}deck.css`);
+  const slide = slides.find(entry => entry.id === 'factory-08');
+  const day = byId(html, 'factory-08');
+  // The switch mirrors the loopback flow: the kind stays, the flag replaces the card row.
+  assert.equal(slide.kind, 'timeline');
+  assert.equal(slide.illustrated, true);
+  assert.match(day, /class="diagram day"/);
+  assert.doesNotMatch(day, /class="panel station"/);
+  assert.match(css, /\.day-diagram \{[^}]*width: 100%; height: auto/s);
+  const svg = day.match(/<svg class="day-diagram" viewBox="0 0 1680 480" role="img" aria-label="([^"]+)">/);
+  assert.ok(svg, 'diapositiva sin diagrama del día');
+  // One Spanish label carries the whole day: production line, written standard, exception.
+  assert.match(svg[1], /09:10/);
+  assert.match(svg[1], /compuerta/i);
+  assert.match(svg[1], /estándar/i);
+  assert.match(svg[1], /excepción/i);
+  assert.match(svg[1], /ilustrativas/i);
+  // El día no se centra en el juicio humano: la compuerta aplica la regla y escala la excepción.
+  assert.doesNotMatch(svg[1], /persona|decide|deciden|humano|criterio humano/i);
+  // Every glyph is real SVG text, never a path, and never below the stage floor of 28px.
+  const sizes = [...day.matchAll(/font-size:\s*([\d.]+)px/g)].map(match => Number(match[1]));
+  assert.deepEqual([...new Set(sizes)].sort((a, b) => a - b), [28, 32]);
+  for (const size of sizes) assert.ok(size >= 28, String(size));
+  const glyphs = kind => [...day.matchAll(new RegExp(`class="${kind}"[^>]*>([^<]*)<`, 'g'))].map(match => match[1]);
+  const clocks = slide.items.map(entry => entry.label.match(/\d{2}:\d{2}/)[0]);
+  assert.deepEqual(glyphs('day-clock'), clocks);
+  const labels = slide.items.map(entry => entry.label.replace(/^\d{2}:\d{2},\s*/, ''));
+  assert.equal(glyphs('day-label').join(' '), labels.join(' '));
+  assert.equal(glyphs('day-detail').join(' '), slide.items.map(entry => entry.detail).join(' '));
+  // Five moments, five icons, and the columns are the drawing's own geometry.
+  assert.equal((day.match(/class="day-icon/g) || []).length, 5);
+  assert.deepEqual([...day.matchAll(/class="day-dock" cx="(\d+)" cy="214"/g)].map(match => Number(match[1])),
+    [168, 504, 840, 1176, 1512]);
+  assert.match(day, /<path class="day-rail" d="M168 214H1512"\/>/);
+  // The travelling marker is decoration and rests on the first moment when nothing moves.
+  assert.match(day, /<g class="day-marker" aria-hidden="true" transform="translate\(168 214\)">/);
+  assert.match(day, /animation: day-move 18s ease-in-out infinite/);
+  const move = day.match(/@keyframes day-move \{([\s\S]*?)\}\s*@keyframes/)[1];
+  // Holds on each moment, then a short travel: 18s for five stops, never a measured duration.
+  assert.match(move, /0%\{transform:translate\(168px,214px\)\}/);
+  assert.match(move, /13\.89%\{transform:translate\(168px,214px\)\}/);
+  assert.match(move, /20%\{transform:translate\(504px,214px\)\}/);
+  assert.match(move, /80%\{transform:translate\(1512px,214px\)\}/);
+  assert.match(day, /animation: day-sweep 18s ease-in-out infinite/);
+  assert.match(day, /stroke-dasharray: 1344/);
+  // Amber belongs to the exception path only, never to the machinery applying the standard.
+  const style = day.match(/<style>([\s\S]*?)<\/style>/)[1];
+  for (const block of style.split('}')) {
+    if (block.includes('--amber')) assert.match(block, /escalate/, block);
+  }
+  const stops = day.split('<g class="day-stop').slice(1);
+  assert.equal(stops.length, 5);
+  for (const stop of stops.slice(0, 4)) assert.doesNotMatch(stop, /amber/i);
+  // The gate is framed and reaches its written rule; only its escalation branch is amber.
+  assert.match(stops[4], /day-stop-gate/);
+  assert.match(stops[4], /class="day-chip"/);
+  assert.match(stops[4], /class="day-escalate"/);
+  assert.doesNotMatch(stops[4], /day-human/);
+  // Palette comes from the deck tokens: no gradients, no glow, no ChatGPT blues.
+  for (const hex of new Set([...day.matchAll(/#[0-9a-fA-F]{6}/g)].map(match => match[0].toLowerCase()))) {
+    assert.ok(['#b3ced4', '#a9c3c9', '#557077', '#4f6b73', '#94c9d2', '#e9eeeb', '#ffc36a'].includes(hex), hex);
+  }
+  for (const token of ['var(--cyan)', 'var(--amber)', 'var(--paper)', 'var(--slide-bg)']) assert.ok(day.includes(token), token);
+  assert.doesNotMatch(day, /Gradient|filter:|drop-shadow|box-shadow|<script|requestAnimationFrame|setTimeout|https?:/);
+  assert.doesNotMatch(day, /opacity:\s*0(?:[;}]|$)|display:\s*none|visibility:\s*hidden/);
+  // Reduced motion removes the travel through the shared rule; the still keeps every moment.
+  assert.match(css, /@media \(prefers-reduced-motion: reduce\) \{\s*\*, \*::before, \*::after \{ animation: none !important; transition: none !important; \}/);
+  // The flag is opt-in: every other timeline slide keeps its cards.
+  for (const other of slides.filter(entry => entry.kind === 'timeline' && entry.id !== 'factory-08')) {
+    const markup = byId(html, other.id);
+    assert.match(markup, /class="timeline main-panels"/, other.id);
+    assert.equal((markup.match(/class="panel station"/g) || []).length, other.items.length, other.id);
+    assert.doesNotMatch(markup, /day-diagram/, other.id);
+  }
+  assert.deepEqual(slides.filter(entry => entry.illustrated).map(entry => entry.id), ['factory-08']);
+});

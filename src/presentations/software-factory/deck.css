@@ -125,6 +125,12 @@ h1, .slide h2 { font-size: 88px; font-weight: 650; line-height: 1.04; letter-spa
    card row. Type sizes and the journey keyframes live inside the drawing itself. */
 .diagram.flow.loopback { position: relative; }
 .flow-diagram { display: block; width: 100%; height: auto; }
+/* The ordinary day is a second drawn timeline: the flag replaces the card row, and the
+   drawing carries its own geometry. Reduced motion is the shared rule below: it stops every
+   animation, and the marker's transform attribute already rests it on 09:10, so the still
+   keeps all five moments, their clocks and the amber exception branch. */
+.diagram.day { position: relative; }
+.day-diagram { display: block; width: 100%; height: auto; }
 .loop-return { position: relative; z-index: 1; height: 62px; border-left: 3px solid var(--cyan); border-right: 3px solid var(--cyan); border-bottom: 3px dashed var(--cyan); }
 .loop-return::before { content: ''; position: absolute; left: -10px; top: 0; width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-bottom: 16px solid var(--cyan); }
 .return-sweep { position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: linear-gradient(90deg, transparent 0 40%, var(--amber) 50%, transparent 60% 100%); background-size: 300% 100%; animation: sweep 4.8s linear infinite; }

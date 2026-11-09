@@ -48,8 +48,10 @@ const journeyTrack = [[0, 200, 190], [1, 200, 190], [2.4, 520, 190], [3.2, 520, 
   [9.8, 1480, 190], [10.6, 1650, 190], [11.2, 1650, 402], [13, 30, 402], [13.6, 30, 190],
   [14, 200, 190]];
 const journeyArrival = [0, 2.4, 4.6, 6.8, 9];
-const flowPercent = seconds => `${Number((seconds / journeySeconds * 100).toFixed(2))}%`;
-const flowFrames = rows => rows.map(([seconds, ...rules]) => `${flowPercent(seconds)}{${rules.join('')}}`).join('');
+// One timeline, one formatter: every drawing derives its percentages from the same seconds.
+const percentOf = (seconds, total) => `${Number((seconds / total * 100).toFixed(2))}%`;
+const framesOf = (total, rows) => rows.map(([seconds, ...rules]) => `${percentOf(seconds, total)}{${rules.join('')}}`).join('');
+const flowFrames = rows => framesOf(journeySeconds, rows);
 const flowPiece = flowFrames(journeyTrack.map(([seconds, x, y]) => [seconds, `transform:translate(${x}px,${y}px)`]));
 const flowAmber = flowFrames([[0, 'color:var(--cyan)'], [10.6, 'color:var(--cyan)'], [11.2, 'color:var(--amber)'],
   [13.6, 'color:var(--amber)'], [14, 'color:var(--cyan)']]);
@@ -68,22 +70,23 @@ const flowIcons = [
     + '<circle class="flow-amber" cx="44" cy="10" r="11"/><path class="flow-amber" d="M39 10l3 4 7-8"/>',
 ];
 
+/** Deterministic word wrap: the type never shrinks, so the lines are placed, not reflowed. */
+const wrapText = (text, max) => String(text).split(' ').reduce((lines, word) => {
+  const current = lines[lines.length - 1];
+  if (current && current.length + word.length + 1 <= max) lines[lines.length - 1] = `${current} ${word}`;
+  else lines.push(word);
+  return lines;
+}, []);
+
 /** The whole chain as one drawing: five stations, one piece, one amber return arc.
     Five columns are part of the drawing, and the content contract keeps exactly five items. */
 function loopbackDiagram(slide) {
-  // Deterministic word wrap: the type never shrinks, so the lines are placed, not reflowed.
-  const wrap = (text, max) => String(text).split(' ').reduce((lines, word) => {
-    const current = lines[lines.length - 1];
-    if (current && current.length + word.length + 1 <= max) lines[lines.length - 1] = `${current} ${word}`;
-    else lines.push(word);
-    return lines;
-  }, []);
   const labelRows = [256, 292];
   const detailRows = [326, 358];
   const stations = slide.items.map((entry, index) => {
     const x = 200 + index * 320;
-    const label = wrap(entry.label, 14);
-    const detail = wrap(entry.detail, 20);
+    const label = wrapText(entry.label, 14);
+    const detail = wrapText(entry.detail, 20);
     const row = (name, lines, rows) => lines.map((line, line_index) =>
       `<text class="${name}" x="${x}" y="${rows[Math.min(line_index, rows.length - 1)]}">${e(line)}</text>`).join('');
     return `<g class="flow-node">
@@ -123,6 +126,102 @@ function loopbackDiagram(slide) {
     <text class="flow-caption" x="840" y="452">Lo observado vuelve como una nueva orden</text>
     ${stations}
     <g class="flow-piece" aria-hidden="true" transform="translate(200 190)"><rect x="-17" y="-19" width="34" height="38" rx="7"/><path d="M-9 -8H9M-9 1H2M-9 10H6"/></g>
+  </svg>`;
+}
+
+/* === ORDINARY DAY: factory-08 as one clock-like sweep, not five timeline cards ===
+   The slide keeps kind timeline; `illustrated` replaces the card row. One 18s timeline drives
+   the travelling marker, the sweep behind it and each moment's highlight, so the drawing and
+   the motion cannot disagree about which moment is current. The hours are illustrative, and
+   the last stop is the gate applying the written rule: amber belongs to the exception only. */
+const daySeconds = 18;
+const dayHold = 2.5;
+const dayRail = 214;
+const dayFirst = 168;
+const dayLast = 1512;
+const dayHoldEnd = Number((dayHold / daySeconds * 100).toFixed(2));
+const dayRelease = Number((dayHoldEnd + 0.01).toFixed(2));
+// Icons stay stroke-only so they still read on a phone: no glyphs, no fills to mud up.
+const dayIcons = [
+  '<path d="M-22 -30H14L22 -22V26A4 4 0 0 1 18 30H-18A4 4 0 0 1-22 26Z"/><path class="day-hair" d="M-12 -14H12M-12 -2H12M-12 10H2"/>',
+  '<rect x="-24" y="-28" width="48" height="56" rx="7"/><path d="M-14 -12l4 5 9-11"/>'
+    + '<path class="day-hair" d="M6 -12H16"/><path d="M-14 6l4 5 9-11"/><path class="day-hair" d="M6 6H16"/>'
+    + '<path class="day-hair" d="M-14 22H16"/>',
+  '<rect x="-30" y="-24" width="60" height="48" rx="8"/><path d="M-14 -8L-4 0L-14 8"/>'
+    + '<path d="M14 -8L4 0L14 8"/><path class="day-hair" d="M-18 14H18"/>',
+  '<rect x="-32" y="-22" width="28" height="44" rx="6"/><rect x="4" y="-22" width="28" height="44" rx="6"/>'
+    + '<path d="M-26 -8l3 4 8-9"/><path d="M10 -8l3 4 8-9"/><path class="day-hair" d="M-26 10H-18M10 10H18"/>'
+    + '<path class="day-hair" d="M-20 -30H20M0 -30V-22"/>',
+  // La compuerta: un poste con la barra de paso, la misma idea que la compuerta del capítulo.
+  // La excepción se dibuja aparte, en ámbar discontinuo, porque el ámbar pertenece solo a lo
+  // que se sale de la regla escrita.
+  '<path d="M-24 30V-22M-32 30H-16"/><path d="M-24 -14H24"/><path class="day-hair" d="M-2 -24V-4M8 -24V-4"/>',
+];
+
+/** The ordinary day as one drawing: five clock moments, one marker, one exception path.
+    Five columns are part of the drawing, and the content contract keeps exactly five items. */
+function dayDiagram(slide) {
+  const count = slide.items.length;
+  const step = (dayLast - dayFirst) / Math.max(count - 1, 1);
+  const columns = slide.items.map((_, index) => Math.round(dayFirst + index * step));
+  // Each moment owns one equal slice of the loop: the marker holds, then travels on.
+  const arrivals = columns.map((_, index) => Number((index * daySeconds / count).toFixed(2)));
+  const leaves = arrivals.map(seconds => Math.min(seconds + dayHold, daySeconds));
+  const railWidth = dayLast - dayFirst;
+  const track = (index, rules) => [[arrivals[index], rules(columns[index])], [leaves[index], rules(columns[index])]];
+  const moveRows = columns.flatMap((_, index) => track(index, x => `transform:translate(${x}px,${dayRail}px)`));
+  const sweepRows = columns.flatMap((_, index) => track(index, x => `stroke-dashoffset:${railWidth - (x - dayFirst)}`));
+  const said = slide.items.map(entry => {
+    const match = String(entry.label).match(/^(\d{2}:\d{2}),\s*(.+)$/);
+    return match ? `${match[1]} ${match[2].toLowerCase()}` : String(entry.label);
+  }).join(', ');
+  const stations = slide.items.map((entry, index) => {
+    const x = columns[index];
+    const gate = index === count - 1;
+    const match = String(entry.label).match(/^(\d{2}:\d{2}),\s*(.+)$/);
+    const delay = (daySeconds - arrivals[index]).toFixed(1);
+    const rows = (name, lines, starts) => lines.map((line, line_index) =>
+      `<text class="${name}" x="${x}" y="${starts[Math.min(line_index, starts.length - 1)]}">${e(line)}</text>`).join('');
+    return `<g class="day-stop${gate ? ' day-stop-gate' : ''}">
+    ${gate ? `<rect class="day-chip" x="${x - 76}" y="24" width="152" height="44" rx="14"/>` : ''}
+    <text class="day-clock" x="${x}" y="56" style="animation-delay:-${delay}s">${e(match ? match[1] : '')}</text>
+    <g class="day-icon" transform="translate(${x} 130)">${dayIcons[index] ?? ''}</g>
+    ${gate ? `<path class="day-escalate" d="M${x + 12} ${dayRail - 12}L${x + 72} ${dayRail - 52}"/>`
+      + `<path class="day-escalate" d="M${x + 58} ${dayRail - 52}L${x + 72} ${dayRail - 52}L${x + 72} ${dayRail - 38}"/>` : ''}
+    <circle class="day-dock" cx="${x}" cy="${dayRail}" r="8" style="animation-delay:-${delay}s"/>
+    ${rows('day-label', wrapText(match ? match[2] : entry.label, 18), [276, 312])}
+    ${rows('day-detail', wrapText(entry.detail, 22), [352, 388, 424])}
+  </g>`;
+  }).join('');
+  const style = `<style>
+    .day-diagram text { stroke: none; font-family: 'Instrument Sans', sans-serif; text-anchor: middle; }
+    .day-clock { font-family: 'JetBrains Mono', monospace; font-size: 28px; fill: #b3ced4; letter-spacing: 2px; animation: day-clock ${daySeconds}s linear infinite; }
+    .day-label { font-size: 32px; font-weight: 600; fill: var(--paper); }
+    .day-detail { font-size: 28px; fill: #b3ced4; }
+    .day-rail { fill: none; stroke: #557077; stroke-width: 3; }
+    .day-sweep { fill: none; stroke: var(--cyan); stroke-width: 4; stroke-dasharray: ${railWidth}; animation: day-sweep ${daySeconds}s ease-in-out infinite; }
+    .day-dock { fill: var(--slide-bg); stroke: var(--cyan); stroke-width: 3; animation: day-dock ${daySeconds}s linear infinite; }
+    .day-icon { fill: none; stroke: var(--cyan); stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; }
+    .day-icon .day-hair { stroke: #4f6b73; stroke-width: 3; }
+    .day-marker { color: var(--cyan); animation: day-move ${daySeconds}s ease-in-out infinite; }
+    .day-marker .day-halo { fill: var(--slide-bg); }
+    .day-marker .day-core { fill: currentColor; }
+    .day-stop-gate .day-chip { fill: none; stroke: var(--cyan); stroke-width: 2; }
+    .day-stop-gate .day-escalate { fill: none; stroke: var(--amber); stroke-width: 4; stroke-dasharray: 9 7; stroke-linecap: round; stroke-linejoin: round; animation: day-escalate 4s linear infinite; }
+    @keyframes day-move { ${framesOf(daySeconds, moveRows)} }
+    @keyframes day-sweep { ${framesOf(daySeconds, sweepRows)} }
+    @keyframes day-escalate { from { stroke-dashoffset: 0; } to { stroke-dashoffset: -32; } }
+    @keyframes day-clock { 0%, ${dayHoldEnd}% { fill: var(--paper); } ${dayRelease}%, 100% { fill: #b3ced4; } }
+    @keyframes day-dock { 0%, ${dayHoldEnd}% { fill: var(--cyan); } ${dayRelease}%, 100% { fill: var(--slide-bg); } }
+  </style>`;
+  const label = `Un día en la fábrica, de 09:10 a 11:40: ${said}. En el último momento la compuerta aplica el estándar `
+    + 'escrito; lo que no encaja se escala como excepción, marcada con una rama ámbar discontinua. '
+    + 'Las horas son ilustrativas.';
+  return `<svg class="day-diagram" viewBox="0 0 1680 480" role="img" aria-label="${e(label)}">${style}
+    <path class="day-rail" d="M${dayFirst} ${dayRail}H${dayLast}"/>
+    <path class="day-sweep" d="M${dayFirst} ${dayRail}H${dayLast}" aria-hidden="true"/>
+    ${stations}
+    <g class="day-marker" aria-hidden="true" transform="translate(${dayFirst} ${dayRail})"><circle class="day-halo" r="14"/><circle class="day-core" r="9"/></g>
   </svg>`;
 }
 
@@ -186,6 +285,8 @@ function composition(slide) {
   const hasFanout = fanout.has(slide.id) ? ' fanout' : '';
   // A loopback flow is one continuous journey: the drawing replaces the station cards.
   if (slide.loopback) return `<div class="diagram flow loopback">${loopbackDiagram(slide)}</div>`;
+  // The ordinary day is the same idea for a timeline: the flag replaces the card row.
+  if (slide.illustrated && slide.kind === 'timeline') return `<div class="diagram day">${dayDiagram(slide)}</div>`;
   switch (slide.kind) {
     case 'hero':
       return `<svg class="hero-route" viewBox="0 0 1680 40" aria-label="Línea de producción de tres estaciones" role="img"><path d="M0 20H1660M530 10L550 20L530 30M1090 10L1110 20L1090 30" fill="none" stroke="#94c9d2" stroke-width="3"/></svg><div class="hero-line main-panels">${items}</div>`;

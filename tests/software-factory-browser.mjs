@@ -125,16 +125,15 @@ const geometry = `(() => {
   if(!el.getClientRects().length)continue;
   if(parseFloat(getComputedStyle(el).fontSize)<28)errors.push('stage text below 28px: '+el.textContent.slice(0,40));
  }
- // The inline diagram is measured, not trusted: its own viewBox must contain every child,
- // it may not reach the footer, and neighbouring stations may not bleed into each other.
- const diagram=s.querySelector('.flow-diagram');
- if(diagram){
+ // The inline diagrams are measured, not trusted: their own viewBox must contain every child,
+ // they may not reach the footer, and neighbouring columns may not bleed into each other.
+ for(const diagram of s.querySelectorAll('.flow-diagram,.day-diagram')){
   const view=diagram.viewBox.baseVal, box=diagram.getBBox(), frame=rect(diagram);
   if(box.x<view.x-1||box.y<view.y-1||box.x+box.width>view.x+view.width+1||box.y+box.height>view.y+view.height+1)
    errors.push('diagram clips its own viewBox: '+[box.x,box.y,box.width,box.height].map(n=>Math.round(n)).join(','));
   if(!within(frame,rect(s.querySelector('.composition')),scale*2))errors.push('diagram outside the composition box');
   if(frame.bottom>rect(s.querySelector('.slide-footer')).top-scale*2)errors.push('diagram reaches the footer');
-  const nodes=[...s.querySelectorAll('.flow-node')];
+  const nodes=[...diagram.querySelectorAll('.flow-node,.day-stop')];
   for(let i=0;i+1<nodes.length;i++){const a=nodes[i].getBBox(),b=nodes[i+1].getBBox();
    if(a.x+a.width>b.x)errors.push('diagram columns overlap: '+(i+1)+'/'+(i+2));}
  }
@@ -272,6 +271,37 @@ try {
       await go(flowSlide); await frame();
       check(await evaluate("document.querySelector('.active .flow-piece').getAnimations().length===0 && getComputedStyle(document.querySelector('.active .flow-piece')).transform==='matrix(1, 0, 0, 1, 200, 190)'"),
         `${mode}: reduced motion leaves the piece still at the first station`);
+      await command('Emulation.setEmulatedMedia', { features: [] });
+      // The ordinary day is one 18s sweep too: seek it instead of waiting, so the travel, the
+      // current-moment highlight and the still state are proven rather than assumed.
+      const daySlide = slides.findIndex(slide => slide.illustrated && slide.kind === 'timeline') + 1;
+      await go(daySlide); await frame();
+      const daySeek = await evaluate(`(() => {
+        const marker=document.querySelector('.active .day-marker');
+        const move=marker.getAnimations().find(a=>a.animationName==='day-move');
+        const [first, , , , gate]=document.querySelectorAll('.active .day-clock');
+        const clockOf=el=>el.getAnimations().find(a=>a.animationName==='day-clock');
+        const pose=seconds=>{move.currentTime=seconds*1000;return getComputedStyle(marker).transform;};
+        const fill=(el,seconds)=>{clockOf(el).currentTime=seconds*1000;return getComputedStyle(el).fill;};
+        return {first:pose(0.2), third:pose(8), last:pose(15),
+          firstOn:fill(first,0.5), firstOff:fill(first,5), gateOn:fill(gate,15)};
+      })()`);
+      check(daySeek.first==='matrix(1, 0, 0, 1, 168, 214)' && daySeek.third!==daySeek.first && daySeek.last!==daySeek.third,
+        `${mode}: the day marker advances through the five moments and holds on each`);
+      check(daySeek.firstOn!=='rgb(179, 206, 212)' && daySeek.firstOff==='rgb(179, 206, 212)' && daySeek.gateOn!=='rgb(179, 206, 212)',
+        `${mode}: each moment lights its own clock while the marker rests on it`);
+      const gateAmber = await evaluate("getComputedStyle(document.querySelector('.active .day-stop-gate .day-escalate')).stroke");
+      const gateDock = await evaluate("getComputedStyle(document.querySelector('.active .day-stop-gate .day-dock')).stroke");
+      check(gateAmber==='rgb(255, 195, 106)' && gateDock==='rgb(148, 201, 210)',
+        `${mode}: amber is only the escalation branch, never the gate applying the standard`);
+      await evaluate(`(() => {const marker=document.querySelector('.active .day-marker');
+        for(const anim of marker.getAnimations()) anim.currentTime=11000;})()`);
+      await frame();
+      await capture(`day-at-the-fourth-moment-${mode}.png`);
+      await command('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-reduced-motion', value: 'reduce' }] });
+      await go(daySlide); await frame();
+      check(await evaluate("document.querySelector('.active .day-marker').getAnimations().length===0 && getComputedStyle(document.querySelector('.active .day-marker')).transform==='matrix(1, 0, 0, 1, 168, 214)' && document.querySelectorAll('.active .day-stop').length===5"),
+        `${mode}: reduced motion leaves the day still on 09:10 with its five moments`);
       await command('Emulation.setEmulatedMedia', { features: [] });
       await go(slides.length); await key('ArrowRight', 'ArrowRight', 39);
       check(await evaluate(`location.hash==='#${slides.length}' && document.querySelector('#next-slide').disabled`), `${mode}: last boundary`);

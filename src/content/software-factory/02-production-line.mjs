@@ -2,16 +2,16 @@ export default {
  id: 'line', title: 'La línea de producción',
  slides: [
  {
- id: 'factory-08', title: 'Un día en la fábrica', kind: 'timeline',
+ id: 'factory-08', title: 'Un día en la fábrica', kind: 'timeline', illustrated: true,
  lead: 'Un martes normal de trabajo, con hora de entrada y de salida.',
  items: [
- { label: '09:10, Entra la orden', detail: 'Alguien escribe qué necesita y cómo sabrá que está bien; queda en la lista de pendientes.' },
- { label: '09:35, Se escribe la spec', detail: 'Un agente convierte la petición en casos comprobables y los límites se acuerdan.' },
- { label: '10:15, Se construye', detail: 'Otro agente escribe el cambio más pequeño y ejecuta las pruebas: primero ve el fallo.' },
- { label: '11:05, Revisión en paralelo', detail: 'Dos revisores independientes comparan el cambio con el contrato y buscan contradicciones.' },
- { label: '11:40, Decisión', detail: 'Una persona acepta el trabajo o devuelve un defecto concreto; todo queda escrito.' },
+ { label: '09:10, Entra la orden', detail: 'Alguien escribe qué necesita y cómo se sabrá que está bien.' },
+ { label: '09:35, Se escribe la spec', detail: 'Un agente lo convierte en casos comprobables y acuerda los límites.' },
+ { label: '10:15, Se construye', detail: 'El cambio más pequeño y la prueba que ve el fallo primero.' },
+ { label: '11:05, Revisión en paralelo', detail: 'Dos revisores independientes revisan contra el contrato.' },
+ { label: '11:40, La compuerta', detail: 'Aplica la regla escrita y escala lo que no encaja.' },
  ],
- notes: `Este es el día que nadie graba, y por eso conviene enseñarlo. A las nueve y diez alguien escribe qué necesita y cómo sabrá que está bien; a las nueve y treinta y cinco la petición se convierte en casos comprobables. La construcción empieza a las diez y cuarto con el cambio más pequeño posible, y la revisión ocurre en paralelo, no en cadena. A las once y cuarenta una persona acepta o devuelve un defecto concreto. Ninguna de esas paradas es heroica: son aburridas y por eso funcionan. Si cada tarea necesita una epopeya, el problema no es la IA, es el tamaño del encargo. Pide al público que estime cuánto de su día se parece a esto y qué parada les falta de verdad. Después recorre el mapa de planta para poner nombre a cada parada.`,
+ notes: `Este es el día que nadie graba, y por eso conviene enseñarlo. Las horas son ilustrativas, no una medición. A las nueve y diez alguien escribe qué necesita y cómo sabrá que está bien; a las nueve y treinta y cinco la petición se convierte en casos comprobables. La construcción empieza a las diez y cuarto con el cambio más pequeño posible, y la revisión ocurre en paralelo, no en cadena. A las once y cuarenta la compuerta aplica la regla escrita; lo que no encaja se escala. Ninguna de esas paradas es heroica: son aburridas y por eso funcionan. Si cada tarea necesita una epopeya, el problema no es la IA, es el tamaño del encargo. Pide al público que estime cuánto de su día se parece a esto y qué parada les falta de verdad. Después recorre el mapa de planta para poner nombre a cada parada.`,
  },
  {
  id: 'factory-09', title: 'Mapa de planta', kind: 'flow',
