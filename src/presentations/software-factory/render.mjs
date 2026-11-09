@@ -1,6 +1,7 @@
 /** Local compositions: content is always text; only this module owns markup. */
 import { slides, chapters } from '../../content/software-factory/index.mjs';
 import { renderPresentation as shell } from '../shared/render.mjs';
+import { plantZones, PLANT_TEXT, PLANT_VIEW } from './plant-map.mjs';
 
 const route = '/presentaciones/software-factory';
 const origin = 'https://daniel-espanadero.com';
@@ -225,6 +226,31 @@ function dayDiagram(slide) {
   </svg>`;
 }
 
+/** The whole route as one drawing: four isometric zones, one batch, one prepared return.
+    The zones are the slide's own items, and the drawing wraps their text, never shrinks it. */
+function plantDiagram(slide) {
+  const zones = plantZones(slide.items.length);
+  const glyphs = slide.items.map((entry, index) => {
+    const x = zones[index];
+    const rows = (name, lines, starts) => lines.map((line, row) =>
+      `<text class="${name}" x="${x}" y="${starts[Math.min(row, starts.length - 1)]}">${e(line)}</text>`).join('');
+    return `<g class="plant-zone">
+    <text class="plant-index" x="${x}" y="${PLANT_TEXT.index}">${pad(index + 1)}</text>
+    ${rows('plant-label', wrapText(entry.label, PLANT_TEXT.wrap[0]), [PLANT_TEXT.label])}
+    ${rows('plant-detail', wrapText(entry.detail, PLANT_TEXT.wrap[1]), PLANT_TEXT.detail)}
+  </g>`;
+  }).join('');
+  const said = slide.items.map(entry => entry.label.toLowerCase()).join(', ');
+  // The drawing is the content here, so it carries a name that describes the route and the
+  // three controls. The motion inside it is decoration and stays hidden from assistive tech.
+  const label = `Recorrido de una orden por la planta: ${said}. Se detiene bajo cada estación y en cada una de las tres compuertas, `
+    + 'donde tipos, pruebas y contrato se activan en secuencia y solo entonces el lote avanza. '
+    + 'En integración el conjunto se comprueba, la evidencia queda registrada y la vuelta atrás está preparada.';
+  return `<div class="plant-map-host" data-plant-map data-zones="${zones.join(' ')}">
+    <svg class="plant-map" viewBox="${PLANT_VIEW}" role="img" aria-label="${e(label)}">
+    <g class="plant-parts" aria-hidden="true"></g>${glyphs}</svg></div>`;
+}
+
 /** SVG connectors stay behind the stations. A token exists only past a revealed station. */
 function connectors(slide) {
   const id = e(slide.id);
@@ -287,6 +313,8 @@ function composition(slide) {
   if (slide.loopback) return `<div class="diagram flow loopback">${loopbackDiagram(slide)}</div>`;
   // The ordinary day is the same idea for a timeline: the flag replaces the card row.
   if (slide.illustrated && slide.kind === 'timeline') return `<div class="diagram day">${dayDiagram(slide)}</div>`;
+  // The plant map is the same switch for a flow: the route replaces the station row.
+  if (slide.illustrated && slide.kind === 'flow') return `<div class="diagram flow plant">${plantDiagram(slide)}</div>`;
   switch (slide.kind) {
     case 'hero':
       // The plant is generated at runtime: the document only reserves its decorative box.

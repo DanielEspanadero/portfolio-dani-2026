@@ -134,7 +134,9 @@ test('figures use the approved plates with factual Spanish alt text and reserved
   const html = renderPresentation({ css: '', controller: '' });
   const css = read(`${base}deck.css`);
   const withFigure = slides.filter(slide => slide.figure);
-  assert.ok(withFigure.length >= 10, String(withFigure.length));
+  // Nine plates: the plant map and the end-to-end flow draw their own drawings, so a raster
+  // behind them would only compete with the route the slide is teaching.
+  assert.ok(withFigure.length >= 9, String(withFigure.length));
   for (const slide of withFigure) {
     const { src, mode, alt } = slide.figure;
     assert.deepEqual(Object.keys(slide.figure).sort(), ['alt', 'mode', 'src'], slide.id);
@@ -153,8 +155,9 @@ test('figures use the approved plates with factual Spanish alt text and reserved
   assert.equal(feature('factory-34').src, '08-circulo.png');
   assert.equal(feature('factory-32').src, '06-carriles.png');
   assert.equal(feature('factory-36').src, '01-planta.png');
-  assert.equal(feature('factory-09').src, '02-linea.png');
-  assert.equal(feature('factory-09').mode, 'wash');
+  // The plant map draws its own plant now: a second isometric drawing behind it would only
+  // make both unreadable, so the slide carries no raster plate, exactly like the hero.
+  assert.equal(feature('factory-09'), undefined);
   // Washes stay only where opaque panels sit over them; text over artwork was removed.
   assert.equal(feature('factory-19'), undefined);
   assert.equal(feature('factory-04'), undefined);
@@ -199,7 +202,7 @@ test('the conveyor token only follows revealed stations and rests at the gate', 
   const { renderPresentation } = await renderer();
   const html = renderPresentation({ css: '', controller: '' });
   const css = read(`${base}deck.css`);
-  const flow = section(html, 'flow');
+  const flow = byId(html, 'factory-13');
   assert.match(flow, /class="packet packet-1"/);
   assert.match(flow, /class="packet packet-3"/);
   assert.match(css, /\.packet \{[^}]*opacity: 0/s);
@@ -245,9 +248,11 @@ test('assets retain fixed base, licensed fonts and reduced motion, with no extra
   assert.match(css, /\.step-pending/);
   // Every motion added by this unit is CSS; the shared player stays untouched.
   assert.match(css, /prefers-reduced-motion: reduce/);
-  // Deck behaviour is the shared player plus the hero plant module; nothing else to hide.
+  // Deck behaviour is the shared player plus the two governed scenes; nothing else to hide.
   assert.throws(() => read(`${base}enhancements.js`));
-  assert.ok(existsSync(`${base}hero-scene.mjs`));
+  for (const module of ['hero-scene.mjs', 'plant-map.mjs', 'scene-governor.mjs', 'inline-modules.mjs']) {
+    assert.ok(existsSync(`${base}${module}`), module);
+  }
   assert.doesNotMatch(css, /\.local-tools|\.checkpoint|\.closing-stamp|\.download-link/);
 });
 
@@ -351,7 +356,7 @@ test('the hero draws its own plant instead of a static plate', async () => {
   assert.doesNotMatch(hero, /De la intención|AGENTES ·|Portada/);
 });
 
-test('the hero plant module stays isolated, token-coloured and governed', () => {
+test('the hero plant module stays isolated and token-coloured', () => {
   const source = read(`${base}hero-scene.mjs`);
   // Palette: the drawing carries deck literals only; every shade is derived from them.
   const hexes = new Set([...source.matchAll(/#[0-9a-fA-F]{6}/g)].map(match => match[0].toLowerCase()));
@@ -360,25 +365,54 @@ test('the hero plant module stays isolated, token-coloured and governed', () => 
   // No external references, no words, no raster, no filters: one soft ground glow only.
   assert.doesNotMatch(source, /https?:|xlink|<image|<text|<use|href=|filter:|linearGradient/);
   assert.match(source, /radialGradient id="hero-ground"/);
-  // Governance: slide activation, page visibility, about 30 fps, still frame on reduce.
-  assert.match(source, /1000 \/ 30/);
-  assert.match(source, /requestAnimationFrame\(tick\)/);
-  assert.match(source, /cancelAnimationFrame/);
-  assert.match(source, /visibilitychange/);
-  assert.match(source, /prefers-reduced-motion: reduce/);
-  assert.match(source, /new win\.MutationObserver/);
-  assert.match(source, /attributeFilter: \['class', 'hidden'\]/);
-  assert.match(source, /pagehide/);
-  assert.match(source, /dataset\.draws/);
+  // The loop itself is not the hero's: it mounts through the shared governor (S19).
+  assert.match(source, /import \{ mountGovernedScene \} from '\.\/scene-governor\.mjs';/);
+  assert.match(source, /mountGovernedScene\(\{ host, cycle: HERO_CYCLE, still: HERO_STILL/);
+  for (const owned of ['requestAnimationFrame', 'cancelAnimationFrame', 'MutationObserver', 'visibilitychange', 'pagehide']) {
+    assert.ok(!source.includes(owned), `la gobernanza sigue en hero-scene.mjs: ${owned}`);
+  }
   // It may not touch the shared player or any other slide.
   for (const forbidden of ['#deck', 'slide-select', 'slide-index', 'deck-controls', 'document.body', 'querySelectorAll(\'[data-slide']) {
     assert.ok(!source.includes(forbidden), forbidden);
   }
-  // Online and downloadable documents both inline the module after the shared player.
+});
+
+test('both procedural scenes mount through one governance helper', async () => {
+  const governor = read(`${base}scene-governor.mjs`);
+  // Activation, page visibility, about 30 fps, one still frame under reduced motion, disposal.
+  assert.match(governor, /1000 \/ SCENE_FPS/);
+  assert.match(governor, /export const SCENE_FPS = 30/);
+  assert.match(governor, /requestAnimationFrame\(tick\)/);
+  assert.match(governor, /cancelAnimationFrame/);
+  assert.match(governor, /visibilitychange/);
+  assert.match(governor, /prefers-reduced-motion: reduce/);
+  assert.match(governor, /new win\.MutationObserver\(sync\)/);
+  assert.match(governor, /attributeFilter: \['class', 'hidden'\]/);
+  assert.match(governor, /pagehide/);
+  assert.match(governor, /dataset\.draws/);
+  assert.match(governor, /dataset\.stills/);
+  // A scene is judged active by its own slide only: the helper never reads the deck.
+  for (const forbidden of ['#deck', 'slide-select', 'slide-index', 'deck-controls']) assert.ok(!governor.includes(forbidden), forbidden);
+  // Both scenes import it instead of reimplementing the loop.
+  for (const file of ['hero-scene.mjs', 'plant-map.mjs']) {
+    const source = read(`${base}${file}`);
+    assert.match(source, /import \{ mountGovernedScene \} from '\.\/scene-governor\.mjs';/, file);
+    assert.match(source, /mountGovernedScene\(\{ host/, file);
+  }
+  // Online and downloadable documents inline the same composition, by dependency order.
   const document = read(`${base}document.ts`);
   assert.match(document, /shared\/player\.js\?raw/);
-  assert.match(document, /hero-scene\.mjs\?raw/);
-  assert.match(document, /controller: `\$\{controller\}\\n\$\{heroScene\}`/);
+  for (const module of ['scene-governor\.mjs', 'hero-scene\.mjs', 'plant-map\.mjs']) assert.match(document, new RegExp(`${module}\\?raw`));
+  assert.match(document, /inlineModules\(controller, sceneGovernor, heroScene, plantMap\)/);
+  const { inlineModules } = await import('../src/presentations/software-factory/inline-modules.mjs');
+  const bundle = inlineModules(read('src/presentations/shared/player.js'), governor,
+    read(`${base}hero-scene.mjs`), read(`${base}plant-map.mjs`));
+  // One module script: no statement may survive as an import, and no two modules may
+  // declare the same binding, which is the real failure mode of inline composition.
+  assert.doesNotMatch(bundle, /^\s*import\b/m);
+  assert.doesNotMatch(bundle, /^\s*export\b/m);
+  for (const name of ['mountGovernedScene', 'heroScene', 'plantMapScene']) assert.ok(bundle.includes(name), name);
+  assert.doesNotThrow(() => new Function(bundle));
 });
 
 test('the hero plant generates one deterministic, wordless frame per moment', async () => {
@@ -543,5 +577,135 @@ test('the ordinary day is one clock-like drawing, not five timeline cards', asyn
     assert.equal((markup.match(/class="panel station"/g) || []).length, other.items.length, other.id);
     assert.doesNotMatch(markup, /day-diagram/, other.id);
   }
-  assert.deepEqual(slides.filter(entry => entry.illustrated).map(entry => entry.id), ['factory-08']);
+  assert.deepEqual(slides.filter(entry => entry.illustrated).map(entry => entry.id), ['factory-08', 'factory-09']);
+});
+
+test('the plant map is one drawn route from the slide items, not the station row', async () => {
+  const { renderPresentation } = await renderer();
+  const html = renderPresentation({ css: '', controller: '' });
+  const css = read(`${base}deck.css`);
+  const slide = slides.find(entry => entry.id === 'factory-09');
+  const map = byId(html, 'factory-09');
+  // The switch mirrors the loopback flow and the illustrated day: the kind stays, the flag
+  // replaces the card row. Only this slide carries it.
+  assert.equal(slide.kind, 'flow');
+  assert.equal(slide.illustrated, true);
+  assert.equal(slide.figure, undefined);
+  assert.match(map, /class="diagram flow plant"/);
+  assert.doesNotMatch(map, /class="panel station"/);
+  assert.doesNotMatch(map, /class="connectors"|class="plate/);
+  assert.match(css, /\.plant-map \{[^}]*width: 100%; height: auto/s);
+  const drawing = map.match(/<div class="plant-map-host"[\s\S]*?<\/svg>/)[0];
+  const svg = drawing.match(/<svg class="plant-map" viewBox="0 0 1680 480" role="img" aria-label="([^"]+)">/);
+  assert.ok(svg, 'diapositiva sin mapa de planta');
+  // The drawing is meaningful, so it names the route and the three controls, in sequence.
+  for (const part of [/entrada/i, /estaciones/i, /compuertas/i, /integraci[oó]n/i,
+    /tipos/i, /pruebas/i, /contrato/i, /secuencia/i, /vuelta atr[aá]s/i]) assert.match(svg[1], part);
+  // It is the happy path: the drawing claims no rejection branch it does not have.
+  assert.doesNotMatch(drawing, /rechaz|devolv/i);
+  // Zone numbers, labels and details are the slide's own items, wrapped and never rewritten.
+  const glyphs = kind => [...map.matchAll(new RegExp(`class="${kind}"[^>]*>([^<]*)<`, 'g'))].map(match => match[1]);
+  assert.equal(glyphs('plant-index').join(' '), '01 02 03 04');
+  assert.equal(glyphs('plant-label').join(' '), slide.items.map(entry => entry.label).join(' '));
+  assert.equal(glyphs('plant-detail').join(' '), slide.items.map(entry => entry.detail).join(' '));
+  assert.ok(glyphs('plant-detail').length <= slide.items.length * 3);
+  assert.match(map, /data-zones="210 630 1050 1470"/);
+  // Nothing but those three text roles is drawn as text, and the type never drops below the
+  // projection floor: an index or a detail is 28px, a label 32px.
+  for (const [, tag] of map.matchAll(/<text([^>]*)>/g)) assert.match(tag, /class="plant-(?:index|label|detail)"/, tag);
+  const sizes = [...css.matchAll(/\.plant-map \.plant-(?:index|label|detail) \{[^}]*font-size: (\d+)px/g)]
+    .map(match => Number(match[1])).sort((a, b) => a - b);
+  assert.deepEqual(sizes, [28, 28, 32]);
+  // The source's own chrome stays out: no eyebrow, no title, no subtitle, no pause button.
+  assert.doesNotMatch(drawing, /Mapa de planta|AI SOFTWARE FACTORY|Pausar|pause|<button|eyebrow/i);
+  // No external reference, no raster, no filter, no script, and no colour outside the tokens.
+  assert.doesNotMatch(drawing, /https?:|xlink|<image|<use|href=|filter:|Gradient|<script/);
+  assert.doesNotMatch(drawing, /#[0-9a-f]{3,6}\b/i);
+  // The moving parts are decoration; the readable text stays text.
+  assert.match(drawing, /<g class="plant-parts" aria-hidden="true"><\/g>/);
+  // Composition switch: every other flow and loop keeps its station row (the loopback flow
+  // draws its own journey, as it did before this unit).
+  for (const other of slides.filter(entry => ['flow', 'loop'].includes(entry.kind)
+    && entry.id !== 'factory-09' && !entry.loopback)) {
+    const markup = byId(html, other.id);
+    assert.match(markup, /class="stations main-panels"/, other.id);
+    assert.doesNotMatch(markup, /plant-map/, other.id);
+  }
+  assert.deepEqual(slides.filter(entry => entry.illustrated && entry.kind === 'flow').map(entry => entry.id), ['factory-09']);
+});
+
+test('the plant map holds the batch at every stop until its control fires', async () => {
+  const map = await import('../src/presentations/software-factory/plant-map.mjs');
+  const zones = map.plantZones(map.PLANT_COUNT);
+  assert.deepEqual(zones, [210, 630, 1050, 1470]);
+  const stops = map.plantStops(zones);
+  assert.equal(stops.length, 7);
+  const arrival = index => (index + 1) * map.PLANT_TIMING.travel + index * map.PLANT_TIMING.hold;
+  const at = seconds => seconds / map.PLANT_SECONDS;
+  const scene = progress => map.plantMapScene(progress, zones);
+  const pieceX = progress => Number(scene(progress).match(/class="plant-piece" transform="translate\(([-\d.]+) /)[1]);
+  // Deterministic: the same instant always produces the same frame.
+  assert.equal(scene(map.PLANT_STILL), scene(map.PLANT_STILL));
+  assert.ok((scene(map.PLANT_STILL).match(/<(?:polygon|circle|path|rect|g)\b/g) || []).length > 100, 'planta vacía');
+  // One route, forwards only: the batch never travels backwards inside a cycle.
+  let previous = -1;
+  for (let step = 0; step < 240; step += 1) {
+    const x = pieceX(step / 240);
+    assert.ok(x >= previous - .01, `retrocede en ${step}`);
+    previous = x;
+  }
+  // It reaches the outlet and the cycle restarts inside the inlet port, out of sight.
+  assert.equal(pieceX(.999), 1624);
+  assert.equal(pieceX(0), 56);
+  // It dwells at each of the seven stops, under the arms and at the three controls.
+  stops.forEach((x, index) => {
+    const from = arrival(index);
+    assert.ok(Math.abs(pieceX(at(from + .05)) - x) < 2, `no se detiene en la parada ${index + 1}`);
+    assert.ok(Math.abs(pieceX(at(from + map.PLANT_TIMING.hold - .05)) - x) < 2, `no se detiene en la parada ${index + 1}`);
+  });
+  // The three controls fire in sequence, always while the batch is held, and the batch only
+  // moves on afterwards: that is the behaviour the author's drawing shows.
+  [3, 4, 5].forEach((index, order) => {
+    const from = arrival(index);
+    const before = map.plantState(at(from), zones);
+    const during = map.plantState(at(from + map.PLANT_TIMING.hold * .7), zones);
+    assert.equal(before.gates[order].fired, false, `la compuerta ${order + 1} dispara antes de tiempo`);
+    assert.equal(during.gates[order].fired, true, `la compuerta ${order + 1} no dispara`);
+    assert.equal(before.gates.filter(gate => gate.fired).length, order, 'las compuertas no van en secuencia');
+    assert.ok(pieceX(at(from + map.PLANT_TIMING.hold + .1)) > stops[index] + 1, 'el lote no avanza tras la compuerta');
+  });
+  // The arms work only while the batch is held under them.
+  assert.deepEqual(map.plantState(at(arrival(1) + .6), zones).arms.map(arm => arm.active), [true, false]);
+  assert.deepEqual(map.plantState(at(arrival(2) + .6), zones).arms.map(arm => arm.active), [false, true]);
+  assert.deepEqual(map.plantState(at(arrival(1) - .4), zones).arms.map(arm => arm.active), [false, false]);
+  // A control's bar lifts and its lamp turns amber once it has fired, in that order.
+  const passed = progress => (scene(progress).match(/plant-gate-passed/g) || []).length;
+  assert.equal(passed(at(arrival(3))), 0);
+  assert.equal(passed(at(arrival(4) + .1)), 1);
+  assert.equal(passed(at(arrival(5) + .1)), 2);
+  // Integration reads as the end of the route: the zone marker is there, the evidence is
+  // accented and the prepared rollback is drawn, always as a prepared return.
+  const integrated = scene(at(arrival(6) + .5));
+  assert.equal(map.plantState(at(arrival(6) + .5), zones).phase, 3);
+  assert.match(integrated, /class="plant-marker"/);
+  assert.match(integrated, /stroke-dasharray="7 6"/);
+  assert.equal((integrated.match(/stroke-dasharray="7 6"/g) || []).length, 1);
+  // No words, script or external reference inside the drawing itself.
+  assert.doesNotMatch(scene(.5), /<text|<title|<desc|<image|https?:|<script|requestAnimationFrame/);
+  // Palette: tokens and shades derived from them, nothing imported from the source.
+  const source = read(`${base}plant-map.mjs`);
+  const hexes = new Set([...source.matchAll(/#[0-9a-fA-F]{6}/g)].map(match => match[0].toLowerCase()));
+  assert.deepEqual([...hexes].sort(), ['#101719', '#4f6b73', '#557077', '#94c9d2', '#e9eeeb', '#ffc36a']);
+  const tokens = [[148, 201, 210], [255, 195, 106], [233, 238, 235], [85, 112, 119], [79, 107, 115]];
+  const channels = hex => [1, 3, 5].map(index => parseInt(hex.slice(index, index + 2), 16));
+  const within = (value, a, b) => value >= Math.min(a, b) && value <= Math.max(a, b);
+  const colours = new Set([...scene(.5).matchAll(/(?:fill|stroke)="(#[0-9a-fA-F]{6})"/g)].map(match => match[1].toLowerCase()));
+  assert.ok(colours.size > 4, 'un dibujo de dos colores');
+  const deepest = [16, 23, 25];
+  for (const colour of colours) {
+    const value = channels(colour);
+    assert.ok(tokens.some(token => value.every((channel, index) => within(channel, token[index], deepest[index]))),
+      `color fuera de los tokens del deck: ${colour}`);
+  }
+  for (const token of ['var(--slide-bg)']) assert.ok(scene(.5).includes(token), token);
 });

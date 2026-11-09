@@ -401,7 +401,10 @@ test('el día ilustrado cabe en el dibujo: cinco horas, rótulos cortos y la com
   const day = slides.find(s => s.id === 'factory-08');
   assert.equal(day.kind, 'timeline');
   assert.equal(day.illustrated, true);
-  assert.equal(slides.filter(s => s.illustrated).length, 1, 'solo el día lleva el diagrama');
+  // S19 added the second illustrated slide, the plant map: the flag now belongs to the day
+  // (a timeline) and the map (a flow), and to nothing else.
+  assert.deepEqual(slides.filter(s => s.illustrated).map(s => [s.id, s.kind]),
+    [['factory-08', 'timeline'], ['factory-09', 'flow']]);
   assert.equal(day.items.length, 5);
   for (const entry of day.items) {
     const match = entry.label.match(/^(\d{2}:\d{2}), (.+)$/);
@@ -418,4 +421,36 @@ test('el día ilustrado cabe en el dibujo: cinco horas, rótulos cortos y la com
     /persona|humano|decide|aprueba|aprobaci[oó]n/i);
   // Las horas son ilustrativas: la nota lo dice para que nadie las lea como medición.
   assert.match(day.notes, /ilustrativ/i);
+});
+
+test('el mapa de planta cabe en el dibujo: cuatro zonas con detalle corto y sin ramas inventadas', () => {
+  // The map draws each zone detail on two 26-character lines at 28px. If a detail stops
+  // fitting, the wording is shortened: the type never shrinks to make room.
+  const map = slides.find(s => s.id === 'factory-09');
+  assert.equal(map.kind, 'flow');
+  assert.equal(map.illustrated, true);
+  assert.equal(map.figure, undefined, 'el dibujo sustituye a la lámina');
+  assert.equal(map.steps, undefined, 'el mapa no se revela por pasos: se anima solo');
+  assert.equal(map.items.length, 4);
+  assert.deepEqual(map.items.map(entry => entry.label), ['Entrada', 'Estaciones', 'Compuertas', 'Integración']);
+  for (const entry of map.items) {
+    assert.ok(words(entry.label) <= 2, entry.label);
+    assert.ok(entry.detail.length <= 48, `${entry.label}: ${entry.detail.length}`);
+    assert.ok(words(entry.detail) <= 7, `${entry.label}: ${words(entry.detail)}`);
+  }
+  // Las cuatro zonas siguen diciendo lo que la fábrica hace en cada una.
+  const detail = map.items.map(entry => entry.detail).join(' ');
+  assert.match(detail, /spec/i);
+  assert.match(detail, /criterios/i);
+  assert.match(detail, /superficie/i);
+  assert.match(detail, /lote/i);
+  assert.match(detail, /tipos/i);
+  assert.match(detail, /pruebas/i);
+  assert.match(detail, /contrato/i);
+  assert.match(detail, /secuencia/i);
+  assert.match(detail, /evidencia/i);
+  assert.match(detail, /vuelta atr[aá]s/i);
+  // El recorrido dibujado es el camino feliz: la nota lo dice para que nadie lea un rechazo.
+  assert.match(map.notes, /compuertas/i);
+  assert.doesNotMatch(detail, /rechaz|devuelv/i);
 });

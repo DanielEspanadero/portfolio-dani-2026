@@ -8,14 +8,12 @@
  * the deck's own. The source drew a title block, an eyebrow, a signature, a pause button
  * and a raster-friendly background: all of that is now HTML or nothing at all.
  *
- * The module owns its loop and its governance, and nothing else:
- *  - it runs only while the hero slide is the active, visible slide;
- *  - it samples the scene at about 30 fps instead of the display's 60;
- *  - it stops the loop entirely when the slide is left or the document is hidden;
- *  - with `prefers-reduced-motion: reduce` it paints one still frame and never loops;
- *  - it cancels its frame on unload and disconnects everything it attached.
- * It reads only its own container, so the shared player and every other slide are untouched.
+ * The module owns the drawing and nothing else: activation, page visibility, the frame
+ * budget, the still frame under reduced motion and disposal live in the shared
+ * `scene-governor.mjs`, which the plant map uses too. It reads only its own container, so
+ * the shared player and every other slide are untouched.
  */
+import { mountGovernedScene } from './scene-governor.mjs';
 
 const CYAN = '#94c9d2';
 const AMBER = '#ffc36a';
@@ -70,10 +68,6 @@ const COOL = tint(CYAN, .35);
 export const HERO_VIEW = '625 -35 1030 845';
 export const HERO_CYCLE = 6000;
 export const HERO_STILL = 0.19;
-export const HERO_REDRAW_MS = 1000 / 30;
-/** A tenth of the budget of slack: rAF timestamps jitter, and a strict 33.33 ms gate
-    drops a 60 Hz display to 20 fps instead of the intended 30. */
-const REDRAW_GATE = HERO_REDRAW_MS * 0.9;
 export const HERO_SELECTOR = '[data-hero-scene]';
 
 const round = value => Number(value.toFixed(2));
@@ -240,22 +234,13 @@ export function heroShell() {
 }
 
 /**
- * Mount the plant on its own container. Returns the control surface so a document can
- * dispose of it; the loop itself is driven by the slide's activation and the page's
- * visibility, never by a timer.
+ * Mount the plant on its own container. The shell is built on the first paint and then
+ * reused, so a frame only replaces the parts group; everything else is the governor's.
  */
 export function mountHeroScene(doc = document, win = window) {
   const host = doc.querySelector(HERO_SELECTOR);
-  const slide = host?.closest('[data-slide]');
-  if (!host || !slide) return null;
-  const motion = win.matchMedia('(prefers-reduced-motion: reduce)');
+  if (!host) return null;
   let parts = null;
-  let frameId = 0;
-  let elapsed = HERO_CYCLE * HERO_STILL;
-  let previous = 0;
-  let lastDraw = 0;
-  const state = { draws: 0, stills: 0 };
-
   const paint = progress => {
     if (!parts) {
       host.innerHTML = heroShell();
@@ -263,69 +248,7 @@ export function mountHeroScene(doc = document, win = window) {
     }
     parts.innerHTML = heroScene(progress);
   };
-  const active = () => !slide.hidden && slide.classList.contains('active');
-  const visible = () => active() && doc.visibilityState === 'visible';
-
-  function tick(now) {
-    frameId = 0;
-    if (!visible() || motion.matches) return; // Never rebuild the drawing while off stage.
-    if (!previous) previous = now;
-    elapsed += Math.min(Math.max(now - previous, 0), 100);
-    previous = now;
-    if (now - lastDraw >= REDRAW_GATE) {
-      lastDraw = now;
-      paint((elapsed % HERO_CYCLE) / HERO_CYCLE);
-      state.draws += 1;
-      host.dataset.draws = String(state.draws);
-    }
-    frameId = win.requestAnimationFrame(tick);
-  }
-
-  function start() {
-    if (frameId || motion.matches || !visible()) return;
-    previous = 0;
-    lastDraw = 0;
-    frameId = win.requestAnimationFrame(tick);
-  }
-
-  function stop() {
-    if (frameId) win.cancelAnimationFrame(frameId);
-    frameId = 0;
-    previous = 0;
-  }
-
-  /** One still frame, drawn once per document, for readers who asked for less motion. */
-  function still() {
-    if (state.stills) return;
-    paint(HERO_STILL);
-    state.stills += 1;
-    host.dataset.stills = String(state.stills);
-  }
-
-  function sync() {
-    stop();
-    if (!visible()) return;
-    if (motion.matches) still();
-    else start();
-  }
-
-  function dispose() {
-    stop();
-    observer.disconnect();
-    doc.removeEventListener('visibilitychange', sync);
-    motion.removeEventListener?.('change', sync);
-    win.removeEventListener('pagehide', dispose);
-    win.removeEventListener('beforeunload', dispose);
-  }
-
-  const observer = new win.MutationObserver(sync);
-  observer.observe(slide, { attributes: true, attributeFilter: ['class', 'hidden'] });
-  doc.addEventListener('visibilitychange', sync);
-  motion.addEventListener?.('change', sync);
-  win.addEventListener('pagehide', dispose);
-  win.addEventListener('beforeunload', dispose);
-  sync();
-  return { sync, stop, dispose };
+  return mountGovernedScene({ host, cycle: HERO_CYCLE, still: HERO_STILL, paint, doc, win });
 }
 
 if (typeof document !== 'undefined') mountHeroScene();

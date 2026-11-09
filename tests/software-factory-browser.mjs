@@ -9,6 +9,7 @@ import { spawn } from 'node:child_process';
 import { pathToFileURL } from 'node:url';
 import { chapters, slides } from '../src/content/software-factory/index.mjs';
 import { renderPresentation, renderGuide } from '../src/presentations/software-factory/render.mjs';
+import { inlineModules } from '../src/presentations/software-factory/inline-modules.mjs';
 
 const selector = process.argv[2];
 assert.match(selector || '', /^--(?:chapter=[1-7]|mode=(?:interaction|reading))$/);
@@ -19,14 +20,18 @@ const read = file => fs.readFileSync(`src/presentations/software-factory/${file}
 const css = ['fonts.css', 'viewport-base.css', 'deck.css'].map(read).join('\n');
 assert.ok(css.includes(fs.readFileSync('/Users/daniel/.gentle-shell/agent/skills/frontend-slides/viewport-base.css', 'utf8')));
 const controller = fs.readFileSync('src/presentations/shared/player.js', 'utf8');
-// The hero plant is the deck's only per-slide script; it rides with the shared player exactly
-// as the production document inlines it, so the visual check proves the shipped composition.
+// The deck's two procedural scenes ride with the shared player through the same inliner the
+// production document uses, so the visual check proves the shipped composition instead of a
+// second copy of it.
+const sceneGovernor = fs.readFileSync('src/presentations/software-factory/scene-governor.mjs', 'utf8');
 const heroScene = fs.readFileSync('src/presentations/software-factory/hero-scene.mjs', 'utf8');
+const plantMap = fs.readFileSync('src/presentations/software-factory/plant-map.mjs', 'utf8');
+const inline = inlineModules(controller, sceneGovernor, heroScene, plantMap);
 const file = path.join(output, 'standalone.html');
 // The deck addresses art from the site root. When it is opened from disk for the
 // visual check, point the same approved files at their local absolute URL instead.
 const artDir = `${pathToFileURL(path.resolve('public/resources/software-factory-art')).href}/`;
-fs.writeFileSync(file, renderPresentation({ css, controller: `${controller}\n${heroScene}`, offline: true })
+fs.writeFileSync(file, renderPresentation({ css, controller: inline, offline: true })
   .replaceAll('src="/resources/software-factory-art/', `src="${artDir}`));
 fs.writeFileSync(path.join(output, 'guide.html'), renderGuide({ css: read('fonts.css') + read('guide.css') }));
 let scratch, chrome, socket, sessionId;
@@ -130,13 +135,13 @@ const geometry = `(() => {
  }
  // The inline diagrams are measured, not trusted: their own viewBox must contain every child,
  // they may not reach the footer, and neighbouring columns may not bleed into each other.
- for(const diagram of s.querySelectorAll('.flow-diagram,.day-diagram')){
+ for(const diagram of s.querySelectorAll('.flow-diagram,.day-diagram,.plant-map')){
   const view=diagram.viewBox.baseVal, box=diagram.getBBox(), frame=rect(diagram);
   if(box.x<view.x-1||box.y<view.y-1||box.x+box.width>view.x+view.width+1||box.y+box.height>view.y+view.height+1)
    errors.push('diagram clips its own viewBox: '+[box.x,box.y,box.width,box.height].map(n=>Math.round(n)).join(','));
   if(!within(frame,rect(s.querySelector('.composition')),scale*2))errors.push('diagram outside the composition box');
   if(frame.bottom>rect(s.querySelector('.slide-footer')).top-scale*2)errors.push('diagram reaches the footer');
-  const nodes=[...diagram.querySelectorAll('.flow-node,.day-stop')];
+  const nodes=[...diagram.querySelectorAll('.flow-node,.day-stop,.plant-zone')];
   for(let i=0;i+1<nodes.length;i++){const a=nodes[i].getBBox(),b=nodes[i+1].getBBox();
    if(a.x+a.width>b.x)errors.push('diagram columns overlap: '+(i+1)+'/'+(i+2));}
  }
@@ -277,7 +282,9 @@ try {
         `${mode}: reduced motion never rebuilds the still or schedules a frame`);
       await command('Emulation.setEmulatedMedia', { features: [] });
       await load(pathToFileURL(file).href);
-      const stepSlide = slides.findIndex(slide => slide.kind === 'flow') + 1;
+      // The first flow slide draws the plant map and reveals no steps: the step probes need a
+      // station row, so they target the first flow slide that still carries one.
+      const stepSlide = slides.findIndex(slide => slide.kind === 'flow' && !slide.illustrated && !slide.loopback) + 1;
       const stepCount = slides[stepSlide - 1].items.length;
       await go(stepSlide);
       await key(' ', 'Space', 32, ' ');
@@ -366,6 +373,73 @@ try {
       check(await evaluate("document.querySelector('.active .day-marker').getAnimations().length===0 && getComputedStyle(document.querySelector('.active .day-marker')).transform==='matrix(1, 0, 0, 1, 168, 214)' && document.querySelectorAll('.active .day-stop').length===5"),
         `${mode}: reduced motion leaves the day still on 09:10 with its five moments`);
       await command('Emulation.setEmulatedMedia', { features: [] });
+      // === PLANT MAP: the second procedural scene, under the same governance ===
+      const mapSlide = slides.findIndex(slide => slide.illustrated && slide.kind === 'flow') + 1;
+      const mapHost = "document.querySelector('[data-plant-map]')";
+      const mapDraws = `Number(${mapHost}.dataset.draws||0)`;
+      await go(mapSlide); await frame();
+      const mapStart = await evaluate(`(() => {const host=${mapHost};
+        return {draws:Number(host.dataset.draws||0), nodes:host.querySelectorAll('.plant-parts *').length,
+          zones:host.querySelectorAll('.plant-zone').length,
+          labels:[...host.querySelectorAll('.plant-label')].map(t=>t.textContent).join(' '),
+          piece:host.querySelector('.plant-piece').getAttribute('transform'),
+          name:host.querySelector('.plant-map').getAttribute('aria-label'),
+          hidden:host.querySelector('.plant-parts').getAttribute('aria-hidden'),
+          focusable:host.querySelectorAll('a,button,input,[tabindex]').length};})()`);
+      check(mapStart.nodes > 80 && mapStart.zones === 4 && mapStart.focusable === 0 && mapStart.hidden === 'true'
+        && mapStart.labels === slides[mapSlide - 1].items.map(entry => entry.label).join(' ')
+        && mapStart.name.length > 80,
+        `${mode}: the map draws its four zones (${mapStart.nodes} nodes), names the route and keeps its text`);
+      await evaluate('new Promise(r=>setTimeout(r,2600))');
+      const mapRunning = await evaluate(`(() => {const host=${mapHost};
+        return {draws:Number(host.dataset.draws||0), piece:host.querySelector('.plant-piece').getAttribute('transform')};})()`);
+      check(mapRunning.draws > mapStart.draws && mapRunning.piece !== mapStart.piece,
+        `${mode}: the batch advances while the map slide is active (${mapRunning.draws - mapStart.draws} frames in 2.6s)`);
+      await capture(`plant-map-running-${mode}.png`);
+      await evaluate("location.hash='#2'"); await frame();
+      const mapParked = await evaluate(mapDraws);
+      await evaluate('new Promise(r=>setTimeout(r,500))');
+      check(await evaluate(mapDraws) === mapParked, `${mode}: leaving the map slide stops its loop`);
+      await go(mapSlide); await frame();
+      const mapResumed = await evaluate(mapDraws);
+      await evaluate('new Promise(r=>setTimeout(r,400))');
+      check(await evaluate(mapDraws) > mapResumed, `${mode}: returning to the map slide resumes its loop`);
+      // CDP cannot hide a page without freezing it, so visibility is stubbed and announced.
+      const mapHidden = await evaluate(`(() => {const host=${mapHost};
+        Object.defineProperty(document,'visibilityState',{configurable:true,get:()=>'hidden'});
+        document.dispatchEvent(new Event('visibilitychange'));
+        return new Promise(resolve=>setTimeout(()=>{const frozen=Number(host.dataset.draws);
+          setTimeout(()=>{const second=Number(host.dataset.draws);
+            delete document.visibilityState;document.dispatchEvent(new Event('visibilitychange'));
+            resolve({frozen,second});},450);},200));})()`);
+      check(mapHidden.frozen === mapHidden.second, `${mode}: a hidden document stops the map loop`);
+      await evaluate('new Promise(r=>setTimeout(r,400))');
+      check(await evaluate(mapDraws) > mapHidden.second, `${mode}: a visible document resumes the map loop`);
+      // Reduced motion: one still frame, drawn once, and no frame ever scheduled.
+      await command('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-reduced-motion', value: 'reduce' }] });
+      await load(pathToFileURL(file).href);
+      await evaluate('window.__mapFrames=0; const mapRequest=window.requestAnimationFrame.bind(window); window.requestAnimationFrame=cb=>{window.__mapFrames+=1;return mapRequest(cb)}');
+      await go(mapSlide); await frame();
+      const mapStill = await evaluate(`(() => {const host=${mapHost};
+        return {stills:Number(host.dataset.stills||0), draws:Number(host.dataset.draws||0),
+          length:host.querySelector('.plant-parts').innerHTML.length,
+          nodes:host.querySelectorAll('.plant-parts *').length};})()`);
+      check(mapStill.stills === 1 && mapStill.draws === 0 && mapStill.nodes > 80,
+        `${mode}: reduced motion paints one map still frame and starts no loop`);
+      await capture(`plant-map-still-${mode}.png`);
+      await evaluate("location.hash='#2'"); await frame();
+      await evaluate(`location.hash='#${mapSlide}'`); await frame();
+      // The probe's own frames are ignored: the counter is reset once navigation is done.
+      await evaluate('window.__mapFrames=0');
+      await evaluate('new Promise(r=>setTimeout(r,600))');
+      const mapStillAfter = await evaluate(`(() => {const host=${mapHost};
+        return {stills:Number(host.dataset.stills||0), draws:Number(host.dataset.draws||0),
+          frames:window.__mapFrames, length:host.querySelector('.plant-parts').innerHTML.length};})()`);
+      check(mapStillAfter.frames === 0 && mapStillAfter.draws === 0 && mapStillAfter.stills === 1
+        && mapStillAfter.length === mapStill.length,
+        `${mode}: reduced motion never rebuilds the map still or schedules a frame`);
+      await command('Emulation.setEmulatedMedia', { features: [] });
+      await load(pathToFileURL(file).href);
       await go(slides.length); await key('ArrowRight', 'ArrowRight', 39);
       check(await evaluate(`location.hash==='#${slides.length}' && document.querySelector('#next-slide').disabled`), `${mode}: last boundary`);
       await enter('fullscreen-toggle');

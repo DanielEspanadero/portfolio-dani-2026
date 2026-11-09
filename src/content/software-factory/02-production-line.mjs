@@ -14,15 +14,14 @@ export default {
  notes: `Este es el día que nadie graba, y por eso conviene enseñarlo. Las horas son ilustrativas, no una medición. A las nueve y diez alguien escribe qué necesita y cómo sabrá que está bien; a las nueve y treinta y cinco la petición se convierte en casos comprobables. La construcción empieza a las diez y cuarto con el cambio más pequeño posible, y la revisión ocurre en paralelo, no en cadena. A las once y cuarenta la compuerta aplica la regla escrita; lo que no encaja se escala. Ninguna de esas paradas es heroica: son aburridas y por eso funcionan. Si cada tarea necesita una epopeya, el problema no es la IA, es el tamaño del encargo. Pide al público que estime cuánto de su día se parece a esto y qué parada les falta de verdad. Después recorre el mapa de planta para poner nombre a cada parada.`,
  },
  {
- id: 'factory-09', title: 'Mapa de planta', kind: 'flow',
+ id: 'factory-09', title: 'Mapa de planta', kind: 'flow', illustrated: true,
  lead: 'Toda orden recorre entrada, estaciones, compuertas e integración en ese orden.',
- figure: { src: '02-linea.png', mode: 'wash', alt: 'Vista lateral de una cinta con cuatro estaciones robotizadas, cajas de trabajo y brazos articulados sobre la línea.' },
  items: [
- { label: 'Entrada', detail: 'La petición se convierte en orden con spec, criterios y superficie autorizada.' },
- { label: 'Estaciones', detail: 'Cada una responde una pregunta distinta sobre el mismo lote pequeño.' },
- { label: 'Compuertas', detail: 'Tipos, pruebas y contrato filtran antes de consumir atención.' },
- { label: 'Integración', detail: 'El conjunto se comprueba y el lote entra con evidencia y vuelta atrás.' },
- ], steps: true,
+ { label: 'Entrada', detail: 'Spec, criterios y superficie autorizada.' },
+ { label: 'Estaciones', detail: 'Preguntas distintas sobre el mismo lote.' },
+ { label: 'Compuertas', detail: 'Tipos, pruebas y contrato, en secuencia.' },
+ { label: 'Integración', detail: 'Conjunto comprobado, evidencia y vuelta atrás.' },
+ ],
  notes: `Recorre la planta como quien entra en una fábrica: primero la entrada, donde la petición se convierte en una orden con contrato y superficie; después las estaciones, cada una con una pregunta distinta; luego las compuertas automáticas, que filtran sin cansarse; al final, la integración, donde el conjunto demuestra que sigue funcionando. El orden no es decorativo. Si se salta la entrada, la estación inventa criterios. Si se saltan las compuertas, la cola de escaladas recibe trabajo mecánico. Si se integra sin probar el conjunto, dos piezas verdes pueden formar un sistema que no funciona. Pide que recuerden este mapa: los siguientes capítulos amplían cada zona y el cierre vuelve a recorrerlo con telemetría y nuevas órdenes de trabajo.`,
  },
  {
