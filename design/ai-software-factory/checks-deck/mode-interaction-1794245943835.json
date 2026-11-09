@@ -1,9 +1,0 @@
-{
-  "selector": "--mode=interaction",
-  "probes": [],
-  "failures": [
-    "Error: {\"exceptionId\":1,\"text\":\"Uncaught\",\"lineNumber\":2,\"columnNumber\":28,\"scriptId\":\"22\",\"stackTrace\":{\"callFrames\":[{\"functionName\":\"\",\"scriptId\":\"22\",\"url\":\"\",\"lineNumber\":2,\"columnNumber\":28},{\"functionName\":\"\",\"scriptId\":\"22\",\"url\":\"\",\"lineNumber\":7,\"columnNumber\":8}]},\"exception\":{\"type\":\"object\",\"subtype\":\"error\",\"className\":\"TypeError\",\"description\":\"TypeError: Cannot read properties of null (reading 'getAnimations')\\n    at <anonymous>:3:29\\n    at <anonymous>:8:9\",\"objectId\":\"933010928196360303.2.2\"}}\n    at evaluate (file:///Users/daniel/Documents/programming/portfolio-dani-2026/tests/software-factory-browser.mjs:47:37)\n    at async file:///Users/daniel/Documents/programming/portfolio-dani-2026/tests/software-factory-browser.mjs:253:22"
-  ],
-  "requests": [],
-  "errors": []
-}

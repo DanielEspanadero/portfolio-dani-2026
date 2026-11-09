@@ -359,6 +359,12 @@ h1, .slide h2 { font-size: 88px; font-weight: 650; line-height: 1.04; letter-spa
    card row. Type sizes and the journey keyframes live inside the drawing itself. */
 .diagram.flow.loopback { position: relative; }
 .flow-diagram { display: block; width: 100%; height: auto; }
+/* The ordinary day is a second drawn timeline: the flag replaces the card row, and the
+   drawing carries its own geometry. Reduced motion is the shared rule below: it stops every
+   animation, and the marker's transform attribute already rests it on 09:10, so the still
+   keeps all five moments, their clocks and the amber exception branch. */
+.diagram.day { position: relative; }
+.day-diagram { display: block; width: 100%; height: auto; }
 .loop-return { position: relative; z-index: 1; height: 62px; border-left: 3px solid var(--cyan); border-right: 3px solid var(--cyan); border-bottom: 3px dashed var(--cyan); }
 .loop-return::before { content: ''; position: absolute; left: -10px; top: 0; width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-bottom: 16px solid var(--cyan); }
 .return-sweep { position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: linear-gradient(90deg, transparent 0 40%, var(--amber) 50%, transparent 60% 100%); background-size: 300% 100%; animation: sweep 4.8s linear infinite; }
@@ -653,17 +659,72 @@ body:not(.deck-ready) .lead { font-size: 26px; }
     <div class="registration" aria-hidden="true"></div>
     <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / La línea de producción</p>
     <h2 id="title-factory-08">Un día en la fábrica</h2><p class="lead">Un martes normal de trabajo, con hora de entrada y de salida.</p></header>
-    <div class="composition"><div class="timeline main-panels" style="--count:5"><article class="panel station">
-    <span class="station-number" aria-hidden="true">01</span>
-    <h3>09:10, Entra la orden</h3><p >Alguien escribe qué necesita y cómo sabrá que está bien; queda en la lista de pendientes.</p></article><article class="panel station">
-    <span class="station-number" aria-hidden="true">02</span>
-    <h3>09:35, Se escribe la spec</h3><p >Un agente convierte la petición en casos comprobables y los límites se acuerdan.</p></article><article class="panel station">
-    <span class="station-number" aria-hidden="true">03</span>
-    <h3>10:15, Se construye</h3><p >Otro agente escribe el cambio más pequeño y ejecuta las pruebas: primero ve el fallo.</p></article><article class="panel station">
-    <span class="station-number" aria-hidden="true">04</span>
-    <h3>11:05, Revisión en paralelo</h3><p >Dos revisores independientes comparan el cambio con el contrato y buscan contradicciones.</p></article><article class="panel station">
-    <span class="station-number" aria-hidden="true">05</span>
-    <h3>11:40, Decisión</h3><p >Una persona acepta el trabajo o devuelve un defecto concreto; todo queda escrito.</p></article></div></div>
+    <div class="composition"><div class="diagram day"><svg class="day-diagram" viewBox="0 0 1680 480" role="img" aria-label="Un día en la fábrica, de 09:10 a 11:40: 09:10 entra la orden, 09:35 se escribe la spec, 10:15 se construye, 11:05 revisión en paralelo, 11:40 la compuerta. En el último momento la compuerta aplica el estándar escrito; lo que no encaja se escala como excepción, marcada con una rama ámbar discontinua. Las horas son ilustrativas."><style>
+    .day-diagram text { stroke: none; font-family: 'Instrument Sans', sans-serif; text-anchor: middle; }
+    .day-clock { font-family: 'JetBrains Mono', monospace; font-size: 28px; fill: #b3ced4; letter-spacing: 2px; animation: day-clock 18s linear infinite; }
+    .day-label { font-size: 32px; font-weight: 600; fill: var(--paper); }
+    .day-detail { font-size: 28px; fill: #b3ced4; }
+    .day-rail { fill: none; stroke: #557077; stroke-width: 3; }
+    .day-sweep { fill: none; stroke: var(--cyan); stroke-width: 4; stroke-dasharray: 1344; animation: day-sweep 18s ease-in-out infinite; }
+    .day-dock { fill: var(--slide-bg); stroke: var(--cyan); stroke-width: 3; animation: day-dock 18s linear infinite; }
+    .day-icon { fill: none; stroke: var(--cyan); stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; }
+    .day-icon .day-hair { stroke: #4f6b73; stroke-width: 3; }
+    .day-marker { color: var(--cyan); animation: day-move 18s ease-in-out infinite; }
+    .day-marker .day-halo { fill: var(--slide-bg); }
+    .day-marker .day-core { fill: currentColor; }
+    .day-stop-gate .day-chip { fill: none; stroke: var(--cyan); stroke-width: 2; }
+    .day-stop-gate .day-escalate { fill: none; stroke: var(--amber); stroke-width: 4; stroke-dasharray: 9 7; stroke-linecap: round; stroke-linejoin: round; animation: day-escalate 4s linear infinite; }
+    @keyframes day-move { 0%{transform:translate(168px,214px)}13.89%{transform:translate(168px,214px)}20%{transform:translate(504px,214px)}33.89%{transform:translate(504px,214px)}40%{transform:translate(840px,214px)}53.89%{transform:translate(840px,214px)}60%{transform:translate(1176px,214px)}73.89%{transform:translate(1176px,214px)}80%{transform:translate(1512px,214px)}93.89%{transform:translate(1512px,214px)} }
+    @keyframes day-sweep { 0%{stroke-dashoffset:1344}13.89%{stroke-dashoffset:1344}20%{stroke-dashoffset:1008}33.89%{stroke-dashoffset:1008}40%{stroke-dashoffset:672}53.89%{stroke-dashoffset:672}60%{stroke-dashoffset:336}73.89%{stroke-dashoffset:336}80%{stroke-dashoffset:0}93.89%{stroke-dashoffset:0} }
+    @keyframes day-escalate { from { stroke-dashoffset: 0; } to { stroke-dashoffset: -32; } }
+    @keyframes day-clock { 0%, 13.89% { fill: var(--paper); } 13.9%, 100% { fill: #b3ced4; } }
+    @keyframes day-dock { 0%, 13.89% { fill: var(--cyan); } 13.9%, 100% { fill: var(--slide-bg); } }
+  </style>
+    <path class="day-rail" d="M168 214H1512"/>
+    <path class="day-sweep" d="M168 214H1512" aria-hidden="true"/>
+    <g class="day-stop">
+    
+    <text class="day-clock" x="168" y="56" style="animation-delay:-18.0s">09:10</text>
+    <g class="day-icon" transform="translate(168 130)"><path d="M-22 -30H14L22 -22V26A4 4 0 0 1 18 30H-18A4 4 0 0 1-22 26Z"/><path class="day-hair" d="M-12 -14H12M-12 -2H12M-12 10H2"/></g>
+    
+    <circle class="day-dock" cx="168" cy="214" r="8" style="animation-delay:-18.0s"/>
+    <text class="day-label" x="168" y="276">Entra la orden</text>
+    <text class="day-detail" x="168" y="352">Alguien escribe qué</text><text class="day-detail" x="168" y="388">necesita y cómo se</text><text class="day-detail" x="168" y="424">sabrá que está bien.</text>
+  </g><g class="day-stop">
+    
+    <text class="day-clock" x="504" y="56" style="animation-delay:-14.4s">09:35</text>
+    <g class="day-icon" transform="translate(504 130)"><rect x="-24" y="-28" width="48" height="56" rx="7"/><path d="M-14 -12l4 5 9-11"/><path class="day-hair" d="M6 -12H16"/><path d="M-14 6l4 5 9-11"/><path class="day-hair" d="M6 6H16"/><path class="day-hair" d="M-14 22H16"/></g>
+    
+    <circle class="day-dock" cx="504" cy="214" r="8" style="animation-delay:-14.4s"/>
+    <text class="day-label" x="504" y="276">Se escribe la spec</text>
+    <text class="day-detail" x="504" y="352">Un agente lo convierte</text><text class="day-detail" x="504" y="388">en casos comprobables</text><text class="day-detail" x="504" y="424">y acuerda los límites.</text>
+  </g><g class="day-stop">
+    
+    <text class="day-clock" x="840" y="56" style="animation-delay:-10.8s">10:15</text>
+    <g class="day-icon" transform="translate(840 130)"><rect x="-30" y="-24" width="60" height="48" rx="8"/><path d="M-14 -8L-4 0L-14 8"/><path d="M14 -8L4 0L14 8"/><path class="day-hair" d="M-18 14H18"/></g>
+    
+    <circle class="day-dock" cx="840" cy="214" r="8" style="animation-delay:-10.8s"/>
+    <text class="day-label" x="840" y="276">Se construye</text>
+    <text class="day-detail" x="840" y="352">El cambio más pequeño</text><text class="day-detail" x="840" y="388">y la prueba que ve el</text><text class="day-detail" x="840" y="424">fallo primero.</text>
+  </g><g class="day-stop">
+    
+    <text class="day-clock" x="1176" y="56" style="animation-delay:-7.2s">11:05</text>
+    <g class="day-icon" transform="translate(1176 130)"><rect x="-32" y="-22" width="28" height="44" rx="6"/><rect x="4" y="-22" width="28" height="44" rx="6"/><path d="M-26 -8l3 4 8-9"/><path d="M10 -8l3 4 8-9"/><path class="day-hair" d="M-26 10H-18M10 10H18"/><path class="day-hair" d="M-20 -30H20M0 -30V-22"/></g>
+    
+    <circle class="day-dock" cx="1176" cy="214" r="8" style="animation-delay:-7.2s"/>
+    <text class="day-label" x="1176" y="276">Revisión en</text><text class="day-label" x="1176" y="312">paralelo</text>
+    <text class="day-detail" x="1176" y="352">Dos revisores</text><text class="day-detail" x="1176" y="388">independientes revisan</text><text class="day-detail" x="1176" y="424">contra el contrato.</text>
+  </g><g class="day-stop day-stop-gate">
+    <rect class="day-chip" x="1436" y="24" width="152" height="44" rx="14"/>
+    <text class="day-clock" x="1512" y="56" style="animation-delay:-3.6s">11:40</text>
+    <g class="day-icon" transform="translate(1512 130)"><path d="M-24 30V-22M-32 30H-16"/><path d="M-24 -14H24"/><path class="day-hair" d="M-2 -24V-4M8 -24V-4"/></g>
+    <path class="day-escalate" d="M1524 202L1584 162"/><path class="day-escalate" d="M1570 162L1584 162L1584 176"/>
+    <circle class="day-dock" cx="1512" cy="214" r="8" style="animation-delay:-3.6s"/>
+    <text class="day-label" x="1512" y="276">La compuerta</text>
+    <text class="day-detail" x="1512" y="352">Aplica la regla</text><text class="day-detail" x="1512" y="388">escrita y escala lo</text><text class="day-detail" x="1512" y="424">que no encaja.</text>
+  </g>
+    <g class="day-marker" aria-hidden="true" transform="translate(168 214)"><circle class="day-halo" r="14"/><circle class="day-core" r="9"/></g>
+  </svg></div></div>
     <footer class="slide-footer"><span class="footer-author">Daniel Españadero</span><span class="footer-page">08 / 36</span></footer>
   </section>
 <section class="slide kind-flow has-plate" data-slide="9" data-kind="flow" id="factory-09" data-title="Mapa de planta" data-chapter="La línea de producción" aria-labelledby="title-factory-09">
