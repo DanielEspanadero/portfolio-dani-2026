@@ -30,7 +30,7 @@ function connectors(slide) {
   return `<svg class="connectors" viewBox="0 0 1680 480" aria-hidden="true">
     <defs><marker id="arrow-${id}" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M2 2L10 6L2 10" fill="none" stroke="currentColor" stroke-width="2"/></marker></defs>
     ${slide.kind === 'parallel' ? `<path class="route-line" d="M1067 80H1107V240H1140M1067 240H1140M1067 410H1107V240" marker-end="url(#arrow-${id})"/>` : slide.kind === 'gate' ? `<path class="route-line" d="M10 230H650" marker-end="url(#arrow-${id})"/>` : links}
-    ${loop ? `<path class="return-line" d="M1550 400V462H80V400" marker-end="url(#arrow-${id})"/>` : ''}
+    ${loop ? `<path class="return-line" d="M1550 345V462H80V345" marker-end="url(#arrow-${id})"/>` : ''}
     <path class="packet" d="${slide.kind === 'parallel' ? 'M1067 80H1107V240H1140' : `M10 230H${slide.kind === 'gate' ? 650 : 1500}`}"/>
     </svg>`;
 }
