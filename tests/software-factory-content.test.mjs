@@ -75,7 +75,10 @@ test('módulos legibles y fuentes presentes en datos y bibliografía', async () 
     assert.ok(cited.has(source), source);
     assert.ok(docs.includes(source), source);
   }
-  assert.match(docs, /ruta planificada/i);
+  // The route now exists as a prerendered Astro page; the docs must say so and
+  // must not claim the hosting response was already verified.
+  assert.match(docs, /ruta implementada/i);
+  assert.match(docs, /verificación posterior/i);
   assert.match(docs, /\/presentaciones\/software-factory/);
 });
 
