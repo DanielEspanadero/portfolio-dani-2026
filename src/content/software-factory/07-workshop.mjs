@@ -1,5 +1,5 @@
 export default {
-  id: 'workshop', title: 'Taller y puesta en marcha responsable',
+  id: 'workshop', title: 'Taller: medir y arrancar',
   slides: [
     {
       id: 'factory-48', title: 'Taller: una vuelta completa', kind: 'exercise',
@@ -7,9 +7,9 @@ export default {
       items: [
         { label: 'Preparar', detail: 'Copia el kit, lee instrucciones y calcula los casos frontera.' },
         { label: 'Construir', detail: 'En copia desechable: stub, RED observado, implementación y GREEN observado.' },
-        { label: 'Entregar', detail: 'Revisa el diff y completa el handoff; detente antes de integrar.' },
+        { label: 'Entregar', detail: 'Revisa el diff, completa el handoff y deja el cambio listo para integrar.' },
       ], steps: true,
-      notes: `Reserva un bloque práctico ajustable de unos quince a veinte minutos si el entorno ya está preparado; no prometas que todos lo terminarán en ese tiempo. La unidad consiste en reproducir un ciclo, no en diseñar un servicio completo. Primero se leen las reglas y se calculan las fronteras. Después se usa una copia desechable para observar un fallo por comportamiento ausente. Se implementa y se registra lo que ocurre al ejecutar las pruebas. Por último, otra persona o el propio alumno con una pausa revisa el cambio desde la spec. El handoff queda pendiente de decisión humana. Quien trabaje sin modelo realiza exactamente las mismas comprobaciones.`,
+      notes: `Reserva un bloque práctico ajustable de unos quince a veinte minutos si el entorno ya está preparado; no prometas que todos lo terminarán en ese tiempo. La unidad consiste en reproducir un ciclo completo, no en diseñar un servicio. Primero se leen las reglas y se calculan las fronteras. Después se usa una copia desechable para observar un fallo por comportamiento ausente. Se implementa y se registra lo que ocurre al ejecutar las pruebas. Por último se revisa el cambio desde la spec y se completa el handoff con evidencia real. Quien trabaje sin modelo realiza exactamente las mismas comprobaciones y guarda la misma evidencia.`,
     },
     {
       id: 'factory-49', title: 'Pausa: explica tu decisión', kind: 'exercise',
@@ -19,18 +19,18 @@ export default {
         { label: 'Contraste', detail: '¿Qué cambia un segundo antes y exactamente al inicio?' },
         { label: 'Entrega al chat', detail: 'Comparte una duda o un defecto concreto, nunca datos personales ni credenciales.' },
       ], pause: true,
-      notes: `Abre la tercera y última pausa intencional de chat. Busca una explicación que distinga estado persistido de acciones nuevas: el recibo original permanece, pero no se vuelve a solicitar una devolución. Si alguien dice que toda la respuesta es idéntica, vuelve al campo events y corrige con cuidado. Para la frontera del inicio, pide comparar dos tiempos concretos en UTC. No hace falta que compartan código completo ni archivos de su empresa; una pregunta bien formulada basta. Si aparece un fallo de entorno, sepáralo del comportamiento de la función. Cierra recuperando la tarea que propuso la audiencia al principio y preguntando qué contrato y freno le añadirían ahora.`,
+      notes: `Abre la tercera y última pausa intencional de chat. Busca una explicación que distinga estado persistido de acciones nuevas: el recibo original permanece, pero no se vuelve a solicitar una devolución. Si alguien dice que toda la respuesta es idéntica, vuelve al campo events y corrige con cuidado. Para la frontera del inicio, pide comparar dos tiempos concretos en UTC. No hace falta que compartan código completo ni archivos de su empresa; una pregunta bien formulada basta. Si aparece un fallo de entorno, sepáralo del comportamiento de la función. Cierra recuperando la tarea que propuso la audiencia al principio y preguntando qué orden de trabajo escribirían ahora.`,
     },
     {
-      id: 'factory-50', title: 'Medir valor, no líneas', kind: 'table',
-      lead: 'La automatización merece quedarse si mejora resultados observables.',
+      id: 'factory-50', title: 'Medir tiempo de ciclo y calidad', kind: 'table',
+      lead: 'La fábrica se evalúa por flujo y calidad, no por volumen generado.',
       items: [
-        { label: 'Tiempo completo', detail: 'Incluye preparar contexto, revisar, corregir e integrar; no solo generar.' },
-        { label: 'Calidad', detail: 'Observa defectos escapados, retrabajo y claridad del comportamiento.' },
-        { label: 'Coste', detail: 'Cuenta recursos, herramientas y atención humana; compara tareas similares.' },
-        { label: 'Comprensión', detail: 'Comprueba si el equipo puede mantener el resultado sin el agente.' },
+        { label: 'Tiempo de ciclo', detail: 'Desde la orden hasta la integración, con revisión y correcciones incluidas.' },
+        { label: 'Calidad', detail: 'Defectos escapados, retrabajo y claridad del comportamiento entregado.' },
+        { label: 'Coste', detail: 'Recursos, herramientas y atención humana comparados con tareas similares.' },
+        { label: 'Comprensión', detail: '¿El equipo puede mantener el resultado sin el agente?' },
       ],
-      notes: `Propón registrar una línea base manual antes de afirmar que existe ahorro. Una tarea con IA puede producir código en minutos y consumir después una hora de revisión; medir solo la primera fase engaña. Las líneas añadidas tampoco expresan valor: borrar una complejidad innecesaria puede ser el mejor resultado. Para comparar, busca tareas de dificultad parecida y anota también contexto, errores y límites de la muestra. No ofrecemos porcentajes de productividad ni una garantía de seguridad. El taller enseña a formular una hipótesis medible: quizá esta tarea repetitiva reduzca tiempo total sin aumentar defectos. Si los datos no lo respaldan, ajustar o retirar la automatización es una decisión razonable.`,
+      notes: `Propón registrar una línea base manual antes de afirmar que existe ahorro. Una tarea con IA puede producir código en minutos y consumir después una hora de revisión; medir solo la primera fase engaña. Las líneas añadidas tampoco expresan valor: borrar complejidad innecesaria puede ser el mejor resultado. Para comparar, busca tareas de dificultad parecida y anota también contexto, errores y límites de la muestra. No ofrecemos porcentajes de productividad ni una garantía de seguridad. El taller enseña a formular una hipótesis medible: quizá esta tarea repetitiva reduzca tiempo de ciclo sin aumentar defectos. Si los datos no lo respaldan, ajustar o retirar la automatización es una decisión razonable.`,
     },
     {
       id: 'factory-51', title: 'El modo manual no es un fracaso', kind: 'comparison',
@@ -40,7 +40,7 @@ export default {
         { label: 'Sin agente', detail: 'Editas a mano y ejecutas exactamente el mismo contrato y runner.' },
         { label: 'Continuidad', detail: 'Documentos portables y conocimiento compartido reducen dependencia operativa.' },
       ],
-      notes: `Imagina que el modelo no está disponible durante una sesión de trabajo o que el presupuesto se ha agotado. La especificación no desaparece y los tests siguen funcionando. Una persona puede leer la tabla, implementar la condición y verificar la respuesta. Ese camino alternativo es parte del diseño, no un recurso vergonzante. También sirve para detectar cuándo hemos añadido una capa que complica más de lo que ayuda. No prometemos que cualquier equipo pueda sustituir inmediatamente todas sus herramientas; hablamos de conservar comprensión y capacidad de avanzar en una unidad acotada. En el kit, ninguna prueba importa un SDK de modelos ni requiere una clave, precisamente para mantener esa independencia básica.`,
+      notes: `Imagina que el modelo no está disponible durante una sesión de trabajo o que el presupuesto se ha agotado. La especificación no desaparece y los tests siguen funcionando. Una persona puede leer la tabla, implementar la condición y verificar la respuesta. Ese camino alternativo es parte del diseño, no un recurso vergonzante. También sirve para detectar cuándo hemos añadido una capa que complica más de lo que ayuda. No prometemos que cualquier equipo pueda sustituir inmediatamente todas sus herramientas; hablamos de conservar comprensión y capacidad de avanzar en una unidad acotada. En el kit, ninguna prueba importa un SDK de modelos ni requiere una clave.`,
     },
     {
       id: 'factory-52', title: 'Checklist de tu primera fábrica', kind: 'checklist',
@@ -49,10 +49,10 @@ export default {
         { label: 'Unidad pequeña', detail: 'Una conducta, ejemplos frontera, errores y exclusiones explícitas.' },
         { label: 'Permisos limitados', detail: 'Archivos autorizados, sin secretos y con acciones sensibles separadas.' },
         { label: 'Evidencia y parada', detail: 'Pruebas reproducibles, presupuesto finito y handoff honesto.' },
-        { label: 'Persona disponible', detail: 'Tiempo para comprender, rechazar y decidir antes de integrar.' },
+        { label: 'Capacidad de revisión', detail: 'Tiempo real para leer lotes pequeños; es el límite del flujo.' },
         { label: 'Recuperación', detail: 'Alternativa manual y límites de rollback conocidos.' },
       ],
-      notes: `Invita a escoger una tarea real pequeña para la semana siguiente, no a desplegar una flota de agentes al acabar el directo. Recorre la lista en orden: comportamiento, permisos, pruebas, persona y recuperación. Si falta una pieza, no se soluciona aumentando la autonomía. Por ejemplo, si nadie tiene tiempo de revisar, reduce el lote antes de acelerar la generación. Si no puedes definir cómo detectar un error, vuelve al contrato. Si una tarea requiere secretos o acciones externas, diseña un ejercicio aislado antes de conectarla. La lista no certifica seguridad absoluta; sirve para descubrir carencias temprano. El primer éxito debería ser un cambio comprensible y comprobado, aunque sea muy pequeño.`,
+      notes: `Invita a escoger una tarea real pequeña para la semana siguiente, no a desplegar una flota de agentes al acabar el directo. Recorre la lista en orden: comportamiento, permisos, pruebas, capacidad de revisión y recuperación. Si falta una pieza, no se soluciona aumentando la autonomía. Por ejemplo, si nadie tiene tiempo de leer, reduce el lote antes de acelerar la generación. Si no puedes definir cómo detectar un error, vuelve al contrato. Si una tarea requiere secretos o acciones externas, diseña un ejercicio aislado antes de conectarla. La lista no certifica seguridad absoluta; sirve para descubrir carencias temprano. El primer éxito debería ser un cambio comprensible y comprobado, aunque sea muy pequeño.`,
     },
     {
       id: 'factory-53', title: 'Fuentes para seguir contrastando', kind: 'table',
@@ -74,17 +74,17 @@ export default {
         'https://genai.owasp.org/llmrisk/llm102025-unbounded-consumption/',
         'https://git-scm.com/docs/git-worktree',
       ],
-      notes: `Explica cómo leer la bibliografía sin atribuirle más de lo que dice. Las actas y el catálogo de McIlroy respaldan el hito histórico, no una fecha de nacimiento de los agentes actuales. El manifiesto y Fowler ayudan a comprender feedback e integración. Anthropic aporta una distinción de diseño útil y recomienda empezar sencillo; no impone una arquitectura universal. OWASP organiza riesgos que debemos analizar según el contexto. Git documenta la herramienta, no promete una frontera de seguridad. La regla de veinticuatro horas es una decisión didáctica propia del taller, no una recomendación de esas fuentes. Los enlaces completos también están en la guía para poder consultarlos después del directo.`,
+      notes: `Explica cómo leer la bibliografía sin atribuirle más de lo que dice. Las actas y el catálogo de McIlroy respaldan el hito histórico, no una fecha de nacimiento de los agentes actuales. El manifiesto y Fowler ayudan a comprender feedback e integración. Anthropic aporta una distinción de diseño útil y recomienda empezar sencillo; no impone una arquitectura universal. OWASP organiza riesgos que debemos analizar según el contexto. Git documenta la herramienta, no promete una frontera de seguridad. La regla de veinticuatro horas es una decisión didáctica propia del taller, no una recomendación de esas fuentes. Los enlaces completos también están en la guía para consultarlos después del directo.`,
     },
     {
-      id: 'factory-54', title: 'Más capacidad, mejor criterio', kind: 'closing',
-      lead: 'Automatiza propuestas; conserva comprensión, evidencia y capacidad de parar.',
+      id: 'factory-54', title: 'De la intención al software verificado', kind: 'closing',
+      lead: 'Definir, construir, verificar, integrar y medir: eso es una software factory con IA.',
       items: [
-        { label: 'Hoy', detail: 'Un contrato pequeño, una función local y una revisión con preguntas concretas.' },
-        { label: 'Siguiente paso', detail: 'Repite el ciclo en una tarea real acotada y mide el resultado completo.' },
-        { label: 'Recuerda', detail: 'Aceptar código, integrar y publicar son decisiones distintas.' },
+        { label: 'Hoy', detail: 'Una orden pequeña, una función local y evidencia observada.' },
+        { label: 'Siguiente', detail: 'Repite el ciclo en una tarea real y mide tiempo de ciclo y defectos.' },
+        { label: 'Límite', detail: 'El taller no es una aplicación lista para producción.' },
       ],
-      notes: `Cierra regresando a la imagen del volante. Una fábrica útil no elimina al conductor para demostrar que tiene motor; organiza el trabajo para que las decisiones lleguen con información suficiente. Hemos pasado de una metáfora histórica a una unidad ejecutable, atravesando riesgos antes de conceder permisos. El kit permite practicar sin proveedor y la documentación conserva el contrato para futuras revisiones. No hemos construido una aplicación de reservas lista para producción ni probado todas las amenazas posibles. Invita a compartir qué tarea pequeña intentarán y qué decisión humana conservarán. El objetivo final no es generar más texto o más código, sino entregar cambios que alguien pueda explicar, comprobar y mantener.`,
+      notes: `Cierra volviendo al concepto inicial: una fábrica es un sistema de producción repetible. La intención se convirtió en una orden de trabajo; la orden pasó por estaciones especializadas; las compuertas automáticas filtraron lo que no cumplía; el cambio llegó integrado con evidencia y un plan de vuelta atrás. Hemos visto también ocho formas de fallar y cómo reconocerlas. El kit permite practicar sin proveedor y la documentación conserva el contrato para futuras revisiones. No hemos construido una aplicación de reservas lista para producción ni probado todas las amenazas posibles. Invita a compartir qué tarea pequeña intentarán y cómo medirán su tiempo de ciclo. El objetivo no es generar más código, sino entregar cambios que alguien pueda explicar, comprobar y mantener.`,
     },
   ],
 };

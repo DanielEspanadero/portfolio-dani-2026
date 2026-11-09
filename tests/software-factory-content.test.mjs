@@ -82,17 +82,73 @@ test('módulos legibles y fuentes presentes en datos y bibliografía', async () 
   assert.match(docs, /\/presentaciones\/software-factory/);
 });
 
-test('temario requerido y riesgos antes de crear', () => {
-  const all = slides.map(s => `${s.title} ${s.lead} ${s.items.map(i => `${i.label} ${i.detail}`).join(' ')} ${s.notes}`).join('\n');
-  for (const topic of [/McIlroy/, /Garmisch/, /1968/, /2001/, /diciembre de 2024/i,
-    /predefinid/, /dinámicamente/, /AGENTS.md/, /prompt injection/i,
-    /LLM06:2025/, /LLM10:2025/, /correlacionad/, /permisos/, /presupuesto/,
-    /proveedor/, /rollback/i, /autenticación/, /autorización/, /concurrencia/,
-    /worktree/i, /no.*sandbox/i, /puertos/, /base.*datos/,
-    /capacidad humana/i, /trabajo manual/i, /código de salida/]) assert.match(all, topic);
+test('temario requerido: la fábrica como sistema de producción', () => {
+  const context = slide => `${slide.title} ${slide.lead} ${slide.items.map(i => `${i.label} ${i.detail}`).join(' ')} ${slide.notes}`;
+  const all = slides.map(context).join('\n');
+  const topics = [
+    // contexto histórico y vocabulario
+    [/McIlroy/, /Garmisch/, /1968/, /2001/, /diciembre de 2024/i,
+      /predefinid/, /dinámicamente/, /AGENTS\.md/],
+    // la orden de trabajo y la especialización de estaciones
+    [/orden de trabajo/i, /criterios de aceptación/i, /especificaci[oó]n|\bspec\b/i,
+      /implementador/i, /\btester\b/i, /\breviewer\b/i, /estaci[oó]n/i],
+    // estándares, activos reutilizables, compuertas automáticas y evidencia
+    [/est[aá]ndar|convenci/i, /reutiliz|plantilla/i, /compuerta/i, /integraci[oó]n continua/i,
+      /evidencia/i, /c[oó]digo de salida/i, /handoff/i],
+    // flujo, integración y medición
+    [/integrar|integraci[oó]n/i, /rollback|vuelta atr[aá]s/i, /tiempo de ciclo/i, /lote/i,
+      /trabajo en curso/i],
+    // paralelismo y sus límites
+    [/independiente/i, /worktree/i, /no.*sandbox/i, /puertos/, /base.*datos/,
+      /capacidad de (?:revisi[oó]n|inspecci[oó]n)/i],
+    // ejecución, alcance y alternativa manual
+    [/autenticaci[oó]n/, /autorizaci[oó]n/, /concurrencia/, /modo manual|trabajo manual/i],
+  ];
+  for (const pattern of topics.flat()) assert.match(all, pattern);
   assert.ok(chapters.findIndex(c => c.id === 'risks') < chapters.findIndex(c => c.id === 'create'));
-  assert.match(chapters.find(c => c.id === 'risks').slides[0].items[1].detail, /decisión humana/);
   assert.match(all, /no garantiza.*independiente/i);
+});
+
+test('los ocho modos de fallo siguen presentes en el capítulo de riesgos', () => {
+  const chapter = chapters.find(c => c.id === 'risks');
+  const text = chapter.slides.map(s => `${s.title} ${s.lead} ${s.items.map(i => `${i.label} ${i.detail}`).join(' ')} ${s.notes}`).join('\n');
+  const families = [
+    [/falso verde|correlacionad/i, 'fallos correlacionados'],
+    [/prompt injection/i, 'inyección de instrucciones'],
+    [/LLM06:2025/, 'permisos excesivos'],
+    [/LLM10:2025|consumo|bucle/i, 'consumo y bucles sin límite'],
+    [/p[eé]rdida de conocimiento/i, 'pérdida de conocimiento'],
+    [/proveedor/i, 'dependencia del proveedor'],
+    [/recuperar/i, 'recuperación'],
+    [/sin control|control [uú]til/i, 'ausencia de control significativo'],
+  ];
+  for (const [pattern, label] of families) assert.match(text, pattern, label);
+  // El capítulo presenta fallos de fábrica; no necesita encabezarse con la aprobación humana.
+  assert.doesNotMatch(`${chapter.slides[0].title} ${chapter.slides[0].lead}`, /aprob|human/i);
+});
+
+test('sin eslóganes heredados ni aprobación humana como tema dominante', () => {
+  const removed = [
+    /construir con criterio/i,
+    /m[aá]s capacidad/i,
+    /volante/i,
+    /YouTube|suscr[ií]b/i,
+    /no entregar(?:le)?s? el control/i,
+  ];
+  const stage = slide => [slide.title, slide.lead, ...slide.items.flatMap(i => [i.label, i.detail]), slide.code ?? ''].join('\n');
+  for (const slide of slides) {
+    for (const pattern of removed) assert.doesNotMatch(stage(slide), pattern, `${slide.id}: ${pattern}`);
+  }
+  // La decisión humana es un control entre varios: si domina los titulares, el deck vuelve a ser de gobernanza.
+  const approval = slides.filter(s => /aprob|human/i.test(`${s.title} ${s.lead}`)).map(s => s.id);
+  assert.ok(approval.length <= 2, `aprobación/humano en titulares: ${approval.join(', ')}`);
+  const stops = slides.filter(s => /\bSTOP\b|decisi[oó]n humana|control humano/i.test(`${s.title} ${s.lead}`)).map(s => s.id);
+  assert.ok(stops.length <= 1, `paradas humanas en titulares: ${stops.join(', ')}`);
+  // El flujo principal se explica con los verbos de producción, no con una compuerta humana al final.
+  const spine = slides.map(s => `${s.title} ${s.lead}`).join(' ');
+  assert.match(spine, /orden de trabajo/i);
+  assert.match(spine, /integrar|integraci[oó]n/i);
+  assert.match(spine, /medir|medici[oó]n|tiempo de ciclo/i);
 });
 
 test('kit completo, sin plantillas ocultas ni resultados inventados y contrato coherente', async () => {

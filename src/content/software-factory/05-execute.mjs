@@ -1,5 +1,5 @@
 export default {
-  id: 'execute', title: 'Ejecutar y aprobar una cancelación',
+  id: 'execute', title: 'Ejecutar: de la orden al cambio integrado',
   slides: [
     {
       id: 'factory-33', title: 'Una función, no una aplicación de reservas', kind: 'flow',
@@ -13,7 +13,7 @@ export default {
       notes: `Separa el núcleo de dominio de cualquier pantalla o servidor. La función recibe el tiempo actual como argumento para que la prueba no dependa del reloj del ordenador. Devuelve datos y no llama a una red. amountCents expresa enteros de céntimos para evitar cálculos monetarios decimales en esta política sencilla. El resultado aceptado incluye el estado resultante, el resultado de cancelación almacenado y los eventos nuevos. El rechazo incluye un código estable, la reserva original y ningún evento. No comprueba que quien llama sea propietario de la reserva: autenticación y autorización quedan explícitamente fuera de alcance. Por eso este núcleo educativo no puede publicarse como endpoint seguro sin trabajo adicional.`,
     },
     {
-      id: 'factory-34', title: 'Validar antes de producir efectos', kind: 'gate',
+      id: 'factory-34', title: 'Validar antes de producir efectos', kind: 'table',
       lead: 'Datos inválidos no deben generar una devolución simulada.',
       items: [
         { label: 'Forma', detail: 'id no vacío, estado conocido y cancelación almacenada válida si existe.' },
@@ -59,24 +59,24 @@ export default {
       notes: `Distingue un recibo guardado de una orden nueva. El outcome dice lo que se decidió al cancelar: importe y momento original. Los eventos indican acciones nuevas solicitadas por esta llamada. Si repetimos una reserva ya cancelada y válida, conservamos el recibo pero no volvemos a solicitar una devolución. La respuesta completa cambia en events, de modo que no debemos decir que es idéntica a la primera. Podemos usar un nowUTC posterior al inicio para demostrar que no recalculamos la política de una cancelación ya realizada. Seguimos validando datos primero. En producción harían falta persistencia atómica, controles de concurrencia e idempotencia del proveedor; no los simula esta función pura.`,
     },
     {
-      id: 'factory-38', title: 'GREEN con una explicación verificable', kind: 'checklist',
+      id: 'factory-38', title: 'GREEN con evidencia observable', kind: 'checklist',
       lead: 'El verde vale por los casos observados, no por la confianza del autor.',
       items: [
         { label: 'Ejecutar', detail: 'node --test tests/cancellation.test.mjs en la copia del alumno.' },
         { label: 'Inspeccionar', detail: 'Comprueba límites, errores, eventos, repetición y datos intactos.' },
         { label: 'Registrar', detail: 'Guarda salida real y limitaciones en factory/handoff.md.' },
       ],
-      notes: `Después de implementar, vuelve a ejecutar el mismo comando. No cambies expectativas para acomodarlas a la salida sin revisar primero la especificación. Si aparece un fallo, usa el caso concreto para identificar si el problema está en el cálculo, la forma de respuesta o la validación. Cuando pase, registra el resultado observado y revisa el diff. El verde no demuestra autenticación ni resistencia frente a concurrencia, porque esos aspectos no se implementaron. Tampoco mide ahorro económico de usar IA. Pide a un participante que explique una fila fronteriza sin leer la función. Si puede hacerlo, tenemos una señal de comprensión que complementa la evidencia automática y ayuda a revisar con criterio.`,
+      notes: `Después de implementar, vuelve a ejecutar el mismo comando. No cambies expectativas para acomodarlas a la salida sin revisar primero la especificación. Si aparece un fallo, usa el caso concreto para identificar si el problema está en el cálculo, la forma de respuesta o la validación. Cuando pase, registra el resultado observado y revisa el diff. El verde no demuestra autenticación ni resistencia frente a concurrencia, porque esos aspectos no se implementaron. Tampoco mide ahorro económico de usar IA. Pide a un participante que explique una fila fronteriza sin leer la función. Si puede hacerlo, tenemos una señal de comprensión que complementa la evidencia automática.`,
     },
     {
-      id: 'factory-39', title: 'STOP: decidir con información', kind: 'gate',
-      lead: 'No integrar hasta que una persona pueda aceptar o rechazar el cambio.',
+      id: 'factory-39', title: 'La funcionalidad aterriza integrada', kind: 'gate',
+      lead: 'El lote entra integrado con evidencia y vuelta atrás; una persona acepta o devuelve el defecto.',
       items: [
-        { label: 'Paquete', detail: 'Spec, diff pequeño, pruebas observadas y riesgos explícitos.' },
-        { label: 'Decisión', detail: 'Aceptar, pedir una corrección concreta o detener el trabajo.' },
-        { label: 'No autorizado', detail: 'El worker no convierte un GREEN en permiso de publicación.' },
+        { label: 'Conjunto', detail: 'La función y el resto del sistema compilan y pasan sus pruebas juntos.' },
+        { label: 'Evidencia', detail: 'Comandos ejecutados, resultados observados y límites conocidos.' },
+        { label: 'Vuelta atrás', detail: 'Cómo revertir el código y qué efectos externos no se deshacen.' },
       ],
-      notes: `Haz una parada real en la narración. Imagina que el worker acaba de entregar el recibo: no avances automáticamente a la siguiente estación. La persona revisa si el comportamiento coincide con lo acordado, si los archivos están dentro del alcance y si hay suficiente evidencia. Puede devolver un defecto específico, aceptar el cambio para integración o detenerlo por una duda de negocio. Si no tiene tiempo de inspeccionar, la solución no es fingir que aprobó; es reducir el lote o posponerlo. Esta es la diferencia práctica entre presencia humana y control humano significativo. La aprobación registrada debe indicar qué se acepta, sin extenderse implícitamente a producción.`,
+      notes: `Este es el final de la línea, no un juicio final. El cambio entra al conjunto con tres cosas: el diff completo, la evidencia de las pruebas ejecutadas y un plan de vuelta atrás que distingue código de efectos externos. Solo aquí aparece una decisión humana explícita, y se toma una vez: aceptar el lote para integrarlo o devolver un defecto concreto. Describirla una sola vez evita convertir la presentación en un curso de aprobaciones. Si el lote se entiende en minutos, la decisión es real; si nadie puede leerlo, se reduce el lote. La vuelta atrás incluye qué se restaura y qué no: revertir código no cancela una devolución ya enviada.`,
     },
     {
       id: 'factory-40', title: 'Integrar no es desplegar', kind: 'flow',

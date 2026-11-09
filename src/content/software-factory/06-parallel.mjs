@@ -7,7 +7,7 @@ export default {
       items: [
         { label: 'Independiente', detail: 'Un worker prepara documentación; otro implementa una función con contrato ya fijado.' },
         { label: 'Dependiente', detail: 'Dos workers cambian la misma respuesta pública con supuestos diferentes.' },
-        { label: 'Decisión', detail: 'Estabiliza interfaces antes de repartir; serializa cuando las fronteras no estén claras.' },
+        { label: 'Frontera', detail: 'Estabiliza interfaces antes de repartir; serializa si las fronteras no están claras.' },
       ],
       notes: `Compara dos cocineros preparando platos distintos con dos personas corrigiendo simultáneamente la misma receta. El primer reparto puede funcionar; el segundo exige coordinación constante. En software las dependencias no siempre coinciden con archivos: dos módulos separados pueden compartir un contrato que está cambiando. Antes de lanzar workers, identifica qué entrada y salida necesita cada uno y qué decisión puede avanzar sin esperar al otro. Una buena opción en el taller es preparar la guía de uso mientras se implementa una interfaz ya acordada. Si todavía discutimos qué significa refundCents, primero resolvemos eso juntos. Hacer trabajo secuencial en una frontera inestable puede ser la opción más rápida y comprensible.`,
     },
@@ -42,12 +42,12 @@ git worktree add ../practice-docs -b practice/docs
       items: [
         { label: 'Worker A', detail: 'Implementa src/cancellation.mjs con la spec estable y pruebas acordadas.' },
         { label: 'Worker B', detail: 'Redacta ejemplos de uso en documentación sin cambiar el contrato.' },
-        { label: 'Coordinación humana', detail: 'Resuelve dudas compartidas y revisa que nadie invada la superficie del otro.' },
+        { label: 'Coordinación', detail: 'Resuelve dudas compartidas y revisa que nadie invada la superficie del otro.' },
       ],
-      notes: `Muestra dos carriles con una frontera clara. A implementa la función; B puede explicar cómo invocarla usando el contrato existente. No asignes a B la aprobación automática del trabajo de A si quieres una revisión crítica: documentación y revisión tienen objetivos diferentes. Cada tarea necesita además una salida reconocible, como un archivo y una comprobación, y una parada si descubre un conflicto. El coordinador no debe convertirse en una cola infinita de preguntas triviales, pero sí resolver los cambios de contrato y alcance. Si los workers piden continuamente tocar los mismos archivos, la división probablemente no es independiente y conviene volver a una secuencia más pequeña.`,
+      notes: `Muestra dos carriles con una frontera clara. A implementa la función; B puede explicar cómo invocarla usando el contrato existente. No asignes a B la revisión automática del trabajo de A si quieres una mirada crítica: documentación y revisión tienen objetivos diferentes. Cada tarea necesita además una salida reconocible, como un archivo y una comprobación, y una parada si descubre un conflicto. La coordinación no debe convertirse en una cola infinita de preguntas triviales, pero sí resolver los cambios de contrato y alcance. Si los workers piden continuamente tocar los mismos archivos, la división probablemente no es independiente y conviene volver a una secuencia más pequeña.`,
     },
     {
-      id: 'factory-45', title: 'La integración es otra estación', kind: 'gate',
+      id: 'factory-45', title: 'La integración es otra estación', kind: 'flow',
       lead: 'Dos ramas verdes pueden formar un conjunto incorrecto.',
       items: [
         { label: 'Antes de unir', detail: 'Revisa contrato, cambios ajenos y evidencia de cada tarea.' },
@@ -57,14 +57,14 @@ git worktree add ../practice-docs -b practice/docs
       notes: `Una prueba aislada puede pasar porque usa una copia antigua del contrato. Al juntar documentación y código, un ejemplo podría invocar now en vez de nowUTC, o asumir que siempre existe un evento. Son incompatibilidades semánticas aunque Git no marque conflictos. Por eso la integración tiene una comprobación propia y no consiste solo en fusionar texto. Pide revisar un ejemplo completo contra la función pública y confirmar que el resultado esperado se deriva de la política acordada. Si algo falla, localiza si cambió la interfaz, la explicación o la implementación. El objetivo no es conseguir otro verde a cualquier precio, sino recuperar un conjunto que enseñe y haga lo mismo.`,
     },
     {
-      id: 'factory-46', title: 'El cuello de botella puede ser revisar', kind: 'risk',
-      lead: 'La capacidad humana de inspección limita el trabajo que conviene generar.',
+      id: 'factory-46', title: 'Revisar también es una estación', kind: 'risk',
+      lead: 'La capacidad de inspección marca el ritmo que conviene generar.',
       items: [
         { label: 'Cola', detail: 'Más propuestas simultáneas aumentan el material pendiente de entender.' },
         { label: 'Presupuesto de revisión', detail: 'Limita trabajo en curso y tamaño del lote según atención disponible.' },
-        { label: 'Señal', detail: 'Si aumenta el tiempo hasta aceptar un cambio, añadir workers puede empeorar el flujo.' },
+        { label: 'Señal', detail: 'Si aumenta el tiempo hasta integrar un cambio, añadir workers empeora el flujo.' },
       ],
-      notes: `Dibuja varios carriles llegando a una sola puerta. Aunque producir propuestas sea barato, alguien tiene que contrastarlas con requisitos y riesgos. Si esa persona dispone de media hora, generar diez cambios grandes no crea diez revisiones de calidad. Puede crear presión para aprobar sin mirar, justo el fallo que queríamos evitar. Establece un presupuesto de revisión y limita el trabajo en curso. No damos una cifra universal de agentes por persona: depende de complejidad, herramientas y consecuencias. Observa el tiempo desde la propuesta hasta la aceptación y la cantidad de retrabajo. La velocidad del generador es una métrica parcial que puede ocultar una cola cada vez más costosa.`,
+      notes: `Dibuja varios carriles llegando a una sola puerta. Aunque producir propuestas sea barato, alguien tiene que contrastarlas con requisitos y riesgos. Si esa persona dispone de media hora, generar diez cambios grandes no crea diez revisiones de calidad. Puede crear presión para integrar sin mirar, justo el fallo que queríamos evitar. Establece un presupuesto de revisión y limita el trabajo en curso. No damos una cifra universal de agentes por persona: depende de complejidad, herramientas y consecuencias. Observa el tiempo desde la propuesta hasta la integración y la cantidad de retrabajo. La velocidad del generador es una métrica parcial que puede ocultar una cola cada vez más costosa.`,
     },
     {
       id: 'factory-47', title: 'Cancelar una tarea también es progreso', kind: 'flow',
