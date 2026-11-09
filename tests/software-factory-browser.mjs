@@ -187,8 +187,10 @@ try {
         check(result.errors.length === 0, `${mode}/#${number}: text bounds + panel separation ${JSON.stringify(result.errors)}`);
         check(JSON.stringify(initial.steps) === JSON.stringify(result.steps), `${mode}/#${number}: reserved step geometry`);
         check(await evaluate("document.querySelectorAll('.slide:not([hidden])').length===1 && [...document.querySelectorAll('.slide[hidden]')].every(s=>s.inert)"), `${mode}/#${number}: single active stage + inert siblings`);
-        // Hero, wash openers, flow, both exercises, table, loop, files, gate, parallel, circle, closing.
-        if ([1, 3, 7, 9, 10, 12, 13, 14, 17, 21, 22, 23, 25, 26, 28, 29, 30, 32].includes(number)) await capture(`slide-${number}-${mode}.png`);
+        // Hero, definition, business why, ordinary day, wash opener, work order, gates, loop,
+        // files, decision, incident, files/kit, last story slide, boundaries, gate, worktree,
+        // circle and closing. S9 slides carry their own identifiers so they can be inspected.
+        if ([1, 2, 5, 8, 9, 10, 13, 15, 16, 17, 18, 23, 24, 25, 28, 30, 31, 32, 34].includes(number)) await capture(`slide-${number}-${mode}.png`);
         check(await evaluate("location.hash==='#"+number+"' && [...document.querySelectorAll('.slide.active img')].every(img=>img.complete&&img.naturalWidth>0)"), `${mode}/#${number}: plate files resolve`);
       }
     } else if (selector.endsWith('interaction')) {

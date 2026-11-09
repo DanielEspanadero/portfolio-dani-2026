@@ -23,6 +23,9 @@ h1, h2, h3, p { margin: 0; }
 .eyebrow { font: 23px 'JetBrains Mono', monospace; color: #b3ced4; letter-spacing: 1px; margin-bottom: 30px; }
 h1, .slide h2 { font-size: 88px; font-weight: 650; line-height: 1.04; letter-spacing: -3px; max-width: 1630px; }
 .lead { font-size: 36px; line-height: 1.3; margin-top: 28px; color: #c4d7da; max-width: 1580px; }
+/* === PLAIN ANNOTATION: one jargon-free sentence of help, never stage filler === */
+.plain { font-family: 'Instrument Sans', sans-serif; font-size: 29px; line-height: 1.32; margin-top: 14px; padding-left: 20px; border-left: 4px solid #6e919b; color: #a9c3c9; max-width: 1400px; }
+.slide-heading:has(.plain) .lead { margin-top: 16px; }
 .composition { position: absolute; left: 120px; right: 120px; top: 430px; height: 480px; }
 
 /* === PLATES: approved artwork keeps its frame and box even when a file is missing === */
@@ -36,8 +39,10 @@ h1, .slide h2 { font-size: 88px; font-weight: 650; line-height: 1.04; letter-spa
 .plate-wash img { width: 100%; height: 100%; aspect-ratio: auto; object-fit: cover; border: 0; opacity: .22; filter: saturate(.85); }
 .plate-wash .plate-frame, .plate-wash .plate-caption { display: none; }
 .plate-wash::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(16, 23, 25, .45) 0%, rgba(16, 23, 25, .62) 60%, rgba(16, 23, 25, .5) 100%); }
-.slide-footer { position: absolute; left: 120px; right: 120px; bottom: 60px; border-top: 1px solid #718d94; padding-top: 22px; display: flex; justify-content: space-between; font-size: 24px; }
-.slide-footer span:last-child { font-family: 'JetBrains Mono'; color: var(--amber); font-size: 22px; }
+.slide-footer { position: absolute; left: 120px; right: 120px; bottom: 60px; border-top: 1px solid #718d94; padding-top: 22px; display: flex; align-items: baseline; justify-content: space-between; gap: 24px; font-size: 24px; }
+/* The running case sits quiet and centred: a band, not a second headline. */
+.footer-story { font: 21px 'JetBrains Mono', monospace; color: #a9c3c9; letter-spacing: .04em; padding: 0 22px; border-left: 1px solid #557077; border-right: 1px solid #557077; }
+.footer-page { font-family: 'JetBrains Mono'; color: var(--amber); font-size: 22px; }
 .panel { min-width: 0; }
 .station h3, .integration h3 { font-size: 32px; line-height: 1.15; font-weight: 600; margin-bottom: 20px; overflow-wrap: anywhere; }
 .station p, .integration p { font-size: 29px; line-height: 1.35; overflow-wrap: anywhere; }
@@ -46,8 +51,10 @@ h1, .slide h2 { font-size: 88px; font-weight: 650; line-height: 1.04; letter-spa
 .step-pending { opacity: .13; visibility: hidden; pointer-events: none; }
 
 /* === HERO / CLOSING: oversized editorial statement, assembly rail === */
-.kind-hero h1 { font-size: 132px; max-width: 1380px; text-transform: uppercase; color: var(--paper); line-height: .96; letter-spacing: -5px; }
-.kind-hero .lead { font-family: 'Instrument Serif'; font-size: 48px; color: var(--amber); }
+.kind-hero h1 { font-size: 96px; max-width: 1380px; text-transform: uppercase; color: var(--paper); line-height: .98; letter-spacing: -4px; }
+/* Spanish concept first, English industry term as the alias line right under it. */
+.hero-alias { font: 22px 'JetBrains Mono', monospace; color: var(--cyan); letter-spacing: .18em; text-transform: uppercase; margin-top: 20px; }
+.kind-hero .lead { font-family: 'Instrument Serif'; font-size: 42px; color: var(--amber); margin-top: 22px; }
 .kind-hero .composition { top: 535px; height: 365px; }
 .hero-route { position: absolute; top: -20px; width: 100%; height: 40px; }
 .hero-line { display: grid; grid-template-columns: repeat(3, 1fr); gap: 65px; padding-top: 45px; }
@@ -64,11 +71,25 @@ h1, .slide h2 { font-size: 88px; font-weight: 650; line-height: 1.04; letter-spa
 .kind-closing.has-plate .closing { grid-template-columns: 1fr 1fr; gap: 40px 64px; padding-right: 610px; }
 .kind-closing .plate { right: 0; top: 0; width: 520px; }
 
+/* === QUOTE: one oversized sentence with three short keys, no column of chips === */
+.kind-quote .composition { top: 372px; height: 568px; }
+.quote { display: grid; gap: 32px; align-content: start; }
+.quote-statement { font-family: 'Instrument Serif'; font-size: 48px; line-height: 1.18; color: var(--paper); }
+.quote-keys { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 54px; }
+.quote-key { border-top: 2px solid var(--cyan); padding-top: 18px; }
+.quote-key h3 { font-size: 30px; line-height: 1.15; margin-bottom: 10px; color: var(--amber); min-height: 2.3em; }
+.quote-key p { font-size: 28px; line-height: 1.3; color: #d4e2e1; }
+
 /* === TIMELINE: milestones on one continuous horizontal axis === */
 .timeline { display: grid; grid-template-columns: repeat(var(--count), 1fr); gap: 50px; padding-top: 58px; border-top: 3px solid var(--cyan); }
 .timeline .station { position: relative; }
 .timeline .station::before { content: ''; position: absolute; width: 22px; height: 22px; background: var(--amber); border: 5px solid #172127; outline: 2px solid var(--amber); top: -71px; left: 0; }
 .timeline h3 { color: var(--amber); }
+.timeline[style*="--count:5"] { gap: 34px; }
+.timeline[style*="--count:5"] h3 { font-size: 29px; }
+.timeline[style*="--count:5"] p { font-size: 28px; }
+/* Five stops: the clock labels wrap, so the detail starts on the same line everywhere. */
+.timeline[style*="--count:5"] h3 { min-height: 2.3em; }
 
 /* === COMPARISON: open columns, not nested card grids === */
 .comparison { display: grid; grid-template-columns: repeat(var(--count), 1fr); gap: 55px; }

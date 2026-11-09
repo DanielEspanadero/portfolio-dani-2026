@@ -14,8 +14,10 @@ const kit = ['README.md', 'AGENTS.md', 'specs/cancel-booking.md', 'factory/worke
   'factory/reviewer.md', 'factory/handoff.md', 'src/cancellation.mjs', 'tests/cancellation.test.mjs'];
 // State files follow the kit layout; the slide items annotate each row.
 const stateFiles = ['backlog.md', 'specs/*.md', 'board.md', '*.md'];
-// Thin connectors draw in sequence on these three slides (fan-out feel).
-const fanout = new Set(['factory-09', 'factory-13', 'factory-29']);
+// Thin connectors draw in sequence on these three slides (fan-out feel). Ids, not positions:
+// station specialisation, the loop, and the worktree lanes. Renumbering the deck must not
+// move the draw-in animation onto unrelated slides.
+const fanout = new Set(['factory-11', 'factory-15', 'factory-31']);
 const chapterOf = slide => chapters.find(chapter => chapter.slides.includes(slide));
 const stepped = slide => slide.steps || ['flow', 'loop', 'gate', 'parallel', 'circle'].includes(slide.kind);
 
@@ -124,6 +126,10 @@ function composition(slide) {
     case 'table':
       return `<table class="boundary-table" data-rows="${slide.items.length}"><caption class="sr-only">${e(slide.title)}</caption><thead><tr><th scope="col">Entrada / criterio</th><th scope="col">Resultado / significado</th></tr></thead>
         <tbody>${slide.items.map(entry => `<tr class="panel"><th scope="row">${e(entry.label)}</th><td>${e(entry.detail)}</td></tr>`).join('')}</tbody></table>`;
+    case 'quote':
+      // The definition is one oversized sentence plus three short keys: no numbered chips.
+      return `<div class="quote"><p class="quote-statement">${e(slide.quote || '')}</p>
+        <ul class="quote-keys">${slide.items.map(entry => `<li class="panel quote-key"><h3>${e(entry.label)}</h3><p>${e(entry.detail)}</p></li>`).join('')}</ul></div>`;
     case 'parallel':
       return `<div class="parallel main-panels${hasFanout}"><div class="lanes">${items}</div><aside class="integration panel"><h3>Integración compartida</h3><p>Contrato + pruebas del conjunto.</p><strong>Cierra el lote antes de operar</strong></aside></div>`;
     case 'exercise':
@@ -139,12 +145,15 @@ function renderSlide(slide, index) {
   const chapter = chapterOf(slide);
   const heading = index === 0 ? 'h1' : 'h2';
   const classes = ['slide', `kind-${slide.kind}`, ...(slide.figure ? ['has-plate'] : [])];
+  // The hero states the English term as its own alias line, so the running header carries
+  // only the Spanish chapter context: the audience reads the concept first, the term second.
+  const eyebrow = index === 0 ? e(chapter.title) : `AI SOFTWARE FACTORY / ${e(chapter.title)}`;
   return `<section class="${classes.join(' ')}" data-slide="${index + 1}" data-kind="${e(slide.kind)}" id="${e(slide.id)}" data-title="${e(slide.title)}" data-chapter="${e(chapter.title)}" aria-labelledby="title-${e(slide.id)}">
     ${slide.figure?.mode === 'wash' ? plate(slide) : ''}<div class="registration" aria-hidden="true"></div>
-    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / ${e(chapter.title)}</p>
-    <${heading} id="title-${e(slide.id)}">${e(slide.title)}</${heading}><p class="lead">${e(slide.lead)}</p></header>
+    <header class="slide-heading"><p class="eyebrow">${eyebrow}</p>
+    <${heading} id="title-${e(slide.id)}">${e(slide.title)}</${heading}>${slide.alias ? `<p class="hero-alias">${e(slide.alias)}</p>` : ''}<p class="lead">${e(slide.lead)}</p>${slide.plain ? `<p class="plain">${e(slide.plain)}</p>` : ''}</header>
     <div class="composition">${composition(slide)}${slide.figure && slide.figure.mode !== 'wash' ? plate(slide) : ''}</div>
-    <footer class="slide-footer"><span>Daniel Españadero</span><span>${pad(index + 1)} / ${pad(total)}</span></footer>
+    <footer class="slide-footer"><span class="footer-author">Daniel Españadero</span>${slide.story ? `<span class="footer-story">${e(slide.story)}</span>` : ''}<span class="footer-page">${pad(index + 1)} / ${pad(total)}</span></footer>
   </section>`;
 }
 
@@ -159,8 +168,8 @@ function sources(slide) {
 export function renderPresentation({ css, controller, offline = false }) {
   const html = shell({
     slides: slides.map(renderSlide).join('\n'), css, controller, offline,
-    canonical: `${origin}${route}`, title: 'AI Software Factory: qué es y cómo construir una | Daniel Españadero',
-    description: `${total} diapositivas: historia, estaciones de trabajo, agentes, riesgos, desarrollo paralelo y taller local para crear tu propia fábrica de software con IA.`,
+    canonical: `${origin}${route}`, title: 'Fábrica de software con IA (AI Software Factory): qué es y cómo construir una | Daniel Españadero',
+    description: `Fábrica de software con IA (AI Software Factory) en ${total} diapositivas: definición en lenguaje llano, historia, estaciones de trabajo, agentes, riesgos, desarrollo paralelo y taller local para crear la tuya.`,
     chapterDefault: chapters[0].title,
   });
   return html;
@@ -168,7 +177,7 @@ export function renderPresentation({ css, controller, offline = false }) {
 
 /** The reading view deliberately has its own responsive, printable document. */
 export function renderGuide({ css = '' } = {}) {
-  const title = 'Guía de AI Software Factory y kit práctico | Daniel Españadero';
+  const title = 'Guía de fábrica de software con IA (AI Software Factory) y kit práctico | Daniel Españadero';
   const description = `Notas completas de las ${total} diapositivas sobre fábricas de software con IA, fuentes y kit local sin proveedor para practicar contratos y pruebas.`;
   const canonical = `${origin}${route}/guia`;
   return `<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
@@ -176,7 +185,7 @@ export function renderGuide({ css = '' } = {}) {
     <meta property="og:title" content="${title}"><meta property="og:description" content="${description}"><meta property="og:url" content="${canonical}"><meta property="og:type" content="article">
     <meta property="og:image" content="${origin}/og/default-og-image.png"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="${title}"><meta name="twitter:description" content="${description}"><meta name="twitter:image" content="${origin}/og/default-og-image.png">
     <style>${css}</style></head><body class="guide"><main><a href="${route}">← Abrir presentación</a>
-    <h1>AI Software Factory: guía para enseñar y practicar</h1><p>Notas completas de las ${total} diapositivas, fuentes y un kit local para repetir el ejemplo. El ejercicio es didáctico: no es una aplicación de reservas lista para producción.</p>
+    <h1>Fábrica de software con IA: guía para enseñar y practicar (AI Software Factory)</h1><p>Notas completas de las ${total} diapositivas, fuentes y un kit local para repetir el ejemplo. El ejercicio es didáctico: no es una aplicación de reservas lista para producción.</p>
     <section aria-labelledby="kit-title"><h2 id="kit-title">Kit local, sin proveedor</h2><p>Node ≥22, sin instalar dependencias ni usar credenciales. Descarga el ZIP y extrae la carpeta; lee README.md. Desde su raíz: <code>node --test tests/cancellation.test.mjs</code>.</p>
     <p><a download href="/resources/software-factory-kit.zip">Descargar kit completo ZIP</a> · <a download href="${route}/descargar.html">Presentación HTML sin conexión</a></p>
     <p>El HTML incluye fuentes, estilos y diagramas; las ilustraciones y las notas se leen en esta guía, con conexión. Alternativa sin red: guarda estos ocho archivos conservando las carpetas:</p>
@@ -185,7 +194,7 @@ export function renderGuide({ css = '' } = {}) {
     <nav aria-label="Capítulos"><h2>Recorrido</h2><ol>${chapters.map(ch => `<li><a href="#${ch.id}">${e(ch.title)}</a></li>`).join('')}</ol></nav>
     ${chapters.map(ch => `<section id="${ch.id}"><h2 class="chapter-title">${e(ch.title)}</h2>${ch.slides.map(slide => {
       const index = slides.indexOf(slide);
-      return `<article id="${e(slide.id)}"><h3><a href="${route}#${index + 1}">${index + 1}. ${e(slide.title)}</a></h3><p class="guide-lead">${e(slide.lead)}</p><ul>${slide.items.map(entry => `<li><strong>${e(entry.label)}:</strong> ${e(entry.detail)}</li>`).join('')}</ul>
+      return `<article id="${e(slide.id)}"><h3><a href="${route}#${index + 1}">${index + 1}. ${e(slide.title)}</a></h3><p class="guide-lead">${e(slide.lead)}</p>${slide.quote ? `<p><strong>${e(slide.quote)}</strong></p>` : ''}<ul>${slide.items.map(entry => `<li><strong>${e(entry.label)}:</strong> ${e(entry.detail)}</li>`).join('')}</ul>
       ${slide.code ? `<pre><code>${e(slide.code)}</code></pre>` : ''}<p>${e(slide.notes)}</p>${slide.sources?.length ? `<h4>Fuentes</h4><ul>${sources(slide)}</ul>` : ''}</article>`;
     }).join('')}</section>`).join('')}</main></body></html>`;
 }

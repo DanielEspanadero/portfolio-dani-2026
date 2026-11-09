@@ -2,7 +2,7 @@ export default {
   id: 'closing', title: 'Cerrar el círculo',
   slides: [
     {
-      id: 'factory-30', title: 'Del despliegue a la siguiente orden', kind: 'circle',
+      id: 'factory-32', title: 'Del despliegue a la siguiente orden', kind: 'circle',
       lead: 'Una alerta en producción es una orden de trabajo nueva, no el final del proceso.',
       figure: { src: '08-circulo.png', mode: 'feature', alt: 'Círculo de flechas que conecta una fábrica, un nodo de telemetría y un nodo de órdenes; el arco de retorno es discontinuo.' },
       items: [
@@ -14,7 +14,8 @@ export default {
       notes: `El despliegue no cierra el proceso: lo reabre. La telemetría y las alertas dicen qué está pasando con usuarios reales; una incidencia concreta se convierte en una orden de trabajo nueva, con spec, criterios y reproducción. Un fallo en producción es información de entrada, no una derrota. La misma fábrica prepara y verifica la vuelta atrás: revertir el código, comprobar el conjunto y decidir qué efectos externos quedan pendientes. Ese ida y vuelta es lo que distingue una línea de una demo. Si el equipo solo sabe desplegar y no sabe volver, la fábrica produce riesgo. Si sabe volver y además convierte el incidente en una prueba permanente, aprende. Las estaciones no se jubilan al publicar.`,
     },
     {
-      id: 'factory-31', title: 'Medir coste, calidad y ciclo', kind: 'table',
+      id: 'factory-33', title: 'Medir coste, calidad y ciclo', kind: 'table',
+      plain: 'Una entrega barata que obliga a rehacer es más cara que una entrega lenta.',
       lead: 'El coste es una palanca de diseño: se compara con el ciclo y los defectos escapados.',
       items: [
         { label: 'Coste por funcionalidad', detail: 'Tokens, contexto compartido y reintentos de ese lote concreto.' },
@@ -25,7 +26,7 @@ export default {
       notes: `El coste es una palanca de diseño, no solo un límite. Los subagentes intercambian contexto y ese intercambio cuesta tokens: cada estación añade una factura pequeña que se acumula. Para comparar dos formas de trabajar, mira tres cosas juntas: coste por funcionalidad, tiempo de ciclo y defectos escapados. Un lote barato que provoca retrabajo sale caro; un lote caro que evita un incidente puede ser la mejor compra. No damos cifras ni porcentajes: dependen del modelo, del repositorio y del equipo, y aquí no hemos medido nada. Registra una línea base manual antes de afirmar que existe ahorro. La decisión razonable es elegir modelo, paralelismo y presupuesto según esa comparación.`,
     },
     {
-      id: 'factory-32', title: 'Cierre y checklist de arranque', kind: 'closing',
+      id: 'factory-34', title: 'Cierre y checklist de arranque', kind: 'closing',
       lead: 'Definir, construir, verificar, integrar y medir: eso es una fábrica de software con IA.',
       figure: { src: '01-planta.png', mode: 'feature', alt: 'Plano isométrico de línea fina: tres módulos de producción unidos por una cinta, con una bandeja ámbar de inspección al costado.' },
       items: [

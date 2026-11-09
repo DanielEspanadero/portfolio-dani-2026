@@ -2,7 +2,9 @@ export default {
   id: 'loop', title: 'El bucle y su estado',
   slides: [
     {
-      id: 'factory-13', title: 'El bucle completo', kind: 'loop',
+      id: 'factory-15', title: 'El bucle completo', kind: 'loop',
+      story: 'Caso del taller: cancelar una reserva',
+      plain: 'La máquina repite a lo sumo unas vueltas y luego entrega lo que tiene.',
       lead: 'Un agente escribe la spec, otro construye, revisores independientes juzgan y alguien decide.',
       items: [
         { label: 'Spec writer', detail: 'Convierte la petición en contrato observable con casos frontera.' },
@@ -14,7 +16,9 @@ export default {
       notes: `Este es el corazón que faltaba: el bucle no son cuatro cajas, es una máquina con presupuesto. El agente de spec escribe el contrato; el constructor implementa en una superficie acotada; dos o tres revisores reciben el contrato y el cambio, no el relato del constructor, y buscan contradicciones por separado; la decisión fusiona, devuelve con un defecto concreto o escala. El tope de reintentos es parte del diseño: tres vueltas, por ejemplo, y al agotarse el lote sale con evidencia para que alguien decida. Compartir el mismo modelo y el mismo resumen no garantiza una revisión independiente; el contraste con la regla escrita y un cálculo manual sí ayuda. Dibuja también la salida: un bucle sin salida ocupa la línea sin entregar piezas.`,
     },
     {
-      id: 'factory-14', title: 'El estado vive en archivos', kind: 'files',
+      id: 'factory-16', title: 'El estado vive en archivos', kind: 'files',
+      story: 'Caso del taller: cancelar una reserva',
+      plain: 'Lo que se decide queda escrito en archivos que cualquiera puede leer mañana.',
       lead: 'Backlog, una spec por trabajo y un registro de estado: markdown que una persona puede leer.',
       items: [
         { label: 'Backlog', detail: 'Lista ordenada de trabajo pendiente con prioridad y tamaño aproximado.' },
@@ -25,7 +29,9 @@ export default {
       notes: `Una fábrica necesita memoria que no viva en un chat. El backlog es una lista ordenada de trabajo pendiente, con prioridad y tamaño aproximado. Cada orden tiene su propia spec en un archivo: el contrato se lee sin recuperar una conversación privada. Un registro de estado, como un tablero, dice en qué fase está cada orden, quién la tiene y cuál es la siguiente acción. Todo en markdown versionado, que se lee, se compara y se revisa con las mismas herramientas que el código. Eso permite reconstruir por qué se decidió algo y qué quedó pendiente. Lo que no está en un archivo se pierde al cambiar de sesión o de herramienta. Lo que está, cualquiera puede auditarlo y corregirlo.`,
     },
     {
-      id: 'factory-15', title: 'Quién decide y cuándo escalar', kind: 'table',
+      id: 'factory-17', title: 'Quién decide y cuándo escalar', kind: 'table',
+      story: 'Caso del taller: cancelar una reserva',
+      plain: 'Algunos cambios los cierra la máquina; los que no se deshacen pasan por una persona.',
       lead: 'Un agente puede fusionar lotes verdes; lo irreversible siempre escala a una persona.',
       items: [
         { label: 'Fusiona solo', detail: 'Cambio dentro de la spec, compuertas verdes y superficie autorizada.' },
@@ -37,7 +43,9 @@ export default {
       notes: `Un agente puede decidir sin pedir permiso cuando el cambio está dentro de la spec, las compuertas están verdes y la superficie era la autorizada: eso es fusionar. Fuera de ahí, escala a una persona. Las reglas de escalado son explícitas: pagos y precios, accesos y credenciales, invalidación de caché, migraciones y borrados, y cualquier efecto que no se pueda deshacer. El aprobador no juzga estética; comprueba que la decisión cae en la zona permitida y que existe evidencia. Hay un tope de reintentos: cuando se agota, no se abre otro bucle, se entrega el fallo con lo observado. Ese límite evita que una duda se convierta en gasto silencioso. Y el registro de la decisión queda escrito, con motivo, para la siguiente persona.`,
     },
     {
-      id: 'factory-16', title: 'Política de modelos y esfuerzo', kind: 'comparison',
+      id: 'factory-18', title: 'Política de modelos y esfuerzo', kind: 'comparison',
+      story: 'Caso del taller: cancelar una reserva',
+      plain: 'Pagar por el cerebro más capaz para el plan; usar los rápidos para tareas pequeñas.',
       lead: 'El modelo caro orquesta; los subagentes baratos ejecutan; el mejor modelo mejora la fábrica.',
       items: [
         { label: 'Orquestador', detail: 'Un modelo capaz planifica, escribe contratos y resuelve ambigüedad.' },

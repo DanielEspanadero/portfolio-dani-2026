@@ -20,10 +20,13 @@ const sources = [
 ];
 
 // Structural guarantees complement, not replace, editorial and later visual review.
-test('32 diapositivas, siete capítulos ordenados y composición variada', () => {
+test('34 diapositivas, siete capítulos ordenados y composición variada', () => {
   assert.equal(chapters.length, 7);
-  assert.ok(slides.length >= 30 && slides.length <= 32, String(slides.length));
-  assert.deepEqual(chapters.map(c => c.slides.length), [6, 6, 4, 5, 4, 4, 3]);
+  // S9 added the plain-language definition, the ordinary day in the factory and the
+  // problem/not slide, and paid for them by merging the two 1968 history slides into one.
+  // The S8 ceiling of 32 was a compression target, not a limit on the accepted plan.
+  assert.equal(slides.length, 34);
+  assert.deepEqual(chapters.map(c => c.slides.length), [7, 7, 4, 5, 4, 4, 3]);
   assert.deepEqual(chapters.map(c => c.id), ['foundations', 'line', 'loop', 'risks', 'build', 'parallel', 'closing']);
   assert.equal(new Set(chapters.map(c => c.id)).size, 7);
   assert.equal(new Set(slides.map(s => s.id)).size, slides.length);
@@ -33,7 +36,9 @@ test('32 diapositivas, siete capítulos ordenados y composición variada', () =>
   assert.equal(slides[0].kind, 'hero');
   assert.equal(slides.filter(s => s.kind === 'closing').length, 1);
   assert.equal(slides.at(-1).kind, 'closing');
-  assert.equal(new Set(slides.map(s => s.kind)).size, 15);
+  assert.equal(new Set(slides.map(s => s.kind)).size, 16);
+  // `quote` leaves the unused-kinds list: the definition of S9 is exactly one oversized sentence.
+  assert.equal(slides.filter(s => s.kind === 'quote').length, 1);
   assert.ok(slides.filter(s => s.pause).length >= 1 && slides.filter(s => s.pause).length <= 2);
   // Una sola composición de compuerta: la integración no vuelve a ser el tema del deck.
   assert.equal(slides.filter(s => s.kind === 'gate').length, 1);
@@ -56,6 +61,11 @@ test('contrato de datos, densidad escénica y notas entre 90 y 150 palabras', ()
     if (s.code !== undefined) check(typeof s.code === 'string' && s.code.split('\n').length <= 12, 'code lines');
     if (s.steps !== undefined) check(typeof s.steps === 'boolean', 'steps');
     if (s.pause !== undefined) check(typeof s.pause === 'boolean', 'pause');
+    // S9 annotations: one plain sentence, one running-case label, one English alias.
+    if (s.plain !== undefined) check(typeof s.plain === 'string' && words(s.plain) <= 18, `plain=${words(s.plain ?? '')}`);
+    if (s.story !== undefined) check(typeof s.story === 'string' && words(s.story) <= 6, `story=${s.story}`);
+    if (s.alias !== undefined) check(typeof s.alias === 'string' && words(s.alias) <= 4, `alias=${s.alias}`);
+    if (s.quote !== undefined) check(typeof s.quote === 'string' && words(s.quote) >= 25, 'quote statement');
     if (s.sources !== undefined) {
       check(Array.isArray(s.sources), 'sources array');
       for (const source of s.sources) check(sources.includes(source), `source no acordada: ${source}`);
@@ -123,6 +133,112 @@ test('temario requerido: la fábrica como sistema de producción y su bucle', ()
   assert.match(all, /subagente/i);
 });
 
+test('la definición en lenguaje llano abre el deck, antes de cualquier detalle', () => {
+  const definition = slides[1];
+  assert.equal(definition.id, 'factory-02');
+  assert.equal(definition.kind, 'quote');
+  assert.equal(slides[0].kind, 'hero');
+  // La definición va antes de la diapositiva que desmiente el producto milagro.
+  assert.match(slides[2].title, /no es un producto/i);
+  const statement = definition.quote;
+  const all = `${definition.title} ${definition.lead} ${statement} ${definition.items.map(i => `${i.label} ${i.detail}`).join(' ')}`;
+  // El significado acordado: sistema repetible, orden comprobable, equipo de agentes, compuertas y una persona que decide.
+  assert.match(statement, /sistema de trabajo repetible/i);
+  assert.match(statement, /criterios (?:que se pueden )?comprobables/i);
+  assert.match(statement, /agentes/i);
+  assert.match(statement, /construye/i);
+  assert.match(statement, /prueba/i);
+  assert.match(statement, /comprobaciones pasan/i);
+  assert.match(statement, /persona/i);
+  assert.match(statement, /decide/i);
+  // Legible sin contexto técnico: si el término es inevitable, va glosado en la misma frase.
+  assert.doesNotMatch(statement, /handoff|worktree|compuerta|\bspec\b|backlog|pull request|\bmerge\b|\bdiff\b|\btoken\b|\blote\b|\bCI\b|runner/i);
+  assert.match(statement, /programas de IA|\([^)]*IA[^)]*\)/i);
+  // Tres claves cortas: misma entrada misma salida, máquina donde puede, registro de todo.
+  assert.equal(definition.items.length, 3);
+  assert.match(all, /mismo resultado|misma entrada/i);
+  assert.match(all, /persona|m[aá]quina.[^.]*decid/i);
+  assert.match(all, /registro|queda escrito/i);
+});
+
+test('un día normal en la fábrica: cinco paradas con hora y detalle llano', () => {
+  const day = slides.find(s => /un d[ií]a en la f[aá]brica/i.test(s.title));
+  assert.ok(day, 'diapositiva ausente');
+  assert.equal(day.kind, 'timeline');
+  assert.equal(day.items.length, 5);
+  const all = `${day.lead} ${day.items.map(i => `${i.label} ${i.detail}`).join(' ')}`;
+  // Mundana, no mágica: entra la orden, se escribe la spec, se construye, se revisa y se decide.
+  assert.match(all, /martes|normal|rutina/i);
+  for (const stop of [/entra la orden/i, /spec|se escribe/i, /constru/i, /revisi[oó]n/i, /decisi[oó]n/i]) assert.match(all, stop);
+  for (const entry of day.items) assert.match(entry.label, /\b\d\d:\d\d\b/);
+  // Cinco horas de reloj distintas y en orden ascendente: es un día, no un diagrama abstracto.
+  const clocks = day.items.map(entry => entry.label.match(/\d\d:\d\d/)[0]);
+  assert.deepEqual(clocks, [...clocks].sort());
+  assert.equal(new Set(clocks).size, 5);
+  assert.doesNotMatch(all, /handoff|worktree|atribuci[oó]n de lote|\btoken\b/i);
+});
+
+test('qué problema resuelve y qué no, en lenguaje de negocio', () => {
+  const business = slides.find(s => /qu[eé] problema resuelve/i.test(s.title));
+  assert.ok(business, 'diapositiva ausente');
+  assert.equal(business.kind, 'comparison');
+  assert.equal(business.items.length, 3);
+  const all = business.items.map(i => `${i.label} ${i.detail}`).join(' ');
+  // Lo que mejora: espera, consistencia y conocimiento que sobrevive a las personas.
+  assert.match(all, /espera/i);
+  assert.match(all, /consistencia|consistente/i);
+  assert.match(all, /conocimiento/i);
+  assert.match(all, /personas|equipo/i);
+  // Lo que no: no decide el producto ni arregla un equipo sin criterios.
+  assert.match(all, /no decide el producto/i);
+  assert.match(all, /sin criterios/i);
+  // Sin marketing: nada de superlativos ni promesas de velocidad mágica.
+  assert.doesNotMatch(all, /revolucion|10x|milagro|garantiza|sin esfuerzo|disruptiv/i);
+  assert.match(business.items.map(i => i.label).join(' '), /mejora/i);
+  assert.match(business.items.map(i => i.label).join(' '), /no cambia/i);
+});
+
+test('la línea llana cubre la jerga mínima y no invade el resto del deck', () => {
+  const plain = slides.filter(s => s.plain);
+  assert.ok(plain.length >= 8 && plain.length <= 12, `plain=${plain.length}`);
+  // Cobertura obligatoria: orden de trabajo, estaciones, compuertas, bucle, estado,
+  // política del aprobador, política de modelos, worktree y métricas.
+  for (const id of ['factory-10', 'factory-11', 'factory-13', 'factory-15', 'factory-16',
+    'factory-17', 'factory-18', 'factory-31', 'factory-33']) {
+    assert.ok(plain.some(s => s.id === id), `falta plain en ${id}`);
+  }
+  for (const slide of plain) {
+    // Una sola frase, sin jerga sin traducir: es ayuda, no relleno.
+    assert.equal((slide.plain.match(/[.!?]/g) || []).length, 1, `${slide.id}: ${slide.plain}`);
+    assert.match(slide.plain, /\.$/, slide.id);
+    assert.doesNotMatch(slide.plain, /handoff|worktree|compuerta|\bspec\b|backlog|pull request|\bmerge\b|\bdiff\b|\btoken\b|\blote\b|runner|\bestaci[oó]n\b|\bagente\b|\bmodelo\b/i, slide.id);
+  }
+});
+
+test('el caso que corre: una sola cadena desde factory-07 hasta factory-25', () => {
+  const withStory = slides.filter(s => s.story);
+  assert.ok(withStory.length >= 10, String(withStory.length));
+  const story = withStory[0].story;
+  // Una cadena única, no variantes: la audiencia cuelga cada idea abstracta del mismo caso.
+  for (const slide of withStory) assert.equal(slide.story, story, slide.id);
+  assert.match(story, /reserva/i);
+  const first = slides.findIndex(s => s.story) + 1;
+  const last = slides.findLastIndex(s => s.story) + 1;
+  assert.equal(first, 7);
+  assert.equal(last, 25);
+  for (let index = 6; index <= 24; index += 1) assert.ok(slides[index].story, `sin story en ${slides[index].id}`);
+  // Desde factory-26 el ejemplo es el contenido: la banda desaparece.
+  for (const slide of slides.slice(25)) assert.equal(slide.story, undefined, slide.id);
+});
+
+test('portada en español con el alias inglés para la búsqueda', () => {
+  const hero = slides[0];
+  assert.equal(hero.kind, 'hero');
+  assert.equal(hero.title, 'Fábrica de software con IA');
+  assert.equal(hero.alias, 'AI Software Factory');
+  assert.ok(!/[A-Z]{2,} SOFTWARE FACTORY/.test(hero.title));
+});
+
 test('los ocho modos de fallo siguen presentes en el capítulo de riesgos', () => {
   const chapter = chapters.find(c => c.id === 'risks');
   assert.equal(chapter.slides.length, 5);
@@ -186,7 +302,9 @@ test('kit completo, sin plantillas ocultas ni resultados inventados y contrato c
   const agents = await read(kit + 'AGENTS.md');
   const worker = await read(kit + 'factory/worker.md');
   const handoff = await read(kit + 'factory/handoff.md');
-  const stageRules = slides.find(s => s.id === 'factory-26').items.map(i => `${i.label} ${i.detail}`).join(' ');
+  // S9 renumbered the deck: the boundary table is now factory-28, because the definition,
+  // the ordinary day and the problem/not slide came before it.
+  const stageRules = slides.find(s => s.id === 'factory-28').items.map(i => `${i.label} ${i.detail}`).join(' ');
   for (const text of [spec, readme, stageRules]) {
     assert.match(text, />=24h/);
     assert.match(text, /100%/);
