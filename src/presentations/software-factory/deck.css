@@ -147,6 +147,24 @@ h1, .slide h2 { font-size: 88px; font-weight: 650; line-height: 1.04; letter-spa
 .plant-map .plant-index { font-family: 'JetBrains Mono', monospace; font-size: 28px; fill: var(--cyan); letter-spacing: 2px; }
 .plant-map .plant-label { font-size: 32px; font-weight: 600; fill: var(--paper); }
 .plant-map .plant-detail { font-size: 28px; fill: #b3ced4; }
+/* The automatic gates are the third governed scene: two lanes over the same three controls,
+   so the rejection is on stage at the same time as the pass. Gate labels and details are real
+   SVG text placed by the renderer; the batches and the barriers are painted by the governed
+   scene. No rule here may shrink the type: a detail that does not fit is shortened instead. */
+.diagram.flow.gates { position: relative; }
+.gates-scene { display: block; width: 100%; height: auto; }
+.gates-scene text { stroke: none; font-family: 'Instrument Sans', sans-serif; }
+.gates-scene .gates-label { font-size: 32px; font-weight: 600; fill: var(--paper); text-anchor: middle; }
+.gates-scene .gates-detail { font-size: 28px; fill: #b3ced4; text-anchor: middle; }
+.gates-scene .gates-case { font-family: 'JetBrains Mono', monospace; font-size: 28px; letter-spacing: 1px; text-anchor: start; fill: var(--cyan); }
+.gates-scene .gates-case-b { fill: var(--amber); }
+.gates-scene .gates-verdict { font-family: 'JetBrains Mono', monospace; font-size: 28px; letter-spacing: 1px; text-anchor: start; fill: var(--paper); }
+.gates-scene .gates-verdict-b { fill: var(--amber); }
+.gates-scene .gates-rule-label { font-family: 'JetBrains Mono', monospace; font-size: 28px; letter-spacing: 1px; text-anchor: start; fill: var(--amber); }
+.gates-scene .gates-rule-text { font-size: 28px; text-anchor: start; fill: var(--paper); }
+.gates-scene .gates-rail { fill: none; stroke: #557077; stroke-width: 3; }
+.gates-scene .gates-inlet { fill: none; stroke: #4f6b73; stroke-width: 3; }
+.gates-scene .gates-rule-line { fill: none; stroke: #4f6b73; stroke-width: 2; }
 .loop-return { position: relative; z-index: 1; height: 62px; border-left: 3px solid var(--cyan); border-right: 3px solid var(--cyan); border-bottom: 3px dashed var(--cyan); }
 .loop-return::before { content: ''; position: absolute; left: -10px; top: 0; width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-bottom: 16px solid var(--cyan); }
 .return-sweep { position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: linear-gradient(90deg, transparent 0 40%, var(--amber) 50%, transparent 60% 100%); background-size: 300% 100%; animation: sweep 4.8s linear infinite; }

@@ -2,7 +2,7 @@ export default {
  id: 'line', title: 'La línea de producción',
  slides: [
  {
- id: 'factory-08', title: 'Un día en la fábrica', kind: 'timeline', illustrated: true,
+ id: 'factory-08', title: 'Un día en la fábrica', kind: 'timeline', scene: 'day',
  lead: 'Un martes normal de trabajo, con hora de entrada y de salida.',
  items: [
  { label: '09:10, Entra la orden', detail: 'Alguien escribe qué necesita y cómo se sabrá que está bien.' },
@@ -14,7 +14,7 @@ export default {
  notes: `Este es el día que nadie graba, y por eso conviene enseñarlo. Las horas son ilustrativas, no una medición. A las nueve y diez alguien escribe qué necesita y cómo sabrá que está bien; a las nueve y treinta y cinco la petición se convierte en casos comprobables. La construcción empieza a las diez y cuarto con el cambio más pequeño posible, y la revisión ocurre en paralelo, no en cadena. A las once y cuarenta la compuerta aplica la regla escrita; lo que no encaja se escala. Ninguna de esas paradas es heroica: son aburridas y por eso funcionan. Si cada tarea necesita una epopeya, el problema no es la IA, es el tamaño del encargo. Pide al público que estime cuánto de su día se parece a esto y qué parada les falta de verdad. Después recorre el mapa de planta para poner nombre a cada parada.`,
  },
  {
- id: 'factory-09', title: 'Mapa de planta', kind: 'flow', illustrated: true,
+ id: 'factory-09', title: 'Mapa de planta', kind: 'flow', scene: 'map',
  lead: 'Toda orden recorre entrada, estaciones, compuertas e integración en ese orden.',
  items: [
  { label: 'Entrada', detail: 'Spec, criterios y superficie autorizada.' },
@@ -62,17 +62,17 @@ export default {
  notes: `Una fábrica madura reutiliza lo que ya construyó. Las plantillas de spec, orden y handoff reducen la preparación y hacen comparables dos tareas. Las utilidades de validación y los datos de prueba se copian en lugar de reinventarse. Cuando aparece un defecto, se convierte en un caso permanente: la siguiente tarea hereda la lección sin depender de la memoria de alguien. Los estándares fijan nombres, unidades y definición de hecho; cambiar uno es una decisión explícita y no una excepción silenciosa que el siguiente descubrirá por sorpresa. Compara con una línea que cambia el tamaño de los tornillos a mitad de turno sin avisar. Pide un error repetido de su equipo y la prueba que lo habría detenido: ese es el activo real.`,
  },
  {
- id: 'factory-13', title: 'Compuertas automáticas', kind: 'flow',
+ id: 'factory-13', title: 'Compuertas automáticas', kind: 'flow', scene: 'gates',
  plain: 'Antes de que alguien mire el trabajo, la máquina comprueba que cumple lo acordado.',
  lead: 'Lo que no cumple el contrato se detiene antes de gastar atención.',
  items: [
- { label: 'Compilación y tipos', detail: 'Errores de estructura o de tipos no llegan a la integración.' },
- { label: 'Pruebas del contrato', detail: 'Cada criterio de aceptación tiene al menos un caso automático.' },
- { label: 'Integración continua', detail: 'El conjunto se compila y se prueba en cada cambio propuesto.' },
+ { label: 'Compilación y tipos', detail: 'Un error de tipos no llega a la integración.' },
+ { label: 'Pruebas del contrato', detail: 'Cada criterio de aceptación tiene su caso automático.' },
+ { label: 'Integración continua', detail: 'El conjunto se compila y se prueba en cada cambio.' },
  { label: 'Bloqueo real', detail: 'Un fallo detiene la línea; saltarlo exige una decisión registrada.' },
- ], steps: true,
+ ],
  sources: ['https://martinfowler.com/articles/continuousIntegration.html'],
- notes: `Una compuerta automática aplica el contrato sin cansarse ni negociar. Compilación, tipos, pruebas y estilo se ejecutan en cada cambio y devuelven un resultado binario. Eso filtra trabajo mecánico antes de que consuma atención: nadie necesita leer un diff que ni siquiera compila. La integración continua añade el conjunto completo, donde aparecen incompatibilidades que una prueba aislada no ve. El bloqueo debe ser real: saltarse una compuerta es una decisión registrada con motivo, no una costumbre. Una compuerta verde demuestra lo que esos casos observaron, no que el software sea correcto para siempre. Filtran el volumen que llega al final; no sustituyen el estándar escrito del encargo. Y si el fallo es de entorno, la salida debe decirlo.`,
+ notes: `Una compuerta automática aplica el contrato sin cansarse ni negociar. El dibujo enseña los dos casos a la vez. En el caso A el lote supera compilación y tipos, las pruebas del contrato y la integración continua: las tres compuertas se abren y avanza hasta la salida. En el caso B supera el primer control y falla un caso de aceptación en el segundo: se detiene, la tercera comprobación no se ejecuta y la salida queda sin paso. Eso es lo que compra el filtro: el trabajo que no cumple se para antes de consumir atención. El bloqueo es una regla de toda la línea, no una cuarta prueba; saltarlo exige una decisión registrada con motivo. Una compuerta verde demuestra lo que esos casos observaron, no que el software sea correcto para siempre. Y si el fallo es de entorno, la salida debe decirlo.`,
  },
  {
  id: 'factory-14', title: 'Pausa: ¿qué evidencia pedirías?', kind: 'exercise',

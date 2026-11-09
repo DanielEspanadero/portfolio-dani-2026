@@ -400,11 +400,10 @@ test('el día ilustrado cabe en el dibujo: cinco horas, rótulos cortos y la com
   // If a detail stops fitting, the wording is shortened: the type never shrinks.
   const day = slides.find(s => s.id === 'factory-08');
   assert.equal(day.kind, 'timeline');
-  assert.equal(day.illustrated, true);
-  // S19 added the second illustrated slide, the plant map: the flag now belongs to the day
-  // (a timeline) and the map (a flow), and to nothing else.
-  assert.deepEqual(slides.filter(s => s.illustrated).map(s => [s.id, s.kind]),
-    [['factory-08', 'timeline'], ['factory-09', 'flow']]);
+  assert.equal(day.scene, 'day');
+  // One switch now covers the three drawn slides: the day, the map and the gates.
+  assert.deepEqual(slides.filter(s => s.scene).map(s => [s.id, s.scene]),
+    [['factory-08', 'day'], ['factory-09', 'map'], ['factory-13', 'gates']]);
   assert.equal(day.items.length, 5);
   for (const entry of day.items) {
     const match = entry.label.match(/^(\d{2}:\d{2}), (.+)$/);
@@ -428,7 +427,7 @@ test('el mapa de planta cabe en el dibujo: cuatro zonas con detalle corto y sin 
   // fitting, the wording is shortened: the type never shrinks to make room.
   const map = slides.find(s => s.id === 'factory-09');
   assert.equal(map.kind, 'flow');
-  assert.equal(map.illustrated, true);
+  assert.equal(map.scene, 'map');
   assert.equal(map.figure, undefined, 'el dibujo sustituye a la lámina');
   assert.equal(map.steps, undefined, 'el mapa no se revela por pasos: se anima solo');
   assert.equal(map.items.length, 4);
@@ -453,4 +452,45 @@ test('el mapa de planta cabe en el dibujo: cuatro zonas con detalle corto y sin 
   // El recorrido dibujado es el camino feliz: la nota lo dice para que nadie lea un rechazo.
   assert.match(map.notes, /compuertas/i);
   assert.doesNotMatch(detail, /rechaz|devuelv/i);
+});
+
+test('las compuertas dibujadas: tres controles de los ítems y la regla de toda la línea aparte', () => {
+  // The drawing has room for three columns at 32px and two or three lines at 28px, plus the
+  // rule of the line in its own caption slot. If something stops fitting, the wording is
+  // shortened: the type never shrinks to make room.
+  const lines = (text, max) => text.trim().split(/\s+/u).reduce((acc, word) => {
+    const last = acc.length - 1;
+    if (last >= 0 && acc[last].length + word.length + 1 <= max) acc[last] = `${acc[last]} ${word}`;
+    else acc.push(word);
+    return acc;
+  }, []).length;
+  const gates = slides.find(s => s.id === 'factory-13');
+  assert.equal(gates.kind, 'flow');
+  assert.equal(gates.scene, 'gates');
+  assert.equal(gates.steps, undefined, 'el dibujo no se revela por pasos: se anima solo');
+  assert.equal(gates.figure, undefined, 'el dibujo sustituye a la lámina');
+  // Three controls and one rule: the fourth item is never drawn as a fourth gate.
+  assert.equal(gates.items.length, 4);
+  const [controls, rule] = [gates.items.slice(0, 3), gates.items[3]];
+  assert.deepEqual(controls.map(entry => entry.label),
+    ['Compilación y tipos', 'Pruebas del contrato', 'Integración continua']);
+  assert.match(rule.label, /bloqueo real/i);
+  assert.match(rule.detail, /detiene la l[ií]nea/i);
+  assert.match(rule.detail, /decisi[oó]n registrada/i);
+  for (const entry of controls) {
+    assert.ok(entry.label.length <= 22, `${entry.label}: ${entry.label.length}`);
+    assert.ok(lines(entry.detail, 26) <= 3, `${entry.label}: ${entry.detail}`);
+  }
+  // Los tres controles siguen diciendo qué comprueba cada uno.
+  const detail = controls.map(entry => `${entry.label} ${entry.detail}`).join(' ');
+  assert.match(detail, /tipos/i);
+  assert.match(detail, /criterio de aceptaci[oó]n/i);
+  assert.match(detail, /conjunto/i);
+  // La nota enseña los dos casos y la regla: nada de excepciones automáticas.
+  for (const part of [/supera/i, /falla/i, /no se ejecuta|sin ejecutar/i, /sin paso|no avanza/i,
+    /decisi[oó]n registrada/i]) assert.match(gates.notes, part);
+  assert.doesNotMatch(gates.notes, /excepci[oó]n autom[aá]tica|se salta sol|basta con ignorar/i);
+  // La diapositiva conserva su línea llana y su fuente: el cambio es de composición.
+  assert.equal(typeof gates.plain, 'string');
+  assert.deepEqual(gates.sources, ['https://martinfowler.com/articles/continuousIntegration.html']);
 });

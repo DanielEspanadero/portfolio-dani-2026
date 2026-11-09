@@ -2,6 +2,7 @@
 import { slides, chapters } from '../../content/software-factory/index.mjs';
 import { renderPresentation as shell } from '../shared/render.mjs';
 import { plantZones, PLANT_TEXT, PLANT_VIEW } from './plant-map.mjs';
+import { gatesColumns, GATES_LANES, GATES_RAIL, GATES_TEXT, GATES_VIEW, GATES_WIDTH } from './gates-scene.mjs';
 
 const route = '/presentaciones/software-factory';
 const origin = 'https://daniel-espanadero.com';
@@ -15,10 +16,10 @@ const kit = ['README.md', 'AGENTS.md', 'specs/cancel-booking.md', 'factory/worke
   'factory/reviewer.md', 'factory/handoff.md', 'src/cancellation.mjs', 'tests/cancellation.test.mjs'];
 // State files follow the kit layout; the slide items annotate each row.
 const stateFiles = ['backlog.md', 'specs/*.md', 'board.md', '*.md'];
-// Thin connectors draw in sequence on these three slides (fan-out feel). Ids, not positions:
-// station specialisation, the loop, and the worktree lanes. Renumbering the deck must not
-// move the draw-in animation onto unrelated slides.
-const fanout = new Set(['factory-13', 'factory-15', 'factory-32']);
+// Thin connectors draw in sequence on these two slides (fan-out feel). Ids, not positions:
+// the loop and the worktree lanes. Renumbering the deck must not move the draw-in animation
+// onto unrelated slides, and a drawn scene has no connectors to animate.
+const fanout = new Set(['factory-15', 'factory-32']);
 const chapterOf = slide => chapters.find(chapter => chapter.slides.includes(slide));
 const stepped = slide => slide.steps || ['flow', 'loop', 'gate', 'parallel', 'circle'].includes(slide.kind);
 
@@ -30,7 +31,7 @@ function item(slide, entry, index, tag = 'article') {
     <h3>${e(entry.label)}</h3><p ${stepped(slide) ? 'data-step' : ''}>${e(entry.detail)}</p></${tag}>`;
 }
 
-/** The illustrated plate keeps its frame, box and caption strip when a file is missing. */
+/** The art plate keeps its frame, box and caption strip when a file is missing. */
 function plate(slide) {
   const { src, mode, alt } = slide.figure;
   return `<figure class="plate plate-${mode}" data-plate="${mode}">
@@ -131,7 +132,7 @@ function loopbackDiagram(slide) {
 }
 
 /* === ORDINARY DAY: factory-08 as one clock-like sweep, not five timeline cards ===
-   The slide keeps kind timeline; `illustrated` replaces the card row. One 18s timeline drives
+   The slide keeps kind timeline; `scene: 'day'` replaces the card row. One 18s timeline drives
    the travelling marker, the sweep behind it and each moment's highlight, so the drawing and
    the motion cannot disagree about which moment is current. The hours are illustrative, and
    the last stop is the gate applying the written rule: amber belongs to the exception only. */
@@ -251,6 +252,52 @@ function plantDiagram(slide) {
     <g class="plant-parts" aria-hidden="true"></g>${glyphs}</svg></div>`;
 }
 
+/** The automatic gates as one drawing: two lanes over the same three controls.
+    The controls are the slide's first three items; the fourth item is the rule of the whole
+    line, so it gets its own caption slot at the foot and never a fourth column. The batches,
+    the barriers and the scan are painted by the governed scene module; every word is text. */
+function gatesDiagram(slide) {
+  const rule = slide.items[slide.items.length - 1];
+  const controls = slide.items.slice(0, slide.items.length - 1);
+  const columns = gatesColumns(controls.length);
+  const rows = (name, lines, starts, x) => lines.map((line, index) =>
+    `<text class="${name}" x="${x}" y="${starts[Math.min(index, starts.length - 1)]}">${e(line)}</text>`).join('');
+  const gateColumns = controls.map((entry, index) => `<g class="gates-gate">
+    ${rows('gates-label', [entry.label], [GATES_TEXT.label], columns[index])}
+    ${rows('gates-detail', wrapText(entry.detail, GATES_TEXT.wrap), GATES_TEXT.detail, columns[index])}
+  </g>`).join('');
+  const [passLane, failLane] = GATES_LANES;
+  const inlet = GATES_RAIL[0];
+  const outlet = GATES_RAIL[1];
+  // The drawing carries meaning, so its name states both outcomes and the rule of the line.
+  const said = controls.map(entry => entry.label).join(', ');
+  const label = `Compuertas automáticas de la línea: dos lotes recorren los mismos tres controles, ${said}. `
+    + 'El caso A los supera, las compuertas se abren y el lote avanza hasta la salida. '
+    + 'El caso B supera el primer control, falla un caso de aceptación en el segundo, se detiene, '
+    + 'la tercera comprobación no se ejecuta y la salida queda sin paso. '
+    + `${rule.label}: ${rule.detail}`;
+  return `<div class="gates-scene-host" data-gates-scene data-columns="${columns.join(' ')}">
+    <svg class="gates-scene" viewBox="${GATES_VIEW}" role="img" aria-label="${e(label)}">
+    <g class="gates-frame" aria-hidden="true">
+      <path class="gates-rail" d="M${inlet} ${passLane}H${outlet}"/>
+      <path class="gates-rail" d="M${inlet} ${failLane}H${outlet}"/>
+      <path class="gates-inlet" d="M${inlet - 12} ${passLane - 26}V${failLane + 26}"/>
+    </g>
+    <g class="gates-parts" aria-hidden="true"></g>
+    ${rows('gates-case', ['Caso A'], [passLane + 10], GATES_TEXT.caseX)}
+    ${rows('gates-case gates-case-b', ['Caso B'], [failLane + 10], GATES_TEXT.caseX)}
+    ${gateColumns}
+    ${rows('gates-verdict', ['Avanza', 'las tres pasan'], [passLane + 8, passLane + 40], GATES_TEXT.verdictX)}
+    ${rows('gates-verdict gates-verdict-b', ['Sin paso', 'la tercera', 'no corre'],
+    [failLane + 8, failLane + 40, failLane + 72], GATES_TEXT.verdictX)}
+    <g class="gates-rule">
+      <path class="gates-rule-line" d="M0 ${GATES_TEXT.ruleLine}H${GATES_WIDTH}"/>
+      ${rows('gates-rule-label', [rule.label], [GATES_TEXT.rule], 0)}
+      ${rows('gates-rule-text', [rule.detail], [GATES_TEXT.rule], GATES_TEXT.ruleTextX)}
+    </g>
+  </svg></div>`;
+}
+
 /** SVG connectors stay behind the stations. A token exists only past a revealed station. */
 function connectors(slide) {
   const id = e(slide.id);
@@ -306,15 +353,27 @@ function loopReturn() {
     <span class="rounds">máx. 3 rondas</span></div>`;
 }
 
+/* === ONE SWITCH FOR THE THREE DRAWN SLIDES ===
+   `scene` names the drawing a slide renders instead of its cards or its station row: the
+   ordinary day (a timeline), the plant map and the automatic gates (both flows). Anything
+   else keeps the composition its kind asks for. An unknown value is a content error, so it
+   fails loudly here instead of falling back to a row nobody asked for. */
+const scenes = {
+  day: { className: 'diagram day', draw: dayDiagram },
+  map: { className: 'diagram flow plant', draw: plantDiagram },
+  gates: { className: 'diagram flow gates', draw: gatesDiagram },
+};
+
 function composition(slide) {
   const items = slide.items.map((entry, index) => item(slide, entry, index)).join('');
   const hasFanout = fanout.has(slide.id) ? ' fanout' : '';
   // A loopback flow is one continuous journey: the drawing replaces the station cards.
   if (slide.loopback) return `<div class="diagram flow loopback">${loopbackDiagram(slide)}</div>`;
-  // The ordinary day is the same idea for a timeline: the flag replaces the card row.
-  if (slide.illustrated && slide.kind === 'timeline') return `<div class="diagram day">${dayDiagram(slide)}</div>`;
-  // The plant map is the same switch for a flow: the route replaces the station row.
-  if (slide.illustrated && slide.kind === 'flow') return `<div class="diagram flow plant">${plantDiagram(slide)}</div>`;
+  if (slide.scene) {
+    const scene = scenes[slide.scene];
+    if (!scene) throw new Error(`Escena desconocida en ${slide.id}: ${slide.scene}`);
+    return `<div class="${scene.className}">${scene.draw(slide)}</div>`;
+  }
   switch (slide.kind) {
     case 'hero':
       // The plant is generated at runtime: the document only reserves its decorative box.

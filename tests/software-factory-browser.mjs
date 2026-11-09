@@ -20,13 +20,14 @@ const read = file => fs.readFileSync(`src/presentations/software-factory/${file}
 const css = ['fonts.css', 'viewport-base.css', 'deck.css'].map(read).join('\n');
 assert.ok(css.includes(fs.readFileSync('/Users/daniel/.gentle-shell/agent/skills/frontend-slides/viewport-base.css', 'utf8')));
 const controller = fs.readFileSync('src/presentations/shared/player.js', 'utf8');
-// The deck's two procedural scenes ride with the shared player through the same inliner the
+// The deck's three procedural scenes ride with the shared player through the same inliner the
 // production document uses, so the visual check proves the shipped composition instead of a
 // second copy of it.
 const sceneGovernor = fs.readFileSync('src/presentations/software-factory/scene-governor.mjs', 'utf8');
 const heroScene = fs.readFileSync('src/presentations/software-factory/hero-scene.mjs', 'utf8');
 const plantMap = fs.readFileSync('src/presentations/software-factory/plant-map.mjs', 'utf8');
-const inline = inlineModules(controller, sceneGovernor, heroScene, plantMap);
+const gatesScene = fs.readFileSync('src/presentations/software-factory/gates-scene.mjs', 'utf8');
+const inline = inlineModules(controller, sceneGovernor, heroScene, plantMap, gatesScene);
 const file = path.join(output, 'standalone.html');
 // The deck addresses art from the site root. When it is opened from disk for the
 // visual check, point the same approved files at their local absolute URL instead.
@@ -135,13 +136,13 @@ const geometry = `(() => {
  }
  // The inline diagrams are measured, not trusted: their own viewBox must contain every child,
  // they may not reach the footer, and neighbouring columns may not bleed into each other.
- for(const diagram of s.querySelectorAll('.flow-diagram,.day-diagram,.plant-map')){
+ for(const diagram of s.querySelectorAll('.flow-diagram,.day-diagram,.plant-map,.gates-scene')){
   const view=diagram.viewBox.baseVal, box=diagram.getBBox(), frame=rect(diagram);
   if(box.x<view.x-1||box.y<view.y-1||box.x+box.width>view.x+view.width+1||box.y+box.height>view.y+view.height+1)
    errors.push('diagram clips its own viewBox: '+[box.x,box.y,box.width,box.height].map(n=>Math.round(n)).join(','));
   if(!within(frame,rect(s.querySelector('.composition')),scale*2))errors.push('diagram outside the composition box');
   if(frame.bottom>rect(s.querySelector('.slide-footer')).top-scale*2)errors.push('diagram reaches the footer');
-  const nodes=[...diagram.querySelectorAll('.flow-node,.day-stop,.plant-zone')];
+  const nodes=[...diagram.querySelectorAll('.flow-node,.day-stop,.plant-zone,.gates-gate')];
   for(let i=0;i+1<nodes.length;i++){const a=nodes[i].getBBox(),b=nodes[i+1].getBBox();
    if(a.x+a.width>b.x)errors.push('diagram columns overlap: '+(i+1)+'/'+(i+2));}
  }
@@ -282,9 +283,10 @@ try {
         `${mode}: reduced motion never rebuilds the still or schedules a frame`);
       await command('Emulation.setEmulatedMedia', { features: [] });
       await load(pathToFileURL(file).href);
-      // The first flow slide draws the plant map and reveals no steps: the step probes need a
-      // station row, so they target the first flow slide that still carries one.
-      const stepSlide = slides.findIndex(slide => slide.kind === 'flow' && !slide.illustrated && !slide.loopback) + 1;
+      // The maps and the gates draw their own lines and reveal no steps: the step probes need a
+      // station row, so they target the first flow or loop slide that still carries one.
+      const stepSlide = slides.findIndex(slide => ['flow', 'loop'].includes(slide.kind)
+        && !slide.scene && !slide.loopback) + 1;
       const stepCount = slides[stepSlide - 1].items.length;
       await go(stepSlide);
       await key(' ', 'Space', 32, ' ');
@@ -344,7 +346,7 @@ try {
       await command('Emulation.setEmulatedMedia', { features: [] });
       // The ordinary day is one 18s sweep too: seek it instead of waiting, so the travel, the
       // current-moment highlight and the still state are proven rather than assumed.
-      const daySlide = slides.findIndex(slide => slide.illustrated && slide.kind === 'timeline') + 1;
+      const daySlide = slides.findIndex(slide => slide.scene === 'day') + 1;
       await go(daySlide); await frame();
       const daySeek = await evaluate(`(() => {
         const marker=document.querySelector('.active .day-marker');
@@ -374,7 +376,7 @@ try {
         `${mode}: reduced motion leaves the day still on 09:10 with its five moments`);
       await command('Emulation.setEmulatedMedia', { features: [] });
       // === PLANT MAP: the second procedural scene, under the same governance ===
-      const mapSlide = slides.findIndex(slide => slide.illustrated && slide.kind === 'flow') + 1;
+      const mapSlide = slides.findIndex(slide => slide.scene === 'map') + 1;
       const mapHost = "document.querySelector('[data-plant-map]')";
       const mapDraws = `Number(${mapHost}.dataset.draws||0)`;
       await go(mapSlide); await frame();
@@ -438,6 +440,96 @@ try {
       check(mapStillAfter.frames === 0 && mapStillAfter.draws === 0 && mapStillAfter.stills === 1
         && mapStillAfter.length === mapStill.length,
         `${mode}: reduced motion never rebuilds the map still or schedules a frame`);
+      await command('Emulation.setEmulatedMedia', { features: [] });
+      await load(pathToFileURL(file).href);
+      // === AUTOMATIC GATES: the third procedural scene, under the same governance ===
+      const gatesSlide = slides.findIndex(slide => slide.scene === 'gates') + 1;
+      const gatesHost = "document.querySelector('[data-gates-scene]')";
+      const gatesDraws = `Number(${gatesHost}.dataset.draws||0)`;
+      await go(gatesSlide); await frame();
+      const gatesStart = await evaluate(`(() => {const host=${gatesHost};
+        return {draws:Number(host.dataset.draws||0), nodes:host.querySelectorAll('.gates-parts *').length,
+          columns:host.dataset.columns,
+          aligned:[...host.querySelectorAll('.gates-label')].map(t=>t.getAttribute('x')).join(' ')===host.dataset.columns,
+          labels:[...host.querySelectorAll('.gates-label')].map(t=>t.textContent).join(' '),
+          rule:host.querySelector('.gates-rule').textContent.trim(),
+          cases:[...host.querySelectorAll('.gates-case')].map(t=>t.textContent).join(' '),
+          verdicts:[...host.querySelectorAll('.gates-verdict')].map(t=>t.textContent).join(' '),
+          pieceA:host.querySelector('.gates-piece').getAttribute('transform'),
+          name:host.querySelector('.gates-scene').getAttribute('aria-label'),
+          hidden:host.querySelector('.gates-parts').getAttribute('aria-hidden'),
+          focusable:host.querySelectorAll('a,button,input,[tabindex]').length};})()`);
+      const gateLabels = slides[gatesSlide - 1].items.slice(0, 3).map(entry => entry.label).join(' ');
+      check(gatesStart.nodes > 20 && gatesStart.columns.split(' ').length === 3 && gatesStart.aligned
+        && gatesStart.focusable === 0 && gatesStart.hidden === 'true' && gatesStart.labels === gateLabels
+        && gatesStart.cases === 'Caso A Caso B' && /Avanza/.test(gatesStart.verdicts)
+        && /Sin paso/.test(gatesStart.verdicts) && /la tercera/.test(gatesStart.verdicts) && /no corre/.test(gatesStart.verdicts)
+        && gatesStart.rule.includes(slides[gatesSlide - 1].items[3].label)
+        && /avanza/i.test(gatesStart.name) && /se detiene/i.test(gatesStart.name),
+        `${mode}: the gates draw both cases (${gatesStart.nodes} nodes), name them and keep the gate text`);
+      // The loop starts on the resolved tableau and restarts, so the window has to span the
+      // wrap: five seconds prove both the frame budget and that the batches travel again.
+      await capture(`gates-resolved-${mode}.png`);
+      await evaluate('new Promise(r=>setTimeout(r,5000))');
+      const gatesRunning = await evaluate(`(() => {const host=${gatesHost};
+        return {draws:Number(host.dataset.draws||0), pieceA:host.querySelector('.gates-piece').getAttribute('transform'),
+          pieces:host.querySelectorAll('.gates-piece').length};})()`);
+      check(gatesRunning.draws - gatesStart.draws >= 60 && gatesRunning.draws - gatesStart.draws <= 190
+        && gatesRunning.pieceA !== gatesStart.pieceA && gatesRunning.pieces === 2,
+        `${mode}: both batches advance while the gates slide is active (${gatesRunning.draws - gatesStart.draws} frames in 5s) ${JSON.stringify({ start: gatesStart.pieceA, now: gatesRunning.pieceA, pieces: gatesRunning.pieces })}`);
+      await capture(`gates-running-${mode}.png`);
+      // The rejection frame: by now the second control has failed for case B and the third
+      // barrier has never opened.
+      await evaluate('new Promise(r=>setTimeout(r,5000))');
+      const gatesStopped = await evaluate(`(() => {const host=${gatesHost};
+        return {failed:[...host.querySelectorAll('.gates-parts .gates-piece-failed')].length,
+          arms:[...host.querySelectorAll('.gates-parts .gates-arm-failed')].length};})()`);
+      check(gatesStopped.failed === 1 && gatesStopped.arms === 1,
+        `${mode}: the failing batch stops at the second control and stays stopped`);
+      await capture(`gates-failing-case-${mode}.png`);
+      await evaluate("location.hash='#2'"); await frame();
+      const gatesParked = await evaluate(gatesDraws);
+      await evaluate('new Promise(r=>setTimeout(r,500))');
+      check(await evaluate(gatesDraws) === gatesParked, `${mode}: leaving the gates slide stops its loop`);
+      await go(gatesSlide); await frame();
+      const gatesResumed = await evaluate(gatesDraws);
+      await evaluate('new Promise(r=>setTimeout(r,400))');
+      check(await evaluate(gatesDraws) > gatesResumed, `${mode}: returning to the gates slide resumes its loop`);
+      // CDP cannot hide a page without freezing it, so visibility is stubbed and announced.
+      const gatesHidden = await evaluate(`(() => {const host=${gatesHost};
+        Object.defineProperty(document,'visibilityState',{configurable:true,get:()=>'hidden'});
+        document.dispatchEvent(new Event('visibilitychange'));
+        return new Promise(resolve=>setTimeout(()=>{const frozen=Number(host.dataset.draws);
+          setTimeout(()=>{const second=Number(host.dataset.draws);
+            delete document.visibilityState;document.dispatchEvent(new Event('visibilitychange'));
+            resolve({frozen,second});},450);},200));})()`);
+      check(gatesHidden.frozen === gatesHidden.second, `${mode}: a hidden document stops the gates loop`);
+      await evaluate('new Promise(r=>setTimeout(r,400))');
+      check(await evaluate(gatesDraws) > gatesHidden.second, `${mode}: a visible document resumes the gates loop`);
+      // Reduced motion: one still frame, drawn once, and no frame ever scheduled.
+      await command('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-reduced-motion', value: 'reduce' }] });
+      await load(pathToFileURL(file).href);
+      await evaluate('window.__gateFrames=0; const gateRequest=window.requestAnimationFrame.bind(window); window.requestAnimationFrame=cb=>{window.__gateFrames+=1;return gateRequest(cb)}');
+      await go(gatesSlide); await frame();
+      const gatesStill = await evaluate(`(() => {const host=${gatesHost};
+        return {stills:Number(host.dataset.stills||0), draws:Number(host.dataset.draws||0),
+          nodes:host.querySelectorAll('.gates-parts *').length,
+          failed:host.querySelectorAll('.gates-parts .gates-piece-failed').length,
+          length:host.querySelector('.gates-parts').innerHTML.length};})()`);
+      check(gatesStill.stills === 1 && gatesStill.draws === 0 && gatesStill.nodes > 20 && gatesStill.failed === 1,
+        `${mode}: reduced motion paints one still with both cases resolved and starts no loop`);
+      await capture(`gates-still-${mode}.png`);
+      await evaluate("location.hash='#2'"); await frame();
+      await evaluate(`location.hash='#${gatesSlide}'`); await frame();
+      // The probe's own frames are ignored: the counter is reset once navigation is done.
+      await evaluate('window.__gateFrames=0');
+      await evaluate('new Promise(r=>setTimeout(r,600))');
+      const gatesStillAfter = await evaluate(`(() => {const host=${gatesHost};
+        return {stills:Number(host.dataset.stills||0), draws:Number(host.dataset.draws||0),
+          frames:window.__gateFrames, length:host.querySelector('.gates-parts').innerHTML.length};})()`);
+      check(gatesStillAfter.frames === 0 && gatesStillAfter.draws === 0 && gatesStillAfter.stills === 1
+        && gatesStillAfter.length === gatesStill.length,
+        `${mode}: reduced motion never rebuilds the gates still or schedules a frame`);
       await command('Emulation.setEmulatedMedia', { features: [] });
       await load(pathToFileURL(file).href);
       await go(slides.length); await key('ArrowRight', 'ArrowRight', 39);

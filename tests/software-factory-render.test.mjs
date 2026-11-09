@@ -202,7 +202,9 @@ test('the conveyor token only follows revealed stations and rests at the gate', 
   const { renderPresentation } = await renderer();
   const html = renderPresentation({ css: '', controller: '' });
   const css = read(`${base}deck.css`);
-  const flow = byId(html, 'factory-13');
+  // The token belongs to the station row, so it is pinned to the loop that still draws one:
+  // the gates slide is a governed drawing now and carries no packets.
+  const flow = byId(html, 'factory-15');
   assert.match(flow, /class="packet packet-1"/);
   assert.match(flow, /class="packet packet-3"/);
   assert.match(css, /\.packet \{[^}]*opacity: 0/s);
@@ -250,7 +252,7 @@ test('assets retain fixed base, licensed fonts and reduced motion, with no extra
   assert.match(css, /prefers-reduced-motion: reduce/);
   // Deck behaviour is the shared player plus the two governed scenes; nothing else to hide.
   assert.throws(() => read(`${base}enhancements.js`));
-  for (const module of ['hero-scene.mjs', 'plant-map.mjs', 'scene-governor.mjs', 'inline-modules.mjs']) {
+  for (const module of ['hero-scene.mjs', 'plant-map.mjs', 'gates-scene.mjs', 'scene-governor.mjs', 'inline-modules.mjs']) {
     assert.ok(existsSync(`${base}${module}`), module);
   }
   assert.doesNotMatch(css, /\.local-tools|\.checkpoint|\.closing-stamp|\.download-link/);
@@ -394,7 +396,7 @@ test('both procedural scenes mount through one governance helper', async () => {
   // A scene is judged active by its own slide only: the helper never reads the deck.
   for (const forbidden of ['#deck', 'slide-select', 'slide-index', 'deck-controls']) assert.ok(!governor.includes(forbidden), forbidden);
   // Both scenes import it instead of reimplementing the loop.
-  for (const file of ['hero-scene.mjs', 'plant-map.mjs']) {
+  for (const file of ['hero-scene.mjs', 'plant-map.mjs', 'gates-scene.mjs']) {
     const source = read(`${base}${file}`);
     assert.match(source, /import \{ mountGovernedScene \} from '\.\/scene-governor\.mjs';/, file);
     assert.match(source, /mountGovernedScene\(\{ host/, file);
@@ -402,16 +404,16 @@ test('both procedural scenes mount through one governance helper', async () => {
   // Online and downloadable documents inline the same composition, by dependency order.
   const document = read(`${base}document.ts`);
   assert.match(document, /shared\/player\.js\?raw/);
-  for (const module of ['scene-governor\.mjs', 'hero-scene\.mjs', 'plant-map\.mjs']) assert.match(document, new RegExp(`${module}\\?raw`));
-  assert.match(document, /inlineModules\(controller, sceneGovernor, heroScene, plantMap\)/);
+  for (const module of ['scene-governor\.mjs', 'hero-scene\.mjs', 'plant-map\.mjs', 'gates-scene\.mjs']) assert.match(document, new RegExp(`${module}\\?raw`));
+  assert.match(document, /inlineModules\(controller, sceneGovernor, heroScene, plantMap, gatesScene\)/);
   const { inlineModules } = await import('../src/presentations/software-factory/inline-modules.mjs');
   const bundle = inlineModules(read('src/presentations/shared/player.js'), governor,
-    read(`${base}hero-scene.mjs`), read(`${base}plant-map.mjs`));
+    read(`${base}hero-scene.mjs`), read(`${base}plant-map.mjs`), read(`${base}gates-scene.mjs`));
   // One module script: no statement may survive as an import, and no two modules may
   // declare the same binding, which is the real failure mode of inline composition.
   assert.doesNotMatch(bundle, /^\s*import\b/m);
   assert.doesNotMatch(bundle, /^\s*export\b/m);
-  for (const name of ['mountGovernedScene', 'heroScene', 'plantMapScene']) assert.ok(bundle.includes(name), name);
+  for (const name of ['mountGovernedScene', 'heroScene', 'plantMapScene', 'gatesScene']) assert.ok(bundle.includes(name), name);
   assert.doesNotThrow(() => new Function(bundle));
 });
 
@@ -444,7 +446,9 @@ test('draw-in connectors stay on their three subjects after renumbering', async 
   // The fan-out animation is pinned by slide id, not by position in the deck: inserting a
   // slide (S9) must not silently move the draw-in onto a slide nobody asked for.
   const withFanout = slides.filter(slide => byId(html, slide.id).match(/class="[^"]*\bfanout\b/)).map(slide => slide.id);
-  assert.deepEqual(withFanout, ['factory-13', 'factory-15', 'factory-32']);
+  // The gates slide draws its own line now, so the draw-in stays on the loop, the lanes and
+  // the checklist: the fan-out effect needs connectors, and a drawing has none.
+  assert.deepEqual(withFanout, ['factory-15', 'factory-32']);
   assert.match(read(`${base}deck.css`), /\.slide\.active \.fanout \.route-line/);
 });
 
@@ -506,9 +510,9 @@ test('the ordinary day is one clock-like drawing, not five timeline cards', asyn
   const css = read(`${base}deck.css`);
   const slide = slides.find(entry => entry.id === 'factory-08');
   const day = byId(html, 'factory-08');
-  // The switch mirrors the loopback flow: the kind stays, the flag replaces the card row.
+  // The switch mirrors the loopback flow: the kind stays, `scene` replaces the card row.
   assert.equal(slide.kind, 'timeline');
-  assert.equal(slide.illustrated, true);
+  assert.equal(slide.scene, 'day');
   assert.match(day, /class="diagram day"/);
   assert.doesNotMatch(day, /class="panel station"/);
   assert.match(css, /\.day-diagram \{[^}]*width: 100%; height: auto/s);
@@ -577,7 +581,7 @@ test('the ordinary day is one clock-like drawing, not five timeline cards', asyn
     assert.equal((markup.match(/class="panel station"/g) || []).length, other.items.length, other.id);
     assert.doesNotMatch(markup, /day-diagram/, other.id);
   }
-  assert.deepEqual(slides.filter(entry => entry.illustrated).map(entry => entry.id), ['factory-08', 'factory-09']);
+  assert.deepEqual(slides.filter(entry => entry.scene === 'day').map(entry => entry.id), ['factory-08']);
 });
 
 test('the plant map is one drawn route from the slide items, not the station row', async () => {
@@ -586,10 +590,10 @@ test('the plant map is one drawn route from the slide items, not the station row
   const css = read(`${base}deck.css`);
   const slide = slides.find(entry => entry.id === 'factory-09');
   const map = byId(html, 'factory-09');
-  // The switch mirrors the loopback flow and the illustrated day: the kind stays, the flag
-  // replaces the card row. Only this slide carries it.
+  // The switch mirrors the loopback flow and the drawn day: the kind stays, `scene` replaces
+  // the card row. Only this slide draws the plant map.
   assert.equal(slide.kind, 'flow');
-  assert.equal(slide.illustrated, true);
+  assert.equal(slide.scene, 'map');
   assert.equal(slide.figure, undefined);
   assert.match(map, /class="diagram flow plant"/);
   assert.doesNotMatch(map, /class="panel station"/);
@@ -626,12 +630,12 @@ test('the plant map is one drawn route from the slide items, not the station row
   // Composition switch: every other flow and loop keeps its station row (the loopback flow
   // draws its own journey, as it did before this unit).
   for (const other of slides.filter(entry => ['flow', 'loop'].includes(entry.kind)
-    && entry.id !== 'factory-09' && !entry.loopback)) {
+    && entry.id !== 'factory-09' && !entry.loopback && !entry.scene)) {
     const markup = byId(html, other.id);
     assert.match(markup, /class="stations main-panels"/, other.id);
     assert.doesNotMatch(markup, /plant-map/, other.id);
   }
-  assert.deepEqual(slides.filter(entry => entry.illustrated && entry.kind === 'flow').map(entry => entry.id), ['factory-09']);
+  assert.deepEqual(slides.filter(entry => entry.scene === 'map').map(entry => entry.id), ['factory-09']);
 });
 
 test('the plant map holds the batch at every stop until its control fires', async () => {
@@ -708,4 +712,166 @@ test('the plant map holds the batch at every stop until its control fires', asyn
       `color fuera de los tokens del deck: ${colour}`);
   }
   for (const token of ['var(--slide-bg)']) assert.ok(scene(.5).includes(token), token);
+});
+
+test('one scene switch replaced both illustrated flags, and the old one is gone', async () => {
+  const { renderPresentation } = await renderer();
+  const html = renderPresentation({ css: '', controller: '' });
+  const css = read(`${base}deck.css`);
+  const modules = ['01-foundations', '02-production-line', '03-loop-state', '04-failure-modes',
+    '05-build-yours', '06-example-parallel', '07-closing'];
+  // The switch is one field with three drawn values: the day, the map and the gates.
+  for (const slide of slides) assert.equal(Object.hasOwn(slide, 'illustrated'), false, slide.id);
+  assert.deepEqual(slides.filter(entry => entry.scene).map(entry => [entry.id, entry.scene]),
+    [['factory-08', 'day'], ['factory-09', 'map'], ['factory-13', 'gates']]);
+  // The old flag may not survive in the content, the renderer, the styles or the markup.
+  for (const name of modules) {
+    assert.doesNotMatch(read(`src/content/software-factory/${name}.mjs`), /illustrated/, name);
+  }
+  for (const source of [html, css, read(`${base}render.mjs`)]) assert.doesNotMatch(source, /illustrated/);
+  // The renderer dispatches on `scene`: an unknown value is a mistake, never a silent card row.
+  const slide = slides.find(entry => entry.id === 'factory-09');
+  const original = slide.scene;
+  try {
+    slide.scene = 'planta';
+    assert.throws(() => renderPresentation({ css: '', controller: '' }), /planta/);
+  } finally {
+    slide.scene = original;
+  }
+});
+
+test('the gates slide draws both cases from its own items, not the source arrays', async () => {
+  const { renderPresentation } = await renderer();
+  const html = renderPresentation({ css: '', controller: '' });
+  const css = read(`${base}deck.css`);
+  const slide = slides.find(entry => entry.id === 'factory-13');
+  const gates = byId(html, 'factory-13');
+  // The kind stays, the switch replaces the station row, and nothing is revealed by steps.
+  assert.equal(slide.kind, 'flow');
+  assert.equal(slide.scene, 'gates');
+  assert.equal(slide.steps, undefined);
+  assert.match(gates, /class="diagram flow gates"/);
+  assert.doesNotMatch(gates, /class="panel station"|class="connectors"|class="plate/);
+  assert.match(css, /\.gates-scene \{[^}]*width: 100%; height: auto/s);
+  const host = gates.match(/<div class="gates-scene-host"[\s\S]*?<\/svg><\/div>/)[0];
+  const svg = host.match(/<svg class="gates-scene" viewBox="0 0 1680 480" role="img" aria-label="([^"]+)">/);
+  assert.ok(svg, 'diapositiva sin dibujo de compuertas');
+  // The drawing carries meaning, so it names both outcomes and the rule of the line.
+  for (const part of [/avanza/i, /se detiene/i, /no se ejecuta/i, /sin paso/i, /decisi[oó]n registrada/i]) {
+    assert.match(svg[1], part);
+  }
+  assert.doesNotMatch(svg[1], /excepci[oó]n autom[aá]tica|se salta sol|validado|bloqueado/i);
+  const drawing = host.replace(/aria-label="[^"]*"/, '');
+  // Three gate labels and their short details are the slide's own items, never rewritten.
+  const glyphs = kind => [...drawing.matchAll(new RegExp(`class="${kind}"[^>]*>([^<]*)<`, 'g'))].map(match => match[1]);
+  assert.equal(glyphs('gates-label').join(' '), slide.items.slice(0, 3).map(entry => entry.label).join(' '));
+  assert.equal(glyphs('gates-detail').join(' '), slide.items.slice(0, 3).map(entry => entry.detail).join(' '));
+  assert.ok(glyphs('gates-detail').length <= 9);
+  // The fourth item is the rule of the whole line: its own caption slot, outside the gates,
+  // so nobody can read it as a fourth test.
+  const rule = drawing.match(/<g class="gates-rule">[\s\S]*?<\/g>/);
+  assert.ok(rule, 'la regla de la línea no tiene ranura propia');
+  assert.ok(rule[0].includes(escape(slide.items[3].label)));
+  assert.ok(rule[0].includes(escape(slide.items[3].detail)));
+  assert.equal((drawing.match(/class="gates-rule"/g) || []).length, 1);
+  const columns = drawing.match(/<g class="gates-gate">[\s\S]*?<\/g>/g) || [];
+  assert.equal(columns.length, 3);
+  for (const column of columns) {
+    assert.ok(!column.includes(escape(slide.items[3].label)), 'la regla se lee como una cuarta compuerta');
+  }
+  // Both cases are on stage as text: the passing batch advances, the failing one gets no pass.
+  for (const part of [/Caso A/, /Caso B/, /Avanza/, /Sin paso/, /la tercera/, /no corre/]) assert.match(drawing, part);
+  // Type floor: gate labels 32px, details, case labels, verdicts and the rule at 28px.
+  const size = name => Number(css.match(new RegExp(`\\.gates-scene \\.${name} \\{[^}]*font-size: (\\d+)px`))[1]);
+  assert.equal(size('gates-label'), 32);
+  for (const name of ['gates-detail', 'gates-case', 'gates-verdict', 'gates-rule-label', 'gates-rule-text']) {
+    assert.equal(size(name), 28, name);
+  }
+  // The drawing cannot shrink its own type: no inline style, no second font-size source.
+  assert.doesNotMatch(drawing, /font-size|<style/);
+  // Palette: deck tokens only, every other tone derived inside the module.
+  assert.doesNotMatch(drawing, /https?:|xlink|<image|<use|href=|filter:|Gradient|<script/);
+  const whitelist = ['#b3ced4', '#557077', '#4f6b73', '#94c9d2', '#e9eeeb', '#ffc36a'];
+  const shown = [...drawing, ...(css.match(/\.gates-scene[^{]*\{[^}]*\}/g) || [])].join('\n');
+  for (const hex of new Set([...shown.matchAll(/#[0-9a-fA-F]{6}/g)].map(match => match[0].toLowerCase()))) {
+    assert.ok(whitelist.includes(hex), hex);
+  }
+  const rules = (css.match(/\.gates-scene[^{]*\{[^}]*\}/g) || []).join('\n');
+  for (const token of ['var(--cyan)', 'var(--amber)', 'var(--paper)']) assert.ok(rules.includes(token), token);
+  // The source's own chrome stays out: no eyebrow, title, subtitle, pause button or badges.
+  assert.doesNotMatch(drawing, /Pausar|pause|<button|AI SOFTWARE FACTORY|VALIDADO|BLOQUEADO|EN ESPERA|COMPROBANDO/);
+  // The moving parts are decoration; every word outside them is real SVG text.
+  assert.match(host, /<g class="gates-parts" aria-hidden="true"><\/g>/);
+  assert.match(host, /data-gates-scene/);
+  // The switch changed nothing else: every other flow and timeline slide keeps its row.
+  for (const other of slides.filter(entry => ['flow', 'loop'].includes(entry.kind)
+    && entry.id !== 'factory-13' && !entry.loopback && !entry.scene)) {
+    assert.match(byId(html, other.id), /class="stations main-panels"/, other.id);
+  }
+  for (const other of slides.filter(entry => entry.kind === 'timeline' && !entry.scene)) {
+    assert.match(byId(html, other.id), /class="timeline main-panels"/, other.id);
+  }
+});
+
+test('the gates scene advances the passing batch and stops the failing one', async () => {
+  const scene = await import('../src/presentations/software-factory/gates-scene.mjs');
+  const source = read(`${base}gates-scene.mjs`);
+  const columns = scene.gatesColumns(3);
+  assert.deepEqual(columns, [500, 880, 1260]);
+  assert.equal(scene.GATES_VIEW, '0 0 1680 480');
+  assert.equal(scene.GATES_SECONDS * 1000, 16000);
+  const still = scene.gatesScene(scene.GATES_STILL);
+  // Deterministic: the same instant always produces the same frame.
+  assert.equal(scene.gatesScene(scene.GATES_STILL), still);
+  assert.ok((still.match(/<(?:polygon|circle|path|rect|g)\b/g) || []).length > 20, 'compuertas vacías');
+  // Three controls drawn once each, crossing both lanes, and one barrier per control and lane.
+  assert.equal((still.match(/class="gates-portal"/g) || []).length, 3);
+  assert.equal((still.match(/class="gates-arm/g) || []).length, 6);
+  // The still shows both cases resolved: the passing batch at the exit, the failing one at
+  // the second control with the third never executed.
+  const pieces = [...still.matchAll(/class="gates-piece[^"]*" transform="translate\(([-\d.]+) ([-\d.]+)\)"/g)]
+    .map(match => [Number(match[1]), Number(match[2])]);
+  assert.deepEqual(pieces, [[scene.GATES_RAIL[1], scene.GATES_LANES[0]],
+    [columns[1] - scene.GATES_STOP, scene.GATES_LANES[1]]]);
+  const resolved = scene.gatesState(scene.GATES_STILL, columns);
+  assert.deepEqual(resolved.lanes[0].gates.map(gate => gate.passed), [true, true, true]);
+  assert.deepEqual(resolved.lanes[1].gates.map(gate => gate.failed), [false, true, false]);
+  assert.deepEqual(resolved.lanes[1].gates.map(gate => gate.skipped), [false, false, true]);
+  // The third control never runs for the failing batch, at any instant of the cycle.
+  for (let step = 0; step < 240; step += 1) {
+    const state = scene.gatesState(step / 240, columns);
+    assert.equal(state.lanes[1].gates[2].passed, false, String(step));
+    assert.equal(state.lanes[1].gates[2].scanning, false, String(step));
+  }
+  // The first control fires for both batches, and only the passing one leaves the second.
+  const early = scene.gatesState(4.4 / scene.GATES_SECONDS, columns);
+  assert.deepEqual(early.lanes.map(lane => lane.gates[0].passed), [true, true]);
+  assert.deepEqual(early.lanes.map(lane => lane.gates[1].passed), [false, false]);
+  const later = scene.gatesState(8.2 / scene.GATES_SECONDS, columns);
+  assert.deepEqual(later.lanes.map(lane => lane.gates[1].passed), [true, false]);
+  assert.deepEqual(later.lanes.map(lane => lane.failed), [false, true]);
+  // Amber belongs to the stop only: one failed arm and one failed piece in that frame.
+  const stopFrame = scene.gatesScene(8.2 / scene.GATES_SECONDS, columns);
+  assert.equal((stopFrame.match(/gates-arm-failed/g) || []).length, 1);
+  assert.equal((stopFrame.match(/gates-piece-failed/g) || []).length, 1);
+  assert.equal((still.match(/gates-arm-failed/g) || []).length, 1);
+  assert.equal((still.match(/gates-piece-failed/g) || []).length, 1);
+  const before = scene.gatesScene(4.4 / scene.GATES_SECONDS, columns);
+  assert.equal((before.match(/gates-arm-failed|gates-piece-failed/g) || []).length, 0);
+  // The frames carry no words, no script and no external reference: the deck renders the text.
+  for (const frame of [still, stopFrame, scene.gatesScene(0)]) {
+    assert.doesNotMatch(frame, /<text|<title|<desc|<image|https?:|<script|requestAnimationFrame/);
+  }
+  // Palette: the module carries the tokens and derives every other tone from them.
+  const hexes = new Set([...source.matchAll(/#[0-9a-fA-F]{6}/g)].map(match => match[0].toLowerCase()));
+  assert.deepEqual([...hexes].sort(), ['#101719', '#557077', '#94c9d2', '#b3ced4', '#e9eeeb', '#ffc36a']);
+  // Governance comes from the shared helper: the module owns the drawing and nothing else.
+  assert.match(source, /import \{ mountGovernedScene \} from '\.\/scene-governor\.mjs';/);
+  assert.match(source, /mountGovernedScene\(\{ host, cycle: GATES_SECONDS \* 1000, still: GATES_STILL/);
+  for (const owned of ['requestAnimationFrame', 'cancelAnimationFrame', 'MutationObserver', 'visibilitychange', 'pagehide']) {
+    assert.ok(!source.includes(owned), `la gobernanza sigue en gates-scene.mjs: ${owned}`);
+  }
+  for (const forbidden of ['#deck', 'slide-select', 'slide-index', 'deck-controls', 'document.body']) {
+    assert.ok(!source.includes(forbidden), forbidden);
+  }
 });
