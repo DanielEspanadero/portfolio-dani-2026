@@ -52,7 +52,7 @@ export default {
  lead: 'La misma prueba sirve con agente o a mano; el resultado lo aporta tu máquina.',
  items: [
  { label: 'Comando local', detail: 'Ejecuta desde la raíz de la copia del kit, no desde el portfolio.' },
- { label: 'Lo que verás', detail: 'Node ejecuta los casos; registra la salida real en el handoff.' },
+ { label: 'Lo que se ve', detail: 'Node ejecuta los casos; registra la salida real en el handoff.' },
  ],
  code: `node --version
 node --test tests/cancellation.test.mjs`,

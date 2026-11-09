@@ -47,7 +47,7 @@ export default {
  notes: `Dos costes que no aparecen en la factura del modelo. El primero es el contexto: cada subagente recibe un resumen y devuelve otro; ese intercambio consume tokens, y multiplicar estaciones multiplica el intercambio. El segundo es el conocimiento: si nadie del equipo entiende el cambio aceptado, el mantenimiento queda sin dueño. Añade los bucles: repetir el mismo intento veinte veces no es aprender, es gastar; OWASP lo recoge como consumo sin límites, LLM10:2025. Y la recuperación: revertir código no deshace pagos ni mensajes. Compara el coste por funcionalidad con el tiempo de ciclo y con los defectos que se escapan. Un coste bajo por lote puede salir caro si provoca retrabajo o una interrupción del proveedor.`,
  },
  {
- id: 'factory-23', title: 'Pausa: tres fallos que verás', kind: 'exercise',
+ id: 'factory-23', title: 'Pausa: tres fallos frecuentes', kind: 'exercise',
  lead: 'Tres incidentes reales de una fábrica que se puede montar hoy, con su lección.',
  items: [
  { label: 'Árbol sucio', detail: 'Cambios sin confirmar bloquean el arranque de la orden.' },

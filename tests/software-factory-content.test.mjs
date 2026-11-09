@@ -220,6 +220,25 @@ test('el caso no se anuncia en el pie: se presenta con el ejemplo', () => {
   assert.ok(example.length >= 3, String(example.length));
 });
 
+test('el registro es español neutro, sin voseo ni regionalismos', () => {
+  // Decisión del autor: el directo se dirige a una audiencia de varios países, así que el
+  // texto usa español neutro. Se vigilan las marcas más fáciles de colar sin querer.
+  // Only forms that are unambiguously voseo: unaccented pronouns and verbs, or accented
+  // imperatives like "dejá". Plain third-person forms such as "deja" must keep passing.
+  // Only unambiguously voseo forms: unaccented pronouns and verbs, or accented imperatives.
+  // Plain third-person forms such as "deja" or "usa" must keep passing, so accents matter here.
+  const voseo = /(\bvos\b|\bsos\b|\btenés\b|\bpodés\b|\bquerés\b|\bsabés\b|\bfijate\b|\bacordate\b|\bquedate\b|\bhacé\b|\bmirá\b|\bandá\b|\bdecí\b|\bponé\b|\bdejá\b|\bprobá\b|\btomá\b|\busá\b|\belegí\b|\bescribí\b|\bbuscá\b|\bagregá\b|\brevisá\b|\bpedí\b|\bmedí\b|\bpor vos\b|\bpara vos\b|\ba vos\b)/i;
+  const regional = /\b(che|boludo|laburo|plata|guita|quilombo|copado|posta|garr[óo]n|ordenador|guay|chaval|coger|vale t[íi]o)\b/i;
+  for (const slide of slides) {
+    const fields = [slide.title, slide.lead, slide.plain, slide.quote, slide.notes,
+      ...slide.items.flatMap(entry => [entry.label, entry.detail])].filter(Boolean);
+    for (const text of fields) {
+      assert.doesNotMatch(text, voseo, `${slide.id}: ${text}`);
+      assert.doesNotMatch(text, regional, `${slide.id}: ${text}`);
+    }
+  }
+});
+
 test('portada en español con el alias inglés para la búsqueda', () => {
   const hero = slides[0];
   assert.equal(hero.kind, 'hero');

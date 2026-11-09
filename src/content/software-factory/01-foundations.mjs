@@ -51,10 +51,10 @@ export default {
  lead: 'Promete menos espera y más consistencia; no promete decidir el producto por ti.',
  items: [
  { label: 'Lo que mejora', detail: 'La espera entre pedir y ver, la consistencia entre tareas y el conocimiento que no se va con las personas.' },
- { label: 'Lo que no cambia', detail: 'No decide el producto por vos ni sustituye el criterio: sin criterios escritos produce rápido lo que nadie pidió.' },
+ { label: 'Lo que no cambia', detail: 'No decide el producto en tu lugar ni sustituye el criterio: sin criterios escritos produce rápido lo que nadie pidió.' },
  { label: 'Cuándo no vale la pena', detail: 'Un equipo sin criterios, una tarea que se hace una sola vez o un producto que aún se está tanteando.' },
  ],
- notes: `Esta diapositiva es para quien decide, no solo para quien programa. Una fábrica reduce la espera entre pedir algo y ver el resultado funcionando, mantiene la misma forma de trabajar entre tareas y deja el conocimiento en archivos en lugar de en la cabeza de una persona. Eso vale cuando el equipo cambia, cuando el producto crece y cuando la calidad no puede depender de la memoria de alguien. Lo que no hace: decidir qué construir ni priorizar por vos. Un equipo sin criterios escritos producirá rápido cosas que nadie pidió, y una tarea que se hace una sola vez no compensa montar la línea. Pide un ejemplo del público donde la espera o la rotación duelan de verdad, y compáralo con lo que la fábrica sí cambia.`,
+ notes: `Esta diapositiva es para quien decide, no solo para quien programa. Una fábrica reduce la espera entre pedir algo y ver el resultado funcionando, mantiene la misma forma de trabajar entre tareas y deja el conocimiento en archivos en lugar de en la cabeza de una persona. Eso vale cuando el equipo cambia, cuando el producto crece y cuando la calidad no puede depender de la memoria de alguien. Lo que no hace: decidir qué construir ni priorizar en tu lugar. Un equipo sin criterios escritos producirá rápido cosas que nadie pidió, y una tarea que se hace una sola vez no compensa montar la línea. Pide un ejemplo del público donde la espera o la rotación duelan de verdad, y compáralo con lo que la fábrica sí cambia.`,
  },
  {
  id: 'factory-06', title: 'Un vocabulario mínimo', kind: 'checklist',
