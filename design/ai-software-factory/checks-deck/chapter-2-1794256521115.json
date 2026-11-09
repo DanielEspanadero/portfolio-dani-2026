@@ -1,0 +1,134 @@
+{
+  "selector": "--chapter=2",
+  "probes": [
+    {
+      "mode": "desktop",
+      "slide": "8",
+      "kind": "timeline",
+      "ratio": 1.7777776718139648,
+      "fit": true,
+      "errors": [],
+      "steps": []
+    },
+    {
+      "mode": "desktop",
+      "slide": "9",
+      "kind": "flow",
+      "ratio": 1.7777776718139648,
+      "fit": true,
+      "errors": [],
+      "steps": []
+    },
+    {
+      "mode": "desktop",
+      "slide": "10",
+      "kind": "table",
+      "ratio": 1.7777776718139648,
+      "fit": true,
+      "errors": [],
+      "steps": []
+    },
+    {
+      "mode": "desktop",
+      "slide": "11",
+      "kind": "checklist",
+      "ratio": 1.7777776718139648,
+      "fit": true,
+      "errors": [],
+      "steps": []
+    },
+    {
+      "mode": "desktop",
+      "slide": "12",
+      "kind": "table",
+      "ratio": 1.7777776718139648,
+      "fit": true,
+      "errors": [],
+      "steps": []
+    },
+    {
+      "mode": "desktop",
+      "slide": "13",
+      "kind": "flow",
+      "ratio": 1.7777776718139648,
+      "fit": true,
+      "errors": [],
+      "steps": []
+    },
+    {
+      "mode": "desktop",
+      "slide": "14",
+      "kind": "exercise",
+      "ratio": 1.7777776718139648,
+      "fit": true,
+      "errors": [],
+      "steps": []
+    },
+    {
+      "mode": "phone",
+      "slide": "8",
+      "kind": "timeline",
+      "ratio": 1.7777777777777777,
+      "fit": true,
+      "errors": [],
+      "steps": []
+    },
+    {
+      "mode": "phone",
+      "slide": "9",
+      "kind": "flow",
+      "ratio": 1.7777777777777777,
+      "fit": true,
+      "errors": [],
+      "steps": []
+    },
+    {
+      "mode": "phone",
+      "slide": "10",
+      "kind": "table",
+      "ratio": 1.7777777777777777,
+      "fit": true,
+      "errors": [],
+      "steps": []
+    },
+    {
+      "mode": "phone",
+      "slide": "11",
+      "kind": "checklist",
+      "ratio": 1.7777777777777777,
+      "fit": true,
+      "errors": [],
+      "steps": []
+    },
+    {
+      "mode": "phone",
+      "slide": "12",
+      "kind": "table",
+      "ratio": 1.7777777777777777,
+      "fit": true,
+      "errors": [],
+      "steps": []
+    },
+    {
+      "mode": "phone",
+      "slide": "13",
+      "kind": "flow",
+      "ratio": 1.7777777777777777,
+      "fit": true,
+      "errors": [],
+      "steps": []
+    },
+    {
+      "mode": "phone",
+      "slide": "14",
+      "kind": "exercise",
+      "ratio": 1.7777777777777777,
+      "fit": true,
+      "errors": [],
+      "steps": []
+    }
+  ],
+  "failures": [],
+  "requests": [],
+  "errors": []
+}
