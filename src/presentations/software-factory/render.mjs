@@ -17,7 +17,7 @@ const stateFiles = ['backlog.md', 'specs/*.md', 'board.md', '*.md'];
 // Thin connectors draw in sequence on these three slides (fan-out feel). Ids, not positions:
 // station specialisation, the loop, and the worktree lanes. Renumbering the deck must not
 // move the draw-in animation onto unrelated slides.
-const fanout = new Set(['factory-11', 'factory-15', 'factory-31']);
+const fanout = new Set(['factory-11', 'factory-15', 'factory-32']);
 const chapterOf = slide => chapters.find(chapter => chapter.slides.includes(slide));
 const stepped = slide => slide.steps || ['flow', 'loop', 'gate', 'parallel', 'circle'].includes(slide.kind);
 
@@ -108,7 +108,7 @@ function composition(slide) {
       return `<div class="diagram ${slide.kind}${hasFanout}">${connectors(slide)}<div class="stations main-panels" style="--count:${slide.items.length}">${items}</div>${slide.kind === 'loop' ? loopReturn() : ''}</div>`;
     case 'gate':
       return `<div class="gate-layout">
-        <div class="gate-banner">Compuerta de integración · aceptar o devolver el lote<span class="gate-arm" aria-hidden="true"></span></div>
+        <div class="gate-banner">Compuerta de integración, aceptar o devolver el lote<span class="gate-arm" aria-hidden="true"></span></div>
         <div class="gate main-panels" style="--count:${slide.items.length}">${items}</div>
         <div class="gate-track">${gateTrack()}</div></div>`;
     case 'risk':
@@ -133,7 +133,7 @@ function composition(slide) {
     case 'parallel':
       return `<div class="parallel main-panels${hasFanout}"><div class="lanes">${items}</div><aside class="integration panel"><h3>Integración compartida</h3><p>Contrato + pruebas del conjunto.</p><strong>Cierra el lote antes de operar</strong></aside></div>`;
     case 'exercise':
-      return `<div class="workshop"><aside class="workshop-sign"><span>${slide.pause ? 'CHAT' : 'TALLER'}</span><p>Piensa → contrasta → explica</p></aside><div class="exercise main-panels">${items}</div></div>`;
+      return `<div class="workshop"><aside class="workshop-sign"><span>${slide.pause ? 'CHAT' : 'TALLER'}</span><p>Piensa, contrasta y explica</p></aside><div class="exercise main-panels">${items}</div></div>`;
     case 'closing':
       return `<div class="closing main-panels">${items}</div>`;
     default:
@@ -187,7 +187,7 @@ export function renderGuide({ css = '' } = {}) {
     <style>${css}</style></head><body class="guide"><main><a href="${route}">← Abrir presentación</a>
     <h1>Fábrica de software con IA: guía para enseñar y practicar (AI Software Factory)</h1><p>Notas completas de las ${total} diapositivas, fuentes y un kit local para repetir el ejemplo. El ejercicio es didáctico: no es una aplicación de reservas lista para producción.</p>
     <section aria-labelledby="kit-title"><h2 id="kit-title">Kit local, sin proveedor</h2><p>Node ≥22, sin instalar dependencias ni usar credenciales. Descarga el ZIP y extrae la carpeta; lee README.md. Desde su raíz: <code>node --test tests/cancellation.test.mjs</code>.</p>
-    <p><a download href="/resources/software-factory-kit.zip">Descargar kit completo ZIP</a> · <a download href="${route}/descargar.html">Presentación HTML sin conexión</a></p>
+    <p><a download href="/resources/software-factory-kit.zip">Descargar kit completo ZIP</a> y <a download href="${route}/descargar.html">Presentación HTML sin conexión</a></p>
     <p>El HTML incluye fuentes, estilos y diagramas; las ilustraciones y las notas se leen en esta guía, con conexión. Alternativa sin red: guarda estos ocho archivos conservando las carpetas:</p>
     <ul>${kit.map(file => `<li><a download href="/resources/software-factory/${file}">${file}</a></li>`).join('')}</ul>
     <p>Los eventos de devolución son simulados. No hay pagos, autenticación, persistencia ni concurrencia: integrar y publicar siguen siendo pasos separados con sus propias comprobaciones.</p></section>

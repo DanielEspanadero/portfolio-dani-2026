@@ -20,13 +20,12 @@ const sources = [
 ];
 
 // Structural guarantees complement, not replace, editorial and later visual review.
-test('34 diapositivas, siete capítulos ordenados y composición variada', () => {
+test('35 diapositivas, siete capítulos ordenados y composición variada', () => {
   assert.equal(chapters.length, 7);
-  // S9 added the plain-language definition, the ordinary day in the factory and the
-  // problem/not slide, and paid for them by merging the two 1968 history slides into one.
-  // The S8 ceiling of 32 was a compression target, not a limit on the accepted plan.
-  assert.equal(slides.length, 34);
-  assert.deepEqual(chapters.map(c => c.slides.length), [7, 7, 4, 5, 4, 4, 3]);
+  // S10 added one slide to "Monta tu propia fábrica": where the order and the context come from.
+  // The compression target stays a target: one useful slide was worth the extra page.
+  assert.equal(slides.length, 35);
+  assert.deepEqual(chapters.map(c => c.slides.length), [7, 7, 4, 5, 5, 4, 3]);
   assert.deepEqual(chapters.map(c => c.id), ['foundations', 'line', 'loop', 'risks', 'build', 'parallel', 'closing']);
   assert.equal(new Set(chapters.map(c => c.id)).size, 7);
   assert.equal(new Set(slides.map(s => s.id)).size, slides.length);
@@ -204,7 +203,7 @@ test('la línea llana cubre la jerga mínima y no invade el resto del deck', () 
   // Cobertura obligatoria: orden de trabajo, estaciones, compuertas, bucle, estado,
   // política del aprobador, política de modelos, worktree y métricas.
   for (const id of ['factory-10', 'factory-11', 'factory-13', 'factory-15', 'factory-16',
-    'factory-17', 'factory-18', 'factory-31', 'factory-33']) {
+    'factory-17', 'factory-18', 'factory-26', 'factory-32', 'factory-34']) {
     assert.ok(plain.some(s => s.id === id), `falta plain en ${id}`);
   }
   for (const slide of plain) {
@@ -215,7 +214,7 @@ test('la línea llana cubre la jerga mínima y no invade el resto del deck', () 
   }
 });
 
-test('el caso que corre: una sola cadena desde factory-07 hasta factory-25', () => {
+test('el caso que corre: una sola cadena desde factory-07 hasta factory-26', () => {
   const withStory = slides.filter(s => s.story);
   assert.ok(withStory.length >= 10, String(withStory.length));
   const story = withStory[0].story;
@@ -225,10 +224,21 @@ test('el caso que corre: una sola cadena desde factory-07 hasta factory-25', () 
   const first = slides.findIndex(s => s.story) + 1;
   const last = slides.findLastIndex(s => s.story) + 1;
   assert.equal(first, 7);
-  assert.equal(last, 25);
-  for (let index = 6; index <= 24; index += 1) assert.ok(slides[index].story, `sin story en ${slides[index].id}`);
-  // Desde factory-26 el ejemplo es el contenido: la banda desaparece.
-  for (const slide of slides.slice(25)) assert.equal(slide.story, undefined, slide.id);
+  assert.equal(last, 26);
+  for (let index = 6; index <= 25; index += 1) assert.ok(slides[index].story, `sin story en ${slides[index].id}`);
+  // Desde factory-27 el ejemplo es el contenido: la banda desaparece.
+  for (const slide of slides.slice(26)) assert.equal(slide.story, undefined, slide.id);
+});
+
+test('los textos no llevan símbolos decorativos', () => {
+  // Decisión del autor: en pantalla y en las notas se lee con puntuación normal.
+  // Las rayas, puntos medios, comillas tipográficas y flechas distraen al proyectar.
+  const forbidden = /[\u2014\u2013\u00b7\u00ab\u00bb\u201c\u201d\u2192]/;
+  for (const slide of slides) {
+    const fields = [slide.title, slide.lead, slide.plain, slide.story, slide.quote, slide.notes,
+      ...slide.items.flatMap(entry => [entry.label, entry.detail])].filter(Boolean);
+    for (const text of fields) assert.doesNotMatch(text, forbidden, `${slide.id}: ${text}`);
+  }
 });
 
 test('portada en español con el alias inglés para la búsqueda', () => {
@@ -302,9 +312,9 @@ test('kit completo, sin plantillas ocultas ni resultados inventados y contrato c
   const agents = await read(kit + 'AGENTS.md');
   const worker = await read(kit + 'factory/worker.md');
   const handoff = await read(kit + 'factory/handoff.md');
-  // S9 renumbered the deck: the boundary table is now factory-28, because the definition,
+  // S9 renumbered the deck: the boundary table is now factory-29, because the definition,
   // the ordinary day and the problem/not slide came before it.
-  const stageRules = slides.find(s => s.id === 'factory-28').items.map(i => `${i.label} ${i.detail}`).join(' ');
+  const stageRules = slides.find(s => s.id === 'factory-29').items.map(i => `${i.label} ${i.detail}`).join(' ');
   for (const text of [spec, readme, stageRules]) {
     assert.match(text, />=24h/);
     assert.match(text, /100%/);

@@ -152,8 +152,8 @@ test('figures use the approved plates with factual Spanish alt text and reserved
   // IDs moved by one when S9 inserted the definition and merged the two history slides:
   // the same artwork stays on the same subject, only its slide number changed.
   assert.equal(feature('factory-01').mode, 'feature');
-  assert.equal(feature('factory-30').src, '05-evidencia.png');
-  assert.equal(feature('factory-32').src, '08-circulo.png');
+  assert.equal(feature('factory-31').src, '05-evidencia.png');
+  assert.equal(feature('factory-33').src, '08-circulo.png');
   assert.equal(feature('factory-09').src, '02-linea.png');
   assert.equal(feature('factory-09').mode, 'wash');
   // Washes stay only where opaque panels sit over them; text over artwork was removed.
@@ -291,7 +291,7 @@ test('the story band runs between author and page number only where it belongs',
   const story = escape(withStory[0].story);
   const slide = byId(html, 'factory-09');
   assert.match(slide, new RegExp(`<span class="footer-author">Daniel Españadero</span><span class="footer-story">${story}</span><span class="footer-page">`));
-  assert.doesNotMatch(byId(html, 'factory-26'), /footer-story/);
+  assert.doesNotMatch(byId(html, 'factory-27'), /footer-story/);
   const css = read(`${base}deck.css`);
   assert.match(css, /\.footer-story \{[^}]*font/s);
   assert.match(css, /\.slide-footer \{[^}]*display: flex/s);
@@ -320,6 +320,6 @@ test('draw-in connectors stay on their three subjects after renumbering', async 
   // The fan-out animation is pinned by slide id, not by position in the deck: inserting a
   // slide (S9) must not silently move the draw-in onto a slide nobody asked for.
   const withFanout = slides.filter(slide => byId(html, slide.id).match(/class="[^"]*\bfanout\b/)).map(slide => slide.id);
-  assert.deepEqual(withFanout, ['factory-11', 'factory-15', 'factory-31']);
+  assert.deepEqual(withFanout, ['factory-11', 'factory-15', 'factory-32']);
   assert.match(read(`${base}deck.css`), /\.slide\.active \.fanout \.route-line/);
 });
