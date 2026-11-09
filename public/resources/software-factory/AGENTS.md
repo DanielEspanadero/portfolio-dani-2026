@@ -26,7 +26,7 @@ Usar `node:test` y `node:assert/strict`, solo API pública. Comprobar salidas co
 1. Antes de escribir: confirmar archivos autorizados, contrato y casos frontera.
 2. Si faltan herramientas, hay un conflicto, se necesita otro archivo o una acción no autorizada: detener la parte afectada y entregar la duda concreta.
 3. Máximo dos correcciones basadas en evidencia después del primer intento. Al agotarlas, entregar estado parcial, comando, salida y trabajo restante; no reiniciar el límite en otro chat.
-4. Después del handoff: STOP. La persona revisa y decide aceptar, pedir corrección o detener. Una revisión de otro agente no garantiza razonamiento independiente.
+4. Después del handoff: la compuerta de integración aplica el estándar escrito y devuelve lo que no cumple. La escalada llega con una pregunta concreta. Una revisión de otro agente no garantiza razonamiento independiente.
 5. Aceptar código no autoriza integrarlo; integrar no autoriza publicar. Ninguna publicación forma parte del ejercicio. En una aplicación real hay que acordar controles operativos y recuperación por separado.
 
 Sin proveedor de IA, realizar el mismo proceso manualmente con editor y runner. No existe obligación de usar agentes.

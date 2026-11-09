@@ -6,11 +6,11 @@ export default {
  lead: 'Una produce software verificado; otra produce volumen con luces verdes.',
  items: [
  { label: 'Fábrica real', detail: 'Entrada definida, compuertas automáticas, evidencia y medición del flujo.' },
- { label: 'Imitación', detail: 'Muchas propuestas, pruebas superficiales y nadie puede parar la línea.' },
- { label: 'Ocho modos de fallo', detail: 'Aceptar por costumbre, falso verde, texto hostil, bucles, conocimiento, proveedor, recuperación y control ausente.' },
- { label: 'Control útil', detail: 'Información legible, tiempo real y autoridad para parar y corregir.' },
+ { label: 'Imitación', detail: 'Muchas propuestas, pruebas superficiales y una política sin frontera ni vía de escalado.' },
+ { label: 'Ocho modos de fallo', detail: 'Aceptar por costumbre, falso verde, texto hostil, bucles, conocimiento, proveedor, recuperación y política sin frontera.' },
+ { label: 'Control útil', detail: 'El estándar escrito aplicado en cada corrida, con muestreo y métricas como control.' },
  ],
- notes: `Antes de montar nada conviene conocer cómo falla una fábrica. Vamos a ver ocho familias: aceptar por costumbre, código y prueba con el mismo error, texto hostil con permisos amplios, bucles que consumen presupuesto, conocimiento que se pierde, dependencia del proveedor, recuperación mal entendida y ausencia de un control real. No son prueba de que el método sea inseguro; son modos de fallo concretos, cada uno con una señal observable y una contramedida. Una fábrica que produce volumen con luces verdes y nadie capaz de detenerla es una imitación. El control útil tiene tres partes: información legible, tiempo real para leerla y autoridad para parar. El objetivo del capítulo es reconocer cada síntoma antes de conceder permisos.`,
+ notes: `Antes de montar nada conviene conocer cómo falla una fábrica. Vamos a ver ocho familias: aceptar por costumbre, código y prueba con el mismo error, texto hostil con permisos amplios, bucles que consumen presupuesto, conocimiento que se pierde, dependencia del proveedor, recuperación mal entendida y una política sin frontera ni vía de escalado. No son prueba de que el método sea inseguro; son modos de fallo concretos, cada uno con una señal observable y una contramedida. Una fábrica que produce volumen con luces verdes y no tiene frontera ni escalado es una imitación. El control útil no es vigilancia: es el estándar escrito aplicándose en cada corrida, con muestreo y métricas sobre lo que pasó de verdad. El objetivo del capítulo es reconocer cada síntoma antes de conceder permisos.`,
  },
  {
  id: 'factory-20', title: 'Falso verde: código y prueba con el mismo error', kind: 'risk',
@@ -51,12 +51,12 @@ export default {
  lead: 'Tres incidentes reales de una fábrica que se puede montar hoy, con su lección.',
  items: [
  { label: 'Árbol sucio', detail: 'Cambios sin confirmar bloquean el arranque de la orden.' },
- { label: 'Nada accionable', detail: 'Una orden marcada "necesita persona" sin decir qué falta.' },
+ { label: 'Nada accionable', detail: 'Una orden marcada "necesita persona" sin pregunta concreta: nadie puede responder.' },
  { label: 'Metadatos', detail: 'Un cambio de configuración de la fábrica impide fusionar el lote.' },
  { label: 'Tu turno', detail: '¿Cuál de los tres ya viste y qué señal lo habría mostrado antes?' },
  ], pause: true,
  figure: { src: '03-fallo.png', mode: 'feature', alt: 'Plano de una cinta detenida en un pórtico con lámpara roja: cajas esperando a ambos lados del paso cerrado.' },
- notes: `Tres incidentes concretos de una fábrica que se puede montar hoy; ninguno es una anécdota de burla. Primero, el árbol de trabajo sucio: la orden no arranca porque hay cambios sin confirmar que nadie sabe a qué pertenecen, y el primer paso es limpiar o apartar ese estado. Segundo, una orden marcada como "necesita intervención humana" sin decir qué falta: no hay pregunta, ni dato, ni archivo, así que la persona no puede hacer nada útil; escalar exige una pregunta concreta y un formato de respuesta. Tercero, un cambio en los metadatos de la fábrica que impide fusionar el lote: versiona la configuración como código y deja un camino de vuelta. Pide al chat cuál de los tres ya vieron.`,
+ notes: `Tres incidentes concretos de una fábrica que se puede montar hoy; ninguno es una anécdota de burla. Primero, el árbol de trabajo sucio: la orden no arranca porque hay cambios sin confirmar que nadie sabe a qué pertenecen, y el primer paso es limpiar o apartar ese estado. Segundo, una orden marcada como "necesita intervención humana" sin decir qué falta: no hay pregunta, ni dato, ni archivo, así que la persona no puede hacer nada útil; escalar exige una pregunta concreta y un formato de respuesta. Tercero, un cambio en los metadatos de la fábrica que impide fusionar el lote: versiona la configuración como código y deja un camino de vuelta. Los tres tienen la misma raíz: una política sin frontera ni vía de escalado. Pide al chat cuál de los tres ya vieron.`,
  },
  ],
 };

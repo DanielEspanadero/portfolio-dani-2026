@@ -75,6 +75,10 @@ test('16 compositions preserve all stage text and keep notes and sources off sta
   assert.match(stage, /<svg/);
   assert.match(stage, /<table/);
   assert.match(stage, /<pre/);
+  // El escenario tampoco reutiliza la familia «criterio humano»: vive en el contenido y en la
+  // banda de la compuerta, así que se comprueba sobre el HTML renderizado y no solo en los datos.
+  assert.doesNotMatch(stage,
+    /(?:criterio\s+humano|persona\s+con\s+criterio|una\s+persona\s+decide|alguien\s+decide|decisi[oó]n\s+humana|acepta\w*\s+o\s+devuelv\w*)/i);
 });
 
 test('every content context is escaped, including code, notes and source attributes', async () => {
@@ -201,6 +205,9 @@ test('the conveyor token only follows revealed stations and rests at the gate', 
   assert.match(css, /:has\(\.station:nth-child\(4\) p:not\(\.step-pending\)\) \.packet-4/);
   const gate = section(html, 'gate');
   assert.match(gate, /class="gate-arm"/);
+  // La banda dice lo que la compuerta hace: aplica el estándar y devuelve lo que no cumple.
+  assert.match(gate, /<div class="gate-banner">[^<]*aplica el est[aá]ndar[^<]*<span class="gate-arm"/);
+  assert.doesNotMatch(gate, /acepta\w* o devuelv\w*/i);
   assert.match(css, /roll-to-gate/);
   assert.match(css, /\.kind-gate:has\(\.station p:not\(\.step-pending\)\) \.gate-arm/);
 });

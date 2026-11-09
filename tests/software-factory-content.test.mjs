@@ -109,8 +109,8 @@ test('temario requerido: la fábrica como sistema de producción y su bucle', ()
     // el bucle como maquinaria y su estado compartido
     [/bucle/i, /tope de reintentos|n[uú]mero fijo de reintentos/i, /backlog/i,
       /registro de estado|tablero/i, /markdown/i],
-    // política del aprobador: fusionar o escalar, con reglas explícitas
-    [/aprobador/i, /escala|escalado/i, /pagos/i, /accesos|credenciales/i,
+    // decisión escrita: la política de autonomía dice qué avanza solo y qué escala siempre
+    [/pol[ií]tica de autonom[ií]a/i, /escala|escalado/i, /pagos/i, /accesos|credenciales/i,
       /invalidaci[oó]n de cach[eé]|migraciones/i, /irreversible/i],
     // flujo, integración y medición
     [/integrar|integraci[oó]n/i, /rollback|vuelta atr[aá]s/i, /tiempo de ciclo/i, /lote/i,
@@ -140,23 +140,57 @@ test('la definición en lenguaje llano abre el deck, antes de cualquier detalle'
   assert.match(slides[2].title, /no es un producto/i);
   const statement = definition.quote;
   const all = `${definition.title} ${definition.lead} ${statement} ${definition.items.map(i => `${i.label} ${i.detail}`).join(' ')}`;
-  // El significado acordado: sistema repetible, orden comprobable, equipo de agentes, compuertas y una persona que decide.
+  // El significado acordado: sistema repetible, orden comprobable, equipo de agentes, comprobaciones y estándar escrito.
   assert.match(statement, /sistema de trabajo repetible/i);
   assert.match(statement, /criterios (?:que se pueden )?comprobables/i);
   assert.match(statement, /agentes/i);
   assert.match(statement, /construye/i);
   assert.match(statement, /prueba/i);
   assert.match(statement, /comprobaciones pasan/i);
-  assert.match(statement, /persona/i);
-  assert.match(statement, /decide/i);
+  // El juicio está escrito: el resultado entra cuando el estándar y las comprobaciones lo permiten.
+  assert.match(statement, /est[aá]ndar escrito/i);
+  assert.match(statement, /comprobaciones/i);
+  assert.doesNotMatch(statement, /criterio humano|persona con criterio|una persona decide|decisi[oó]n humana/i);
   // Legible sin contexto técnico: si el término es inevitable, va glosado en la misma frase.
   assert.doesNotMatch(statement, /handoff|worktree|compuerta|\bspec\b|backlog|pull request|\bmerge\b|\bdiff\b|\btoken\b|\blote\b|\bCI\b|runner/i);
   assert.match(statement, /programas de IA|\([^)]*IA[^)]*\)/i);
   // Tres claves cortas: misma entrada misma salida, máquina donde puede, registro de todo.
   assert.equal(definition.items.length, 3);
   assert.match(all, /mismo resultado|misma entrada/i);
-  assert.match(all, /persona|m[aá]quina.[^.]*decid/i);
+  // La segunda clave nombra el estándar que decide, no una persona en el punto de decisión.
+  assert.match(all, /est[aá]ndar[^.]*decid/i);
+  assert.match(all, /persona[^.]*define|define[^.]*antes/i);
   assert.match(all, /registro|queda escrito/i);
+});
+
+test('el juicio está escrito: la familia editorial «criterio humano» no vuelve al escenario', () => {
+  // S16: la fábrica delega el juicio en criterios escritos que la línea aplica igual cada
+  // corrida. Si esta familia reaparece en una diapositiva o en una nota, el foco vuelve a
+  // estar en la intervención manual en lugar de en la producción repetible y verificable.
+  const family = /(?:criterio\s+humano|persona\s+con\s+criterio|una\s+persona\s+decide|alguien\s+decide|decisi[oó]n\s+humana|acepta\w*\s+o\s+devuelv\w*)/i;
+  const stage = slide => [slide.title, slide.lead, slide.plain, slide.quote, slide.code ?? '',
+    ...slide.items.flatMap(entry => [entry.label, entry.detail])].filter(Boolean);
+  for (const slide of slides) {
+    for (const text of [...stage(slide), slide.notes]) assert.doesNotMatch(text, family, `${slide.id}: ${text}`);
+  }
+  // La definición nombra el estándar escrito y las comprobaciones, no a una persona que decide.
+  const definition = slides.find(slide => slide.id === 'factory-02');
+  assert.match(definition.quote, /est[aá]ndar escrito/i);
+  assert.match(definition.quote, /comprobaciones/i);
+  // La política de autonomía es explícita: cuatro momentos de una persona y lo que siempre escala.
+  const policy = slides.find(slide => slide.id === 'factory-17');
+  assert.equal(policy.kind, 'table');
+  assert.equal(policy.items.length, 5);
+  const labels = policy.items.map(entry => entry.label).join(' | ');
+  for (const moment of [/est[aá]ndar/i, /autonom[ií]a/i, /escalada/i, /incidente/i, /siempre escala/i]) {
+    assert.match(labels, moment, labels);
+  }
+  // Lo que la política escala siempre, y el criterio que la alimenta después de un incidente.
+  assert.match(policy.items.at(-1).detail, /pagos/i);
+  assert.match(policy.items.at(-1).detail, /accesos/i);
+  assert.match(policy.items.at(-1).detail, /irreversible/i);
+  // Muestreo y métricas son control, no permiso: nadie revisa cada cambio.
+  assert.match(policy.notes, /muestreo|m[eé]tricas/i);
 });
 
 test('un día normal en la fábrica: cinco paradas con hora y detalle llano', () => {
@@ -190,9 +224,9 @@ test('qué problema resuelve y qué no, en lenguaje de negocio', () => {
   assert.match(all, /consistencia|consistente/i);
   assert.match(all, /conocimiento/i);
   assert.match(all, /personas|equipo/i);
-  // Lo que no: no decide el producto ni arregla un equipo sin criterios.
-  assert.match(all, /no decide el producto/i);
-  assert.match(all, /sin criterios/i);
+  // Lo que no: la fábrica no elige qué construir; sin estándar escrito produce lo que nadie pidió.
+  assert.match(all, /no elige qu[eé] construir/i);
+  assert.match(all, /sin est[aá]ndar escrito/i);
   // Sin marketing: nada de superlativos ni promesas de velocidad mágica.
   assert.doesNotMatch(all, /revolucion|10x|milagro|garantiza|sin esfuerzo|disruptiv/i);
   assert.match(business.items.map(i => i.label).join(' '), /mejora/i);

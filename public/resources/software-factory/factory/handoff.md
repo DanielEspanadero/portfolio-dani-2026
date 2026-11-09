@@ -4,7 +4,7 @@ No es un informe de pruebas ni una aprobación. Rellenar solo con evidencia obse
 
 ## Cambio
 
-- Estado: [pendiente / parcial / listo para decisión humana]
+- Estado: [pendiente / parcial / listo para la compuerta de integración]
 - Objetivo y reglas cubiertas: [rellenar]
 - Archivos cambiados: [rellenar]
 - Fuera de alcance: [rellenar]
@@ -20,11 +20,11 @@ No es un informe de pruebas ni una aprobación. Rellenar solo con evidencia obse
 - Casos preservados y revisión del diff: [rellenar]
 - Correcciones utilizadas y límite restante: [rellenar]
 
-## Riesgos y siguiente decisión
+## Riesgos y siguiente paso
 
 - Dudas, fallos y comprobaciones pendientes: [rellenar]
 - Autenticación, autorización, concurrencia y servicios reales: fuera de este ejercicio.
 - Acción propuesta y alcance: [rellenar]
-- Decisión humana sobre aceptación: [pendiente]
+- Compuerta de integración: [pendiente; aplica el estándar escrito y devuelve lo que no cumple]
 - Integración: [no autorizada]
 - Publicación: [no autorizada; requiere decisión separada]

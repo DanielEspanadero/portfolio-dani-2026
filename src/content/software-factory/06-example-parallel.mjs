@@ -29,14 +29,14 @@ export default {
  },
  {
  id: 'factory-31', title: 'El lote aterriza integrado', kind: 'gate',
- lead: 'El lote entra con diff, evidencia y vuelta atrás; una persona acepta o devuelve el defecto.',
+ lead: 'El lote entra con diff, evidencia y vuelta atrás; la compuerta aplica el estándar y devuelve lo que no cumple.',
  figure: { src: '05-evidencia.png', mode: 'feature', alt: 'Tarjeta de informe con líneas de datos, un sello ámbar y una lupa grande apoyada encima.' },
  items: [
  { label: 'Conjunto', detail: 'La función y el resto del sistema compilan y pasan sus pruebas juntos.' },
  { label: 'Fuera de alcance', detail: 'Autenticación, autorización, persistencia, concurrencia y pagos reales quedan fuera.' },
  { label: 'Vuelta atrás', detail: 'Cómo revertir el código y qué efectos externos no se deshacen.' },
  ],
- notes: `Este es el final de la línea, no un juicio final. El cambio entra al conjunto con tres cosas: el diff completo, la evidencia de las pruebas ejecutadas y un plan de vuelta atrás que distingue código de efectos externos. Aquí, y solo aquí, una persona acepta el lote para integrarlo o devuelve un defecto concreto. El núcleo no incluye autenticación, autorización, persistencia, concurrencia ni pagos: integrarlo en un producto exige trabajo adicional. Integrar tampoco es desplegar. Publicar añade usuarios reales, observabilidad y un plan de recuperación probado. Y repetir el ejemplo de la devolución ya enviada: restaurar una versión de código no recupera automáticamente ese efecto externo.`,
+ notes: `Este es el final de la línea, no un juicio final. El cambio entra al conjunto con tres cosas: el diff completo, la evidencia de las pruebas ejecutadas y un plan de vuelta atrás que distingue código de efectos externos. Aquí, y solo aquí, la compuerta aplica el estándar escrito y devuelve, con un defecto concreto, lo que no cumple. Lo que no encaja se escala con una pregunta concreta, no se revisa a mano por costumbre. El núcleo no incluye autenticación, autorización, persistencia, concurrencia ni pagos: integrarlo en un producto exige trabajo adicional. Integrar tampoco es desplegar. Publicar añade usuarios reales, observabilidad y un plan de recuperación probado. Y repetir el ejemplo de la devolución ya enviada: restaurar una versión de código no recupera automáticamente ese efecto externo.`,
  },
  {
  id: 'factory-32', title: 'Worktrees y contrato compartido', kind: 'parallel',

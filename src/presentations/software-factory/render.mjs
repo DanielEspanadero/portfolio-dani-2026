@@ -298,7 +298,7 @@ function composition(slide) {
       return `<div class="diagram ${slide.kind}${hasFanout}">${connectors(slide)}<div class="stations main-panels" style="--count:${slide.items.length}">${items}</div>${slide.kind === 'loop' ? loopReturn() : ''}</div>`;
     case 'gate':
       return `<div class="gate-layout">
-        <div class="gate-banner">Compuerta de integración, aceptar o devolver el lote<span class="gate-arm" aria-hidden="true"></span></div>
+        <div class="gate-banner">Compuerta de integración, aplica el estándar y devuelve lo que no cumple<span class="gate-arm" aria-hidden="true"></span></div>
         <div class="gate main-panels" style="--count:${slide.items.length}">${items}</div>
         <div class="gate-track">${gateTrack()}</div></div>`;
     case 'risk':

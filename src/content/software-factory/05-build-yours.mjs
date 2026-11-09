@@ -64,11 +64,11 @@ node --test tests/cancellation.test.mjs`,
  figure: { src: '07-panel.png', mode: 'feature', alt: 'Muro de doce pantallas de telemetría sobre una consola inclinada, con una gráfica y un indicador ámbar.' },
  items: [
  { label: 'Fase por orden', detail: 'En qué paso está cada trabajo y desde cuándo está ahí.' },
- { label: 'Cola de personas', detail: 'Órdenes que esperan una decisión o capacidad de revisión.' },
+ { label: 'Cola de escaladas', detail: 'Órdenes esperando respuesta a una pregunta concreta o capacidad de revisión.' },
  { label: 'Compuertas fallidas', detail: 'Qué compuerta falló, con qué salida y cuántos reintentos acumuló.' },
  { label: 'Caja negra', detail: 'Si solo ves el resultado final, no distingues suerte de proceso.' },
  ],
- notes: `Una fábrica que no se puede mirar por dentro pierde la confianza del equipo. Lo que se observa mientras la línea corre: en qué fase está cada orden y desde cuándo, la cola de trabajos que esperan una persona o capacidad de revisión, y las compuertas que fallan con su salida y su número de reintentos. Esa información no es vigilancia del agente: es el estado de producción, igual que un panel de planta. Si solo ves el resultado final, no distingues suerte de proceso ni puedes explicar por qué un lote tardó tres días. La caja negra obliga a confiar sin evidencia. Con fases registradas, un atasco se detecta antes de que se convierta en una entrega a ciegas.`,
+ notes: `Una fábrica que no se puede mirar por dentro pierde la confianza del equipo. Lo que se observa mientras la línea corre: en qué fase está cada orden y desde cuándo, la cola de escaladas que esperan respuesta o capacidad de revisión, y las compuertas que fallan con su salida y su número de reintentos. Esa información no es vigilancia del agente: es el estado de producción, igual que un panel de planta. Si solo ves el resultado final, no distingues suerte de proceso ni puedes explicar por qué un lote tardó tres días. La caja negra obliga a confiar sin evidencia. Con fases registradas, un atasco se detecta antes de que se convierta en una entrega a ciegas.`,
  },
  ],
 };
