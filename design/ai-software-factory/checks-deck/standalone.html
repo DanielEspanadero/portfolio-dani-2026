@@ -6,11 +6,11 @@
   <meta name="color-scheme" content="dark">
   <meta name="theme-color" content="#05070d">
   <title>AI Software Factory: qué es y cómo construir una | Daniel Españadero</title>
-  <meta name="description" content="54 diapositivas: historia, estaciones de trabajo, agentes, riesgos, desarrollo paralelo y taller local para crear tu propia fábrica de software con IA.">
+  <meta name="description" content="32 diapositivas: historia, estaciones de trabajo, agentes, riesgos, desarrollo paralelo y taller local para crear tu propia fábrica de software con IA.">
   <meta name="author" content="Daniel Españadero">
   <link rel="canonical" href="https://daniel-espanadero.com/presentaciones/software-factory">
   <meta property="og:title" content="AI Software Factory: qué es y cómo construir una | Daniel Españadero">
-  <meta property="og:description" content="54 diapositivas: historia, estaciones de trabajo, agentes, riesgos, desarrollo paralelo y taller local para crear tu propia fábrica de software con IA.">
+  <meta property="og:description" content="32 diapositivas: historia, estaciones de trabajo, agentes, riesgos, desarrollo paralelo y taller local para crear tu propia fábrica de software con IA.">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="es_ES">
   <meta property="og:url" content="https://daniel-espanadero.com/presentaciones/software-factory">
@@ -18,7 +18,7 @@
   <meta property="og:image:alt" content="Daniel Españadero, Backend Software Engineer especializado en Java e IA aplicada">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="AI Software Factory: qué es y cómo construir una | Daniel Españadero">
-  <meta name="twitter:description" content="54 diapositivas: historia, estaciones de trabajo, agentes, riesgos, desarrollo paralelo y taller local para crear tu propia fábrica de software con IA.">
+  <meta name="twitter:description" content="32 diapositivas: historia, estaciones de trabajo, agentes, riesgos, desarrollo paralelo y taller local para crear tu propia fábrica de software con IA.">
   <meta name="twitter:image" content="https://daniel-espanadero.com/og/default-og-image.png">
   <style>
 /* === FONT LICENSE ===
@@ -258,12 +258,25 @@ h1, h2, h3, p { margin: 0; }
 h1, .slide h2 { font-size: 88px; font-weight: 650; line-height: 1.04; letter-spacing: -3px; max-width: 1630px; }
 .lead { font-size: 36px; line-height: 1.3; margin-top: 28px; color: #c4d7da; max-width: 1580px; }
 .composition { position: absolute; left: 120px; right: 120px; top: 430px; height: 480px; }
+
+/* === PLATES: approved artwork keeps its frame and box even when a file is missing === */
+.plate { position: absolute; margin: 0; }
+.plate img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; border: 1px solid #4f6b73; background: #101719; color: #b3ced4; font: 20px/1.3 'Instrument Sans', sans-serif; overflow: hidden; }
+.plate-frame { position: absolute; inset: -10px; border: 1px solid #3d565d; pointer-events: none; }
+.plate-caption { display: block; min-height: 22px; margin-top: 8px; border-top: 1px solid #3d565d; }
+.plate-feature::after { content: ''; position: absolute; inset: -1px; background: radial-gradient(closest-side, transparent 58%, #101719 135%); pointer-events: none; }
+/* Wash: full-bleed, very low contrast, scrim keeps every text layer above 4.5:1. */
+.plate-wash { inset: 0; width: 100%; height: 100%; z-index: 0; }
+.plate-wash img { width: 100%; height: 100%; aspect-ratio: auto; object-fit: cover; border: 0; opacity: .22; filter: saturate(.85); }
+.plate-wash .plate-frame, .plate-wash .plate-caption { display: none; }
+.plate-wash::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(16, 23, 25, .45) 0%, rgba(16, 23, 25, .62) 60%, rgba(16, 23, 25, .5) 100%); }
 .slide-footer { position: absolute; left: 120px; right: 120px; bottom: 60px; border-top: 1px solid #718d94; padding-top: 22px; display: flex; justify-content: space-between; font-size: 24px; }
 .slide-footer span:last-child { font-family: 'JetBrains Mono'; color: var(--amber); font-size: 22px; }
 .panel { min-width: 0; }
 .station h3, .integration h3 { font-size: 32px; line-height: 1.15; font-weight: 600; margin-bottom: 20px; overflow-wrap: anywhere; }
 .station p, .integration p { font-size: 29px; line-height: 1.35; overflow-wrap: anywhere; }
-.station-number { display: block; font: 25px 'JetBrains Mono'; color: var(--cyan); margin-bottom: 22px; }
+.station-number { display: block; font: 25px 'JetBrains Mono'; color: var(--cyan); margin-bottom: 22px; transition: transform .3s ease-out; }
+.station:has(p.step-pending) .station-number { transform: scale(.94); }
 .step-pending { opacity: .13; visibility: hidden; pointer-events: none; }
 
 /* === HERO / CLOSING: oversized editorial statement, assembly rail === */
@@ -273,12 +286,17 @@ h1, .slide h2 { font-size: 88px; font-weight: 650; line-height: 1.04; letter-spa
 .hero-route { position: absolute; top: -20px; width: 100%; height: 40px; }
 .hero-line { display: grid; grid-template-columns: repeat(3, 1fr); gap: 65px; padding-top: 45px; }
 .hero-line .station { border-left: 2px solid var(--cyan); padding-left: 28px; }
+.kind-hero.has-plate h1 { max-width: 1000px; }
+.kind-hero.has-plate .lead { max-width: 940px; }
+.kind-hero .plate { right: 0; top: -360px; width: 620px; }
 .kind-closing .slide-heading h2 { font-size: 110px; color: var(--amber); }
 .closing { display: grid; grid-template-columns: repeat(3, 1fr); gap: 60px; }
 .closing .station { border-top: 2px solid var(--amber); padding-top: 30px; }
 /* A two-line closing headline needs its own breathing room above the columns. */
 .kind-closing h2 { font-size: 80px; }
 .kind-closing .composition { top: 456px; }
+.kind-closing.has-plate .closing { grid-template-columns: 1fr 1fr; gap: 40px 64px; padding-right: 610px; }
+.kind-closing .plate { right: 0; top: 0; width: 520px; }
 
 /* === TIMELINE: milestones on one continuous horizontal axis === */
 .timeline { display: grid; grid-template-columns: repeat(var(--count), 1fr); gap: 50px; padding-top: 58px; border-top: 3px solid var(--cyan); }
@@ -295,23 +313,47 @@ h1, .slide h2 { font-size: 88px; font-weight: 650; line-height: 1.04; letter-spa
 /* === DIAGRAMS: bounded stations and manually revealed, reserved geometry === */
 .diagram { position: relative; height: 100%; }
 .connectors { position: absolute; inset: 0; width: 100%; height: 100%; color: var(--cyan); overflow: visible; }
-.route-line, .return-line { fill: none; stroke: var(--cyan); stroke-width: 3; }
-.return-line { stroke-dasharray: 12 10; }
-.packet { fill: none; stroke: var(--amber); stroke-width: 9; stroke-dasharray: 18 1600; animation: convey 5s ease-in-out infinite; }
-@keyframes convey { from { stroke-dashoffset: 0; } to { stroke-dashoffset: -650; } }
+.route-line { fill: none; stroke: var(--cyan); stroke-width: 3; }
+.packet { fill: none; stroke: var(--amber); stroke-width: 9; stroke-dasharray: 18 1600; animation: convey 4.4s ease-in-out infinite; opacity: 0; }
+@keyframes convey { from { stroke-dashoffset: 0; } to { stroke-dashoffset: -420; } }
+@keyframes roll-to-gate { from { stroke-dashoffset: 0; } to { stroke-dashoffset: -1452; } }
+/* A token exists only past the station whose explanation was revealed. */
+.diagram:has(.station:nth-child(1) p:not(.step-pending)) .packet-1,
+.diagram:has(.station:nth-child(2) p:not(.step-pending)) .packet-2,
+.diagram:has(.station:nth-child(3) p:not(.step-pending)) .packet-3,
+.diagram:has(.station:nth-child(4) p:not(.step-pending)) .packet-4 { opacity: 1; }
+.diagram .station p, .gate .station p { transition: opacity .32s ease-out; }
+/* The gate slide rolls once and rests before the barrier: advancing is not approving. */
+.kind-gate .packet { opacity: 1; animation: none; }
+.slide.active .kind-gate .gate-packet { animation: roll-to-gate 5.2s ease-out 1 forwards; }
 .stations { position: relative; display: grid; grid-template-columns: repeat(var(--count), 1fr); gap: 42px; padding-top: 18px; }
+.stations[style*="--count:5"] { gap: 30px; }
+.stations[style*="--count:5"] .station { padding: 22px; }
+.stations[style*="--count:5"] .station h3 { font-size: 30px; margin-bottom: 14px; }
+.stations[style*="--count:5"] .station p { font-size: 28px; line-height: 1.3; }
 .stations .station { background: #172127; border: 2px solid var(--cyan); padding: 28px; min-height: 365px; }
-.loop .stations .station { min-height: 350px; }
+.loop .stations .station { min-height: 320px; }
 .loop .stations { padding-top: 0; }
-.gate-banner { font: 26px 'JetBrains Mono'; color: var(--amber); padding: 14px 24px; margin-bottom: 26px; border: 2px solid var(--amber); border-left: 14px double var(--amber); background: #10171980; }
+.diagram.loop { display: grid; grid-template-rows: auto 62px; align-content: start; }
+/* The return row is a grid sibling: it starts at the measured station bottom. */
+.loop-return { position: relative; z-index: 1; height: 62px; border-left: 3px solid var(--cyan); border-right: 3px solid var(--cyan); border-bottom: 3px dashed var(--cyan); }
+.loop-return::before { content: ''; position: absolute; left: -10px; top: 0; width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-bottom: 16px solid var(--cyan); }
+.return-sweep { position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: linear-gradient(90deg, transparent 0 40%, var(--amber) 50%, transparent 60% 100%); background-size: 300% 100%; animation: sweep 4.8s linear infinite; }
+.rounds { position: absolute; right: 0; top: 6px; font: 20px 'JetBrains Mono'; color: var(--amber); letter-spacing: .06em; }
+.gate-banner { position: relative; font: 26px 'JetBrains Mono'; color: var(--amber); padding: 14px 24px; margin-bottom: 26px; border: 2px solid var(--amber); border-left: 14px double var(--amber); background: #10171980; }
+.gate-arm { position: absolute; right: -6px; top: -8px; width: 6px; height: calc(100% + 16px); background: var(--amber); transform-origin: top center; transition: transform .55s ease; }
+/* One notch, only after a factory step is revealed: never a full automatic opening. */
+.kind-gate:has(.station p:not(.step-pending)) .gate-arm { transform: rotate(-9deg); }
+.kind-gate.has-plate .gate-layout { width: calc(100% - 440px); }
+.kind-gate .plate { right: 0; top: 0; width: 380px; }
+.gate-layout { display: grid; grid-template-columns: minmax(0, 1fr); align-content: start; height: 100%; }
+.gate-track { position: relative; height: 46px; margin-top: 14px; }
+.gate-track svg { width: 100%; height: 46px; overflow: visible; }
+.gate-stop { stroke: var(--amber); stroke-width: 4; }
+.gate-stop-label { position: absolute; right: 0; bottom: 8px; font: 28px 'JetBrains Mono', monospace; color: var(--amber); background: #172127; padding-left: 18px; }
 .gate { display: grid; grid-template-columns: repeat(var(--count), 1fr); gap: 36px; }
 .gate .station { border-left: 3px solid var(--amber); padding: 12px 25px; }
 .gate .station-number { color: var(--amber); }
-.kind-gate .packet { animation-duration: 7s; }
-.diagram-mini { position: absolute; bottom: -35px; left: 0; right: 0; height: 35px; overflow: hidden; }
-.diagram-mini .connectors { top: -210px; height: 480px; max-height: none; }
-.kind-parallel .diagram-mini .packet { stroke-dasharray: 18 1600; }
-.kind-gate .diagram-mini::after { content: 'Lote pendiente de integrar'; position: absolute; right: 0; bottom: 0; font: 24px 'JetBrains Mono'; color: var(--amber); background: #172127; padding-left: 20px; }
 
 /* === RISKS: causal sequence with explicit warning labels === */
 .risk { display: grid; grid-template-columns: 1.15fr 1fr 1fr; gap: 52px; }
@@ -325,6 +367,8 @@ h1, .slide h2 { font-size: 88px; font-weight: 650; line-height: 1.04; letter-spa
 .callouts { display: grid; gap: 30px; align-content: start; }
 .callouts .station { border-left: 3px solid var(--amber); padding: 8px 0 8px 30px; }
 .callouts .station-number { display: none; }
+.kind-code.has-plate .slide-heading, .kind-table.has-plate .slide-heading { right: 620px; }
+.kind-code .plate, .kind-table .plate { right: 0; top: -258px; width: 380px; }
 
 /* === BOUNDARIES: aligned inputs and outcomes === */
 .boundary-table { width: 100%; border-collapse: collapse; table-layout: fixed; text-align: left; font-size: 29px; line-height: 1.25; }
@@ -332,6 +376,7 @@ h1, .slide h2 { font-size: 88px; font-weight: 650; line-height: 1.04; letter-spa
 .boundary-table th:first-child { width: 34%; }
 .boundary-table thead { font: 24px 'JetBrains Mono'; color: var(--cyan); background: #101719; }
 .boundary-table tbody th { color: var(--amber); font-weight: 550; }
+.boundary-table[data-rows="5"] th, .boundary-table[data-rows="5"] td { padding: 11px 24px; }
 
 /* === PARALLEL: separate lanes converge on one shared contract === */
 .parallel { position: relative; display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr); gap: 64px; height: 100%; align-items: stretch; }
@@ -343,6 +388,8 @@ h1, .slide h2 { font-size: 88px; font-weight: 650; line-height: 1.04; letter-spa
 .integration { border-left: 10px double var(--amber); padding: 34px 30px; background: #101719; display: flex; flex-direction: column; justify-content: center; gap: 18px; }
 
 .integration strong { display: block; font: 24px/1.4 'JetBrains Mono'; color: var(--amber); }
+.kind-parallel.has-plate .integration { margin-bottom: 200px; }
+.kind-parallel .plate { right: 0; bottom: 0; width: 300px; }
 
 /* === CHECKLIST / WORKSHOP: a readable list and a chat prompt === */
 .checklist { display: grid; gap: 12px; }
@@ -351,11 +398,58 @@ h1, .slide h2 { font-size: 88px; font-weight: 650; line-height: 1.04; letter-spa
 .workshop { display: grid; grid-template-columns: 390px 1fr; gap: 75px; }
 .workshop-sign { border-top: 8px solid var(--amber); padding-top: 35px; }
 .workshop-sign span { font: 72px 'Instrument Serif'; color: var(--amber); }
-.workshop-sign p { font-size: 32px; line-height: 1.4; margin-top: 30px; }
-.exercise { display: grid; gap: 28px; }
-.exercise .station { padding: 8px 0 8px 70px; position: relative; }
-.exercise .station-number { position: absolute; left: 0; top: 6px; }
-.exercise h3 { margin-bottom: 10px; }
+.workshop-sign p { font-size: 32px; line-height: 1.4; margin-top: 24px; }
+.exercise { display: grid; gap: 20px; }
+.exercise .station { padding: 4px 0 4px 70px; position: relative; }
+.exercise .station-number { position: absolute; left: 0; top: 4px; }
+.exercise h3 { margin-bottom: 6px; }
+.kind-exercise .plate { left: 0; bottom: 0; width: 300px; }
+
+/* === FAN-OUT / DRAW-IN: thin connectors appear in sequence, never noise === */
+@keyframes draw { from { stroke-dashoffset: 900; } to { stroke-dashoffset: 0; } }
+.slide.active .fanout .route-line { stroke-dasharray: 900; animation: draw .65s ease-out calc(var(--i, 0) * .13s) both; }
+.checklist.fanout { position: relative; padding-left: 34px; }
+.checklist.fanout::before { content: ''; position: absolute; left: 0; top: 34px; bottom: 34px; border-left: 2px solid var(--cyan); }
+.checklist.fanout .station { position: relative; }
+.checklist.fanout .station::before { content: ''; position: absolute; left: -34px; top: 30px; width: 32px; border-top: 2px solid var(--cyan); transform: scaleX(0); transform-origin: left center; }
+.slide.active .checklist.fanout .station::before { animation: fan .5s ease-out forwards; }
+.slide.active .checklist.fanout .station:nth-child(2)::before { animation-delay: .12s; }
+.slide.active .checklist.fanout .station:nth-child(3)::before { animation-delay: .24s; }
+.slide.active .checklist.fanout .station:nth-child(4)::before { animation-delay: .36s; }
+
+/* === FILES: the state of the line as a versioned tree === */
+.files { display: grid; gap: 4px; align-content: start; }
+.files-root { font: 500 30px/1.2 'JetBrains Mono', monospace; color: var(--cyan); }
+.files-root span { color: var(--amber); margin-right: 10px; }
+.tree { list-style: none; margin: 0; padding: 0; display: grid; }
+.file-row { display: grid; grid-template-columns: 470px 1fr; gap: 24px; align-items: start; padding: 9px 0; border-bottom: 1px solid #557077; }
+.file-path { font: 28px/1.35 'JetBrains Mono', monospace; color: var(--paper); overflow-wrap: anywhere; }
+.file-path span { color: var(--cyan); }
+.file-note h3 { font-size: 30px; line-height: 1.15; margin-bottom: 4px; }
+.file-note p { font-size: 28px; line-height: 1.3; color: #d4e2e1; }
+
+/* === CIRCLE: closed loop, measured ring, animated return arc === */
+.circle-loop { position: relative; height: 100%; }
+.ring { position: absolute; inset: 0; width: 100%; height: 100%; }
+.ring-track { fill: none; stroke: #4c6b73; stroke-width: 2; stroke-dasharray: 4 10; }
+.ring-flow { fill: none; stroke: var(--cyan); stroke-width: 3; }
+.ring-return { fill: none; stroke: var(--amber); stroke-width: 3; stroke-dasharray: 12 10; animation: ring-sweep 5.4s linear infinite; }
+@keyframes ring-sweep { from { stroke-dashoffset: 0; } to { stroke-dashoffset: -220; } }
+.ring-node { fill: #172127; stroke: var(--amber); stroke-width: 3; }
+.ring-label { position: absolute; width: 372px; }
+.ring-label-0 { left: 0; top: 0; }
+.ring-label-1 { right: 0; top: 0; }
+.ring-label-2 { right: 0; bottom: 0; }
+.ring-label-3 { left: 0; bottom: 0; }
+.ring-label h3 { font-size: 30px; line-height: 1.15; margin-bottom: 8px; }
+.ring-label p { font-size: 28px; line-height: 1.3; color: #d4e2e1; }
+.kind-circle .plate { left: 50%; top: 50%; width: 540px; transform: translate(-50%, -50%); }
+
+@keyframes drift { from { transform: translate(-6px, -4px) scale(1); } to { transform: translate(6px, 4px) scale(1.02); } }
+@keyframes sweep { from { background-position: 0 0; } to { background-position: 100% 0; } }
+@keyframes fan { to { transform: scaleX(1); } }
+/* Hero and closing keep breathing: slow, bounded drift on a plate nobody reads through. */
+.slide.active .kind-hero .plate img, .slide.active .kind-closing .plate img { animation: drift 44s ease-in-out infinite alternate; }
 
 /* === EXTERNAL UI: real-size controls, never scaled with stage === */
 .deck-toolbar { position: fixed; top: 0; left: 0; right: 0; height: 58px; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 6px 18px; }
@@ -399,13 +493,15 @@ dialog::backdrop { background: #000b; }
   #previous-slide, #next-slide { font-size: 12px; padding: 6px; }
 }
 
-/* === NO SCRIPT / PRINT: legible reading view, not 54 invisible stages === */
+/* === NO SCRIPT / PRINT: legible reading view, not a stack of invisible stages === */
 html:has(body:not(.deck-ready)) { overflow: auto; height: auto; }
 body:not(.deck-ready) { overflow: visible; height: auto; }
 body:not(.deck-ready) #deck { position: static; overflow: visible; }
 body:not(.deck-ready) .slide { position: relative; left: 0; top: 0; width: auto; height: auto; margin: 25px auto; padding: 28px; visibility: visible; opacity: 1; max-width: 1000px; overflow: visible; }
 body:not(.deck-ready) .slide-heading, body:not(.deck-ready) .composition, body:not(.deck-ready) .slide-footer { position: static; height: auto; margin: 25px 0; }
-body:not(.deck-ready) .registration, body:not(.deck-ready) .connectors, body:not(.deck-ready) .hero-route, body:not(.deck-ready) .diagram-mini, body:not(.deck-ready) .deck-toolbar, body:not(.deck-ready) .deck-controls { display: none; }
+body:not(.deck-ready) .registration, body:not(.deck-ready) .connectors, body:not(.deck-ready) .hero-route, body:not(.deck-ready) .plate, body:not(.deck-ready) .ring, body:not(.deck-ready) .loop-return, body:not(.deck-ready) .deck-toolbar, body:not(.deck-ready) .deck-controls { display: none; }
+body:not(.deck-ready) .checklist.fanout { padding-left: 0; }
+body:not(.deck-ready) .checklist.fanout::before, body:not(.deck-ready) .checklist.fanout .station::before { display: none; }
 body:not(.deck-ready) .slide h1, body:not(.deck-ready) .slide h2 { font-size: 42px; letter-spacing: -1px; }
 body:not(.deck-ready) .composition * { font-size: 20px; }
 body:not(.deck-ready) .main-panels, body:not(.deck-ready) .workshop, body:not(.deck-ready) .lanes { display: block; }
@@ -420,7 +516,7 @@ body:not(.deck-ready) .lead { font-size: 26px; }
   #deck { position: static; overflow: visible; }
   .slide { left: 0; top: 0; margin: 0; transform: none !important; }
   .step-pending { visibility: visible; opacity: 1; }
-  .deck-toolbar, dialog { display: none; }
+  .deck-toolbar, dialog, .plate, .ring, .loop-return { display: none; }
 }
 </style>
 </head>
@@ -428,7 +524,7 @@ body:not(.deck-ready) .lead { font-size: 26px; }
   <a class="skip-link" href="#deck">Saltar a la presentación</a>
   <header class="deck-toolbar" aria-label="Herramientas de presentación">
     <a class="deck-brand" href="https://daniel-espanadero.com/" aria-label="Portfolio de Daniel Españadero">DE<span> / LAB</span></a>
-    <span id="chapter-label">Del taller a la fábrica</span>
+    <span id="chapter-label">Qué es una fábrica de software</span>
     <div class="toolbar-actions">
       <button id="index-toggle" type="button" aria-haspopup="dialog" aria-controls="slide-index" title="Índice (I)">Índice <kbd>I</kbd></button>
       <button id="fullscreen-toggle" type="button" aria-pressed="false" title="Pantalla completa (F)">Pantalla completa <kbd>F</kbd></button>
@@ -436,9 +532,9 @@ body:not(.deck-ready) .lead { font-size: 26px; }
     </div>
   </header>
   <noscript><p class="callout">JavaScript está desactivado: puedes leer todas las diapositivas y enlazarlas por su número. Las animaciones y los controles requieren JavaScript.</p></noscript>
-  <main id="deck" tabindex="-1"><section class="slide kind-hero" data-slide="1" data-kind="hero" id="factory-01" data-title="AI Software Factory" data-chapter="Del taller a la fábrica" aria-labelledby="title-factory-01">
+  <main id="deck" tabindex="-1"><section class="slide kind-hero has-plate" data-slide="1" data-kind="hero" id="factory-01" data-title="AI Software Factory" data-chapter="Qué es una fábrica de software" aria-labelledby="title-factory-01">
     <div class="registration" aria-hidden="true"></div>
-    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / Del taller a la fábrica</p>
+    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / Qué es una fábrica de software</p>
     <h1 id="title-factory-01">AI Software Factory</h1><p class="lead">Un sistema de producción repetible que convierte intención en software verificado.</p></header>
     <div class="composition"><svg class="hero-route" viewBox="0 0 1680 40" aria-label="Línea de producción de tres estaciones" role="img"><path d="M0 20H1660M530 10L550 20L530 30M1090 10L1110 20L1090 30" fill="none" stroke="#94c9d2" stroke-width="3"/></svg><div class="hero-line main-panels"><article class="panel station">
     <span class="station-number" aria-hidden="true">01</span>
@@ -446,13 +542,17 @@ body:not(.deck-ready) .lead { font-size: 26px; }
     <span class="station-number" aria-hidden="true">02</span>
     <h3>Estaciones</h3><p >Agentes especializados construyen, prueban y revisan piezas pequeñas de software.</p></article><article class="panel station">
     <span class="station-number" aria-hidden="true">03</span>
-    <h3>Salida</h3><p >Software integrado con evidencia de pruebas, estándares compartidos y métricas de flujo.</p></article></div></div>
-    <footer class="slide-footer"><span>Daniel Españadero</span><span>01 / 54</span></footer>
+    <h3>Salida</h3><p >Software integrado con evidencia de pruebas, estándares compartidos y métricas de flujo.</p></article></div><figure class="plate plate-feature" data-plate="feature">
+    <img src="file:///Users/daniel/Documents/programming/portfolio-dani-2026/public/resources/software-factory-art/01-planta.png" alt="Plano isométrico de línea fina: tres módulos de producción unidos por una cinta, con una bandeja ámbar de inspección al costado." width="1600" height="893" decoding="async">
+    <span class="plate-frame" aria-hidden="true"></span>
+    <figcaption class="plate-caption" aria-hidden="true"></figcaption>
+  </figure></div>
+    <footer class="slide-footer"><span>Daniel Españadero</span><span>01 / 32</span></footer>
   </section>
-<section class="slide kind-comparison" data-slide="2" data-kind="comparison" id="factory-02" data-title="No es un producto, es una organización" data-chapter="Del taller a la fábrica" aria-labelledby="title-factory-02">
+<section class="slide kind-comparison" data-slide="2" data-kind="comparison" id="factory-02" data-title="No es un producto: es una organización" data-chapter="Qué es una fábrica de software" aria-labelledby="title-factory-02">
     <div class="registration" aria-hidden="true"></div>
-    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / Del taller a la fábrica</p>
-    <h2 id="title-factory-02">No es un producto, es una organización</h2><p class="lead">Comprar agentes no crea una fábrica; falta el flujo que los ordena.</p></header>
+    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / Qué es una fábrica de software</p>
+    <h2 id="title-factory-02">No es un producto: es una organización</h2><p class="lead">Comprar agentes no crea una fábrica; falta el flujo que los ordena.</p></header>
     <div class="composition"><div class="comparison main-panels" style="--count:3"><article class="panel station">
     <span class="station-number" aria-hidden="true">01</span>
     <h3>Metáfora</h3><p >Entradas, estaciones, estándares, compuertas y recuperación.</p></article><article class="panel station">
@@ -460,38 +560,46 @@ body:not(.deck-ready) .lead { font-size: 26px; }
     <h3>Realidad</h3><p >Repositorio, herramientas, acuerdos explícitos y personas responsables.</p></article><article class="panel station">
     <span class="station-number" aria-hidden="true">03</span>
     <h3>Antipatrón</h3><p >Encadenar herramientas sin decidir qué problema resuelven.</p></article></div></div>
-    <footer class="slide-footer"><span>Daniel Españadero</span><span>02 / 54</span></footer>
+    <footer class="slide-footer"><span>Daniel Españadero</span><span>02 / 32</span></footer>
   </section>
-<section class="slide kind-timeline" data-slide="3" data-kind="timeline" id="factory-03" data-title="1968: componentes fabricados en serie" data-chapter="Del taller a la fábrica" aria-labelledby="title-factory-03">
+<section class="slide kind-timeline" data-slide="3" data-kind="timeline" id="factory-03" data-title="1968: dos orígenes, una aspiración" data-chapter="Qué es una fábrica de software" aria-labelledby="title-factory-03">
     <div class="registration" aria-hidden="true"></div>
-    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / Del taller a la fábrica</p>
-    <h2 id="title-factory-03">1968: componentes fabricados en serie</h2><p class="lead">La aspiración de reutilizar software es anterior a los agentes.</p></header>
+    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / Qué es una fábrica de software</p>
+    <h2 id="title-factory-03">1968: dos orígenes, una aspiración</h2><p class="lead">La idea de fabricar software con piezas reutilizables es anterior a los agentes.</p></header>
     <div class="composition"><div class="timeline main-panels" style="--count:3"><article class="panel station">
     <span class="station-number" aria-hidden="true">01</span>
-    <h3>Garmisch, 1968</h3><p >McIlroy presentó “Mass Produced Software Components” en la conferencia de la OTAN.</p></article><article class="panel station">
+    <h3>Bemer, General Electric</h3><p >Describió en 1968 una “software factory” para organizar el desarrollo de programas.</p></article><article class="panel station">
     <span class="station-number" aria-hidden="true">02</span>
-    <h3>Idea central</h3><p >Construir sobre componentes reutilizables, en lugar de rehacer cada pieza.</p></article><article class="panel station">
+    <h3>McIlroy, Garmisch</h3><p >Presentó “Mass Produced Software Components” en la conferencia de la OTAN.</p></article><article class="panel station">
     <span class="station-number" aria-hidden="true">03</span>
-    <h3>Límite histórico</h3><p >No describía los agentes generativos actuales.</p></article></div></div>
-    <footer class="slide-footer"><span>Daniel Españadero</span><span>03 / 54</span></footer>
+    <h3>Idea común</h3><p >Fabricar software con piezas reutilizables y procesos repetibles, no como arte único.</p></article></div></div>
+    <footer class="slide-footer"><span>Daniel Españadero</span><span>03 / 32</span></footer>
   </section>
-<section class="slide kind-timeline" data-slide="4" data-kind="timeline" id="factory-04" data-title="Acortar el ciclo de aprendizaje" data-chapter="Del taller a la fábrica" aria-labelledby="title-factory-04">
+<section class="slide kind-flow" data-slide="4" data-kind="flow" id="factory-04" data-title="De cascada a CI/CD a agentes" data-chapter="Qué es una fábrica de software" aria-labelledby="title-factory-04">
     <div class="registration" aria-hidden="true"></div>
-    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / Del taller a la fábrica</p>
-    <h2 id="title-factory-04">Acortar el ciclo de aprendizaje</h2><p class="lead">Reutilización, integración frecuente y feedback no nacen con los LLM.</p></header>
-    <div class="composition"><div class="timeline main-panels" style="--count:3"><article class="panel station">
+    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / Qué es una fábrica de software</p>
+    <h2 id="title-factory-04">De cascada a CI/CD a agentes</h2><p class="lead">Reutilizar, integrar pronto y responder al cambio no nacen con los modelos.</p></header>
+    <div class="composition"><div class="diagram flow"><svg class="connectors" viewBox="0 0 1680 480" aria-hidden="true">
+    <defs><marker id="arrow-factory-04" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M2 2L10 6L2 10" fill="none" stroke="currentColor" stroke-width="2"/></marker></defs>
+    <path class="route-line" style="--i:0" d="M388.5 230H427.5" marker-end="url(#arrow-factory-04)"/>
+      <path class="packet packet-1" d="M388.5 230H427.5"/><path class="route-line" style="--i:1" d="M819 230H858" marker-end="url(#arrow-factory-04)"/>
+      <path class="packet packet-2" d="M819 230H858"/><path class="route-line" style="--i:2" d="M1249.5 230H1288.5" marker-end="url(#arrow-factory-04)"/>
+      <path class="packet packet-3" d="M1249.5 230H1288.5"/>
+  </svg><div class="stations main-panels" style="--count:4"><article class="panel station">
     <span class="station-number" aria-hidden="true">01</span>
-    <h3>Integración continua</h3><p >Antecedente: integrar y comprobar cambios frecuentemente; no asignamos aquí una fecha fundacional.</p></article><article class="panel station">
+    <h3>Cascada</h3><p data-step>Fases largas y feedback tardío: el error aparece cuando ya nadie recuerda la decisión.</p></article><article class="panel station">
     <span class="station-number" aria-hidden="true">02</span>
-    <h3>Agile, 2001</h3><p >El manifiesto pone en valor colaboración, software funcionando y respuesta al cambio.</p></article><article class="panel station">
+    <h3>Integración continua</h3><p data-step>Integrar y comprobar con frecuencia; sin fecha fundacional inventada.</p></article><article class="panel station">
     <span class="station-number" aria-hidden="true">03</span>
-    <h3>Hoy</h3><p >La generación acelera propuestas; integrar y verificar marcan el ritmo.</p></article></div></div>
-    <footer class="slide-footer"><span>Daniel Españadero</span><span>04 / 54</span></footer>
+    <h3>Ágil, 2001</h3><p data-step>El manifiesto valora colaboración, software funcionando y respuesta al cambio.</p></article><article class="panel station">
+    <span class="station-number" aria-hidden="true">04</span>
+    <h3>Agentes</h3><p data-step>Generan propuestas rápido; integrar y verificar siguen marcando el ritmo.</p></article></div></div></div>
+    <footer class="slide-footer"><span>Daniel Españadero</span><span>04 / 32</span></footer>
   </section>
-<section class="slide kind-checklist" data-slide="5" data-kind="checklist" id="factory-05" data-title="Un vocabulario compartido" data-chapter="Del taller a la fábrica" aria-labelledby="title-factory-05">
+<section class="slide kind-checklist" data-slide="5" data-kind="checklist" id="factory-05" data-title="Un vocabulario mínimo" data-chapter="Qué es una fábrica de software" aria-labelledby="title-factory-05">
     <div class="registration" aria-hidden="true"></div>
-    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / Del taller a la fábrica</p>
-    <h2 id="title-factory-05">Un vocabulario compartido</h2><p class="lead">Nombrar bien evita delegar cosas diferentes con la misma palabra.</p></header>
+    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / Qué es una fábrica de software</p>
+    <h2 id="title-factory-05">Un vocabulario mínimo</h2><p class="lead">Nombrar bien evita delegar cosas distintas con la misma palabra.</p></header>
     <div class="composition"><div class="checklist main-panels"><article class="panel station">
     <span class="station-number" aria-hidden="true">01</span>
     <h3>Modelo</h3><p >Genera respuestas a partir del contexto disponible; no equivale al sistema completo.</p></article><article class="panel station">
@@ -503,11 +611,11 @@ body:not(.deck-ready) .lead { font-size: 26px; }
     <h3>Especificación</h3><p >Acuerdo observable sobre el comportamiento esperado y sus límites.</p></article><article class="panel station">
     <span class="station-number" aria-hidden="true">05</span>
     <h3>Orden de trabajo</h3><p >Spec más criterios de aceptación, superficie autorizada y comando de verificación.</p></article></div></div>
-    <footer class="slide-footer"><span>Daniel Españadero</span><span>05 / 54</span></footer>
+    <footer class="slide-footer"><span>Daniel Españadero</span><span>05 / 32</span></footer>
   </section>
-<section class="slide kind-comparison" data-slide="6" data-kind="comparison" id="factory-06" data-title="Asistente, workflow o agente" data-chapter="Del taller a la fábrica" aria-labelledby="title-factory-06">
+<section class="slide kind-comparison" data-slide="6" data-kind="comparison" id="factory-06" data-title="Asistente, workflow o agente" data-chapter="Qué es una fábrica de software" aria-labelledby="title-factory-06">
     <div class="registration" aria-hidden="true"></div>
-    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / Del taller a la fábrica</p>
+    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / Qué es una fábrica de software</p>
     <h2 id="title-factory-06">Asistente, workflow o agente</h2><p class="lead">La diferencia importante es quién elige el siguiente paso.</p></header>
     <div class="composition"><div class="comparison main-panels" style="--count:3"><article class="panel station">
     <span class="station-number" aria-hidden="true">01</span>
@@ -516,127 +624,75 @@ body:not(.deck-ready) .lead { font-size: 26px; }
     <h3>Workflow</h3><p >El programa encadena pasos por caminos predefinidos.</p></article><article class="panel station">
     <span class="station-number" aria-hidden="true">03</span>
     <h3>Agente</h3><p >El modelo decide dinámicamente pasos y herramientas dentro de sus permisos.</p></article></div></div>
-    <footer class="slide-footer"><span>Daniel Españadero</span><span>06 / 54</span></footer>
+    <footer class="slide-footer"><span>Daniel Españadero</span><span>06 / 32</span></footer>
   </section>
-<section class="slide kind-checklist" data-slide="7" data-kind="checklist" id="factory-07" data-title="Empieza por lo más simple" data-chapter="Del taller a la fábrica" aria-labelledby="title-factory-07">
-    <div class="registration" aria-hidden="true"></div>
-    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / Del taller a la fábrica</p>
-    <h2 id="title-factory-07">Empieza por lo más simple</h2><p class="lead">La autonomía debe justificar su coste y su superficie de riesgo.</p></header>
-    <div class="composition"><div class="checklist main-panels"><article class="panel station">
-    <span class="station-number" aria-hidden="true">01</span>
-    <h3>Regla estable</h3><p >Usa código determinista cuando una condición conocida resuelve el problema.</p></article><article class="panel station">
-    <span class="station-number" aria-hidden="true">02</span>
-    <h3>Ruta conocida</h3><p >Prueba un workflow si los pasos pueden definirse de antemano.</p></article><article class="panel station">
-    <span class="station-number" aria-hidden="true">03</span>
-    <h3>Exploración necesaria</h3><p >Considera un agente con límites cuando el camino depende de lo descubierto.</p></article></div></div>
-    <footer class="slide-footer"><span>Daniel Españadero</span><span>07 / 54</span></footer>
-  </section>
-<section class="slide kind-exercise" data-slide="8" data-kind="exercise" id="factory-08" data-title="Pausa de chat: ¿qué encargo escribirías?" data-chapter="Del taller a la fábrica" aria-labelledby="title-factory-08">
-    <div class="registration" aria-hidden="true"></div>
-    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / Del taller a la fábrica</p>
-    <h2 id="title-factory-08">Pausa de chat: ¿qué encargo escribirías?</h2><p class="lead">Elige una tarea pequeña y comprobable, no todo tu producto.</p></header>
-    <div class="composition"><div class="workshop"><aside class="workshop-sign"><span>CHAT</span><p>Piensa → contrasta → explica</p></aside><div class="exercise main-panels"><article class="panel station">
-    <span class="station-number" aria-hidden="true">01</span>
-    <h3>Propuesta</h3><p >Escribe una tarea repetitiva que puedas comprobar sin confiar en el modelo.</p></article><article class="panel station">
-    <span class="station-number" aria-hidden="true">02</span>
-    <h3>Criterio</h3><p >Añade un ejemplo que debe pasar y otro que debe fallar.</p></article><article class="panel station">
-    <span class="station-number" aria-hidden="true">03</span>
-    <h3>Límite</h3><p >Nombra una decisión que todavía no delegarías.</p></article></div></div></div>
-    <footer class="slide-footer"><span>Daniel Españadero</span><span>08 / 54</span></footer>
-  </section>
-<section class="slide kind-flow" data-slide="9" data-kind="flow" id="factory-09" data-title="De petición a orden de trabajo" data-chapter="Anatomía: la maquinaria de la fábrica" aria-labelledby="title-factory-09">
-    <div class="registration" aria-hidden="true"></div>
-    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / Anatomía: la maquinaria de la fábrica</p>
-    <h2 id="title-factory-09">De petición a orden de trabajo</h2><p class="lead">La fábrica arranca cuando la petición se vuelve comprobable.</p></header>
+<section class="slide kind-flow has-plate" data-slide="7" data-kind="flow" id="factory-07" data-title="Mapa de planta" data-chapter="La línea de producción" aria-labelledby="title-factory-07">
+    <figure class="plate plate-wash" data-plate="wash">
+    <img src="file:///Users/daniel/Documents/programming/portfolio-dani-2026/public/resources/software-factory-art/02-linea.png" alt="Vista lateral de una cinta con cuatro estaciones robotizadas, cajas de trabajo y brazos articulados sobre la línea." width="1600" height="893" decoding="async">
+    <span class="plate-frame" aria-hidden="true"></span>
+    <figcaption class="plate-caption" aria-hidden="true"></figcaption>
+  </figure><div class="registration" aria-hidden="true"></div>
+    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / La línea de producción</p>
+    <h2 id="title-factory-07">Mapa de planta</h2><p class="lead">Toda orden recorre entrada, estaciones, compuertas e integración en ese orden.</p></header>
     <div class="composition"><div class="diagram flow"><svg class="connectors" viewBox="0 0 1680 480" aria-hidden="true">
-    <defs><marker id="arrow-factory-09" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M2 2L10 6L2 10" fill="none" stroke="currentColor" stroke-width="2"/></marker></defs>
-    <path class="route-line" d="M388.5 230H427.5" marker-end="url(#arrow-factory-09)"/><path class="route-line" d="M819 230H858" marker-end="url(#arrow-factory-09)"/><path class="route-line" d="M1249.5 230H1288.5" marker-end="url(#arrow-factory-09)"/>
-    
-    <path class="packet" d="M10 230H1500"/>
-    </svg><div class="stations main-panels" style="--count:4"><article class="panel station">
+    <defs><marker id="arrow-factory-07" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M2 2L10 6L2 10" fill="none" stroke="currentColor" stroke-width="2"/></marker></defs>
+    <path class="route-line" style="--i:0" d="M388.5 230H427.5" marker-end="url(#arrow-factory-07)"/>
+      <path class="packet packet-1" d="M388.5 230H427.5"/><path class="route-line" style="--i:1" d="M819 230H858" marker-end="url(#arrow-factory-07)"/>
+      <path class="packet packet-2" d="M819 230H858"/><path class="route-line" style="--i:2" d="M1249.5 230H1288.5" marker-end="url(#arrow-factory-07)"/>
+      <path class="packet packet-3" d="M1249.5 230H1288.5"/>
+  </svg><div class="stations main-panels" style="--count:4"><article class="panel station">
     <span class="station-number" aria-hidden="true">01</span>
-    <h3>Petición</h3><p data-step>Frase inicial ambigua: mejorar algo, arreglar un fallo, añadir una función.</p></article><article class="panel station">
+    <h3>Entrada</h3><p data-step>La petición se convierte en orden con spec, criterios y superficie autorizada.</p></article><article class="panel station">
     <span class="station-number" aria-hidden="true">02</span>
-    <h3>Spec</h3><p data-step>Comportamiento observable, ejemplos frontera, errores y exclusiones explícitas.</p></article><article class="panel station">
+    <h3>Estaciones</h3><p data-step>Cada una responde una pregunta distinta sobre el mismo lote pequeño.</p></article><article class="panel station">
     <span class="station-number" aria-hidden="true">03</span>
-    <h3>Criterios</h3><p data-step>Cómo se reconoce un resultado correcto y uno incorrecto, sin opinar.</p></article><article class="panel station">
+    <h3>Compuertas</h3><p data-step>Tipos, pruebas y contrato filtran antes de consumir atención.</p></article><article class="panel station">
     <span class="station-number" aria-hidden="true">04</span>
-    <h3>Superficie</h3><p data-step>Archivos y comandos que la estación puede usar, y los que no.</p></article></div></div></div>
-    <footer class="slide-footer"><span>Daniel Españadero</span><span>09 / 54</span></footer>
+    <h3>Integración</h3><p data-step>El conjunto se comprueba y el lote entra con evidencia y vuelta atrás.</p></article></div></div></div>
+    <footer class="slide-footer"><span>Daniel Españadero</span><span>07 / 32</span></footer>
   </section>
-<section class="slide kind-table" data-slide="10" data-kind="table" id="factory-10" data-title="Estaciones especializadas" data-chapter="Anatomía: la maquinaria de la fábrica" aria-labelledby="title-factory-10">
+<section class="slide kind-table" data-slide="8" data-kind="table" id="factory-08" data-title="De petición a orden de trabajo" data-chapter="La línea de producción" aria-labelledby="title-factory-08">
     <div class="registration" aria-hidden="true"></div>
-    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / Anatomía: la maquinaria de la fábrica</p>
-    <h2 id="title-factory-10">Estaciones especializadas</h2><p class="lead">Cada estación tiene una función distinta y una salida revisable.</p></header>
-    <div class="composition"><table class="boundary-table"><caption class="sr-only">Estaciones especializadas</caption><thead><tr><th scope="col">Entrada / criterio</th><th scope="col">Resultado / significado</th></tr></thead>
-        <tbody><tr class="panel"><th scope="row">Implementador</th><td>Escribe el cambio mínimo y la prueba que lo demuestra.</td></tr><tr class="panel"><th scope="row">Tester</th><td>Deriva casos del contrato y calcula los límites a mano.</td></tr><tr class="panel"><th scope="row">Reviewer</th><td>Busca contradicciones con la spec y cambios fuera de alcance.</td></tr><tr class="panel"><th scope="row">Integrador</th><td>Combina el trabajo y ejecuta las pruebas del conjunto.</td></tr></tbody></table></div>
-    <footer class="slide-footer"><span>Daniel Españadero</span><span>10 / 54</span></footer>
+    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / La línea de producción</p>
+    <h2 id="title-factory-08">De petición a orden de trabajo</h2><p class="lead">La fábrica arranca cuando la petición se vuelve comprobable.</p></header>
+    <div class="composition"><table class="boundary-table" data-rows="4"><caption class="sr-only">De petición a orden de trabajo</caption><thead><tr><th scope="col">Entrada / criterio</th><th scope="col">Resultado / significado</th></tr></thead>
+        <tbody><tr class="panel"><th scope="row">Petición</th><td>Frase inicial ambigua: mejorar algo, arreglar un fallo, añadir una función.</td></tr><tr class="panel"><th scope="row">Spec</th><td>Comportamiento observable, ejemplos frontera, errores y exclusiones explícitas.</td></tr><tr class="panel"><th scope="row">Criterios</th><td>Cómo se reconoce un resultado correcto y uno incorrecto, sin opinar.</td></tr><tr class="panel"><th scope="row">Superficie</th><td>Archivos y comandos que la estación puede usar, y los que no.</td></tr></tbody></table></div>
+    <footer class="slide-footer"><span>Daniel Españadero</span><span>08 / 32</span></footer>
   </section>
-<section class="slide kind-checklist" data-slide="11" data-kind="checklist" id="factory-11" data-title="Estándares y convenciones" data-chapter="Anatomía: la maquinaria de la fábrica" aria-labelledby="title-factory-11">
+<section class="slide kind-checklist" data-slide="9" data-kind="checklist" id="factory-09" data-title="Estaciones especializadas" data-chapter="La línea de producción" aria-labelledby="title-factory-09">
     <div class="registration" aria-hidden="true"></div>
-    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / Anatomía: la maquinaria de la fábrica</p>
-    <h2 id="title-factory-11">Estándares y convenciones</h2><p class="lead">Las reglas compartidas evitan renegociar lo mismo en cada tarea.</p></header>
-    <div class="composition"><div class="checklist main-panels"><article class="panel station">
+    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / La línea de producción</p>
+    <h2 id="title-factory-09">Estaciones especializadas</h2><p class="lead">Cada estación tiene una función distinta y una salida revisable.</p></header>
+    <div class="composition"><div class="checklist main-panels fanout"><article class="panel station">
     <span class="station-number" aria-hidden="true">01</span>
-    <h3>Contrato</h3><p >Nombres, unidades, formato de respuesta y códigos de error estables.</p></article><article class="panel station">
+    <h3>Implementador</h3><p >Escribe el cambio mínimo y la prueba que lo demuestra.</p></article><article class="panel station">
     <span class="station-number" aria-hidden="true">02</span>
-    <h3>Estructura</h3><p >Dónde vive cada archivo, cómo se nombra y qué comando se ejecuta.</p></article><article class="panel station">
+    <h3>Tester</h3><p >Deriva casos del contrato y calcula los límites a mano.</p></article><article class="panel station">
     <span class="station-number" aria-hidden="true">03</span>
-    <h3>Definición de hecho</h3><p >Pruebas observadas, evidencia guardada y handoff completo.</p></article><article class="panel station">
+    <h3>Reviewer</h3><p >Busca contradicciones con la spec y cambios fuera de alcance.</p></article><article class="panel station">
     <span class="station-number" aria-hidden="true">04</span>
-    <h3>Cambio de convención</h3><p >Modificar un estándar es una decisión explícita, no una excepción silenciosa.</p></article></div></div>
-    <footer class="slide-footer"><span>Daniel Españadero</span><span>11 / 54</span></footer>
+    <h3>Integrador</h3><p >Combina el trabajo y ejecuta las pruebas del conjunto.</p></article></div></div>
+    <footer class="slide-footer"><span>Daniel Españadero</span><span>09 / 32</span></footer>
   </section>
-<section class="slide kind-flow" data-slide="12" data-kind="flow" id="factory-12" data-title="Activos reutilizables" data-chapter="Anatomía: la maquinaria de la fábrica" aria-labelledby="title-factory-12">
+<section class="slide kind-table" data-slide="10" data-kind="table" id="factory-10" data-title="Estándares y activos reutilizables" data-chapter="La línea de producción" aria-labelledby="title-factory-10">
     <div class="registration" aria-hidden="true"></div>
-    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / Anatomía: la maquinaria de la fábrica</p>
-    <h2 id="title-factory-12">Activos reutilizables</h2><p class="lead">Cada tarea deja piezas que la siguiente reutiliza sin reescribir.</p></header>
+    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / La línea de producción</p>
+    <h2 id="title-factory-10">Estándares y activos reutilizables</h2><p class="lead">Las reglas compartidas y las piezas que ya funcionan evitan renegociar cada tarea.</p></header>
+    <div class="composition"><table class="boundary-table" data-rows="5"><caption class="sr-only">Estándares y activos reutilizables</caption><thead><tr><th scope="col">Entrada / criterio</th><th scope="col">Resultado / significado</th></tr></thead>
+        <tbody><tr class="panel"><th scope="row">Contrato</th><td>Nombres, unidades, formato de respuesta y códigos de error estables.</td></tr><tr class="panel"><th scope="row">Estructura</th><td>Dónde vive cada archivo y qué comando se ejecuta en cada caso.</td></tr><tr class="panel"><th scope="row">Plantillas</th><td>Spec, orden de trabajo y handoff con la misma forma.</td></tr><tr class="panel"><th scope="row">Pruebas</th><td>Un defecto encontrado se convierte en un caso permanente.</td></tr><tr class="panel"><th scope="row">Lecciones</th><td>Decisiones y tropiezos registrados donde el siguiente puede leerlos.</td></tr></tbody></table></div>
+    <footer class="slide-footer"><span>Daniel Españadero</span><span>10 / 32</span></footer>
+  </section>
+<section class="slide kind-flow" data-slide="11" data-kind="flow" id="factory-11" data-title="Compuertas automáticas" data-chapter="La línea de producción" aria-labelledby="title-factory-11">
+    <div class="registration" aria-hidden="true"></div>
+    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / La línea de producción</p>
+    <h2 id="title-factory-11">Compuertas automáticas</h2><p class="lead">Lo que no cumple el contrato se detiene antes de gastar atención.</p></header>
     <div class="composition"><div class="diagram flow"><svg class="connectors" viewBox="0 0 1680 480" aria-hidden="true">
-    <defs><marker id="arrow-factory-12" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M2 2L10 6L2 10" fill="none" stroke="currentColor" stroke-width="2"/></marker></defs>
-    <path class="route-line" d="M388.5 230H427.5" marker-end="url(#arrow-factory-12)"/><path class="route-line" d="M819 230H858" marker-end="url(#arrow-factory-12)"/><path class="route-line" d="M1249.5 230H1288.5" marker-end="url(#arrow-factory-12)"/>
-    
-    <path class="packet" d="M10 230H1500"/>
-    </svg><div class="stations main-panels" style="--count:4"><article class="panel station">
-    <span class="station-number" aria-hidden="true">01</span>
-    <h3>Plantillas</h3><p data-step>Spec, orden de trabajo y handoff con la misma forma.</p></article><article class="panel station">
-    <span class="station-number" aria-hidden="true">02</span>
-    <h3>Utilidades</h3><p data-step>Validación, datos de prueba y comandos listos para reutilizar.</p></article><article class="panel station">
-    <span class="station-number" aria-hidden="true">03</span>
-    <h3>Pruebas</h3><p data-step>Un defecto encontrado se convierte en un caso permanente.</p></article><article class="panel station">
-    <span class="station-number" aria-hidden="true">04</span>
-    <h3>Lecciones</h3><p data-step>Decisiones y tropiezos registrados donde el siguiente puede leerlos.</p></article></div></div></div>
-    <footer class="slide-footer"><span>Daniel Españadero</span><span>12 / 54</span></footer>
-  </section>
-<section class="slide kind-loop" data-slide="13" data-kind="loop" id="factory-13" data-title="El ciclo de una estación" data-chapter="Anatomía: la maquinaria de la fábrica" aria-labelledby="title-factory-13">
-    <div class="registration" aria-hidden="true"></div>
-    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / Anatomía: la maquinaria de la fábrica</p>
-    <h2 id="title-factory-13">El ciclo de una estación</h2><p class="lead">Leer, cambiar, comprobar; repetir solo dentro de un presupuesto.</p></header>
-    <div class="composition"><div class="diagram loop"><svg class="connectors" viewBox="0 0 1680 480" aria-hidden="true">
-    <defs><marker id="arrow-factory-13" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M2 2L10 6L2 10" fill="none" stroke="currentColor" stroke-width="2"/></marker></defs>
-    <path class="route-line" d="M388.5 230H427.5" marker-end="url(#arrow-factory-13)"/><path class="route-line" d="M819 230H858" marker-end="url(#arrow-factory-13)"/><path class="route-line" d="M1249.5 230H1288.5" marker-end="url(#arrow-factory-13)"/>
-    <path class="return-line" d="M1550 345V462H80V345" marker-end="url(#arrow-factory-13)"/>
-    <path class="packet" d="M10 230H1500"/>
-    </svg><div class="stations main-panels" style="--count:4"><article class="panel station">
-    <span class="station-number" aria-hidden="true">01</span>
-    <h3>Leer</h3><p data-step>Inspecciona estado, contrato y código relevante antes de escribir.</p></article><article class="panel station">
-    <span class="station-number" aria-hidden="true">02</span>
-    <h3>Cambiar</h3><p data-step>Introduce la prueba y el cambio mínimo que explica el comportamiento.</p></article><article class="panel station">
-    <span class="station-number" aria-hidden="true">03</span>
-    <h3>Comprobar</h3><p data-step>Ejecuta el comando autorizado y conserva la salida real.</p></article><article class="panel station">
-    <span class="station-number" aria-hidden="true">04</span>
-    <h3>Parar</h3><p data-step>Entrega evidencia o escala una duda al alcanzar el límite.</p></article></div></div></div>
-    <footer class="slide-footer"><span>Daniel Españadero</span><span>13 / 54</span></footer>
-  </section>
-<section class="slide kind-flow" data-slide="14" data-kind="flow" id="factory-14" data-title="Compuertas automáticas" data-chapter="Anatomía: la maquinaria de la fábrica" aria-labelledby="title-factory-14">
-    <div class="registration" aria-hidden="true"></div>
-    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / Anatomía: la maquinaria de la fábrica</p>
-    <h2 id="title-factory-14">Compuertas automáticas</h2><p class="lead">Lo que no cumple el contrato se detiene antes de gastar atención.</p></header>
-    <div class="composition"><div class="diagram flow"><svg class="connectors" viewBox="0 0 1680 480" aria-hidden="true">
-    <defs><marker id="arrow-factory-14" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M2 2L10 6L2 10" fill="none" stroke="currentColor" stroke-width="2"/></marker></defs>
-    <path class="route-line" d="M388.5 230H427.5" marker-end="url(#arrow-factory-14)"/><path class="route-line" d="M819 230H858" marker-end="url(#arrow-factory-14)"/><path class="route-line" d="M1249.5 230H1288.5" marker-end="url(#arrow-factory-14)"/>
-    
-    <path class="packet" d="M10 230H1500"/>
-    </svg><div class="stations main-panels" style="--count:4"><article class="panel station">
+    <defs><marker id="arrow-factory-11" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M2 2L10 6L2 10" fill="none" stroke="currentColor" stroke-width="2"/></marker></defs>
+    <path class="route-line" style="--i:0" d="M388.5 230H427.5" marker-end="url(#arrow-factory-11)"/>
+      <path class="packet packet-1" d="M388.5 230H427.5"/><path class="route-line" style="--i:1" d="M819 230H858" marker-end="url(#arrow-factory-11)"/>
+      <path class="packet packet-2" d="M819 230H858"/><path class="route-line" style="--i:2" d="M1249.5 230H1288.5" marker-end="url(#arrow-factory-11)"/>
+      <path class="packet packet-3" d="M1249.5 230H1288.5"/>
+  </svg><div class="stations main-panels" style="--count:4"><article class="panel station">
     <span class="station-number" aria-hidden="true">01</span>
     <h3>Compilación y tipos</h3><p data-step>Errores de estructura o de tipos no llegan a la integración.</p></article><article class="panel station">
     <span class="station-number" aria-hidden="true">02</span>
@@ -645,13 +701,13 @@ body:not(.deck-ready) .lead { font-size: 26px; }
     <h3>Integración continua</h3><p data-step>El conjunto se compila y se prueba en cada cambio propuesto.</p></article><article class="panel station">
     <span class="station-number" aria-hidden="true">04</span>
     <h3>Bloqueo real</h3><p data-step>Un fallo detiene la línea; saltarlo exige una decisión registrada.</p></article></div></div></div>
-    <footer class="slide-footer"><span>Daniel Españadero</span><span>14 / 54</span></footer>
+    <footer class="slide-footer"><span>Daniel Españadero</span><span>11 / 32</span></footer>
   </section>
-<section class="slide kind-checklist" data-slide="15" data-kind="checklist" id="factory-15" data-title="El recibo de cada estación" data-chapter="Anatomía: la maquinaria de la fábrica" aria-labelledby="title-factory-15">
+<section class="slide kind-exercise has-plate" data-slide="12" data-kind="exercise" id="factory-12" data-title="Pausa: ¿qué evidencia pedirías?" data-chapter="La línea de producción" aria-labelledby="title-factory-12">
     <div class="registration" aria-hidden="true"></div>
-    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / Anatomía: la maquinaria de la fábrica</p>
-    <h2 id="title-factory-15">El recibo de cada estación</h2><p class="lead">Otra persona debe poder seguir el trabajo sin leer el chat completo.</p></header>
-    <div class="composition"><div class="checklist main-panels"><article class="panel station">
+    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / La línea de producción</p>
+    <h2 id="title-factory-12">Pausa: ¿qué evidencia pedirías?</h2><p class="lead">Una estación entrega un recibo: diff, salida real, límites y pendientes.</p></header>
+    <div class="composition"><div class="workshop"><aside class="workshop-sign"><span>CHAT</span><p>Piensa → contrasta → explica</p></aside><div class="exercise main-panels"><article class="panel station">
     <span class="station-number" aria-hidden="true">01</span>
     <h3>Diff</h3><p >Qué archivos cambian y qué comportamiento cubren.</p></article><article class="panel station">
     <span class="station-number" aria-hidden="true">02</span>
@@ -659,33 +715,95 @@ body:not(.deck-ready) .lead { font-size: 26px; }
     <span class="station-number" aria-hidden="true">03</span>
     <h3>Límites</h3><p >Qué no se probó y qué supuestos siguen abiertos.</p></article><article class="panel station">
     <span class="station-number" aria-hidden="true">04</span>
-    <h3>Pendiente</h3><p >Riesgos y acciones que nadie ejecutó todavía.</p></article></div></div>
-    <footer class="slide-footer"><span>Daniel Españadero</span><span>15 / 54</span></footer>
+    <h3>Lote pequeño</h3><p >Una conducta y un comando: menos espera antes de saber si falla.</p></article></div></div><figure class="plate plate-feature" data-plate="feature">
+    <img src="file:///Users/daniel/Documents/programming/portfolio-dani-2026/public/resources/software-factory-art/05-evidencia.png" alt="Tarjeta de informe con líneas de datos, un sello ámbar y una lupa grande apoyada encima." width="1600" height="893" decoding="async">
+    <span class="plate-frame" aria-hidden="true"></span>
+    <figcaption class="plate-caption" aria-hidden="true"></figcaption>
+  </figure></div>
+    <footer class="slide-footer"><span>Daniel Españadero</span><span>12 / 32</span></footer>
   </section>
-<section class="slide kind-table" data-slide="16" data-kind="table" id="factory-16" data-title="Lote pequeño, flujo visible" data-chapter="Anatomía: la maquinaria de la fábrica" aria-labelledby="title-factory-16">
+<section class="slide kind-loop" data-slide="13" data-kind="loop" id="factory-13" data-title="El bucle completo" data-chapter="El bucle y su estado" aria-labelledby="title-factory-13">
     <div class="registration" aria-hidden="true"></div>
-    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / Anatomía: la maquinaria de la fábrica</p>
-    <h2 id="title-factory-16">Lote pequeño, flujo visible</h2><p class="lead">El tamaño del lote decide cuánto tarda en verse un error.</p></header>
-    <div class="composition"><table class="boundary-table"><caption class="sr-only">Lote pequeño, flujo visible</caption><thead><tr><th scope="col">Entrada / criterio</th><th scope="col">Resultado / significado</th></tr></thead>
-        <tbody><tr class="panel"><th scope="row">Lote</th><td>Una conducta, una spec, un comando: cuanto más pequeño, menos espera.</td></tr><tr class="panel"><th scope="row">Tiempo de ciclo</th><td>Desde la orden hasta la integración, incluyendo revisión y corrección.</td></tr><tr class="panel"><th scope="row">Trabajo en curso</th><td>Demasiadas piezas abiertas esconden atascos y multiplican conflictos.</td></tr><tr class="panel"><th scope="row">Aceptación</th><td>Una persona decide sobre lotes ya filtrados, no sobre todo el volumen.</td></tr></tbody></table></div>
-    <footer class="slide-footer"><span>Daniel Españadero</span><span>16 / 54</span></footer>
+    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / El bucle y su estado</p>
+    <h2 id="title-factory-13">El bucle completo</h2><p class="lead">Un agente escribe la spec, otro construye, revisores independientes juzgan y alguien decide.</p></header>
+    <div class="composition"><div class="diagram loop fanout"><svg class="connectors" viewBox="0 0 1680 480" aria-hidden="true">
+    <defs><marker id="arrow-factory-13" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M2 2L10 6L2 10" fill="none" stroke="currentColor" stroke-width="2"/></marker></defs>
+    <path class="route-line" style="--i:0" d="M302.4 230H341.4" marker-end="url(#arrow-factory-13)"/>
+      <path class="packet packet-1" d="M302.4 230H341.4"/><path class="route-line" style="--i:1" d="M646.8 230H685.8" marker-end="url(#arrow-factory-13)"/>
+      <path class="packet packet-2" d="M646.8 230H685.8"/><path class="route-line" style="--i:2" d="M991.1999999999998 230H1030.1999999999998" marker-end="url(#arrow-factory-13)"/>
+      <path class="packet packet-3" d="M991.1999999999998 230H1030.1999999999998"/><path class="route-line" style="--i:3" d="M1335.6 230H1374.6" marker-end="url(#arrow-factory-13)"/>
+      <path class="packet packet-4" d="M1335.6 230H1374.6"/>
+  </svg><div class="stations main-panels" style="--count:5"><article class="panel station">
+    <span class="station-number" aria-hidden="true">01</span>
+    <h3>Spec writer</h3><p data-step>Convierte la petición en contrato observable con casos frontera.</p></article><article class="panel station">
+    <span class="station-number" aria-hidden="true">02</span>
+    <h3>Builder</h3><p data-step>Implementa en una superficie acotada y ve el fallo antes de arreglarlo.</p></article><article class="panel station">
+    <span class="station-number" aria-hidden="true">03</span>
+    <h3>Revisores en paralelo</h3><p data-step>Dos o tres miradas independientes buscan contradicciones contra el contrato.</p></article><article class="panel station">
+    <span class="station-number" aria-hidden="true">04</span>
+    <h3>Decisión</h3><p data-step>Fusionar, devolver con un defecto concreto o escalar a una persona.</p></article><article class="panel station">
+    <span class="station-number" aria-hidden="true">05</span>
+    <h3>Tope de reintentos</h3><p data-step>Un número fijo de vueltas; al agotarse, el lote sale con evidencia.</p></article></div><div class="loop-return"><span class="return-sweep" aria-hidden="true"></span>
+    <span class="rounds">máx. 3 rondas</span></div></div></div>
+    <footer class="slide-footer"><span>Daniel Españadero</span><span>13 / 32</span></footer>
   </section>
-<section class="slide kind-comparison" data-slide="17" data-kind="comparison" id="factory-17" data-title="Dos fábricas con la misma pinta" data-chapter="Modos de fallo de la fábrica" aria-labelledby="title-factory-17">
+<section class="slide kind-files" data-slide="14" data-kind="files" id="factory-14" data-title="El estado vive en archivos" data-chapter="El bucle y su estado" aria-labelledby="title-factory-14">
     <div class="registration" aria-hidden="true"></div>
-    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / Modos de fallo de la fábrica</p>
+    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / El bucle y su estado</p>
+    <h2 id="title-factory-14">El estado vive en archivos</h2><p class="lead">Backlog, una spec por trabajo y un registro de estado: markdown que una persona puede leer.</p></header>
+    <div class="composition"><div class="files main-panels"><p class="files-root"><span aria-hidden="true">▾</span> software-factory/</p>
+        <ol class="tree"><li class="file-row">
+          <span class="file-path"><span aria-hidden="true">├──</span> backlog.md</span>
+          <div class="file-note"><h3>Backlog</h3><p>Lista ordenada de trabajo pendiente con prioridad y tamaño aproximado.</p></div></li><li class="file-row">
+          <span class="file-path"><span aria-hidden="true">├──</span> specs/*.md</span>
+          <div class="file-note"><h3>Una spec por trabajo</h3><p>Cada orden tiene su archivo; el contrato se lee sin abrir un chat.</p></div></li><li class="file-row">
+          <span class="file-path"><span aria-hidden="true">├──</span> board.md</span>
+          <div class="file-note"><h3>Registro de estado</h3><p>Tablero con fase, responsable y siguiente acción de cada orden.</p></div></li><li class="file-row">
+          <span class="file-path"><span aria-hidden="true">└──</span> *.md</span>
+          <div class="file-note"><h3>Texto plano</h3><p>Markdown versionado: se lee, se compara y se revisa con las mismas herramientas.</p></div></li></ol></div></div>
+    <footer class="slide-footer"><span>Daniel Españadero</span><span>14 / 32</span></footer>
+  </section>
+<section class="slide kind-table" data-slide="15" data-kind="table" id="factory-15" data-title="Quién decide y cuándo escalar" data-chapter="El bucle y su estado" aria-labelledby="title-factory-15">
+    <div class="registration" aria-hidden="true"></div>
+    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / El bucle y su estado</p>
+    <h2 id="title-factory-15">Quién decide y cuándo escalar</h2><p class="lead">Un agente puede fusionar lotes verdes; lo irreversible siempre escala a una persona.</p></header>
+    <div class="composition"><table class="boundary-table" data-rows="5"><caption class="sr-only">Quién decide y cuándo escalar</caption><thead><tr><th scope="col">Entrada / criterio</th><th scope="col">Resultado / significado</th></tr></thead>
+        <tbody><tr class="panel"><th scope="row">Fusiona solo</th><td>Cambio dentro de la spec, compuertas verdes y superficie autorizada.</td></tr><tr class="panel"><th scope="row">Escala pagos</th><td>Cualquier cambio que mueva dinero o precios sale del piloto automático.</td></tr><tr class="panel"><th scope="row">Escala accesos</th><td>Permisos, credenciales y autenticación requieren una persona explícita.</td></tr><tr class="panel"><th scope="row">Escala lo irreversible</th><td>Migraciones, borrados e invalidación de caché no se deshacen solos.</td></tr><tr class="panel"><th scope="row">Tope y registro</th><td>Número fijo de reintentos; al agotarse, se entrega el fallo.</td></tr></tbody></table></div>
+    <footer class="slide-footer"><span>Daniel Españadero</span><span>15 / 32</span></footer>
+  </section>
+<section class="slide kind-comparison" data-slide="16" data-kind="comparison" id="factory-16" data-title="Política de modelos y esfuerzo" data-chapter="El bucle y su estado" aria-labelledby="title-factory-16">
+    <div class="registration" aria-hidden="true"></div>
+    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / El bucle y su estado</p>
+    <h2 id="title-factory-16">Política de modelos y esfuerzo</h2><p class="lead">El modelo caro orquesta; los subagentes baratos ejecutan; el mejor modelo mejora la fábrica.</p></header>
+    <div class="composition"><div class="comparison main-panels" style="--count:4"><article class="panel station">
+    <span class="station-number" aria-hidden="true">01</span>
+    <h3>Orquestador</h3><p >Un modelo capaz planifica, escribe contratos y resuelve ambigüedad.</p></article><article class="panel station">
+    <span class="station-number" aria-hidden="true">02</span>
+    <h3>Subagentes</h3><p >Modelos rápidos ejecutan tareas acotadas con contrato y evidencia.</p></article><article class="panel station">
+    <span class="station-number" aria-hidden="true">03</span>
+    <h3>Mejorar la fábrica</h3><p >El modelo más fuerte revisa el proceso, no escribe más código.</p></article><article class="panel station">
+    <span class="station-number" aria-hidden="true">04</span>
+    <h3>Riesgo</h3><p >Bajar de modelo en una tarea difícil multiplica reintentos y coste total.</p></article></div></div>
+    <footer class="slide-footer"><span>Daniel Españadero</span><span>16 / 32</span></footer>
+  </section>
+<section class="slide kind-comparison" data-slide="17" data-kind="comparison" id="factory-17" data-title="Dos fábricas con la misma pinta" data-chapter="Cuando la fábrica falla" aria-labelledby="title-factory-17">
+    <div class="registration" aria-hidden="true"></div>
+    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / Cuando la fábrica falla</p>
     <h2 id="title-factory-17">Dos fábricas con la misma pinta</h2><p class="lead">Una produce software verificado; otra produce volumen con luces verdes.</p></header>
-    <div class="composition"><div class="comparison main-panels" style="--count:3"><article class="panel station">
+    <div class="composition"><div class="comparison main-panels" style="--count:4"><article class="panel station">
     <span class="station-number" aria-hidden="true">01</span>
     <h3>Fábrica real</h3><p >Entrada definida, compuertas automáticas, evidencia y medición del flujo.</p></article><article class="panel station">
     <span class="station-number" aria-hidden="true">02</span>
     <h3>Imitación</h3><p >Muchas propuestas, pruebas superficiales y nadie puede parar la línea.</p></article><article class="panel station">
     <span class="station-number" aria-hidden="true">03</span>
-    <h3>Utilidad</h3><p >Un fallo con nombre y señal observable es más fácil de detectar y corregir.</p></article></div></div>
-    <footer class="slide-footer"><span>Daniel Españadero</span><span>17 / 54</span></footer>
+    <h3>Ocho modos de fallo</h3><p >Aceptar por costumbre, falso verde, texto hostil, bucles, conocimiento, proveedor, recuperación y control ausente.</p></article><article class="panel station">
+    <span class="station-number" aria-hidden="true">04</span>
+    <h3>Control útil</h3><p >Información legible, tiempo real y autoridad para parar y corregir.</p></article></div></div>
+    <footer class="slide-footer"><span>Daniel Españadero</span><span>17 / 32</span></footer>
   </section>
-<section class="slide kind-risk" data-slide="18" data-kind="risk" id="factory-18" data-title="Falso verde: código y prueba con el mismo error" data-chapter="Modos de fallo de la fábrica" aria-labelledby="title-factory-18">
+<section class="slide kind-risk" data-slide="18" data-kind="risk" id="factory-18" data-title="Falso verde: código y prueba con el mismo error" data-chapter="Cuando la fábrica falla" aria-labelledby="title-factory-18">
     <div class="registration" aria-hidden="true"></div>
-    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / Modos de fallo de la fábrica</p>
+    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / Cuando la fábrica falla</p>
     <h2 id="title-factory-18">Falso verde: código y prueba con el mismo error</h2><p class="lead">Dos artefactos pueden compartir exactamente el mismo malentendido.</p></header>
     <div class="composition"><div class="risk main-panels"><article class="panel station">
     <span class="station-number" aria-hidden="true">01</span>
@@ -694,11 +812,11 @@ body:not(.deck-ready) .lead { font-size: 26px; }
     <h3>Contraste externo</h3><p >Calcula el límite desde la tabla acordada, sin leer la implementación.</p></article><article class="panel station">
     <span class="station-number" aria-hidden="true">03</span>
     <h3>Preservación</h3><p >Comprueba eventos y datos intactos, no solo un booleano de éxito.</p></article></div></div>
-    <footer class="slide-footer"><span>Daniel Españadero</span><span>18 / 54</span></footer>
+    <footer class="slide-footer"><span>Daniel Españadero</span><span>18 / 32</span></footer>
   </section>
-<section class="slide kind-risk" data-slide="19" data-kind="risk" id="factory-19" data-title="Texto hostil y permisos amplios" data-chapter="Modos de fallo de la fábrica" aria-labelledby="title-factory-19">
+<section class="slide kind-risk" data-slide="19" data-kind="risk" id="factory-19" data-title="Texto hostil y permisos amplios" data-chapter="Cuando la fábrica falla" aria-labelledby="title-factory-19">
     <div class="registration" aria-hidden="true"></div>
-    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / Modos de fallo de la fábrica</p>
+    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / Cuando la fábrica falla</p>
     <h2 id="title-factory-19">Texto hostil y permisos amplios</h2><p class="lead">Un contenido encontrado en datos no hereda autoridad para dar órdenes.</p></header>
     <div class="composition"><div class="risk main-panels"><article class="panel station">
     <span class="station-number" aria-hidden="true">01</span>
@@ -707,102 +825,48 @@ body:not(.deck-ready) .lead { font-size: 26px; }
     <h3>Agencia excesiva</h3><p >Capacidades o permisos de más amplían el daño de un error simple.</p></article><article class="panel station">
     <span class="station-number" aria-hidden="true">03</span>
     <h3>Defensa en capas</h3><p >Separar procedencia, limitar herramientas y evitar credenciales en contexto.</p></article></div></div>
-    <footer class="slide-footer"><span>Daniel Españadero</span><span>19 / 54</span></footer>
+    <footer class="slide-footer"><span>Daniel Españadero</span><span>19 / 32</span></footer>
   </section>
-<section class="slide kind-loop" data-slide="20" data-kind="loop" id="factory-20" data-title="Bucles y consumo sin límite" data-chapter="Modos de fallo de la fábrica" aria-labelledby="title-factory-20">
+<section class="slide kind-comparison" data-slide="20" data-kind="comparison" id="factory-20" data-title="Coste y conocimiento" data-chapter="Cuando la fábrica falla" aria-labelledby="title-factory-20">
     <div class="registration" aria-hidden="true"></div>
-    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / Modos de fallo de la fábrica</p>
-    <h2 id="title-factory-20">Bucles y consumo sin límite</h2><p class="lead">Repetir el mismo intento no es aprender; suele ser gastar.</p></header>
-    <div class="composition"><div class="diagram loop"><svg class="connectors" viewBox="0 0 1680 480" aria-hidden="true">
-    <defs><marker id="arrow-factory-20" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M2 2L10 6L2 10" fill="none" stroke="currentColor" stroke-width="2"/></marker></defs>
-    <path class="route-line" d="M388.5 230H427.5" marker-end="url(#arrow-factory-20)"/><path class="route-line" d="M819 230H858" marker-end="url(#arrow-factory-20)"/><path class="route-line" d="M1249.5 230H1288.5" marker-end="url(#arrow-factory-20)"/>
-    <path class="return-line" d="M1550 345V462H80V345" marker-end="url(#arrow-factory-20)"/>
-    <path class="packet" d="M10 230H1500"/>
-    </svg><div class="stations main-panels" style="--count:4"><article class="panel station">
+    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / Cuando la fábrica falla</p>
+    <h2 id="title-factory-20">Coste y conocimiento</h2><p class="lead">El coste no es solo la factura: también es lo que el equipo deja de entender.</p></header>
+    <div class="composition"><div class="comparison main-panels" style="--count:5"><article class="panel station">
     <span class="station-number" aria-hidden="true">01</span>
-    <h3>Unbounded consumption</h3><p data-step>OWASP LLM10:2025: limitar recursos forma parte del diseño.</p></article><article class="panel station">
+    <h3>Coste de contexto</h3><p >Cada subagente recibe y devuelve contexto; ese intercambio consume tokens.</p></article><article class="panel station">
     <span class="station-number" aria-hidden="true">02</span>
-    <h3>Presupuesto</h3><p data-step>Acota tiempo, llamadas, herramientas y número de correcciones.</p></article><article class="panel station">
+    <h3>Bucles</h3><p >Repetir el mismo intento no es aprender: OWASP LLM10:2025 pide límites.</p></article><article class="panel station">
     <span class="station-number" aria-hidden="true">03</span>
-    <h3>Cambio de enfoque</h3><p data-step>Si la evidencia no cambia, el siguiente intento debe variar o detenerse.</p></article><article class="panel station">
-    <span class="station-number" aria-hidden="true">04</span>
-    <h3>Salida</h3><p data-step>Al agotar el límite, entrega evidencia y pide una decisión.</p></article></div></div></div>
-    <footer class="slide-footer"><span>Daniel Españadero</span><span>20 / 54</span></footer>
-  </section>
-<section class="slide kind-comparison" data-slide="21" data-kind="comparison" id="factory-21" data-title="Conocimiento y dependencia" data-chapter="Modos de fallo de la fábrica" aria-labelledby="title-factory-21">
-    <div class="registration" aria-hidden="true"></div>
-    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / Modos de fallo de la fábrica</p>
-    <h2 id="title-factory-21">Conocimiento y dependencia</h2><p class="lead">Si nadie del equipo entiende el cambio, la fábrica depende del proveedor.</p></header>
-    <div class="composition"><div class="comparison main-panels" style="--count:3"><article class="panel station">
-    <span class="station-number" aria-hidden="true">01</span>
     <h3>Pérdida de conocimiento</h3><p >Aceptar cambios incomprendidos deja el mantenimiento sin dueño.</p></article><article class="panel station">
-    <span class="station-number" aria-hidden="true">02</span>
-    <h3>Dependencia</h3><p >Modelos, precios y capacidades cambian; conserva contratos y pruebas portables.</p></article><article class="panel station">
-    <span class="station-number" aria-hidden="true">03</span>
-    <h3>Mitigación</h3><p >Documentos del repositorio y runner local que funcionan sin el agente.</p></article></div></div>
-    <footer class="slide-footer"><span>Daniel Españadero</span><span>21 / 54</span></footer>
+    <span class="station-number" aria-hidden="true">04</span>
+    <h3>Dependencia</h3><p >Modelos y precios cambian; conserva contratos y pruebas portables.</p></article><article class="panel station">
+    <span class="station-number" aria-hidden="true">05</span>
+    <h3>Recuperación</h3><p >Revertir código no deshace pagos; recuperar efectos externos pide un plan.</p></article></div></div>
+    <footer class="slide-footer"><span>Daniel Españadero</span><span>20 / 32</span></footer>
   </section>
-<section class="slide kind-flow" data-slide="22" data-kind="flow" id="factory-22" data-title="Recuperar no es deshacer el mundo" data-chapter="Modos de fallo de la fábrica" aria-labelledby="title-factory-22">
+<section class="slide kind-exercise has-plate" data-slide="21" data-kind="exercise" id="factory-21" data-title="Pausa: tres fallos que verás" data-chapter="Cuando la fábrica falla" aria-labelledby="title-factory-21">
     <div class="registration" aria-hidden="true"></div>
-    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / Modos de fallo de la fábrica</p>
-    <h2 id="title-factory-22">Recuperar no es deshacer el mundo</h2><p class="lead">Revertir código no revierte automáticamente sus efectos externos.</p></header>
-    <div class="composition"><div class="diagram flow"><svg class="connectors" viewBox="0 0 1680 480" aria-hidden="true">
-    <defs><marker id="arrow-factory-22" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M2 2L10 6L2 10" fill="none" stroke="currentColor" stroke-width="2"/></marker></defs>
-    <path class="route-line" d="M532 230H571" marker-end="url(#arrow-factory-22)"/><path class="route-line" d="M1106 230H1145" marker-end="url(#arrow-factory-22)"/>
-    
-    <path class="packet" d="M10 230H1500"/>
-    </svg><div class="stations main-panels" style="--count:3"><article class="panel station">
-    <span class="station-number" aria-hidden="true">01</span>
-    <h3>Detener</h3><p data-step>Corta nuevas acciones y preserva evidencia del incidente.</p></article><article class="panel station">
-    <span class="station-number" aria-hidden="true">02</span>
-    <h3>Evaluar</h3><p data-step>Distingue archivos, estado persistido y efectos ya enviados.</p></article><article class="panel station">
-    <span class="station-number" aria-hidden="true">03</span>
-    <h3>Recuperar</h3><p data-step>Usa un plan probado; pagos y mensajes pueden necesitar compensación.</p></article></div></div></div>
-    <footer class="slide-footer"><span>Daniel Españadero</span><span>22 / 54</span></footer>
-  </section>
-<section class="slide kind-comparison" data-slide="23" data-kind="comparison" id="factory-23" data-title="Firma vacía o línea sin freno" data-chapter="Modos de fallo de la fábrica" aria-labelledby="title-factory-23">
-    <div class="registration" aria-hidden="true"></div>
-    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / Modos de fallo de la fábrica</p>
-    <h2 id="title-factory-23">Firma vacía o línea sin freno</h2><p class="lead">Dos formas de no tener control: aceptar sin mirar y no poder detener.</p></header>
-    <div class="composition"><div class="comparison main-panels" style="--count:3"><article class="panel station">
-    <span class="station-number" aria-hidden="true">01</span>
-    <h3>Firma vacía</h3><p >Aceptar por costumbre un resumen que nadie leyó ni podría rechazar.</p></article><article class="panel station">
-    <span class="station-number" aria-hidden="true">02</span>
-    <h3>Sin parada</h3><p >Nadie sabe qué acción detiene la línea ni quién puede ordenarlo.</p></article><article class="panel station">
-    <span class="station-number" aria-hidden="true">03</span>
-    <h3>Control útil</h3><p >Información legible, tiempo real y autoridad para parar y corregir.</p></article></div></div>
-    <footer class="slide-footer"><span>Daniel Españadero</span><span>23 / 54</span></footer>
-  </section>
-<section class="slide kind-exercise" data-slide="24" data-kind="exercise" id="factory-24" data-title="Pausa: diseña tu freno" data-chapter="Modos de fallo de la fábrica" aria-labelledby="title-factory-24">
-    <div class="registration" aria-hidden="true"></div>
-    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / Modos de fallo de la fábrica</p>
-    <h2 id="title-factory-24">Pausa: diseña tu freno</h2><p class="lead">Un límite se define antes del primer permiso.</p></header>
+    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / Cuando la fábrica falla</p>
+    <h2 id="title-factory-21">Pausa: tres fallos que verás</h2><p class="lead">Tres incidentes reales de una fábrica que se puede montar hoy, con su lección.</p></header>
     <div class="composition"><div class="workshop"><aside class="workshop-sign"><span>CHAT</span><p>Piensa → contrasta → explica</p></aside><div class="exercise main-panels"><article class="panel station">
     <span class="station-number" aria-hidden="true">01</span>
-    <h3>Escenario</h3><p >Un worker pide acceso de red para implementar una función sin dependencias.</p></article><article class="panel station">
+    <h3>Árbol sucio</h3><p >Cambios sin confirmar bloquean el arranque de la orden.</p></article><article class="panel station">
     <span class="station-number" aria-hidden="true">02</span>
-    <h3>Decisión</h3><p >¿Qué evidencia pedirías y qué alternativa local propondrías?</p></article><article class="panel station">
+    <h3>Nada accionable</h3><p >Una orden marcada “necesita persona” sin decir qué falta.</p></article><article class="panel station">
     <span class="station-number" aria-hidden="true">03</span>
-    <h3>Parada</h3><p >Si el requisito sigue ambiguo, no amplíes permisos para avanzar.</p></article></div></div></div>
-    <footer class="slide-footer"><span>Daniel Españadero</span><span>24 / 54</span></footer>
+    <h3>Metadatos</h3><p >Un cambio de configuración de la fábrica impide fusionar el lote.</p></article><article class="panel station">
+    <span class="station-number" aria-hidden="true">04</span>
+    <h3>Tu turno</h3><p >¿Cuál de los tres ya viste y qué señal lo habría mostrado antes?</p></article></div></div><figure class="plate plate-feature" data-plate="feature">
+    <img src="file:///Users/daniel/Documents/programming/portfolio-dani-2026/public/resources/software-factory-art/03-fallo.png" alt="Plano de una cinta detenida en un pórtico con lámpara roja: cajas esperando a ambos lados del paso cerrado." width="1600" height="893" decoding="async">
+    <span class="plate-frame" aria-hidden="true"></span>
+    <figcaption class="plate-caption" aria-hidden="true"></figcaption>
+  </figure></div>
+    <footer class="slide-footer"><span>Daniel Españadero</span><span>21 / 32</span></footer>
   </section>
-<section class="slide kind-checklist" data-slide="25" data-kind="checklist" id="factory-25" data-title="Una mesa de trabajo suficiente" data-chapter="Crear una fábrica mínima" aria-labelledby="title-factory-25">
+<section class="slide kind-code has-plate" data-slide="22" data-kind="code" id="factory-22" data-title="Los ocho archivos" data-chapter="Monta tu propia fábrica" aria-labelledby="title-factory-22">
     <div class="registration" aria-hidden="true"></div>
-    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / Crear una fábrica mínima</p>
-    <h2 id="title-factory-25">Una mesa de trabajo suficiente</h2><p class="lead">Empieza local, aislado y sin credenciales.</p></header>
-    <div class="composition"><div class="checklist main-panels"><article class="panel station">
-    <span class="station-number" aria-hidden="true">01</span>
-    <h3>Necesario</h3><p >Node &gt;=22, editor y una copia local del kit.</p></article><article class="panel station">
-    <span class="station-number" aria-hidden="true">02</span>
-    <h3>Opcional</h3><p >Git y un asistente que permita delimitar archivos y acciones.</p></article><article class="panel station">
-    <span class="station-number" aria-hidden="true">03</span>
-    <h3>No necesario</h3><p >npm install, API key, cuenta de pago ni servicio desplegado.</p></article></div></div>
-    <footer class="slide-footer"><span>Daniel Españadero</span><span>25 / 54</span></footer>
-  </section>
-<section class="slide kind-code" data-slide="26" data-kind="code" id="factory-26" data-title="El árbol es el mapa" data-chapter="Crear una fábrica mínima" aria-labelledby="title-factory-26">
-    <div class="registration" aria-hidden="true"></div>
-    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / Crear una fábrica mínima</p>
-    <h2 id="title-factory-26">El árbol es el mapa</h2><p class="lead">Cada archivo tiene una responsabilidad fácil de localizar.</p></header>
+    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / Monta tu propia fábrica</p>
+    <h2 id="title-factory-22">Los ocho archivos</h2><p class="lead">Cada archivo tiene una responsabilidad que se localiza sin preguntar.</p></header>
     <div class="composition"><div class="code-layout main-panels"><pre class="panel code-panel"><code>software-factory/
   README.md
   AGENTS.md
@@ -814,392 +878,183 @@ body:not(.deck-ready) .lead { font-size: 26px; }
   tests/cancellation.test.mjs</code></pre>
         <div class="callouts"><article class="panel station">
     <span class="station-number" aria-hidden="true">01</span>
-    <h3>Acuerdo</h3><p >AGENTS.md y specs fijan reglas y comportamiento.</p></article><article class="panel station">
+    <h3>Acuerdo</h3><p >AGENTS.md y la spec fijan reglas y comportamiento esperado.</p></article><article class="panel station">
     <span class="station-number" aria-hidden="true">02</span>
-    <h3>Trabajo</h3><p >factory contiene instrucciones de roles y un handoff sin rellenar.</p></article></div></div></div>
-    <footer class="slide-footer"><span>Daniel Españadero</span><span>26 / 54</span></footer>
-  </section>
-<section class="slide kind-flow" data-slide="27" data-kind="flow" id="factory-27" data-title="Instrucciones que se leen de verdad" data-chapter="Crear una fábrica mínima" aria-labelledby="title-factory-27">
-    <div class="registration" aria-hidden="true"></div>
-    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / Crear una fábrica mínima</p>
-    <h2 id="title-factory-27">Instrucciones que se leen de verdad</h2><p class="lead">AGENTS.md no es magia: indica explícitamente que debe leerse.</p></header>
-    <div class="composition"><div class="diagram flow"><svg class="connectors" viewBox="0 0 1680 480" aria-hidden="true">
-    <defs><marker id="arrow-factory-27" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M2 2L10 6L2 10" fill="none" stroke="currentColor" stroke-width="2"/></marker></defs>
-    <path class="route-line" d="M532 230H571" marker-end="url(#arrow-factory-27)"/><path class="route-line" d="M1106 230H1145" marker-end="url(#arrow-factory-27)"/>
-    
-    <path class="packet" d="M10 230H1500"/>
-    </svg><div class="stations main-panels" style="--count:3"><article class="panel station">
-    <span class="station-number" aria-hidden="true">01</span>
-    <h3>Compatibilidad</h3><p data-step>El soporte de AGENTS.md varía entre herramientas y configuraciones.</p></article><article class="panel station">
-    <span class="station-number" aria-hidden="true">02</span>
-    <h3>Petición</h3><p data-step>Lee AGENTS.md, la spec y factory/worker.md antes de proponer cambios.</p></article><article class="panel station">
+    <h3>Trabajo</h3><p >factory contiene instrucciones de roles y un handoff sin rellenar.</p></article><article class="panel station">
     <span class="station-number" aria-hidden="true">03</span>
-    <h3>Confirmación</h3><p data-step>Pide resumir alcance, comando de pruebas y puntos de parada.</p></article></div></div></div>
-    <footer class="slide-footer"><span>Daniel Españadero</span><span>27 / 54</span></footer>
+    <h3>Arranque</h3><p >README explica cómo empezar sin instalar dependencias ni claves.</p></article></div></div><figure class="plate plate-feature" data-plate="feature">
+    <img src="file:///Users/daniel/Documents/programming/portfolio-dani-2026/public/resources/software-factory-art/04-banco.png" alt="Alzado de un banco de trabajo con seis bandejas de herramientas y planos técnicos, y dos hojas de plano superpuestas." width="1600" height="893" decoding="async">
+    <span class="plate-frame" aria-hidden="true"></span>
+    <figcaption class="plate-caption" aria-hidden="true"></figcaption>
+  </figure></div>
+    <footer class="slide-footer"><span>Daniel Españadero</span><span>22 / 32</span></footer>
   </section>
-<section class="slide kind-table" data-slide="28" data-kind="table" id="factory-28" data-title="La spec convierte palabras en casos" data-chapter="Crear una fábrica mínima" aria-labelledby="title-factory-28">
-    <div class="registration" aria-hidden="true"></div>
-    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / Crear una fábrica mínima</p>
-    <h2 id="title-factory-28">La spec convierte palabras en casos</h2><p class="lead">El límite exacto debe escribirse antes de codificar.</p></header>
-    <div class="composition"><table class="boundary-table"><caption class="sr-only">La spec convierte palabras en casos</caption><thead><tr><th scope="col">Entrada / criterio</th><th scope="col">Resultado / significado</th></tr></thead>
-        <tbody><tr class="panel"><th scope="row">&gt;=24h antes</th><td>Cancelar con refundCents igual al importe: devolución del 100%.</td></tr><tr class="panel"><th scope="row">&lt;24h antes</th><td>Cancelar con refundCents igual a 0: sin devolución.</td></tr><tr class="panel"><th scope="row">Exactamente al inicio o después</th><td>Rechazar con BOOKING_STARTED; reserva intacta y events vacío.</td></tr><tr class="panel"><th scope="row">Ya cancelada</th><td>Conservar outcome almacenado y emitir cero eventos nuevos.</td></tr></tbody></table></div>
-    <footer class="slide-footer"><span>Daniel Españadero</span><span>28 / 54</span></footer>
-  </section>
-<section class="slide kind-checklist" data-slide="29" data-kind="checklist" id="factory-29" data-title="Tu primera orden de trabajo" data-chapter="Crear una fábrica mínima" aria-labelledby="title-factory-29">
-    <div class="registration" aria-hidden="true"></div>
-    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / Crear una fábrica mínima</p>
-    <h2 id="title-factory-29">Tu primera orden de trabajo</h2><p class="lead">Delegar incluye decir qué no hacer y cómo se comprueba.</p></header>
+<section class="slide kind-checklist has-plate" data-slide="23" data-kind="checklist" id="factory-23" data-title="Reglas operativas" data-chapter="Monta tu propia fábrica" aria-labelledby="title-factory-23">
+    <figure class="plate plate-wash" data-plate="wash">
+    <img src="file:///Users/daniel/Documents/programming/portfolio-dani-2026/public/resources/software-factory-art/06-carriles.png" alt="Tres carriles paralelos con cajas en movimiento que convergen en una compuerta vertical ámbar." width="1600" height="893" decoding="async">
+    <span class="plate-frame" aria-hidden="true"></span>
+    <figcaption class="plate-caption" aria-hidden="true"></figcaption>
+  </figure><div class="registration" aria-hidden="true"></div>
+    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / Monta tu propia fábrica</p>
+    <h2 id="title-factory-23">Reglas operativas</h2><p class="lead">Las instrucciones se señalan explícitamente; los permisos no se amplían para avanzar.</p></header>
     <div class="composition"><div class="checklist main-panels"><article class="panel station">
     <span class="station-number" aria-hidden="true">01</span>
-    <h3>Superficie</h3><p >Solo src/cancellation.mjs y tests/cancellation.test.mjs en la copia del alumno.</p></article><article class="panel station">
+    <h3>Lectura explícita</h3><p >Pide leer AGENTS.md, la spec y worker.md antes de proponer cambios.</p></article><article class="panel station">
     <span class="station-number" aria-hidden="true">02</span>
-    <h3>Método</h3><p >Observar RED con un stub, implementar y registrar GREEN real.</p></article><article class="panel station">
+    <h3>Superficie</h3><p >Solo los dos archivos del ejercicio; el resto queda fuera del encargo.</p></article><article class="panel station">
     <span class="station-number" aria-hidden="true">03</span>
-    <h3>Parada</h3><p >Si cambia la política, falta una herramienta o se agota el límite, consultar.</p></article></div></div>
-    <footer class="slide-footer"><span>Daniel Españadero</span><span>29 / 54</span></footer>
+    <h3>Parada</h3><p >Si falta una herramienta o cambia la política, se pregunta antes de improvisar.</p></article><article class="panel station">
+    <span class="station-number" aria-hidden="true">04</span>
+    <h3>Handoff honesto</h3><p >Comando, código de salida y límites; nunca resultados supuestos.</p></article><article class="panel station">
+    <span class="station-number" aria-hidden="true">05</span>
+    <h3>Manual</h3><p >El modo manual repite las mismas comprobaciones con el editor y el runner.</p></article></div></div>
+    <footer class="slide-footer"><span>Daniel Españadero</span><span>23 / 32</span></footer>
   </section>
-<section class="slide kind-checklist" data-slide="30" data-kind="checklist" id="factory-30" data-title="Un reviewer con preguntas distintas" data-chapter="Crear una fábrica mínima" aria-labelledby="title-factory-30">
+<section class="slide kind-code" data-slide="24" data-kind="code" id="factory-24" data-title="Tu primera corrida" data-chapter="Monta tu propia fábrica" aria-labelledby="title-factory-24">
     <div class="registration" aria-hidden="true"></div>
-    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / Crear una fábrica mínima</p>
-    <h2 id="title-factory-30">Un reviewer con preguntas distintas</h2><p class="lead">Revisar es buscar una contradicción concreta contra el contrato.</p></header>
-    <div class="composition"><div class="checklist main-panels"><article class="panel station">
-    <span class="station-number" aria-hidden="true">01</span>
-    <h3>Derivar</h3><p >Calcula 24h±1s, inicio exacto y repetición desde la spec.</p></article><article class="panel station">
-    <span class="station-number" aria-hidden="true">02</span>
-    <h3>Inspeccionar</h3><p >Comprueba validación, inmutabilidad y ausencia de efectos externos.</p></article><article class="panel station">
-    <span class="station-number" aria-hidden="true">03</span>
-    <h3>Informar</h3><p >Describe entrada, defecto, impacto y prueba; no autoriza despliegue.</p></article></div></div>
-    <footer class="slide-footer"><span>Daniel Españadero</span><span>30 / 54</span></footer>
-  </section>
-<section class="slide kind-code" data-slide="31" data-kind="code" id="factory-31" data-title="El handoff sigue vacío hasta ejecutar" data-chapter="Crear una fábrica mínima" aria-labelledby="title-factory-31">
-    <div class="registration" aria-hidden="true"></div>
-    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / Crear una fábrica mínima</p>
-    <h2 id="title-factory-31">El handoff sigue vacío hasta ejecutar</h2><p class="lead">No rellenes resultados futuros como si ya hubieran ocurrido.</p></header>
-    <div class="composition"><div class="code-layout main-panels"><pre class="panel code-panel"><code>Estado: [pendiente]
-Archivos: [rellenar]
-Comando: [exacto]
-Código de salida: [observado]
-stdout / stderr: [observados]
-Riesgos: [rellenar]
-Decisión: [pendiente]</code></pre>
-        <div class="callouts"><article class="panel station">
-    <span class="station-number" aria-hidden="true">01</span>
-    <h3>Campos</h3><p >Comando, código de salida, stdout, stderr y riesgos pendientes.</p></article><article class="panel station">
-    <span class="station-number" aria-hidden="true">02</span>
-    <h3>Estado</h3><p >No ejecutado es una respuesta válida; integrar requiere una decisión aparte.</p></article></div></div></div>
-    <footer class="slide-footer"><span>Daniel Españadero</span><span>31 / 54</span></footer>
-  </section>
-<section class="slide kind-code" data-slide="32" data-kind="code" id="factory-32" data-title="Arranque sin proveedor" data-chapter="Crear una fábrica mínima" aria-labelledby="title-factory-32">
-    <div class="registration" aria-hidden="true"></div>
-    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / Crear una fábrica mínima</p>
-    <h2 id="title-factory-32">Arranque sin proveedor</h2><p class="lead">La misma prueba sirve con agente o trabajando a mano.</p></header>
+    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / Monta tu propia fábrica</p>
+    <h2 id="title-factory-24">Tu primera corrida</h2><p class="lead">La misma prueba sirve con agente o a mano; el resultado lo aporta tu máquina.</p></header>
     <div class="composition"><div class="code-layout main-panels"><pre class="panel code-panel"><code>node --version
 node --test tests/cancellation.test.mjs</code></pre>
         <div class="callouts"><article class="panel station">
     <span class="station-number" aria-hidden="true">01</span>
-    <h3>Comando local</h3><p >Ejecuta desde la raíz de la copia del kit.</p></article><article class="panel station">
+    <h3>Comando local</h3><p >Ejecuta desde la raíz de la copia del kit, no desde el portfolio.</p></article><article class="panel station">
     <span class="station-number" aria-hidden="true">02</span>
-    <h3>Alternativa manual</h3><p >Lee la tabla, escribe una prueba y modifica la función con tu editor.</p></article></div></div></div>
-    <footer class="slide-footer"><span>Daniel Españadero</span><span>32 / 54</span></footer>
+    <h3>Lo que verás</h3><p >Node ejecuta los casos; registra la salida real en el handoff.</p></article></div></div></div>
+    <footer class="slide-footer"><span>Daniel Españadero</span><span>24 / 32</span></footer>
   </section>
-<section class="slide kind-flow" data-slide="33" data-kind="flow" id="factory-33" data-title="Una función, no una aplicación de reservas" data-chapter="Ejecutar: de la orden al cambio integrado" aria-labelledby="title-factory-33">
+<section class="slide kind-table has-plate" data-slide="25" data-kind="table" id="factory-25" data-title="Observabilidad de la línea" data-chapter="Monta tu propia fábrica" aria-labelledby="title-factory-25">
     <div class="registration" aria-hidden="true"></div>
-    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / Ejecutar: de la orden al cambio integrado</p>
-    <h2 id="title-factory-33">Una función, no una aplicación de reservas</h2><p class="lead">Entrada conocida → decisión determinista → estado y eventos simulados.</p></header>
-    <div class="composition"><div class="diagram flow"><svg class="connectors" viewBox="0 0 1680 480" aria-hidden="true">
-    <defs><marker id="arrow-factory-33" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M2 2L10 6L2 10" fill="none" stroke="currentColor" stroke-width="2"/></marker></defs>
-    <path class="route-line" d="M388.5 230H427.5" marker-end="url(#arrow-factory-33)"/><path class="route-line" d="M819 230H858" marker-end="url(#arrow-factory-33)"/><path class="route-line" d="M1249.5 230H1288.5" marker-end="url(#arrow-factory-33)"/>
-    
-    <path class="packet" d="M10 230H1500"/>
-    </svg><div class="stations main-panels" style="--count:4"><article class="panel station">
-    <span class="station-number" aria-hidden="true">01</span>
-    <h3>Entrada</h3><p data-step>booking con id, startUTC, amountCents y status; nowUTC explícito.</p></article><article class="panel station">
-    <span class="station-number" aria-hidden="true">02</span>
-    <h3>Salida aceptada</h3><p data-step>{ok:true, booking, outcome, events}; nueva reserva al cancelar por primera vez.</p></article><article class="panel station">
-    <span class="station-number" aria-hidden="true">03</span>
-    <h3>Salida rechazada</h3><p data-step>{ok:false, error, booking, events:[]}; conserva la entrada original.</p></article><article class="panel station">
-    <span class="station-number" aria-hidden="true">04</span>
-    <h3>Fuera de alcance</h3><p data-step>Autenticación, autorización, persistencia, concurrencia y pagos reales.</p></article></div></div></div>
-    <footer class="slide-footer"><span>Daniel Españadero</span><span>33 / 54</span></footer>
+    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / Monta tu propia fábrica</p>
+    <h2 id="title-factory-25">Observabilidad de la línea</h2><p class="lead">Una fábrica que no se puede mirar por dentro pierde la confianza del equipo.</p></header>
+    <div class="composition"><table class="boundary-table" data-rows="4"><caption class="sr-only">Observabilidad de la línea</caption><thead><tr><th scope="col">Entrada / criterio</th><th scope="col">Resultado / significado</th></tr></thead>
+        <tbody><tr class="panel"><th scope="row">Fase por orden</th><td>En qué paso está cada trabajo y desde cuándo está ahí.</td></tr><tr class="panel"><th scope="row">Cola de personas</th><td>Órdenes que esperan una decisión o capacidad de revisión.</td></tr><tr class="panel"><th scope="row">Compuertas fallidas</th><td>Qué compuerta falló, con qué salida y cuántos reintentos acumuló.</td></tr><tr class="panel"><th scope="row">Caja negra</th><td>Si solo ves el resultado final, no distingues suerte de proceso.</td></tr></tbody></table><figure class="plate plate-feature" data-plate="feature">
+    <img src="file:///Users/daniel/Documents/programming/portfolio-dani-2026/public/resources/software-factory-art/07-panel.png" alt="Muro de doce pantallas de telemetría sobre una consola inclinada, con una gráfica y un indicador ámbar." width="1600" height="893" decoding="async">
+    <span class="plate-frame" aria-hidden="true"></span>
+    <figcaption class="plate-caption" aria-hidden="true"></figcaption>
+  </figure></div>
+    <footer class="slide-footer"><span>Daniel Españadero</span><span>25 / 32</span></footer>
   </section>
-<section class="slide kind-table" data-slide="34" data-kind="table" id="factory-34" data-title="Validar antes de producir efectos" data-chapter="Ejecutar: de la orden al cambio integrado" aria-labelledby="title-factory-34">
+<section class="slide kind-table" data-slide="26" data-kind="table" id="factory-26" data-title="Las fronteras de la cancelación" data-chapter="Ejemplo y paralelismo" aria-labelledby="title-factory-26">
     <div class="registration" aria-hidden="true"></div>
-    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / Ejecutar: de la orden al cambio integrado</p>
-    <h2 id="title-factory-34">Validar antes de producir efectos</h2><p class="lead">Datos inválidos no deben generar una devolución simulada.</p></header>
-    <div class="composition"><table class="boundary-table"><caption class="sr-only">Validar antes de producir efectos</caption><thead><tr><th scope="col">Entrada / criterio</th><th scope="col">Resultado / significado</th></tr></thead>
-        <tbody><tr class="panel"><th scope="row">Forma</th><td>id no vacío, estado conocido y cancelación almacenada válida si existe.</td></tr><tr class="panel"><th scope="row">Tiempo</th><td>Cadenas UTC canónicas con segundos, opcionalmente milisegundos; fechas finitas y reales.</td></tr><tr class="panel"><th scope="row">Importe</th><td>Entero seguro no negativo; errores INVALID_AMOUNT o INVALID_TIME según corresponda.</td></tr><tr class="panel"><th scope="row">Rechazo</th><td>INVALID_BOOKING para forma o estado inválidos; no cambia datos ni emite eventos.</td></tr></tbody></table></div>
-    <footer class="slide-footer"><span>Daniel Españadero</span><span>34 / 54</span></footer>
+    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / Ejemplo y paralelismo</p>
+    <h2 id="title-factory-26">Las fronteras de la cancelación</h2><p class="lead">Inicio: 2 de junio de 2030, 12:00:00Z; importe: 10000 céntimos.</p></header>
+    <div class="composition"><table class="boundary-table" data-rows="5"><caption class="sr-only">Las fronteras de la cancelación</caption><thead><tr><th scope="col">Entrada / criterio</th><th scope="col">Resultado / significado</th></tr></thead>
+        <tbody><tr class="panel"><th scope="row">1 junio, 11:59:59Z</th><td>24h + 1s: aceptar con refundCents 10000, el 100%, y un evento.</td></tr><tr class="panel"><th scope="row">1 junio, 12:00:00Z</th><td>Exactamente 24h: aceptar con refundCents 10000; &gt;=24h devuelve el 100%.</td></tr><tr class="panel"><th scope="row">1 junio, 12:00:01Z</th><td>24h - 1s: aceptar con refundCents 0; &lt;24h no devuelve nada.</td></tr><tr class="panel"><th scope="row">2 junio, 12:00:00Z</th><td>Inicio exacto: BOOKING_STARTED, reserva intacta y ningún evento.</td></tr><tr class="panel"><th scope="row">Ya cancelada</th><td>Repetir devuelve el outcome guardado y ningún evento nuevo.</td></tr></tbody></table></div>
+    <footer class="slide-footer"><span>Daniel Españadero</span><span>26 / 32</span></footer>
   </section>
-<section class="slide kind-code" data-slide="35" data-kind="code" id="factory-35" data-title="RED: comprobar que falta comportamiento" data-chapter="Ejecutar: de la orden al cambio integrado" aria-labelledby="title-factory-35">
+<section class="slide kind-code" data-slide="27" data-kind="code" id="factory-27" data-title="RED antes de la solución" data-chapter="Ejemplo y paralelismo" aria-labelledby="title-factory-27">
     <div class="registration" aria-hidden="true"></div>
-    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / Ejecutar: de la orden al cambio integrado</p>
-    <h2 id="title-factory-35">RED: comprobar que falta comportamiento</h2><p class="lead">Un fallo esperado solo es evidencia cuando realmente se observa.</p></header>
+    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / Ejemplo y paralelismo</p>
+    <h2 id="title-factory-27">RED antes de la solución</h2><p class="lead">Un fallo esperado solo es evidencia cuando realmente se observa.</p></header>
     <div class="composition"><div class="code-layout main-panels"><pre class="panel code-panel"><code>export function cancelBooking() {
   throw new Error(&#39;TODO: implementar contrato de cancelación&#39;);
 }
-// Ejecutar en la copia:
+// En una copia desechable del kit:
 // node --test tests/cancellation.test.mjs</code></pre>
         <div class="callouts"><article class="panel station">
     <span class="station-number" aria-hidden="true">01</span>
-    <h3>Copia desechable</h3><p >Sustituye la función únicamente en una copia del kit preparada para practicar.</p></article><article class="panel station">
+    <h3>Copia desechable</h3><p >Sustituye la función solo en una copia; el kit original conserva la solución.</p></article><article class="panel station">
     <span class="station-number" aria-hidden="true">02</span>
-    <h3>Esperado, no medido aquí</h3><p >El runner debería fallar con TODO; registra tu salida real.</p></article></div></div></div>
-    <footer class="slide-footer"><span>Daniel Españadero</span><span>35 / 54</span></footer>
+    <h3>Esperado, no medido</h3><p >El runner debería fallar con TODO; registra tu salida real.</p></article></div></div></div>
+    <footer class="slide-footer"><span>Daniel Españadero</span><span>27 / 32</span></footer>
   </section>
-<section class="slide kind-table" data-slide="36" data-kind="table" id="factory-36" data-title="Los cuatro segundos decisivos" data-chapter="Ejecutar: de la orden al cambio integrado" aria-labelledby="title-factory-36">
+<section class="slide kind-gate has-plate" data-slide="28" data-kind="gate" id="factory-28" data-title="El lote aterriza integrado" data-chapter="Ejemplo y paralelismo" aria-labelledby="title-factory-28">
     <div class="registration" aria-hidden="true"></div>
-    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / Ejecutar: de la orden al cambio integrado</p>
-    <h2 id="title-factory-36">Los cuatro segundos decisivos</h2><p class="lead">Inicio: 2 de junio de 2030, 12:00:00Z; importe: 10000 céntimos.</p></header>
-    <div class="composition"><table class="boundary-table"><caption class="sr-only">Los cuatro segundos decisivos</caption><thead><tr><th scope="col">Entrada / criterio</th><th scope="col">Resultado / significado</th></tr></thead>
-        <tbody><tr class="panel"><th scope="row">1 junio, 11:59:59Z</th><td>24h + 1s: aceptar, refundCents 10000 y un evento de devolución.</td></tr><tr class="panel"><th scope="row">1 junio, 12:00:00Z</th><td>Exactamente 24h: aceptar, refundCents 10000 y un evento de devolución.</td></tr><tr class="panel"><th scope="row">1 junio, 12:00:01Z</th><td>24h - 1s: aceptar, refundCents 0 y ningún evento.</td></tr><tr class="panel"><th scope="row">2 junio, 12:00:00Z</th><td>Inicio exacto: BOOKING_STARTED, reserva intacta y ningún evento.</td></tr></tbody></table></div>
-    <footer class="slide-footer"><span>Daniel Españadero</span><span>36 / 54</span></footer>
-  </section>
-<section class="slide kind-comparison" data-slide="37" data-kind="comparison" id="factory-37" data-title="Repetir sin devolver dos veces" data-chapter="Ejecutar: de la orden al cambio integrado" aria-labelledby="title-factory-37">
-    <div class="registration" aria-hidden="true"></div>
-    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / Ejecutar: de la orden al cambio integrado</p>
-    <h2 id="title-factory-37">Repetir sin devolver dos veces</h2><p class="lead">Mismo outcome almacenado no significa respuesta completa idéntica.</p></header>
-    <div class="composition"><div class="comparison main-panels" style="--count:3"><article class="panel station">
-    <span class="station-number" aria-hidden="true">01</span>
-    <h3>Primera llamada</h3><p >Crea cancellation y, si refundCents &gt;0, un evento refund.requested.</p></article><article class="panel station">
-    <span class="station-number" aria-hidden="true">02</span>
-    <h3>Segunda llamada válida</h3><p >Devuelve booking y outcome almacenados, con events:[] incluso después del inicio.</p></article><article class="panel station">
-    <span class="station-number" aria-hidden="true">03</span>
-    <h3>Límite</h3><p >Esta simulación no resuelve dos solicitudes concurrentes ni garantiza pagos idempotentes.</p></article></div></div>
-    <footer class="slide-footer"><span>Daniel Españadero</span><span>37 / 54</span></footer>
-  </section>
-<section class="slide kind-checklist" data-slide="38" data-kind="checklist" id="factory-38" data-title="GREEN con evidencia observable" data-chapter="Ejecutar: de la orden al cambio integrado" aria-labelledby="title-factory-38">
-    <div class="registration" aria-hidden="true"></div>
-    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / Ejecutar: de la orden al cambio integrado</p>
-    <h2 id="title-factory-38">GREEN con evidencia observable</h2><p class="lead">El verde vale por los casos observados, no por la confianza del autor.</p></header>
-    <div class="composition"><div class="checklist main-panels"><article class="panel station">
-    <span class="station-number" aria-hidden="true">01</span>
-    <h3>Ejecutar</h3><p >node --test tests/cancellation.test.mjs en la copia del alumno.</p></article><article class="panel station">
-    <span class="station-number" aria-hidden="true">02</span>
-    <h3>Inspeccionar</h3><p >Comprueba límites, errores, eventos, repetición y datos intactos.</p></article><article class="panel station">
-    <span class="station-number" aria-hidden="true">03</span>
-    <h3>Registrar</h3><p >Guarda salida real y limitaciones en factory/handoff.md.</p></article></div></div>
-    <footer class="slide-footer"><span>Daniel Españadero</span><span>38 / 54</span></footer>
-  </section>
-<section class="slide kind-gate" data-slide="39" data-kind="gate" id="factory-39" data-title="La funcionalidad aterriza integrada" data-chapter="Ejecutar: de la orden al cambio integrado" aria-labelledby="title-factory-39">
-    <div class="registration" aria-hidden="true"></div>
-    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / Ejecutar: de la orden al cambio integrado</p>
-    <h2 id="title-factory-39">La funcionalidad aterriza integrada</h2><p class="lead">El lote entra integrado con evidencia y vuelta atrás; una persona acepta o devuelve el defecto.</p></header>
-    <div class="composition"><div class="gate-banner">Compuerta de integración · aceptar o devolver el lote</div>
+    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / Ejemplo y paralelismo</p>
+    <h2 id="title-factory-28">El lote aterriza integrado</h2><p class="lead">El lote entra con diff, evidencia y vuelta atrás; una persona acepta o devuelve el defecto.</p></header>
+    <div class="composition"><div class="gate-layout">
+        <div class="gate-banner">Compuerta de integración · aceptar o devolver el lote<span class="gate-arm" aria-hidden="true"></span></div>
         <div class="gate main-panels" style="--count:3"><article class="panel station">
     <span class="station-number" aria-hidden="true">01</span>
     <h3>Conjunto</h3><p data-step>La función y el resto del sistema compilan y pasan sus pruebas juntos.</p></article><article class="panel station">
     <span class="station-number" aria-hidden="true">02</span>
-    <h3>Evidencia</h3><p data-step>Comandos ejecutados, resultados observados y límites conocidos.</p></article><article class="panel station">
+    <h3>Fuera de alcance</h3><p data-step>Autenticación, autorización, persistencia, concurrencia y pagos reales quedan fuera.</p></article><article class="panel station">
     <span class="station-number" aria-hidden="true">03</span>
-    <h3>Vuelta atrás</h3><p data-step>Cómo revertir el código y qué efectos externos no se deshacen.</p></article></div><div class="diagram-mini"><svg class="connectors" viewBox="0 0 1680 480" aria-hidden="true">
-    <defs><marker id="arrow-factory-39" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M2 2L10 6L2 10" fill="none" stroke="currentColor" stroke-width="2"/></marker></defs>
-    <path class="route-line" d="M10 230H650" marker-end="url(#arrow-factory-39)"/>
-    
-    <path class="packet" d="M10 230H650"/>
-    </svg></div></div>
-    <footer class="slide-footer"><span>Daniel Españadero</span><span>39 / 54</span></footer>
+    <h3>Vuelta atrás</h3><p data-step>Cómo revertir el código y qué efectos externos no se deshacen.</p></article></div>
+        <div class="gate-track"><svg viewBox="0 0 1680 46" aria-hidden="true">
+    <path class="route-line" d="M0 23H1490"/>
+    <path class="packet gate-packet" d="M0 23H1490"/>
+    <path class="gate-stop" d="M1496 4V42"/>
+  </svg><span class="gate-stop-label">Lote pendiente de integrar</span></div></div><figure class="plate plate-feature" data-plate="feature">
+    <img src="file:///Users/daniel/Documents/programming/portfolio-dani-2026/public/resources/software-factory-art/05-evidencia.png" alt="Tarjeta de informe con líneas de datos, un sello ámbar y una lupa grande apoyada encima." width="1600" height="893" decoding="async">
+    <span class="plate-frame" aria-hidden="true"></span>
+    <figcaption class="plate-caption" aria-hidden="true"></figcaption>
+  </figure></div>
+    <footer class="slide-footer"><span>Daniel Españadero</span><span>28 / 32</span></footer>
   </section>
-<section class="slide kind-flow" data-slide="40" data-kind="flow" id="factory-40" data-title="Integrar no es desplegar" data-chapter="Ejecutar: de la orden al cambio integrado" aria-labelledby="title-factory-40">
+<section class="slide kind-parallel has-plate" data-slide="29" data-kind="parallel" id="factory-29" data-title="Worktrees y contrato compartido" data-chapter="Ejemplo y paralelismo" aria-labelledby="title-factory-29">
     <div class="registration" aria-hidden="true"></div>
-    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / Ejecutar: de la orden al cambio integrado</p>
-    <h2 id="title-factory-40">Integrar no es desplegar</h2><p class="lead">Cada frontera añade contexto y necesita sus propias comprobaciones.</p></header>
-    <div class="composition"><div class="diagram flow"><svg class="connectors" viewBox="0 0 1680 480" aria-hidden="true">
-    <defs><marker id="arrow-factory-40" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M2 2L10 6L2 10" fill="none" stroke="currentColor" stroke-width="2"/></marker></defs>
-    <path class="route-line" d="M532 230H571" marker-end="url(#arrow-factory-40)"/><path class="route-line" d="M1106 230H1145" marker-end="url(#arrow-factory-40)"/>
-    
-    <path class="packet" d="M10 230H1500"/>
-    </svg><div class="stations main-panels" style="--count:3"><article class="panel station">
+    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / Ejemplo y paralelismo</p>
+    <h2 id="title-factory-29">Worktrees y contrato compartido</h2><p class="lead">Divide archivos y acuerda interfaces; el aislamiento de archivos no es una sandbox.</p></header>
+    <div class="composition"><div class="parallel main-panels fanout"><div class="lanes"><article class="panel station">
     <span class="station-number" aria-hidden="true">01</span>
-    <h3>Integración</h3><p data-step>Combinar con otros cambios y comprobar contratos compartidos.</p></article><article class="panel station">
+    <h3>Independiente</h3><p data-step>Dos tareas separables avanzan; dos cambios sobre la misma respuesta no.</p></article><article class="panel station">
     <span class="station-number" aria-hidden="true">02</span>
-    <h3>Despliegue</h3><p data-step>Autorización separada, observabilidad y plan de recuperación probado.</p></article><article class="panel station">
+    <h3>Contrato</h3><p data-step>Nombres, unidades y ejemplos acordados antes de repartir el trabajo.</p></article><article class="panel station">
     <span class="station-number" aria-hidden="true">03</span>
-    <h3>Rollback limitado</h3><p data-step>Volver al código anterior no deshace pagos, mensajes ni migraciones.</p></article></div></div></div>
-    <footer class="slide-footer"><span>Daniel Españadero</span><span>40 / 54</span></footer>
+    <h3>Worktree</h3><p data-step>Separa directorios y ramas con Git; no aísla procesos, puertos, bases de datos ni credenciales.</p></article></div><aside class="integration panel"><h3>Integración compartida</h3><p>Contrato + pruebas del conjunto.</p><strong>Cierra el lote antes de operar</strong></aside></div><figure class="plate plate-feature" data-plate="feature">
+    <img src="file:///Users/daniel/Documents/programming/portfolio-dani-2026/public/resources/software-factory-art/06-carriles.png" alt="Tres carriles paralelos con cajas en movimiento que convergen en una compuerta vertical ámbar." width="1600" height="893" decoding="async">
+    <span class="plate-frame" aria-hidden="true"></span>
+    <figcaption class="plate-caption" aria-hidden="true"></figcaption>
+  </figure></div>
+    <footer class="slide-footer"><span>Daniel Españadero</span><span>29 / 32</span></footer>
   </section>
-<section class="slide kind-parallel" data-slide="41" data-kind="parallel" id="factory-41" data-title="Paralelo solo si es separable" data-chapter="Paralelismo con límites" aria-labelledby="title-factory-41">
+<section class="slide kind-circle has-plate" data-slide="30" data-kind="circle" id="factory-30" data-title="Del despliegue a la siguiente orden" data-chapter="Cerrar el círculo" aria-labelledby="title-factory-30">
     <div class="registration" aria-hidden="true"></div>
-    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / Paralelismo con límites</p>
-    <h2 id="title-factory-41">Paralelo solo si es separable</h2><p class="lead">Más workers no arreglan una tarea mal dividida.</p></header>
-    <div class="composition"><div class="parallel main-panels"><div class="lanes"><article class="panel station">
-    <span class="station-number" aria-hidden="true">01</span>
-    <h3>Independiente</h3><p data-step>Un worker prepara documentación; otro implementa una función con contrato ya fijado.</p></article><article class="panel station">
-    <span class="station-number" aria-hidden="true">02</span>
-    <h3>Dependiente</h3><p data-step>Dos workers cambian la misma respuesta pública con supuestos diferentes.</p></article><article class="panel station">
-    <span class="station-number" aria-hidden="true">03</span>
-    <h3>Frontera</h3><p data-step>Estabiliza interfaces antes de repartir; serializa si las fronteras no están claras.</p></article></div><aside class="integration panel"><h3>Integración compartida</h3><p>Contrato + pruebas del conjunto.</p><strong>Cierra el lote antes de operar</strong></aside></div></div>
-    <footer class="slide-footer"><span>Daniel Españadero</span><span>41 / 54</span></footer>
+    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / Cerrar el círculo</p>
+    <h2 id="title-factory-30">Del despliegue a la siguiente orden</h2><p class="lead">Una alerta en producción es una orden de trabajo nueva, no el final del proceso.</p></header>
+    <div class="composition"><div class="circle-loop">
+    <svg class="ring" viewBox="0 0 1680 480" aria-hidden="true">
+      <defs><marker id="arrow-factory-30" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M2 2L10 6L2 10" fill="none" stroke="currentColor" stroke-width="2"/></marker></defs>
+      <ellipse class="ring-track" cx="840" cy="240" rx="600" ry="205"/>
+      <path class="ring-flow" d="M416 95A600 205 0 0 1 1264 95" marker-end="url(#arrow-factory-30)"/>
+      <path class="ring-flow" d="M1264 95A600 205 0 0 1 1264 385" marker-end="url(#arrow-factory-30)"/>
+      <path class="ring-flow" d="M1264 385A600 205 0 0 1 416 385" marker-end="url(#arrow-factory-30)"/>
+      <path class="ring-return" d="M416 385A600 205 0 0 1 416 95" marker-end="url(#arrow-factory-30)"/>
+      <circle class="ring-node" cx="416" cy="95" r="8"/><circle class="ring-node" cx="1264" cy="95" r="8"/><circle class="ring-node" cx="1264" cy="385" r="8"/><circle class="ring-node" cx="416" cy="385" r="8"/>
+    </svg><div class="ring-label ring-label-0 panel">
+      <span class="station-number" aria-hidden="true">01</span>
+      <h3>Desplegar</h3><p data-step>Autorización separada, observabilidad y plan de recuperación probado.</p></div><div class="ring-label ring-label-1 panel">
+      <span class="station-number" aria-hidden="true">02</span>
+      <h3>Observar</h3><p data-step>Telemetría, alertas e incidencias reales alimentan el backlog.</p></div><div class="ring-label ring-label-2 panel">
+      <span class="station-number" aria-hidden="true">03</span>
+      <h3>Nueva orden</h3><p data-step>Un fallo en producción vuelve a entrar como spec con criterios reproducibles.</p></div><div class="ring-label ring-label-3 panel">
+      <span class="station-number" aria-hidden="true">04</span>
+      <h3>Volver atrás</h3><p data-step>La misma fábrica prepara y verifica el rollback de su propio cambio.</p></div>
+  </div><figure class="plate plate-feature" data-plate="feature">
+    <img src="file:///Users/daniel/Documents/programming/portfolio-dani-2026/public/resources/software-factory-art/08-circulo.png" alt="Círculo de flechas que conecta una fábrica, un nodo de telemetría y un nodo de órdenes; el arco de retorno es discontinuo." width="1600" height="893" decoding="async">
+    <span class="plate-frame" aria-hidden="true"></span>
+    <figcaption class="plate-caption" aria-hidden="true"></figcaption>
+  </figure></div>
+    <footer class="slide-footer"><span>Daniel Españadero</span><span>30 / 32</span></footer>
   </section>
-<section class="slide kind-table" data-slide="42" data-kind="table" id="factory-42" data-title="Un contrato antes de dos ramas" data-chapter="Paralelismo con límites" aria-labelledby="title-factory-42">
+<section class="slide kind-table" data-slide="31" data-kind="table" id="factory-31" data-title="Medir coste, calidad y ciclo" data-chapter="Cerrar el círculo" aria-labelledby="title-factory-31">
     <div class="registration" aria-hidden="true"></div>
-    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / Paralelismo con límites</p>
-    <h2 id="title-factory-42">Un contrato antes de dos ramas</h2><p class="lead">La coordinación empieza con una interfaz compartida y estable.</p></header>
-    <div class="composition"><table class="boundary-table"><caption class="sr-only">Un contrato antes de dos ramas</caption><thead><tr><th scope="col">Entrada / criterio</th><th scope="col">Resultado / significado</th></tr></thead>
-        <tbody><tr class="panel"><th scope="row">Nombres</th><td>cancelBooking, amountCents, refundCents y events significan lo mismo para todos.</td></tr><tr class="panel"><th scope="row">Semántica</th><td>&gt;=24h devuelve 100%; inicio exacto rechaza; repetir no emite otro evento.</td></tr><tr class="panel"><th scope="row">Cambio del contrato</th><td>Detener consumidores afectados y acordar una versión, no improvisar adaptadores silenciosos.</td></tr></tbody></table></div>
-    <footer class="slide-footer"><span>Daniel Españadero</span><span>42 / 54</span></footer>
+    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / Cerrar el círculo</p>
+    <h2 id="title-factory-31">Medir coste, calidad y ciclo</h2><p class="lead">El coste es una palanca de diseño: se compara con el ciclo y los defectos escapados.</p></header>
+    <div class="composition"><table class="boundary-table" data-rows="4"><caption class="sr-only">Medir coste, calidad y ciclo</caption><thead><tr><th scope="col">Entrada / criterio</th><th scope="col">Resultado / significado</th></tr></thead>
+        <tbody><tr class="panel"><th scope="row">Coste por funcionalidad</th><td>Tokens, contexto compartido y reintentos de ese lote concreto.</td></tr><tr class="panel"><th scope="row">Tiempo de ciclo</th><td>Desde la orden hasta la integración, con revisión y correcciones incluidas.</td></tr><tr class="panel"><th scope="row">Defectos escapados</th><td>Qué llegó a producción y cuánto costó detectarlo tarde.</td></tr><tr class="panel"><th scope="row">Decisión</th><td>Elige modelo y paralelismo según esa comparación, no por moda.</td></tr></tbody></table></div>
+    <footer class="slide-footer"><span>Daniel Españadero</span><span>31 / 32</span></footer>
   </section>
-<section class="slide kind-code" data-slide="43" data-kind="code" id="factory-43" data-title="Worktree: archivos separados" data-chapter="Paralelismo con límites" aria-labelledby="title-factory-43">
+<section class="slide kind-closing has-plate" data-slide="32" data-kind="closing" id="factory-32" data-title="Cierre y checklist de arranque" data-chapter="Cerrar el círculo" aria-labelledby="title-factory-32">
     <div class="registration" aria-hidden="true"></div>
-    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / Paralelismo con límites</p>
-    <h2 id="title-factory-43">Worktree: archivos separados</h2><p class="lead">Aísla directorios y ramas; no crea una sandbox de seguridad.</p></header>
-    <div class="composition"><div class="code-layout main-panels"><pre class="panel code-panel"><code># Ilustrativo; no se ejecuta en este taller
-# Desde un repositorio de prácticas preparado:
-git worktree add ../practice-docs -b practice/docs
-# El directorio nuevo contiene otra copia de trabajo.
-# Revisa permisos y estado antes de usarla.</code></pre>
-        <div class="callouts"><article class="panel station">
-    <span class="station-number" aria-hidden="true">01</span>
-    <h3>Uso</h3><p >Ejemplo ilustrativo para un repositorio de prácticas limpio; requiere Git y autorización local.</p></article><article class="panel station">
-    <span class="station-number" aria-hidden="true">02</span>
-    <h3>No aísla</h3><p >Procesos, puertos, bases de datos, red ni credenciales del equipo.</p></article></div></div></div>
-    <footer class="slide-footer"><span>Daniel Españadero</span><span>43 / 54</span></footer>
-  </section>
-<section class="slide kind-parallel" data-slide="44" data-kind="parallel" id="factory-44" data-title="Propiedad visible por tarea" data-chapter="Paralelismo con límites" aria-labelledby="title-factory-44">
-    <div class="registration" aria-hidden="true"></div>
-    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / Paralelismo con límites</p>
-    <h2 id="title-factory-44">Propiedad visible por tarea</h2><p class="lead">Cada worker necesita superficie, salida y condición de parada.</p></header>
-    <div class="composition"><div class="parallel main-panels"><div class="lanes"><article class="panel station">
-    <span class="station-number" aria-hidden="true">01</span>
-    <h3>Worker A</h3><p data-step>Implementa src/cancellation.mjs con la spec estable y pruebas acordadas.</p></article><article class="panel station">
-    <span class="station-number" aria-hidden="true">02</span>
-    <h3>Worker B</h3><p data-step>Redacta ejemplos de uso en documentación sin cambiar el contrato.</p></article><article class="panel station">
-    <span class="station-number" aria-hidden="true">03</span>
-    <h3>Coordinación</h3><p data-step>Resuelve dudas compartidas y revisa que nadie invada la superficie del otro.</p></article></div><aside class="integration panel"><h3>Integración compartida</h3><p>Contrato + pruebas del conjunto.</p><strong>Cierra el lote antes de operar</strong></aside></div></div>
-    <footer class="slide-footer"><span>Daniel Españadero</span><span>44 / 54</span></footer>
-  </section>
-<section class="slide kind-flow" data-slide="45" data-kind="flow" id="factory-45" data-title="La integración es otra estación" data-chapter="Paralelismo con límites" aria-labelledby="title-factory-45">
-    <div class="registration" aria-hidden="true"></div>
-    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / Paralelismo con límites</p>
-    <h2 id="title-factory-45">La integración es otra estación</h2><p class="lead">Dos ramas verdes pueden formar un conjunto incorrecto.</p></header>
-    <div class="composition"><div class="diagram flow"><svg class="connectors" viewBox="0 0 1680 480" aria-hidden="true">
-    <defs><marker id="arrow-factory-45" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M2 2L10 6L2 10" fill="none" stroke="currentColor" stroke-width="2"/></marker></defs>
-    <path class="route-line" d="M532 230H571" marker-end="url(#arrow-factory-45)"/><path class="route-line" d="M1106 230H1145" marker-end="url(#arrow-factory-45)"/>
-    
-    <path class="packet" d="M10 230H1500"/>
-    </svg><div class="stations main-panels" style="--count:3"><article class="panel station">
-    <span class="station-number" aria-hidden="true">01</span>
-    <h3>Antes de unir</h3><p data-step>Revisa contrato, cambios ajenos y evidencia de cada tarea.</p></article><article class="panel station">
-    <span class="station-number" aria-hidden="true">02</span>
-    <h3>Después de unir</h3><p data-step>Ejecuta pruebas del conjunto y verifica ejemplos de documentación.</p></article><article class="panel station">
-    <span class="station-number" aria-hidden="true">03</span>
-    <h3>Si falla</h3><p data-step>Identifica el defecto; no ocultes incompatibilidades con un parche sin acuerdo.</p></article></div></div></div>
-    <footer class="slide-footer"><span>Daniel Españadero</span><span>45 / 54</span></footer>
-  </section>
-<section class="slide kind-risk" data-slide="46" data-kind="risk" id="factory-46" data-title="Revisar también es una estación" data-chapter="Paralelismo con límites" aria-labelledby="title-factory-46">
-    <div class="registration" aria-hidden="true"></div>
-    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / Paralelismo con límites</p>
-    <h2 id="title-factory-46">Revisar también es una estación</h2><p class="lead">La capacidad de inspección marca el ritmo que conviene generar.</p></header>
-    <div class="composition"><div class="risk main-panels"><article class="panel station">
-    <span class="station-number" aria-hidden="true">01</span>
-    <h3>Cola</h3><p >Más propuestas simultáneas aumentan el material pendiente de entender.</p></article><article class="panel station">
-    <span class="station-number" aria-hidden="true">02</span>
-    <h3>Presupuesto de revisión</h3><p >Limita trabajo en curso y tamaño del lote según atención disponible.</p></article><article class="panel station">
-    <span class="station-number" aria-hidden="true">03</span>
-    <h3>Señal</h3><p >Si aumenta el tiempo hasta integrar un cambio, añadir workers empeora el flujo.</p></article></div></div>
-    <footer class="slide-footer"><span>Daniel Españadero</span><span>46 / 54</span></footer>
-  </section>
-<section class="slide kind-flow" data-slide="47" data-kind="flow" id="factory-47" data-title="Cancelar una tarea también es progreso" data-chapter="Paralelismo con límites" aria-labelledby="title-factory-47">
-    <div class="registration" aria-hidden="true"></div>
-    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / Paralelismo con límites</p>
-    <h2 id="title-factory-47">Cancelar una tarea también es progreso</h2><p class="lead">El coordinador debe poder reducir, detener o volver a trabajo manual.</p></header>
-    <div class="composition"><div class="diagram flow"><svg class="connectors" viewBox="0 0 1680 480" aria-hidden="true">
-    <defs><marker id="arrow-factory-47" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M2 2L10 6L2 10" fill="none" stroke="currentColor" stroke-width="2"/></marker></defs>
-    <path class="route-line" d="M532 230H571" marker-end="url(#arrow-factory-47)"/><path class="route-line" d="M1106 230H1145" marker-end="url(#arrow-factory-47)"/>
-    
-    <path class="packet" d="M10 230H1500"/>
-    </svg><div class="stations main-panels" style="--count:3"><article class="panel station">
-    <span class="station-number" aria-hidden="true">01</span>
-    <h3>Disparador</h3><p data-step>Conflicto de contrato, presupuesto agotado o evidencia insuficiente.</p></article><article class="panel station">
-    <span class="station-number" aria-hidden="true">02</span>
-    <h3>Acción</h3><p data-step>Pausa tareas dependientes y conserva cambios y resultados observados.</p></article><article class="panel station">
-    <span class="station-number" aria-hidden="true">03</span>
-    <h3>Reinicio</h3><p data-step>Una persona redefine una unidad menor y autoriza cómo continuar.</p></article></div></div></div>
-    <footer class="slide-footer"><span>Daniel Españadero</span><span>47 / 54</span></footer>
-  </section>
-<section class="slide kind-exercise" data-slide="48" data-kind="exercise" id="factory-48" data-title="Taller: una vuelta completa" data-chapter="Taller: medir y arrancar" aria-labelledby="title-factory-48">
-    <div class="registration" aria-hidden="true"></div>
-    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / Taller: medir y arrancar</p>
-    <h2 id="title-factory-48">Taller: una vuelta completa</h2><p class="lead">Practica una unidad pequeña antes de diseñar una gran plataforma.</p></header>
-    <div class="composition"><div class="workshop"><aside class="workshop-sign"><span>TALLER</span><p>Piensa → contrasta → explica</p></aside><div class="exercise main-panels"><article class="panel station">
-    <span class="station-number" aria-hidden="true">01</span>
-    <h3>Preparar</h3><p data-step>Copia el kit, lee instrucciones y calcula los casos frontera.</p></article><article class="panel station">
-    <span class="station-number" aria-hidden="true">02</span>
-    <h3>Construir</h3><p data-step>En copia desechable: stub, RED observado, implementación y GREEN observado.</p></article><article class="panel station">
-    <span class="station-number" aria-hidden="true">03</span>
-    <h3>Entregar</h3><p data-step>Revisa el diff, completa el handoff y deja el cambio listo para integrar.</p></article></div></div></div>
-    <footer class="slide-footer"><span>Daniel Españadero</span><span>48 / 54</span></footer>
-  </section>
-<section class="slide kind-exercise" data-slide="49" data-kind="exercise" id="factory-49" data-title="Pausa: explica tu decisión" data-chapter="Taller: medir y arrancar" aria-labelledby="title-factory-49">
-    <div class="registration" aria-hidden="true"></div>
-    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / Taller: medir y arrancar</p>
-    <h2 id="title-factory-49">Pausa: explica tu decisión</h2><p class="lead">Demuestra comprensión con un caso, no con una captura verde.</p></header>
-    <div class="composition"><div class="workshop"><aside class="workshop-sign"><span>CHAT</span><p>Piensa → contrasta → explica</p></aside><div class="exercise main-panels"><article class="panel station">
-    <span class="station-number" aria-hidden="true">01</span>
-    <h3>Pregunta</h3><p >¿Por qué repetir conserva outcome pero devuelve events vacío?</p></article><article class="panel station">
-    <span class="station-number" aria-hidden="true">02</span>
-    <h3>Contraste</h3><p >¿Qué cambia un segundo antes y exactamente al inicio?</p></article><article class="panel station">
-    <span class="station-number" aria-hidden="true">03</span>
-    <h3>Entrega al chat</h3><p >Comparte una duda o un defecto concreto, nunca datos personales ni credenciales.</p></article></div></div></div>
-    <footer class="slide-footer"><span>Daniel Españadero</span><span>49 / 54</span></footer>
-  </section>
-<section class="slide kind-table" data-slide="50" data-kind="table" id="factory-50" data-title="Medir tiempo de ciclo y calidad" data-chapter="Taller: medir y arrancar" aria-labelledby="title-factory-50">
-    <div class="registration" aria-hidden="true"></div>
-    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / Taller: medir y arrancar</p>
-    <h2 id="title-factory-50">Medir tiempo de ciclo y calidad</h2><p class="lead">La fábrica se evalúa por flujo y calidad, no por volumen generado.</p></header>
-    <div class="composition"><table class="boundary-table"><caption class="sr-only">Medir tiempo de ciclo y calidad</caption><thead><tr><th scope="col">Entrada / criterio</th><th scope="col">Resultado / significado</th></tr></thead>
-        <tbody><tr class="panel"><th scope="row">Tiempo de ciclo</th><td>Desde la orden hasta la integración, con revisión y correcciones incluidas.</td></tr><tr class="panel"><th scope="row">Calidad</th><td>Defectos escapados, retrabajo y claridad del comportamiento entregado.</td></tr><tr class="panel"><th scope="row">Coste</th><td>Recursos, herramientas y atención humana comparados con tareas similares.</td></tr><tr class="panel"><th scope="row">Comprensión</th><td>¿El equipo puede mantener el resultado sin el agente?</td></tr></tbody></table></div>
-    <footer class="slide-footer"><span>Daniel Españadero</span><span>50 / 54</span></footer>
-  </section>
-<section class="slide kind-comparison" data-slide="51" data-kind="comparison" id="factory-51" data-title="El modo manual no es un fracaso" data-chapter="Taller: medir y arrancar" aria-labelledby="title-factory-51">
-    <div class="registration" aria-hidden="true"></div>
-    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / Taller: medir y arrancar</p>
-    <h2 id="title-factory-51">El modo manual no es un fracaso</h2><p class="lead">El proceso debe seguir siendo comprensible cuando falta el proveedor.</p></header>
-    <div class="composition"><div class="comparison main-panels" style="--count:3"><article class="panel station">
-    <span class="station-number" aria-hidden="true">01</span>
-    <h3>Con agente</h3><p >Delegas propuestas dentro de alcance; conservas pruebas y decisiones.</p></article><article class="panel station">
-    <span class="station-number" aria-hidden="true">02</span>
-    <h3>Sin agente</h3><p >Editas a mano y ejecutas exactamente el mismo contrato y runner.</p></article><article class="panel station">
-    <span class="station-number" aria-hidden="true">03</span>
-    <h3>Continuidad</h3><p >Documentos portables y conocimiento compartido reducen dependencia operativa.</p></article></div></div>
-    <footer class="slide-footer"><span>Daniel Españadero</span><span>51 / 54</span></footer>
-  </section>
-<section class="slide kind-checklist" data-slide="52" data-kind="checklist" id="factory-52" data-title="Checklist de tu primera fábrica" data-chapter="Taller: medir y arrancar" aria-labelledby="title-factory-52">
-    <div class="registration" aria-hidden="true"></div>
-    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / Taller: medir y arrancar</p>
-    <h2 id="title-factory-52">Checklist de tu primera fábrica</h2><p class="lead">No necesitas una plataforma; necesitas un primer acuerdo verificable.</p></header>
-    <div class="composition"><div class="checklist main-panels"><article class="panel station">
-    <span class="station-number" aria-hidden="true">01</span>
-    <h3>Unidad pequeña</h3><p >Una conducta, ejemplos frontera, errores y exclusiones explícitas.</p></article><article class="panel station">
-    <span class="station-number" aria-hidden="true">02</span>
-    <h3>Permisos limitados</h3><p >Archivos autorizados, sin secretos y con acciones sensibles separadas.</p></article><article class="panel station">
-    <span class="station-number" aria-hidden="true">03</span>
-    <h3>Evidencia y parada</h3><p >Pruebas reproducibles, presupuesto finito y handoff honesto.</p></article><article class="panel station">
-    <span class="station-number" aria-hidden="true">04</span>
-    <h3>Capacidad de revisión</h3><p >Tiempo real para leer lotes pequeños; es el límite del flujo.</p></article><article class="panel station">
-    <span class="station-number" aria-hidden="true">05</span>
-    <h3>Recuperación</h3><p >Alternativa manual y límites de rollback conocidos.</p></article></div></div>
-    <footer class="slide-footer"><span>Daniel Españadero</span><span>52 / 54</span></footer>
-  </section>
-<section class="slide kind-table" data-slide="53" data-kind="table" id="factory-53" data-title="Fuentes para seguir contrastando" data-chapter="Taller: medir y arrancar" aria-labelledby="title-factory-53">
-    <div class="registration" aria-hidden="true"></div>
-    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / Taller: medir y arrancar</p>
-    <h2 id="title-factory-53">Fuentes para seguir contrastando</h2><p class="lead">Separa hechos históricos, recomendaciones de diseño y decisiones de este taller.</p></header>
-    <div class="composition"><table class="boundary-table"><caption class="sr-only">Fuentes para seguir contrastando</caption><thead><tr><th scope="col">Entrada / criterio</th><th scope="col">Resultado / significado</th></tr></thead>
-        <tbody><tr class="panel"><th scope="row">Historia</th><td>McIlroy y actas OTAN; manifiesto ágil; explicación de integración continua de Fowler.</td></tr><tr class="panel"><th scope="row">Agentes</th><td>Anthropic, Building Effective Agents, diciembre de 2024; distinción workflow/agente.</td></tr><tr class="panel"><th scope="row">Riesgos</th><td>OWASP: prompt injection, excessive agency y unbounded consumption, edición 2025.</td></tr><tr class="panel"><th scope="row">Herramientas</th><td>Documentación oficial de Git worktree; no implica aislamiento de procesos.</td></tr></tbody></table></div>
-    <footer class="slide-footer"><span>Daniel Españadero</span><span>53 / 54</span></footer>
-  </section>
-<section class="slide kind-closing" data-slide="54" data-kind="closing" id="factory-54" data-title="De la intención al software verificado" data-chapter="Taller: medir y arrancar" aria-labelledby="title-factory-54">
-    <div class="registration" aria-hidden="true"></div>
-    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / Taller: medir y arrancar</p>
-    <h2 id="title-factory-54">De la intención al software verificado</h2><p class="lead">Definir, construir, verificar, integrar y medir: eso es una software factory con IA.</p></header>
+    <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / Cerrar el círculo</p>
+    <h2 id="title-factory-32">Cierre y checklist de arranque</h2><p class="lead">Definir, construir, verificar, integrar y medir: eso es una fábrica de software con IA.</p></header>
     <div class="composition"><div class="closing main-panels"><article class="panel station">
     <span class="station-number" aria-hidden="true">01</span>
     <h3>Hoy</h3><p >Una orden pequeña, una función local y evidencia observada.</p></article><article class="panel station">
     <span class="station-number" aria-hidden="true">02</span>
-    <h3>Siguiente</h3><p >Repite el ciclo en una tarea real y mide tiempo de ciclo y defectos.</p></article><article class="panel station">
+    <h3>Siguiente</h3><p >Repite el ciclo en una tarea real y mide ciclo y defectos.</p></article><article class="panel station">
     <span class="station-number" aria-hidden="true">03</span>
-    <h3>Límite</h3><p >El taller no es una aplicación lista para producción.</p></article></div></div>
-    <footer class="slide-footer"><span>Daniel Españadero</span><span>54 / 54</span></footer>
+    <h3>Arranque</h3><p >Una conducta, permisos limitados, presupuesto y handoff honesto.</p></article><article class="panel station">
+    <span class="station-number" aria-hidden="true">04</span>
+    <h3>Límite</h3><p >El taller no es una aplicación lista para producción.</p></article></div><figure class="plate plate-feature" data-plate="feature">
+    <img src="file:///Users/daniel/Documents/programming/portfolio-dani-2026/public/resources/software-factory-art/01-planta.png" alt="Plano isométrico de línea fina: tres módulos de producción unidos por una cinta, con una bandeja ámbar de inspección al costado." width="1600" height="893" decoding="async">
+    <span class="plate-frame" aria-hidden="true"></span>
+    <figcaption class="plate-caption" aria-hidden="true"></figcaption>
+  </figure></div>
+    <footer class="slide-footer"><span>Daniel Españadero</span><span>32 / 32</span></footer>
   </section></main>
   <footer class="deck-controls" aria-label="Navegación de diapositivas">
     <p id="keyboard-help">← → navegar · Espacio revelar · I índice · F pantalla completa</p>

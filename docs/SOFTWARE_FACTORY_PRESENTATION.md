@@ -1,6 +1,6 @@
 # AI Software Factory: contenido para enseñar y practicar
 
-54 diapositivas en español, notas de ponente separadas y un kit local ejecutable. El hilo conductor es la fábrica como sistema de producción —orden de trabajo, estaciones especializadas, estándares, compuertas automáticas, evidencia, integración y medición— y no la aprobación humana: ésta aparece una sola vez, en la compuerta de integración, y como una de ocho familias de riesgo (S7). El renderer local integra ese currículo con la dirección elegida «Plano de fábrica» (S4), sin modificar otros decks ni el player compartido (S5). **Ruta implementada:** `/presentaciones/software-factory` (S6); lectura en `/presentaciones/software-factory/guia` y HTML autónomo en `/presentaciones/software-factory/descargar.html`. Son rutas Astro prerenderizadas; su respuesta HTTP en el hosting requiere la verificación posterior del orquestador. No se ha ejecutado build ni despliegue.
+32 diapositivas en español, notas de ponente separadas y un kit local ejecutable. La densidad se recortó a propósito: cada diapositiva sostiene una idea y el directo se apoya en las notas, no en paredes de texto. El hilo conductor es la fábrica como sistema de producción —orden de trabajo, estaciones especializadas, estándares, compuertas automáticas, evidencia, integración y medición— y no la aprobación humana: ésta aparece una sola vez, en la compuerta de integración, y como una de ocho familias de riesgo (S7). El renderer local integra ese currículo con la dirección elegida «Plano de fábrica» (S4), sin modificar otros decks ni el player compartido (S5). **Ruta implementada:** `/presentaciones/software-factory` (S6); lectura en `/presentaciones/software-factory/guia` y HTML autónomo en `/presentaciones/software-factory/descargar.html`. Son rutas Astro prerenderizadas; su respuesta HTTP en el hosting requiere la verificación posterior del orquestador. No se ha ejecutado build ni despliegue.
 
 ## Camino rápido
 
@@ -18,7 +18,7 @@
 - Las notas del ponente no se incrustan en el deck; viven en la guía y siguen siendo la referencia para narrar cada ID.
 - Sin JavaScript se ofrece lectura vertical de las diapositivas; la guía añade notas completas y estilos de impresión.
 
-El escenario se autoriza a 1920×1080 y el player escala cada slide una sola vez. En teléfono permanece 16:9 con bandas vacías; no se garantiza leer un directo completo en una pantalla pequeña. La guía sí redistribuye texto de forma responsive. El HTML de descarga incluye CSS, SVG, fuentes con licencia OFL y scripts sin recursos de render externos; no incluye notas ni enlaces de kit, que quedan en la guía online.
+El escenario se autoriza a 1920×1080 y el player escala cada slide una sola vez. En teléfono permanece 16:9 con bandas vacías; no se garantiza leer un directo completo en una pantalla pequeña. La guía sí redistribuye texto de forma responsive. El HTML de descarga incluye CSS, SVG, fuentes con licencia OFL y scripts sin recursos de render externos; no incluye notas. Sus láminas usan rutas absolutas `/resources/software-factory-art/...`, así que el archivo guardado necesita el sitio online para mostrarlas: el marco, el pie y el texto alternativo siguen apareciendo si no cargan.
 
 ### Módulos de implementación
 
@@ -28,7 +28,7 @@ La portada usa una línea de producción de tres estaciones (entrada, estaciones
 
 ## Arquitectura y contrato para el renderer
 
-Cada capítulo `.mjs` exporta por defecto `{ id, title, slides: [...] }`. `index.mjs` exporta con nombre `chapters` en orden narrativo y `slides` como concatenación de sus arrays. No hay side effects, HTML ni imports de herramientas de presentación. IDs estables `factory-01` a `factory-54`; no reconstruir IDs a partir de títulos.
+Cada capítulo `.mjs` exporta por defecto `{ id, title, slides: [...] }`. `index.mjs` exporta con nombre `chapters` en orden narrativo y `slides` como concatenación de sus arrays. No hay side effects, HTML ni imports de herramientas de presentación. IDs estables `factory-01` a `factory-32`; no reconstruir IDs a partir de títulos.
 
 | Campo de slide | Tipo y regla |
 |---|---|
@@ -41,9 +41,10 @@ Cada capítulo `.mjs` exporta por defecto `{ id, title, slides: [...] }`. `index
 | `sources?` | array de URLs de referencia; enlaces de consulta, no recursos necesarios para renderizar |
 | `code?` | string con máximo 12 líneas; escapar como texto, nunca evaluar ni inyectar como HTML |
 | `steps?` | boolean; sugiere recorrido ordenado para flow/loop/ejercicio; no autoriza ejecución |
-| `pause?` | boolean; marca una pausa intencional de chat en los IDs 08, 24 y 49 |
+| `pause?` | boolean; marca una pausa intencional de chat (IDs 12 y 21) |
+| `figure?` | objeto `{src, alt, mode}`; `mode` es `feature` (lámina visible) o `wash` (fondo muy tenue detrás de paneles opacos). `src` apunta a `public/resources/software-factory-art/` y `alt` describe el diagrama en español, nunca repite el título |
 
-No se usan otros campos específicos de kind en esta entrega. `quote` está permitido para evolución, sin obligación de usarlo. Existen 13 kinds utilizados. Cada item puede convertirse en nodo, fila, columna o estación según kind: no resolver todo con la misma card repetida. Las fuentes completas no deben apretarse en el escenario; ofrecerlas en notas o lectura. Las plantillas extensas pertenecen al kit.
+No se usan otros campos específicos de kind en esta entrega. `quote` está permitido para evolución, sin obligación de usarlo. Existen 15 kinds utilizados, incluidos `files` (árbol de archivos state) y `circle` (ciclo producción→telemetría→backlog). Cada item puede convertirse en nodo, fila, columna o estación según kind: no resolver todo con la misma card repetida. Las fuentes completas no deben apretarse en el escenario; ofrecerlas en notas o lectura. Las plantillas extensas pertenecen al kit.
 
 ### Límites para la siguiente unidad
 
@@ -59,13 +60,13 @@ Duración orientativa: **90–120 minutos ajustables**, no una garantía. Acorta
 
 | Módulo | IDs | Recorrido y atención del ponente | Tiempo orientativo |
 |---|---|---|---|
-| `01-foundations.mjs` | 01–08 | Metáfora no estándar; McIlroy 1968; antecedentes; vocabulario; distinción asistente/workflow/agente; pausa 08 | 12–15 min |
-| `02-anatomy.mjs` | 09–16 | Petición → orden de trabajo; estaciones especializadas; estándares y activos reutilizables; ciclo acotado; compuertas automáticas; recibo de evidencia; lote pequeño y tiempo de ciclo | 10–13 min |
-| `03-risks.mjs` | 17–24 | Ocho modos de fallo de la fábrica: aceptar por costumbre, falso verde correlacionado, inyección, permisos excesivos, consumo sin límite, conocimiento y dependencia, recuperación, control ausente; pausa 24 | 14–17 min |
-| `04-create.mjs` | 25–32 | Entorno mínimo, árbol, instrucciones explícitas, política, worker, reviewer, plantilla y comando | 10–13 min |
-| `05-execute.mjs` | 33–40 | API y validación, RED, tabla de segundos, repetición, GREEN, aterrizaje integrado con evidencia y vuelta atrás; integración distinta de despliegue | 15–18 min |
-| `06-parallel.mjs` | 41–47 | Independencia, contrato compartido, worktrees sin pretensión de sandbox, conflictos en integración y capacidad de revisión como límite de flujo | 9–12 min |
-| `07-workshop.mjs` | 48–54 | Taller ajustable y pausa 49; medir valor total, fallback, checklist, fuentes y cierre | 20–32 min |
+| `01-foundations.mjs` | 01–06 | Qué es y qué no es; 1968 con dos orígenes (Bemer en GE y McIlroy en Garmisch); de cascada a CI/CD a agentes; vocabulario mínimo; asistente, workflow o agente | 10–13 min |
+| `02-production-line.mjs` | 07–12 | Mapa de planta; de petición a orden de trabajo; estaciones especializadas; estándares y activos reutilizables; compuertas automáticas; pausa de evidencia y lote pequeño | 10–13 min |
+| `03-loop-state.mjs` | 13–16 | El bucle completo con rondas acotadas; estado en archivos markdown; quién decide y cuándo escalar; política de modelos y esfuerzo | 9–12 min |
+| `04-failure-modes.mjs` | 17–21 | Dos fábricas con la misma pinta; falso verde correlacionado; texto hostil y permisos; coste y conocimiento; pausa con tres fallos reales de una corrida | 12–15 min |
+| `05-build-yours.mjs` | 22–25 | Los ocho archivos; reglas operativas; primera corrida; observabilidad de la línea | 9–12 min |
+| `06-example-parallel.mjs` | 26–29 | Fronteras de la cancelación; RED antes de la solución; el lote aterriza integrado; worktrees y contrato compartido | 11–14 min |
+| `07-closing.mjs` | 30–32 | Del despliegue a la siguiente orden; medir coste, calidad y ciclo; cierre y checklist de arranque | 8–11 min |
 
 Los rangos permiten elegir ritmo; no deben sumarse como una promesa exacta. Para un directo corto, dar la práctica como continuación local. Para uno largo, ampliar preguntas sin añadir permisos ni servicios reales.
 
@@ -131,6 +132,10 @@ Chrome instalado y CDP nativo, sin npm ni servidor: ejecutar por separado `node 
 El checker recorre todas las diapositivas a 1280×720 y 390×844, revela pasos por teclado, comprueba proporción/encaje, cajas e ink de texto, separación de paneles, geometría reservada y slides inertes. Captura portada, cronología, flow/loop/gate, riesgo, código, tablas, paralelo y cierre. El modo interaction verifica Enter nativo con texto `\r` y click trusted, navegación, historial, foco, ausencia de controles extra, fullscreen y movimiento reducido. Reading comprueba fallback sin scripts y guía responsive/imprimible. Se registran peticiones de red y excepciones. Las métricas no sustituyen mirar las imágenes ni verifican HTTP.
 
 No build, dependencias nuevas ni despliegue en esta unidad. El resultado observado se comunica en el handoff de implementación, no se pre-rellena en la plantilla del alumno.
+
+## Ilustraciones
+
+Ocho láminas originales en `public/resources/software-factory-art/` (1600 px de ancho, 1 MB en total), generadas con el modelo de imágenes de la sesión a partir de los prompts de `docs/SOFTWARE_FACTORY_ART_BRIEF.md`. Se usan como lámina visible en portada, pausa de evidencia, ocho archivos, observabilidad, compuertas, paralelismo, círculo y cierre, y como fondo tenue solo donde hay paneles opacos encima (07 y 23). El movimiento es CSS/SVG, no GIF: se mantiene nítido a pantalla completa y respeta `prefers-reduced-motion`. Para sustituirlas por otras, guardar el mismo nombre de archivo; el brief incluye los prompts listos para pegar.
 
 ## Bibliografía y límites de atribución
 

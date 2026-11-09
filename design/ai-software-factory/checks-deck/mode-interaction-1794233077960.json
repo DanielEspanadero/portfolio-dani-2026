@@ -1,0 +1,10 @@
+{
+  "selector": "--mode=interaction",
+  "probes": [],
+  "failures": [
+    "desktop: previous unwinds step",
+    "phone: previous unwinds step"
+  ],
+  "requests": [],
+  "errors": []
+}
