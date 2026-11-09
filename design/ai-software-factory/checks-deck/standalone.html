@@ -582,8 +582,8 @@ body:not(.deck-ready) .lead { font-size: 26px; }
     <div class="registration" aria-hidden="true"></div>
     <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / Qué es una fábrica de software</p>
     <h2 id="title-factory-02">Qué es, en una frase</h2><p class="lead">La definición completa, antes de entrar en detalle.</p></header>
-    <div class="composition"><div class="quote"><p class="quote-statement">Una fábrica de software con IA es un sistema de trabajo repetible: una petición se escribe como una orden con criterios comprobables, un equipo de agentes (programas de IA con un papel cada uno) la construye y la prueba, y el resultado solo entra en el producto cuando las comprobaciones pasan y una persona con criterio decide.</p>
-        <ul class="quote-keys"><li class="panel quote-key"><h3>Misma entrada, mismo resultado</h3><p>Si repites la misma petición, el proceso se ejecuta igual: no depende del humor del día.</p></li><li class="panel quote-key"><h3>Máquina para lo mecánico, persona para decidir</h3><p>La IA escribe, prueba y comprueba; una persona elige cuando hay una decisión que tomar.</p></li><li class="panel quote-key"><h3>Todo deja registro</h3><p>Queda escrito qué se pidió, qué se hizo y qué se comprobó, para que cualquiera lo lea.</p></li></ul></div></div>
+    <div class="composition"><div class="quote"><p class="quote-statement">Una fábrica de software con IA es un sistema de trabajo repetible: una petición se escribe como una orden con criterios comprobables, un equipo de agentes (programas de IA con un papel cada uno) la construye y la prueba, y el resultado solo entra en el producto cuando las comprobaciones pasan y el estándar escrito lo permite.</p>
+        <ul class="quote-keys"><li class="panel quote-key"><h3>Misma entrada, mismo resultado</h3><p>Si repites la misma petición, el proceso se ejecuta igual: no depende del humor del día.</p></li><li class="panel quote-key"><h3>La máquina produce, el estándar decide</h3><p>La línea aplica los criterios escritos igual cada vez; una persona los define antes y resuelve lo que se escala.</p></li><li class="panel quote-key"><h3>Todo deja registro</h3><p>Queda escrito qué se pidió, qué se hizo y qué se comprobó, para que cualquiera lo lea.</p></li></ul></div></div>
     <footer class="slide-footer"><span class="footer-author">Daniel Españadero</span><span class="footer-page">02 / 36</span></footer>
   </section>
 <section class="slide kind-comparison" data-slide="3" data-kind="comparison" id="factory-03" data-title="No es un producto: es una organización" data-chapter="Qué es una fábrica de software" aria-labelledby="title-factory-03">
@@ -620,7 +620,7 @@ body:not(.deck-ready) .lead { font-size: 26px; }
     <span class="station-number" aria-hidden="true">01</span>
     <h3>Lo que mejora</h3><p >La espera entre pedir y ver, la consistencia entre tareas y el conocimiento que no se va con las personas.</p></article><article class="panel station">
     <span class="station-number" aria-hidden="true">02</span>
-    <h3>Lo que no cambia</h3><p >No decide el producto en tu lugar ni sustituye el criterio: sin criterios escritos produce rápido lo que nadie pidió.</p></article><article class="panel station">
+    <h3>Lo que no cambia</h3><p >No elige qué construir: aplica el estándar que escribas. Sin estándar escrito produce rápido lo que nadie pidió.</p></article><article class="panel station">
     <span class="station-number" aria-hidden="true">03</span>
     <h3>Cuándo no vale la pena</h3><p >Un equipo sin criterios, una tarea que se hace una sola vez o un producto que aún se está tanteando.</p></article></div></div>
     <footer class="slide-footer"><span class="footer-author">Daniel Españadero</span><span class="footer-page">05 / 36</span></footer>
@@ -826,7 +826,7 @@ body:not(.deck-ready) .lead { font-size: 26px; }
 <section class="slide kind-loop" data-slide="15" data-kind="loop" id="factory-15" data-title="El bucle completo" data-chapter="El bucle y su estado" aria-labelledby="title-factory-15">
     <div class="registration" aria-hidden="true"></div>
     <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / El bucle y su estado</p>
-    <h2 id="title-factory-15">El bucle completo</h2><p class="lead">Un agente escribe la spec, otro construye, revisores independientes juzgan y alguien decide.</p><p class="plain">La máquina repite a lo sumo unas vueltas y luego entrega lo que tiene.</p></header>
+    <h2 id="title-factory-15">El bucle completo</h2><p class="lead">Un agente escribe la spec, otro construye, revisores independientes juzgan contra el contrato y la compuerta aplica el estándar.</p><p class="plain">La máquina repite a lo sumo unas vueltas y luego entrega lo que tiene.</p></header>
     <div class="composition"><div class="diagram loop fanout"><svg class="connectors" viewBox="0 0 1680 480" aria-hidden="true">
     <defs><marker id="arrow-factory-15" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M2 2L10 6L2 10" fill="none" stroke="currentColor" stroke-width="2"/></marker></defs>
     <path class="route-line" style="--i:0" d="M302.4 230H341.4" marker-end="url(#arrow-factory-15)"/>
@@ -842,7 +842,7 @@ body:not(.deck-ready) .lead { font-size: 26px; }
     <span class="station-number" aria-hidden="true">03</span>
     <h3>Revisores en paralelo</h3><p data-step>Dos o tres miradas independientes buscan contradicciones contra el contrato.</p></article><article class="panel station">
     <span class="station-number" aria-hidden="true">04</span>
-    <h3>Decisión</h3><p data-step>Fusionar, devolver con un defecto concreto o escalar a una persona.</p></article><article class="panel station">
+    <h3>Decisión</h3><p data-step>Fusionar si el contrato y las compuertas pasan; devolver un defecto concreto o escalar.</p></article><article class="panel station">
     <span class="station-number" aria-hidden="true">05</span>
     <h3>Tope de reintentos</h3><p data-step>Un número fijo de vueltas; al agotarse, el lote sale con evidencia.</p></article></div><div class="loop-return"><span class="return-sweep" aria-hidden="true"></span>
     <span class="rounds">máx. 3 rondas</span></div></div></div>
@@ -864,12 +864,12 @@ body:not(.deck-ready) .lead { font-size: 26px; }
           <div class="file-note"><h3>Texto plano</h3><p>Markdown versionado: se lee, se compara y se revisa con las mismas herramientas.</p></div></li></ol></div></div>
     <footer class="slide-footer"><span class="footer-author">Daniel Españadero</span><span class="footer-page">16 / 36</span></footer>
   </section>
-<section class="slide kind-table" data-slide="17" data-kind="table" id="factory-17" data-title="Quién decide y cuándo escalar" data-chapter="El bucle y su estado" aria-labelledby="title-factory-17">
+<section class="slide kind-table" data-slide="17" data-kind="table" id="factory-17" data-title="Qué decide la línea y cuándo escala" data-chapter="El bucle y su estado" aria-labelledby="title-factory-17">
     <div class="registration" aria-hidden="true"></div>
     <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / El bucle y su estado</p>
-    <h2 id="title-factory-17">Quién decide y cuándo escalar</h2><p class="lead">Un agente puede fusionar lotes verdes; lo irreversible siempre escala a una persona.</p><p class="plain">Algunos cambios los cierra la máquina; los que no se deshacen pasan por una persona.</p></header>
-    <div class="composition"><table class="boundary-table" data-rows="5"><caption class="sr-only">Quién decide y cuándo escalar</caption><thead><tr><th scope="col">Entrada / criterio</th><th scope="col">Resultado / significado</th></tr></thead>
-        <tbody><tr class="panel"><th scope="row">Fusiona solo</th><td>Cambio dentro de la spec, compuertas verdes y superficie autorizada.</td></tr><tr class="panel"><th scope="row">Escala pagos</th><td>Cualquier cambio que mueva dinero o precios sale del piloto automático.</td></tr><tr class="panel"><th scope="row">Escala accesos</th><td>Permisos, credenciales y autenticación requieren una persona explícita.</td></tr><tr class="panel"><th scope="row">Escala lo irreversible</th><td>Migraciones, borrados e invalidación de caché no se deshacen solos.</td></tr><tr class="panel"><th scope="row">Tope y registro</th><td>Número fijo de reintentos; al agotarse, se entrega el fallo.</td></tr></tbody></table></div>
+    <h2 id="title-factory-17">Qué decide la línea y cuándo escala</h2><p class="lead">La línea fusiona lotes verdes; la política escrita decide qué avanza solo y qué escala siempre.</p><p class="plain">La máquina aplica la regla escrita y escala lo que la política marca; el resto avanza solo.</p></header>
+    <div class="composition"><table class="boundary-table" data-rows="5"><caption class="sr-only">Qué decide la línea y cuándo escala</caption><thead><tr><th scope="col">Entrada / criterio</th><th scope="col">Resultado / significado</th></tr></thead>
+        <tbody><tr class="panel"><th scope="row">Definir el estándar</th><td>Antes de arrancar: criterios, comprobaciones y contrato de revisión quedan escritos.</td></tr><tr class="panel"><th scope="row">Diseñar la autonomía</th><td>Qué avanza sin permiso y qué escala siempre; la política se escribe una vez.</td></tr><tr class="panel"><th scope="row">Responder una escalada</th><td>La persona contesta con una pregunta concreta y una respuesta que desbloquea el lote.</td></tr><tr class="panel"><th scope="row">Corregir tras un incidente</th><td>El fallo se arregla en el estándar o en la comprobación, para que la línea no lo repita.</td></tr><tr class="panel"><th scope="row">Siempre escala</th><td>Pagos, accesos y cualquier efecto irreversible salen del piloto automático.</td></tr></tbody></table></div>
     <footer class="slide-footer"><span class="footer-author">Daniel Españadero</span><span class="footer-page">17 / 36</span></footer>
   </section>
 <section class="slide kind-comparison" data-slide="18" data-kind="comparison" id="factory-18" data-title="Política de modelos y esfuerzo" data-chapter="El bucle y su estado" aria-labelledby="title-factory-18">
@@ -895,11 +895,11 @@ body:not(.deck-ready) .lead { font-size: 26px; }
     <span class="station-number" aria-hidden="true">01</span>
     <h3>Fábrica real</h3><p >Entrada definida, compuertas automáticas, evidencia y medición del flujo.</p></article><article class="panel station">
     <span class="station-number" aria-hidden="true">02</span>
-    <h3>Imitación</h3><p >Muchas propuestas, pruebas superficiales y nadie puede parar la línea.</p></article><article class="panel station">
+    <h3>Imitación</h3><p >Muchas propuestas, pruebas superficiales y una política sin frontera ni vía de escalado.</p></article><article class="panel station">
     <span class="station-number" aria-hidden="true">03</span>
-    <h3>Ocho modos de fallo</h3><p >Aceptar por costumbre, falso verde, texto hostil, bucles, conocimiento, proveedor, recuperación y control ausente.</p></article><article class="panel station">
+    <h3>Ocho modos de fallo</h3><p >Aceptar por costumbre, falso verde, texto hostil, bucles, conocimiento, proveedor, recuperación y política sin frontera.</p></article><article class="panel station">
     <span class="station-number" aria-hidden="true">04</span>
-    <h3>Control útil</h3><p >Información legible, tiempo real y autoridad para parar y corregir.</p></article></div></div>
+    <h3>Control útil</h3><p >El estándar escrito aplicado en cada corrida, con muestreo y métricas como control.</p></article></div></div>
     <footer class="slide-footer"><span class="footer-author">Daniel Españadero</span><span class="footer-page">19 / 36</span></footer>
   </section>
 <section class="slide kind-risk" data-slide="20" data-kind="risk" id="factory-20" data-title="Falso verde: código y prueba con el mismo error" data-chapter="Cuando la fábrica falla" aria-labelledby="title-factory-20">
@@ -953,7 +953,7 @@ body:not(.deck-ready) .lead { font-size: 26px; }
     <span class="station-number" aria-hidden="true">01</span>
     <h3>Árbol sucio</h3><p >Cambios sin confirmar bloquean el arranque de la orden.</p></article><article class="panel station">
     <span class="station-number" aria-hidden="true">02</span>
-    <h3>Nada accionable</h3><p >Una orden marcada &quot;necesita persona&quot; sin decir qué falta.</p></article><article class="panel station">
+    <h3>Nada accionable</h3><p >Una orden marcada &quot;necesita persona&quot; sin pregunta concreta: nadie puede responder.</p></article><article class="panel station">
     <span class="station-number" aria-hidden="true">03</span>
     <h3>Metadatos</h3><p >Un cambio de configuración de la fábrica impide fusionar el lote.</p></article><article class="panel station">
     <span class="station-number" aria-hidden="true">04</span>
@@ -1044,7 +1044,7 @@ node --test tests/cancellation.test.mjs</code></pre>
     <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / Monta tu propia fábrica</p>
     <h2 id="title-factory-28">Observabilidad de la línea</h2><p class="lead">Una fábrica que no se puede mirar por dentro pierde la confianza del equipo.</p></header>
     <div class="composition"><table class="boundary-table" data-rows="4"><caption class="sr-only">Observabilidad de la línea</caption><thead><tr><th scope="col">Entrada / criterio</th><th scope="col">Resultado / significado</th></tr></thead>
-        <tbody><tr class="panel"><th scope="row">Fase por orden</th><td>En qué paso está cada trabajo y desde cuándo está ahí.</td></tr><tr class="panel"><th scope="row">Cola de personas</th><td>Órdenes que esperan una decisión o capacidad de revisión.</td></tr><tr class="panel"><th scope="row">Compuertas fallidas</th><td>Qué compuerta falló, con qué salida y cuántos reintentos acumuló.</td></tr><tr class="panel"><th scope="row">Caja negra</th><td>Si solo ves el resultado final, no distingues suerte de proceso.</td></tr></tbody></table><figure class="plate plate-feature" data-plate="feature">
+        <tbody><tr class="panel"><th scope="row">Fase por orden</th><td>En qué paso está cada trabajo y desde cuándo está ahí.</td></tr><tr class="panel"><th scope="row">Cola de escaladas</th><td>Órdenes esperando respuesta a una pregunta concreta o capacidad de revisión.</td></tr><tr class="panel"><th scope="row">Compuertas fallidas</th><td>Qué compuerta falló, con qué salida y cuántos reintentos acumuló.</td></tr><tr class="panel"><th scope="row">Caja negra</th><td>Si solo ves el resultado final, no distingues suerte de proceso.</td></tr></tbody></table><figure class="plate plate-feature" data-plate="feature">
     <img src="file:///Users/daniel/Documents/programming/portfolio-dani-2026/public/resources/software-factory-art/07-panel.png" alt="Muro de doce pantallas de telemetría sobre una consola inclinada, con una gráfica y un indicador ámbar." width="1600" height="893" decoding="async">
     <span class="plate-frame" aria-hidden="true"></span>
     <figcaption class="plate-caption" aria-hidden="true"></figcaption>
@@ -1078,9 +1078,9 @@ node --test tests/cancellation.test.mjs</code></pre>
 <section class="slide kind-gate has-plate" data-slide="31" data-kind="gate" id="factory-31" data-title="El lote aterriza integrado" data-chapter="Ejemplo y paralelismo" aria-labelledby="title-factory-31">
     <div class="registration" aria-hidden="true"></div>
     <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / Ejemplo y paralelismo</p>
-    <h2 id="title-factory-31">El lote aterriza integrado</h2><p class="lead">El lote entra con diff, evidencia y vuelta atrás; una persona acepta o devuelve el defecto.</p></header>
+    <h2 id="title-factory-31">El lote aterriza integrado</h2><p class="lead">El lote entra con diff, evidencia y vuelta atrás; la compuerta aplica el estándar y devuelve lo que no cumple.</p></header>
     <div class="composition"><div class="gate-layout">
-        <div class="gate-banner">Compuerta de integración, aceptar o devolver el lote<span class="gate-arm" aria-hidden="true"></span></div>
+        <div class="gate-banner">Compuerta de integración, aplica el estándar y devuelve lo que no cumple<span class="gate-arm" aria-hidden="true"></span></div>
         <div class="gate main-panels" style="--count:3"><article class="panel station">
     <span class="station-number" aria-hidden="true">01</span>
     <h3>Conjunto</h3><p data-step>La función y el resto del sistema compilan y pasan sus pruebas juntos.</p></article><article class="panel station">

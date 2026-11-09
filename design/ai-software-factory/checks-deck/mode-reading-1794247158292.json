@@ -5,7 +5,7 @@
       "mode": "desktop",
       "fallback": {
         "classes": "",
-        "height": 37120,
+        "height": 37170,
         "viewport": 720,
         "slides": [
           {
@@ -123,7 +123,7 @@
           {
             "id": "factory-17",
             "visibility": "visible",
-            "height": 922.796875,
+            "height": 947.796875,
             "left": 140,
             "width": 1000
           },
@@ -200,7 +200,7 @@
           {
             "id": "factory-28",
             "visibility": "visible",
-            "height": 660.46875,
+            "height": 685.46875,
             "left": 140,
             "width": 1000
           },
@@ -267,7 +267,7 @@
       "mode": "phone",
       "fallback": {
         "classes": "",
-        "height": 61560,
+        "height": 62075,
         "viewport": 844,
         "slides": [
           {
@@ -280,7 +280,7 @@
           {
             "id": "factory-02",
             "visibility": "visible",
-            "height": 1217.09375,
+            "height": 1289.09375,
             "left": 0,
             "width": 390
           },
@@ -371,7 +371,7 @@
           {
             "id": "factory-15",
             "visibility": "visible",
-            "height": 2543.546875,
+            "height": 2611.140625,
             "left": 0,
             "width": 390
           },
@@ -385,7 +385,7 @@
           {
             "id": "factory-17",
             "visibility": "visible",
-            "height": 1483.59375,
+            "height": 1615.53125,
             "left": 0,
             "width": 390
           },
@@ -399,7 +399,7 @@
           {
             "id": "factory-19",
             "visibility": "visible",
-            "height": 1389.734375,
+            "height": 1443.734375,
             "left": 0,
             "width": 390
           },
@@ -427,7 +427,7 @@
           {
             "id": "factory-23",
             "visibility": "visible",
-            "height": 1354.734375,
+            "height": 1381.734375,
             "left": 0,
             "width": 390
           },
@@ -462,7 +462,7 @@
           {
             "id": "factory-28",
             "visibility": "visible",
-            "height": 1128.53125,
+            "height": 1153.53125,
             "left": 0,
             "width": 390
           },
@@ -483,7 +483,7 @@
           {
             "id": "factory-31",
             "visibility": "visible",
-            "height": 7032.53125,
+            "height": 7170.328125,
             "left": 0,
             "width": 390
           },
