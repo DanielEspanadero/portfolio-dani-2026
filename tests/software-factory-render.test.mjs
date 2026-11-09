@@ -142,11 +142,12 @@ test('figures use the approved plates with factual Spanish alt text and reserved
     assert.ok(html.includes(`alt="${escape(alt)}"`), slide.id);
   }
   const feature = id => slides.find(slide => slide.id === id).figure;
-  // IDs moved by one when S9 inserted the definition and merged the two history slides:
-  // the same artwork stays on the same subject, only its slide number changed.
+  // Artwork is pinned to its subject, not to a page number: ids move as slides are inserted.
   assert.equal(feature('factory-01').mode, 'feature');
   assert.equal(feature('factory-31').src, '05-evidencia.png');
-  assert.equal(feature('factory-33').src, '08-circulo.png');
+  assert.equal(feature('factory-34').src, '08-circulo.png');
+  assert.equal(feature('factory-32').src, '06-carriles.png');
+  assert.equal(feature('factory-36').src, '01-planta.png');
   assert.equal(feature('factory-09').src, '02-linea.png');
   assert.equal(feature('factory-09').mode, 'wash');
   // Washes stay only where opaque panels sit over them; text over artwork was removed.
@@ -155,6 +156,8 @@ test('figures use the approved plates with factual Spanish alt text and reserved
   assert.equal(feature('factory-25').mode, 'wash');
   assert.equal(feature('factory-23').src, '03-fallo.png');
   assert.equal(feature('factory-23').mode, 'feature');
+  // The new end-to-end flow deliberately carries no artwork: the diagram is the content.
+  assert.equal(feature('factory-33'), undefined);
   assert.equal(feature('factory-16'), undefined);
   // The new definition, ordinary day and problem/not slides carry no artwork.
   for (const id of ['factory-02', 'factory-05', 'factory-08']) assert.equal(feature(id), undefined, id);
@@ -282,7 +285,7 @@ test('the footer carries only the author and the page number', async () => {
   const html = renderPresentation({ css: '', controller: '' });
   assert.equal([...html.matchAll(/class="footer-story"/g)].length, 0);
   assert.equal(slides.filter(s => s.story).length, 0);
-  assert.match(html, /<span class="footer-author">Daniel Españadero<\/span><span class="footer-page">01 \/ 35<\/span>/);
+  assert.match(html, /<span class="footer-author">Daniel Españadero<\/span><span class="footer-page">01 \/ 36<\/span>/);
   const css = read(`${base}deck.css`);
   assert.doesNotMatch(css, /\.footer-story/);
   assert.match(css, /\.slide-footer \{[^}]*display: flex/s);
@@ -311,6 +314,6 @@ test('draw-in connectors stay on their three subjects after renumbering', async 
   // The fan-out animation is pinned by slide id, not by position in the deck: inserting a
   // slide (S9) must not silently move the draw-in onto a slide nobody asked for.
   const withFanout = slides.filter(slide => byId(html, slide.id).match(/class="[^"]*\bfanout\b/)).map(slide => slide.id);
-  assert.deepEqual(withFanout, ['factory-11', 'factory-15', 'factory-32']);
+  assert.deepEqual(withFanout, ['factory-13', 'factory-15', 'factory-32']);
   assert.match(read(`${base}deck.css`), /\.slide\.active \.fanout \.route-line/);
 });

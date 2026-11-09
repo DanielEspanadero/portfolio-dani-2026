@@ -17,7 +17,7 @@ const stateFiles = ['backlog.md', 'specs/*.md', 'board.md', '*.md'];
 // Thin connectors draw in sequence on these three slides (fan-out feel). Ids, not positions:
 // station specialisation, the loop, and the worktree lanes. Renumbering the deck must not
 // move the draw-in animation onto unrelated slides.
-const fanout = new Set(['factory-11', 'factory-15', 'factory-32']);
+const fanout = new Set(['factory-13', 'factory-15', 'factory-32']);
 const chapterOf = slide => chapters.find(chapter => chapter.slides.includes(slide));
 const stepped = slide => slide.steps || ['flow', 'loop', 'gate', 'parallel', 'circle'].includes(slide.kind);
 
@@ -105,7 +105,7 @@ function composition(slide) {
     case 'comparison':
       return `<div class="comparison main-panels" style="--count:${slide.items.length}">${items}</div>`;
     case 'flow': case 'loop':
-      return `<div class="diagram ${slide.kind}${hasFanout}">${connectors(slide)}<div class="stations main-panels" style="--count:${slide.items.length}">${items}</div>${slide.kind === 'loop' ? loopReturn() : ''}</div>`;
+      return `<div class="diagram ${slide.kind}${hasFanout}${slide.loopback ? ' loopback' : ''}">${connectors(slide)}<div class="stations main-panels" style="--count:${slide.items.length}">${items}</div>${slide.kind === 'loop' ? loopReturn() : ''}${slide.loopback ? '<p class="loopback-label" aria-hidden="true">Lo que la operación observa vuelve a entrar como orden nueva</p>' : ''}</div>`;
     case 'gate':
       return `<div class="gate-layout">
         <div class="gate-banner">Compuerta de integración, aceptar o devolver el lote<span class="gate-arm" aria-hidden="true"></span></div>

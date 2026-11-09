@@ -20,12 +20,12 @@ const sources = [
 ];
 
 // Structural guarantees complement, not replace, editorial and later visual review.
-test('35 diapositivas, siete capítulos ordenados y composición variada', () => {
+test('36 diapositivas, siete capítulos ordenados y composición variada', () => {
   assert.equal(chapters.length, 7);
-  // S10 added one slide to "Monta tu propia fábrica": where the order and the context come from.
-  // The compression target stays a target: one useful slide was worth the extra page.
-  assert.equal(slides.length, 35);
-  assert.deepEqual(chapters.map(c => c.slides.length), [7, 7, 4, 5, 5, 4, 3]);
+  // S10 added where the order and the context come from; S12 added the end-to-end flow.
+  // The compression target stays a target: two useful slides were worth the extra pages.
+  assert.equal(slides.length, 36);
+  assert.deepEqual(chapters.map(c => c.slides.length), [7, 7, 4, 5, 5, 4, 4]);
   assert.deepEqual(chapters.map(c => c.id), ['foundations', 'line', 'loop', 'risks', 'build', 'parallel', 'closing']);
   assert.equal(new Set(chapters.map(c => c.id)).size, 7);
   assert.equal(new Set(slides.map(s => s.id)).size, slides.length);
@@ -198,11 +198,11 @@ test('qué problema resuelve y qué no, en lenguaje de negocio', () => {
 
 test('la línea llana cubre la jerga mínima y no invade el resto del deck', () => {
   const plain = slides.filter(s => s.plain);
-  assert.ok(plain.length >= 8 && plain.length <= 12, `plain=${plain.length}`);
+  assert.ok(plain.length >= 8 && plain.length <= 13, `plain=${plain.length}`);
   // Cobertura obligatoria: orden de trabajo, estaciones, compuertas, bucle, estado,
   // política del aprobador, política de modelos, worktree y métricas.
   for (const id of ['factory-10', 'factory-11', 'factory-13', 'factory-15', 'factory-16',
-    'factory-17', 'factory-18', 'factory-26', 'factory-32', 'factory-34']) {
+    'factory-17', 'factory-18', 'factory-26', 'factory-33', 'factory-35']) {
     assert.ok(plain.some(s => s.id === id), `falta plain en ${id}`);
   }
   for (const slide of plain) {
