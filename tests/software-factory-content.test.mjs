@@ -237,7 +237,9 @@ test('qué problema resuelve y qué no, en lenguaje de negocio', () => {
 
 test('la línea llana cubre la jerga mínima y no invade el resto del deck', () => {
   const plain = slides.filter(s => s.plain);
-  assert.ok(plain.length >= 8 && plain.length <= 13, `plain=${plain.length}`);
+  // Coverage floor matters more than austerity: the glossary and the assistant/workflow/agent
+  // slide now carry plain lines too, because they introduce the deck's own vocabulary.
+  assert.ok(plain.length >= 8 && plain.length <= 16, `plain=${plain.length}`);
   // Cobertura obligatoria: orden de trabajo, estaciones, compuertas, bucle, estado,
   // política del aprobador, política de modelos, worktree y métricas.
   for (const id of ['factory-10', 'factory-11', 'factory-13', 'factory-15', 'factory-16',
