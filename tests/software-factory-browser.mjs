@@ -121,9 +121,22 @@ const geometry = `(() => {
    }
   }
  }
- for(const el of s.querySelectorAll('.composition p,.slide-heading .lead')) {
+ for(const el of s.querySelectorAll('.composition p,.slide-heading .lead,.composition text')) {
   if(!el.getClientRects().length)continue;
   if(parseFloat(getComputedStyle(el).fontSize)<28)errors.push('stage text below 28px: '+el.textContent.slice(0,40));
+ }
+ // The inline diagram is measured, not trusted: its own viewBox must contain every child,
+ // it may not reach the footer, and neighbouring stations may not bleed into each other.
+ const diagram=s.querySelector('.flow-diagram');
+ if(diagram){
+  const view=diagram.viewBox.baseVal, box=diagram.getBBox(), frame=rect(diagram);
+  if(box.x<view.x-1||box.y<view.y-1||box.x+box.width>view.x+view.width+1||box.y+box.height>view.y+view.height+1)
+   errors.push('diagram clips its own viewBox: '+[box.x,box.y,box.width,box.height].map(n=>Math.round(n)).join(','));
+  if(!within(frame,rect(s.querySelector('.composition')),scale*2))errors.push('diagram outside the composition box');
+  if(frame.bottom>rect(s.querySelector('.slide-footer')).top-scale*2)errors.push('diagram reaches the footer');
+  const nodes=[...s.querySelectorAll('.flow-node')];
+  for(let i=0;i+1<nodes.length;i++){const a=nodes[i].getBBox(),b=nodes[i+1].getBBox();
+   if(a.x+a.width>b.x)errors.push('diagram columns overlap: '+(i+1)+'/'+(i+2));}
  }
  const panels=[...s.querySelectorAll('.panel')];
  for(let i=0;i<panels.length;i++)for(let j=i+1;j<panels.length;j++) {
@@ -190,7 +203,7 @@ try {
         // Hero, definition, business why, ordinary day, wash opener, work order, gates, loop,
         // files, decision, incident, files/kit, last story slide, boundaries, gate, worktree,
         // circle and closing. S9 slides carry their own identifiers so they can be inspected.
-        if ([1, 2, 5, 8, 9, 10, 13, 15, 16, 17, 18, 23, 24, 25, 28, 30, 31, 32, 34].includes(number)) await capture(`slide-${number}-${mode}.png`);
+        if ([1, 2, 5, 8, 9, 10, 13, 15, 16, 17, 18, 23, 24, 25, 28, 30, 31, 32, 33, 34].includes(number)) await capture(`slide-${number}-${mode}.png`);
         check(await evaluate("location.hash==='#"+number+"' && [...document.querySelectorAll('.slide.active img')].every(img=>img.complete&&img.naturalWidth>0)"), `${mode}/#${number}: plate files resolve`);
       }
     } else if (selector.endsWith('interaction')) {
@@ -234,6 +247,31 @@ try {
       await command('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-reduced-motion', value: 'reduce' }] });
       await go(stepSlide); await frame();
       check(stillAnimates && await evaluate("document.querySelector('#deck').getAnimations({subtree:true}).length===0"), `${mode}: reduced motion removes CSS + WAAPI motion`);
+      await command('Emulation.setEmulatedMedia', { features: [] });
+      // The closing diagram is one continuous journey. Its timeline is seeked, not waited on,
+      // so the piece, its amber return and the still state are proven instead of assumed.
+      const flowSlide = slides.findIndex(slide => slide.loopback) + 1;
+      await go(flowSlide); await frame();
+      const seeked = await evaluate(`(() => {
+        const piece=document.querySelector('.active .flow-piece');
+        const journey=piece.getAnimations().find(a=>a.animationName==='flow-journey');
+        const feedback=piece.getAnimations().find(a=>a.animationName==='flow-feedback');
+        const pose=seconds=>{journey.currentTime=seconds*1000;return getComputedStyle(piece).transform;};
+        const tint=seconds=>{feedback.currentTime=seconds*1000;return getComputedStyle(piece).color;};
+        return {atOne:pose(0.2),atThree:pose(4),onArc:pose(11.5),cyanOnRail:tint(1),amberOnArc:tint(11.5),amberAtEnd:tint(13.9)};
+      })()`);
+      check(seeked.atOne==='matrix(1, 0, 0, 1, 200, 190)' && seeked.atThree!==seeked.atOne && seeked.onArc!==seeked.atThree,
+        `${mode}: the closing piece travels station to station and along the return arc`);
+      check(seeked.cyanOnRail==='rgb(148, 201, 210)' && seeked.amberOnArc==='rgb(255, 195, 106)' && seeked.amberAtEnd!==seeked.cyanOnRail,
+        `${mode}: the piece is amber only while the return arc carries it`);
+      await evaluate(`(() => {const piece=document.querySelector('.active .flow-piece');
+        for(const anim of piece.getAnimations()) anim.currentTime=11500;})()`);
+      await frame();
+      await capture(`journey-on-the-arc-${mode}.png`);
+      await command('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-reduced-motion', value: 'reduce' }] });
+      await go(flowSlide); await frame();
+      check(await evaluate("document.querySelector('.active .flow-piece').getAnimations().length===0 && getComputedStyle(document.querySelector('.active .flow-piece')).transform==='matrix(1, 0, 0, 1, 200, 190)'"),
+        `${mode}: reduced motion leaves the piece still at the first station`);
       await command('Emulation.setEmulatedMedia', { features: [] });
       await go(slides.length); await key('ArrowRight', 'ArrowRight', 39);
       check(await evaluate(`location.hash==='#${slides.length}' && document.querySelector('#next-slide').disabled`), `${mode}: last boundary`);

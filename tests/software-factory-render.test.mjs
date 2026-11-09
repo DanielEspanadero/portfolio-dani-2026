@@ -317,3 +317,55 @@ test('draw-in connectors stay on their three subjects after renumbering', async 
   assert.deepEqual(withFanout, ['factory-13', 'factory-15', 'factory-32']);
   assert.match(read(`${base}deck.css`), /\.slide\.active \.fanout \.route-line/);
 });
+
+test('the loopback flow is one drawn journey, not five cards plus a pseudo-arc', async () => {
+  const { renderPresentation } = await renderer();
+  const html = renderPresentation({ css: '', controller: '' });
+  const css = read(`${base}deck.css`);
+  const slide = slides.find(entry => entry.id === 'factory-33');
+  const diagram = byId(html, 'factory-33');
+  // The slide contract stays recognisable: kind flow + loopback true is the switch.
+  assert.equal(slide.kind, 'flow');
+  assert.equal(slide.loopback, true);
+  assert.match(diagram, /class="diagram flow loopback"/);
+  assert.doesNotMatch(diagram, /class="panel station"/);
+  assert.doesNotMatch(diagram, /loopback-label/);
+  assert.doesNotMatch(css, /\.diagram\.flow\.loopback::(?:after|before)|[.]loopback-label/);
+  assert.match(css, /\.flow-diagram \{[^}]*width: 100%; height: auto/s);
+  // One inline image, one Spanish label; the visible text carries the meaning.
+  assert.match(diagram, /<svg class="flow-diagram" viewBox="0 0 1680 480" role="img" aria-label="[^"]{80,}">/);
+  assert.ok(diagram.includes('un arco ámbar discontinuo devuelve la pieza al inicio'));
+  assert.match(diagram, /class="flow-caption"[^>]*>Lo observado vuelve como una nueva orden</);
+  // Every glyph is real SVG text, never a path, and never below the stage floor of 28px.
+  const sizes = [...diagram.matchAll(/font-size:\s*([\d.]+)px/g)].map(match => Number(match[1]));
+  assert.deepEqual([...new Set(sizes)].sort(), [28, 32]);
+  for (const size of sizes) assert.ok(size >= 28, String(size));
+  const glyphs = (kind) => [...diagram.matchAll(new RegExp(`class="${kind}"[^>]*>([^<]*)<`, 'g'))].map(match => match[1]);
+  assert.equal(glyphs('flow-index').join(' '), '01 02 03 04 05');
+  // Wrapping may break lines, but it must never lose a word of the content it renders.
+  assert.equal(glyphs('flow-label').join(' '), slide.items.map(entry => entry.label).join(' '));
+  assert.equal(glyphs('flow-label').length, 7);
+  assert.equal(glyphs('flow-detail').join(' '), slide.items.map(entry => entry.detail).join(' '));
+  assert.ok(glyphs('flow-detail').length <= slide.items.length * 2);
+  // The moving piece is decoration for assistive tech and rests at station one when still.
+  assert.match(diagram, /<g class="flow-piece" aria-hidden="true" transform="translate\(200 190\)"/);
+  assert.match(diagram, /<path class="flow-return" d="M1650 190V372Q1650 402 1620 402H60Q30 402 30 372V214"\/>/);
+  assert.match(diagram, /<path class="flow-return-tip"/);
+  // One 14s journey, and the amber only returns after the last station has been reached.
+  assert.match(diagram, /animation: flow-journey 14s ease-in-out infinite/);
+  assert.match(diagram, /@keyframes flow-journey \{[\s\S]*?64.29%\{transform:translate\(1480px,190px\)\}[\s\S]*?75.71%\{transform:translate\(1650px,190px\)/);
+  const amber = diagram.match(/@keyframes flow-feedback \{([\s\S]*?)\}\s*@keyframes flow-status/)[1];
+  assert.ok(amber.includes('color:var(--amber)'));
+  for (const [, percent] of amber.matchAll(/([\d.]+)%\{color:var\(--amber\)/g)) assert.ok(Number(percent) >= 75, percent);
+  // Palette comes from the deck tokens: no gradients, no glow, no ChatGPT blues.
+  for (const hex of new Set([...diagram.matchAll(/#[0-9a-fA-F]{6}/g)].map(match => match[0].toLowerCase()))) {
+    assert.ok(['#b3ced4', '#a9c3c9', '#557077', '#4f6b73', '#94c9d2', '#e9eeeb', '#ffc36a'].includes(hex), hex);
+  }
+  for (const token of ['var(--cyan)', 'var(--amber)', 'var(--paper)']) assert.ok(diagram.includes(token), token);
+  assert.doesNotMatch(diagram, /Gradient|filter:|drop-shadow|box-shadow/);
+  // Reduced motion removes the travel and leaves a legible still: nothing is hidden behind it.
+  assert.match(css, /@media \(prefers-reduced-motion: reduce\) \{\s*\*, \*::before, \*::after \{ animation: none !important; transition: none !important; \}/);
+  assert.doesNotMatch(diagram, /opacity:\s*0(?:[;}]|$)|display:\s*none|visibility:\s*hidden/);
+  assert.doesNotMatch(diagram, /<script|requestAnimationFrame|setTimeout/);
+  assert.match(diagram, /<path class="flow-rail" d="M30 190H1650"\/>/);
+});

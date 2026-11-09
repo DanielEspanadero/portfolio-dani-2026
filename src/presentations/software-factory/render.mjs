@@ -39,6 +39,93 @@ function plate(slide) {
   </figure>`;
 }
 
+/* === LOOPBACK FLOW: one drawn journey replaces the card row and the CSS pseudo-arc ===
+   A single timeline drives the piece, its amber return and the station pulse, so the drawing
+   cannot disagree with itself about when the piece is where. Seconds in, percentages out. */
+const journeySeconds = 14;
+const journeyTrack = [[0, 200, 190], [1, 200, 190], [2.4, 520, 190], [3.2, 520, 190],
+  [4.6, 840, 190], [5.4, 840, 190], [6.8, 1160, 190], [7.6, 1160, 190], [9, 1480, 190],
+  [9.8, 1480, 190], [10.6, 1650, 190], [11.2, 1650, 402], [13, 30, 402], [13.6, 30, 190],
+  [14, 200, 190]];
+const journeyArrival = [0, 2.4, 4.6, 6.8, 9];
+const flowPercent = seconds => `${Number((seconds / journeySeconds * 100).toFixed(2))}%`;
+const flowFrames = rows => rows.map(([seconds, ...rules]) => `${flowPercent(seconds)}{${rules.join('')}}`).join('');
+const flowPiece = flowFrames(journeyTrack.map(([seconds, x, y]) => [seconds, `transform:translate(${x}px,${y}px)`]));
+const flowAmber = flowFrames([[0, 'color:var(--cyan)'], [10.6, 'color:var(--cyan)'], [11.2, 'color:var(--amber)'],
+  [13.6, 'color:var(--amber)'], [14, 'color:var(--cyan)']]);
+// Icons stay stroke-only so they still read on a phone: no glyphs, no fills to mud up.
+const flowIcons = [
+  '<path d="M-42 4H12L42 34V112H-42Z"/><path d="M12 4V34H42"/><path class="flow-hair" d="M-24 54H24M-24 74H8M-24 94H18"/>',
+  '<rect x="-40" y="18" width="80" height="94" rx="10"/><rect x="-18" y="4" width="36" height="22" rx="8"/>'
+    + '<path d="M-28 48l6 7 12-15"/><path class="flow-hair" d="M2 48h20"/><path d="M-28 74l6 7 12-15"/>'
+    + '<path class="flow-hair" d="M2 74h20"/><path d="M-28 100l6 7 12-15"/><path class="flow-hair" d="M2 100h20"/>',
+  '<rect x="-42" y="96" width="84" height="16" rx="6"/><path d="M0 96V80"/><circle cx="0" cy="80" r="8"/>'
+    + '<path d="M0 80L-34 52"/><circle cx="-34" cy="52" r="8"/><path d="M-34 52L-4 24"/><circle cx="-4" cy="24" r="7"/>'
+    + '<rect class="flow-amber" x="4" y="8" width="22" height="22" rx="5" transform="rotate(45 15 19)"/>',
+  '<path d="M0 4L38 20V66Q38 100 0 112Q-38 100-38 66V20Z"/><path class="flow-amber" d="M-18 60L-4 76L20 46"/>',
+  '<rect x="-50" y="10" width="100" height="74" rx="9"/><path class="flow-hair" d="M-38 72H38"/>'
+    + '<path d="M-36 66L-18 66L-4 42L12 56L26 32L38 40"/><path d="M-14 84V98M14 84V98M-30 104H30"/>'
+    + '<circle class="flow-amber" cx="44" cy="10" r="11"/><path class="flow-amber" d="M39 10l3 4 7-8"/>',
+];
+
+/** The whole chain as one drawing: five stations, one piece, one amber return arc.
+    Five columns are part of the drawing, and the content contract keeps exactly five items. */
+function loopbackDiagram(slide) {
+  // Deterministic word wrap: the type never shrinks, so the lines are placed, not reflowed.
+  const wrap = (text, max) => String(text).split(' ').reduce((lines, word) => {
+    const current = lines[lines.length - 1];
+    if (current && current.length + word.length + 1 <= max) lines[lines.length - 1] = `${current} ${word}`;
+    else lines.push(word);
+    return lines;
+  }, []);
+  const labelRows = [256, 292];
+  const detailRows = [326, 358];
+  const stations = slide.items.map((entry, index) => {
+    const x = 200 + index * 320;
+    const label = wrap(entry.label, 14);
+    const detail = wrap(entry.detail, 20);
+    const row = (name, lines, rows) => lines.map((line, line_index) =>
+      `<text class="${name}" x="${x}" y="${rows[Math.min(line_index, rows.length - 1)]}">${e(line)}</text>`).join('');
+    return `<g class="flow-node">
+    <text class="flow-index" x="${x}" y="28" style="animation-delay:-${(journeySeconds - (journeyArrival[index] ?? 0)).toFixed(1)}s">${pad(index + 1)}</text>
+    <g class="flow-icon" transform="translate(${x} 34) scale(1.12)">${flowIcons[index]}</g>
+    <circle class="flow-dock" cx="${x}" cy="190" r="11"/>
+    ${row('flow-label', label, labelRows)}${row('flow-detail', detail, detailRows)}
+  </g>`;
+  }).join('');
+  const style = `<style>
+    .flow-diagram text { stroke: none; font-family: 'Instrument Sans', sans-serif; text-anchor: middle; }
+    .flow-index { font-family: 'JetBrains Mono', monospace; font-size: 28px; fill: var(--cyan); letter-spacing: 2px; animation: flow-status ${journeySeconds}s ease-in-out infinite; }
+    .flow-label { font-size: 32px; font-weight: 600; fill: var(--paper); }
+    .flow-detail { font-size: 28px; fill: #b3ced4; }
+    .flow-caption { font-family: 'JetBrains Mono', monospace; font-size: 28px; fill: var(--amber); }
+    .flow-rail { fill: none; stroke: #557077; stroke-width: 3; }
+    .flow-dock { fill: none; stroke: var(--cyan); stroke-width: 3; }
+    .flow-return { fill: none; stroke: var(--amber); stroke-width: 3; stroke-dasharray: 14 12; stroke-linecap: round; }
+    .flow-return-tip { fill: none; stroke: var(--amber); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+    .flow-icon { fill: none; stroke: var(--cyan); stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; }
+    .flow-icon .flow-hair { stroke: #557077; stroke-width: 3; }
+    .flow-icon .flow-amber { stroke: var(--amber); stroke-width: 4; }
+    .flow-piece { color: var(--cyan); animation: flow-journey ${journeySeconds}s ease-in-out infinite, flow-feedback ${journeySeconds}s ease-in-out infinite; }
+    .flow-piece rect { fill: currentColor; }
+    .flow-piece path { fill: none; stroke: var(--slide-bg); stroke-width: 4; stroke-linecap: round; }
+    @keyframes flow-journey { ${flowPiece} }
+    @keyframes flow-feedback { ${flowAmber} }
+    @keyframes flow-status { 0%, 6% { fill: var(--amber); } 9%, 100% { fill: var(--cyan); } }
+  </style>`;
+  const label = 'Flujo completo de una pieza: entra como issue, se convierte en criterios comprobables, '
+    + 'se construye y se prueba aislada, pasa revisión y compuertas, y se despliega y se observa; '
+    + 'un arco ámbar discontinuo devuelve la pieza al inicio como una nueva orden.';
+  return `<svg class="flow-diagram" viewBox="0 0 1680 480" role="img" aria-label="${e(label)}">${style}
+    <path class="flow-rail" d="M30 190H1650"/>
+    <path class="flow-return" d="M1650 190V372Q1650 402 1620 402H60Q30 402 30 372V214"/>
+    <path class="flow-return-tip" d="M21 214L30 198L39 214"/>
+    <text class="flow-caption" x="840" y="452">Lo observado vuelve como una nueva orden</text>
+    ${stations}
+    <g class="flow-piece" aria-hidden="true" transform="translate(200 190)"><rect x="-17" y="-19" width="34" height="38" rx="7"/><path d="M-9 -8H9M-9 1H2M-9 10H6"/></g>
+  </svg>`;
+}
+
 /** SVG connectors stay behind the stations. A token exists only past a revealed station. */
 function connectors(slide) {
   const id = e(slide.id);
@@ -97,6 +184,8 @@ function loopReturn() {
 function composition(slide) {
   const items = slide.items.map((entry, index) => item(slide, entry, index)).join('');
   const hasFanout = fanout.has(slide.id) ? ' fanout' : '';
+  // A loopback flow is one continuous journey: the drawing replaces the station cards.
+  if (slide.loopback) return `<div class="diagram flow loopback">${loopbackDiagram(slide)}</div>`;
   switch (slide.kind) {
     case 'hero':
       return `<svg class="hero-route" viewBox="0 0 1680 40" aria-label="Línea de producción de tres estaciones" role="img"><path d="M0 20H1660M530 10L550 20L530 30M1090 10L1110 20L1090 30" fill="none" stroke="#94c9d2" stroke-width="3"/></svg><div class="hero-line main-panels">${items}</div>`;
@@ -105,7 +194,7 @@ function composition(slide) {
     case 'comparison':
       return `<div class="comparison main-panels" style="--count:${slide.items.length}">${items}</div>`;
     case 'flow': case 'loop':
-      return `<div class="diagram ${slide.kind}${hasFanout}${slide.loopback ? ' loopback' : ''}">${connectors(slide)}<div class="stations main-panels" style="--count:${slide.items.length}">${items}</div>${slide.kind === 'loop' ? loopReturn() : ''}${slide.loopback ? '<p class="loopback-label" aria-hidden="true">Lo que la operación observa vuelve a entrar como orden nueva</p>' : ''}</div>`;
+      return `<div class="diagram ${slide.kind}${hasFanout}">${connectors(slide)}<div class="stations main-panels" style="--count:${slide.items.length}">${items}</div>${slide.kind === 'loop' ? loopReturn() : ''}</div>`;
     case 'gate':
       return `<div class="gate-layout">
         <div class="gate-banner">Compuerta de integración, aceptar o devolver el lote<span class="gate-arm" aria-hidden="true"></span></div>

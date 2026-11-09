@@ -329,3 +329,19 @@ test('kit completo, sin plantillas ocultas ni resultados inventados y contrato c
   assert.match(spec, /no significa respuesta completa idéntica/);
   assert.match(agents, /Publicar|publicar/);
 });
+
+test('la pieza del flujo completo se lee dentro del diagrama, sin letra por debajo de 28 px', () => {
+  // The closing diagram draws each detail at 28px in two 20-character lines. If a detail
+  // stops fitting, the content is shortened: the type never shrinks to make room.
+  const flow = slides.find(s => s.id === 'factory-33');
+  assert.equal(flow.loopback, true);
+  assert.equal(flow.kind, 'flow');
+  assert.equal(flow.items.length, 5);
+  for (const entry of flow.items) {
+    assert.ok(words(entry.detail) <= 9, `${entry.label}: ${entry.detail}`);
+    assert.ok(entry.detail.length <= 40, `${entry.label}: ${entry.detail}`);
+    assert.ok(words(entry.label) <= 4, `${entry.label}`);
+  }
+  assert.deepEqual(flow.items.map(entry => entry.label),
+    ['Entrada', 'Orden y spec', 'Construcción', 'Revisión y compuertas', 'Integración y operación']);
+});

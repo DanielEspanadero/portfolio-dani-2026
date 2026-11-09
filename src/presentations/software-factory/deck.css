@@ -121,11 +121,10 @@ h1, .slide h2 { font-size: 88px; font-weight: 650; line-height: 1.04; letter-spa
 .loop .stations .station { min-height: 320px; }
 .loop .stations { padding-top: 0; }
 .diagram.loop { display: grid; grid-template-rows: auto 62px; align-content: start; }
-/* The return row is a grid sibling: it starts at the measured station bottom. */
-.diagram.flow.loopback { position: relative; padding-bottom: 78px; }
-.diagram.flow.loopback::after { content: ''; position: absolute; left: 0; right: 0; bottom: 44px; height: 34px; border: 3px dashed var(--amber); border-top: 0; border-radius: 0 0 14px 14px; }
-.diagram.flow.loopback::before { content: ''; position: absolute; left: -6px; bottom: 68px; width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-bottom: 16px solid var(--amber); }
-.loopback-label { position: absolute; left: 0; right: 0; bottom: 0; text-align: center; font: 28px 'JetBrains Mono'; color: var(--amber); }
+/* The loopback flow is one drawn journey: the SVG owns its viewBox, so no pseudo-arc and no
+   card row. Type sizes and the journey keyframes live inside the drawing itself. */
+.diagram.flow.loopback { position: relative; }
+.flow-diagram { display: block; width: 100%; height: auto; }
 .loop-return { position: relative; z-index: 1; height: 62px; border-left: 3px solid var(--cyan); border-right: 3px solid var(--cyan); border-bottom: 3px dashed var(--cyan); }
 .loop-return::before { content: ''; position: absolute; left: -10px; top: 0; width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-bottom: 16px solid var(--cyan); }
 .return-sweep { position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: linear-gradient(90deg, transparent 0 40%, var(--amber) 50%, transparent 60% 100%); background-size: 300% 100%; animation: sweep 4.8s linear infinite; }
