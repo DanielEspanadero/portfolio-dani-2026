@@ -1,0 +1,40 @@
+{
+  "scope": "T1 / S2,S4,S5; explicitly authorized continuation, maximum two correction passes",
+  "correctionPassesUsed": 1,
+  "priorFailuresPreserved": [
+    "Initial validator failed on lazily unloaded unused fonts; parent explicitly loaded all fonts.",
+    "Next validator failed keyboard pause; zero complete viewport probes.",
+    "Parent focus continuation passed document focus but still failed keyboard pause; zero complete viewport probes."
+  ],
+  "diagnosis": {
+    "method": "Read-only instrumented in-memory variant of validate.mjs, first artboard desktop only; no screenshots written by probe.",
+    "exitCode": 0,
+    "originalImmediateAndAfter200ms": {
+      "events": ["trusted keydown Enter", "trusted keyup Enter"],
+      "defaultPrevented": false,
+      "ariaPressed": "false",
+      "paused": false,
+      "disabled": false
+    },
+    "withReturnText": {
+      "events": ["trusted keydown Enter", "trusted keypress Enter charCode=13", "trusted click pause", "trusted keyup Enter"],
+      "ariaPressed": "true",
+      "paused": true
+    },
+    "domClickAfterwards": { "trusted": false, "ariaPressed": "false", "paused": false },
+    "rootCause": "CDP keyDown omitted text, so Chrome did not generate the character/keypress and native button activation. Focus and waiting were insufficient. Supplying return text restores the trusted native click; no HTML defect found.",
+    "probeSummaryCaveat": "The inherited final PASS summary in this diagnostic-only in-memory variant was not full validation and did not generate six screenshots. Only the three commands below establish complete coverage."
+  },
+  "validation": [
+    { "command": "node design/ai-software-factory/validate.mjs --board=01", "exitCode": 0, "stderr": "", "viewportProbes": 2 },
+    { "command": "node design/ai-software-factory/validate.mjs --board=02", "exitCode": 0, "stderr": "", "viewportProbes": 2 },
+    { "command": "node design/ai-software-factory/validate.mjs --board=03", "exitCode": 0, "stderr": "", "viewportProbes": 2 }
+  ],
+  "checksPerViewport": ["1280x720 desktop or 390x844 phone", "uniform 16:9 stage fitting", "text and semantic blocks within stage", "44px controls", "all four embedded fonts decoded", "exact visible title normalized for uppercase", "focused keyboard target", "trusted native Enter pause and resume with aria-pressed and paused-class assertions", "trusted native Enter restart resets nonempty animations", "existing click pause/restart", "reduced motion removes animations and disables pause"],
+  "structuralChecks": ["exactly three artboards", "1920x1080 manifest", "full viewport-base.css verbatim", "preview byte identity", "one Spanish h1", "embedded fonts and license", "no external rendering resources", "inline JavaScript syntax"],
+  "screenshots": ["01-desktop.png", "01-phone.png", "02-desktop.png", "02-phone.png", "03-desktop.png", "03-phone.png"],
+  "visualInspection": "All six screenshots read and inspected. Three distinct compositions; no visible overlap or clipping; selected blueprint retains title, human-control gate, and diagram. Phone preserves scaled 16:9 landscape canvas with letterboxing and full-size external controls; small stage text is expected under fixed-stage requirements.",
+  "scratch": "All four fresh Chrome profile directories were removed by validator finally cleanup; none remains.",
+  "missingProof": "No full presentation, production route, physical device or interactive human-browser test in this T1 scope. Full unfiltered validator not run because bash_background is unavailable and its six waits exceed the 30-second foreground bound; all six viewport checks executed via documented per-board selector.",
+  "unchanged": "All HTML, duplicate previews, fonts and viewport-base.css remain unchanged. No public source, task file, branch, dependencies, build, deployment or commit changed."
+}

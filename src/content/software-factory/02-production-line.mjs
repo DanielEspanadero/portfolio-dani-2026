@@ -1,0 +1,90 @@
+export default {
+ id: 'line', title: 'La línea de producción',
+ slides: [
+ {
+ id: 'factory-08', title: 'Un día en la fábrica', kind: 'timeline', scene: 'day',
+ lead: 'Un martes normal de trabajo, con hora de entrada y de salida.',
+ items: [
+ { label: '09:10, Entra la orden', detail: 'Alguien escribe qué necesita y cómo se sabrá que está bien.' },
+ { label: '09:35, Se escribe la spec', detail: 'Un agente lo convierte en casos comprobables y acuerda los límites.' },
+ { label: '10:15, Se construye', detail: 'El cambio más pequeño y la prueba que ve el fallo primero.' },
+ { label: '11:05, Revisión en paralelo', detail: 'Dos revisores independientes revisan contra el contrato.' },
+ { label: '11:40, La compuerta', detail: 'Aplica la regla escrita y escala lo que no encaja.' },
+ ],
+ notes: `Este es el día que nadie graba, y por eso conviene enseñarlo. Las horas son ilustrativas, no una medición. A las nueve y diez alguien escribe qué necesita y cómo sabrá que está bien; a las nueve y treinta y cinco la petición se convierte en casos comprobables. La construcción empieza a las diez y cuarto con el cambio más pequeño posible, y la revisión ocurre en paralelo, no en cadena. A las once y cuarenta la compuerta aplica la regla escrita; lo que no encaja se escala. Ninguna de esas paradas es heroica: son aburridas y por eso funcionan. Si cada tarea necesita una epopeya, el problema no es la IA, es el tamaño del encargo. Pide al público que estime cuánto de su día se parece a esto y qué parada les falta de verdad. Después recorre el mapa de planta para poner nombre a cada parada.`,
+ },
+ {
+ id: 'factory-09', title: 'Mapa de planta', kind: 'flow', scene: 'map',
+ lead: 'Toda orden recorre entrada, estaciones, compuertas e integración en ese orden.',
+ items: [
+ { label: 'Entrada', detail: 'Spec, criterios y superficie autorizada.' },
+ { label: 'Estaciones', detail: 'Preguntas distintas sobre el mismo lote.' },
+ { label: 'Compuertas', detail: 'Tipos, pruebas y contrato, en secuencia.' },
+ { label: 'Integración', detail: 'Conjunto comprobado, evidencia y vuelta atrás.' },
+ ],
+ notes: `Recorre la planta como quien entra en una fábrica: primero la entrada, donde la petición se convierte en una orden con contrato y superficie; después las estaciones, cada una con una pregunta distinta; luego las compuertas automáticas, que filtran sin cansarse; al final, la integración, donde el conjunto demuestra que sigue funcionando. El orden no es decorativo. Si se salta la entrada, la estación inventa criterios. Si se saltan las compuertas, la cola de escaladas recibe trabajo mecánico. Si se integra sin probar el conjunto, dos piezas verdes pueden formar un sistema que no funciona. Pide que recuerden este mapa: los siguientes capítulos amplían cada zona y el cierre vuelve a recorrerlo con telemetría y nuevas órdenes de trabajo.`,
+ },
+ {
+ id: 'factory-10', title: 'De petición a orden de trabajo', kind: 'table',
+ plain: 'Una petición vaga se convierte en una lista de cosas que se pueden comprobar.',
+ lead: 'La fábrica arranca cuando la petición se vuelve comprobable.',
+ items: [
+ { label: 'Petición', detail: 'Frase inicial ambigua: mejorar algo, arreglar un fallo, añadir una función.' },
+ { label: 'Spec', detail: 'Comportamiento observable, ejemplos frontera, errores y exclusiones explícitas.' },
+ { label: 'Criterios', detail: 'Cómo se reconoce un resultado correcto y uno incorrecto, sin opinar.' },
+ { label: 'Superficie', detail: 'Archivos y comandos que la estación puede usar, y los que no.' },
+ ],
+ notes: `Sigue una tarjeta de trabajo sobre la mesa. La petición inicial suele ser una frase: cancelar reservas. La orden la convierte en algo verificable: qué comportamiento se espera, qué ejemplo debe pasar, qué ejemplo debe fallar y qué archivos puede tocar la estación. La spec describe conducta observable, no tecnología. Los criterios de aceptación permiten aceptar o rechazar sin discutir gustos. La superficie evita que un cambio correcto toque archivos que otra persona está editando. Si falta un criterio, la estación inventará uno y el resultado parecerá razonable. Insiste en que esta entrada se escribe antes de generar código: es el contrato contra el que se medirá todo lo demás, incluida la factura de tokens.`,
+ },
+ {
+ id: 'factory-11', title: 'Estaciones especializadas', kind: 'checklist',
+ plain: 'El trabajo pasa por varias manos y cada una responde una pregunta distinta.',
+ lead: 'Cada estación tiene una función distinta y una salida revisable.',
+ items: [
+ { label: 'Implementador', detail: 'Escribe el cambio mínimo y la prueba que lo demuestra.' },
+ { label: 'Tester', detail: 'Deriva casos del contrato y calcula los límites a mano.' },
+ { label: 'Reviewer', detail: 'Busca contradicciones con la spec y cambios fuera de alcance.' },
+ { label: 'Integrador', detail: 'Combina el trabajo y ejecuta las pruebas del conjunto.' },
+ ],
+ notes: `Cada estación existe porque hace una pregunta distinta. El implementador pregunta cómo conseguir el comportamiento con el cambio más pequeño. El tester pregunta qué casos podrían romperlo y calcula los límites a mano. El reviewer pregunta si el cambio contradice la especificación o se sale del alcance. El integrador pregunta si el conjunto sigue funcionando al unirse al resto. Una persona puede desempeñar varios papeles en un ejercicio pequeño, pero conviene no confundirlos. Dos agentes con el mismo modelo y el mismo resumen tienden a repetir el mismo supuesto. La especialización aporta preguntas distintas, no categorías de inteligencia: cada estación responde por una comprobación concreta y deja su propio recibo.`,
+ },
+ {
+ id: 'factory-12', title: 'Estándares y activos reutilizables', kind: 'table',
+ plain: 'Las reglas y las piezas ya hechas se reutilizan para no negociar lo mismo cada vez.',
+ lead: 'Las reglas compartidas y las piezas que ya funcionan evitan renegociar cada tarea.',
+ items: [
+ { label: 'Contrato', detail: 'Nombres, unidades, formato de respuesta y códigos de error estables.' },
+ { label: 'Estructura', detail: 'Dónde vive cada archivo y qué comando se ejecuta en cada caso.' },
+ { label: 'Plantillas', detail: 'Spec, orden de trabajo y handoff con la misma forma.' },
+ { label: 'Pruebas', detail: 'Un defecto encontrado se convierte en un caso permanente.' },
+ { label: 'Lecciones', detail: 'Decisiones y tropiezos registrados donde el siguiente puede leerlos.' },
+ ],
+ notes: `Una fábrica madura reutiliza lo que ya construyó. Las plantillas de spec, orden y handoff reducen la preparación y hacen comparables dos tareas. Las utilidades de validación y los datos de prueba se copian en lugar de reinventarse. Cuando aparece un defecto, se convierte en un caso permanente: la siguiente tarea hereda la lección sin depender de la memoria de alguien. Los estándares fijan nombres, unidades y definición de hecho; cambiar uno es una decisión explícita y no una excepción silenciosa que el siguiente descubrirá por sorpresa. Compara con una línea que cambia el tamaño de los tornillos a mitad de turno sin avisar. Pide un error repetido de su equipo y la prueba que lo habría detenido: ese es el activo real.`,
+ },
+ {
+ id: 'factory-13', title: 'Compuertas automáticas', kind: 'flow', scene: 'gates',
+ plain: 'Antes de que alguien mire el trabajo, la máquina comprueba que cumple lo acordado.',
+ lead: 'Lo que no cumple el contrato se detiene antes de gastar atención.',
+ items: [
+ { label: 'Compilación y tipos', detail: 'Un error de tipos no llega a la integración.' },
+ { label: 'Pruebas del contrato', detail: 'Cada criterio de aceptación tiene su caso automático.' },
+ { label: 'Integración continua', detail: 'El conjunto se compila y se prueba en cada cambio.' },
+ { label: 'Bloqueo real', detail: 'Un fallo detiene la línea; saltarlo exige una decisión registrada.' },
+ ],
+ sources: ['https://martinfowler.com/articles/continuousIntegration.html'],
+ notes: `Una compuerta automática aplica el contrato sin cansarse ni negociar. El dibujo enseña los dos casos a la vez. En el caso A el lote supera compilación y tipos, las pruebas del contrato y la integración continua: las tres compuertas se abren y avanza hasta la salida. En el caso B supera el primer control y falla un caso de aceptación en el segundo: se detiene, la tercera comprobación no se ejecuta y la salida queda sin paso. Eso es lo que compra el filtro: el trabajo que no cumple se para antes de consumir atención. El bloqueo es una regla de toda la línea, no una cuarta prueba; saltarlo exige una decisión registrada con motivo. Una compuerta verde demuestra lo que esos casos observaron, no que el software sea correcto para siempre. Y si el fallo es de entorno, la salida debe decirlo.`,
+ },
+ {
+ id: 'factory-14', title: 'Pausa: ¿qué evidencia pedirías?', kind: 'exercise',
+ lead: 'Una estación entrega un recibo: diff, salida real, límites y pendientes.',
+ figure: { src: '05-evidencia.png', mode: 'feature', alt: 'Tarjeta de informe con líneas de datos, un sello ámbar y una lupa grande apoyada encima.' },
+ items: [
+ { label: 'Diff', detail: 'Qué archivos cambian y qué comportamiento cubren.' },
+ { label: 'Salida real', detail: 'Comando exacto, salida observada y código de salida.' },
+ { label: 'Límites', detail: 'Qué no se probó y qué supuestos siguen abiertos.' },
+ { label: 'Lote pequeño', detail: 'Una conducta y un comando: menos espera antes de saber si falla.' },
+ ], pause: true,
+ notes: `Abre una pausa breve y pide al chat qué evidencia exigirían para aceptar un cambio en la cancelación. Busca respuestas concretas: el comando exacto, su salida real, el código de salida, qué no se probó y qué supuestos siguen abiertos. Descarta "me pasó los tests" sin salida y cualquier captura sin comando. Aprovecha para explicar el tamaño de lote: una conducta y un comando se integran antes de que aparezcan conflictos; un lote enorme oculta errores y convierte la aceptación en una firma a ciegas. Vigila también el trabajo en curso: demasiadas piezas abiertas producen atascos que la velocidad de generación disimula. Si nadie responde, usa la reserva del taller como ejemplo.`,
+ },
+ ],
+};

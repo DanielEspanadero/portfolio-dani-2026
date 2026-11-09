@@ -1,0 +1,9 @@
+---
+import fonts from '../../../presentations/software-factory/fonts.css?raw';
+import styles from '../../../presentations/software-factory/guide.css?raw';
+import { renderGuide } from '../../../presentations/software-factory/render.mjs';
+
+export const prerender = true;
+const document = renderGuide({ css: `${fonts}\n${styles}` });
+---
+<Fragment set:html={document} />

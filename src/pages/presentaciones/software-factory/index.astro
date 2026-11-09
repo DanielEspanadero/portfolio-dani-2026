@@ -1,0 +1,7 @@
+---
+import { presentationDocument } from '../../../presentations/software-factory/document';
+
+export const prerender = true;
+const document = presentationDocument();
+---
+<Fragment set:html={document} />

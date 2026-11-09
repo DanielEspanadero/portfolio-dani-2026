@@ -1,0 +1,350 @@
+/* === BLUEPRINT RECIPE: independent of portfolio tokens === */
+* { box-sizing: border-box; }
+:root { --stage-bg: #101719; --slide-bg: #172127; --paper: #e9eeeb; --cyan: #94c9d2; --amber: #ffc36a; }
+body { color: var(--paper); font-family: 'Instrument Sans', sans-serif; }
+a { color: var(--cyan); }
+button, select { min-width: 44px; min-height: 44px; border: 1px solid #819da5; background: #172127; color: var(--paper); padding: 8px 12px; border-radius: 4px; font: 14px 'Instrument Sans', sans-serif; }
+button, select { cursor: pointer; }
+button:disabled { opacity: .5; cursor: default; }
+:focus-visible { outline: 3px solid var(--amber); outline-offset: 3px; }
+h1, h2, h3, p { margin: 0; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+.skip-link { position: fixed; top: -100px; z-index: 3000; }
+.skip-link:focus { top: 4px; background: #101719; padding: 12px; }
+
+/* === UNTRANSFORMED VIEWPORT: shared player scales each slide exactly once === */
+#deck { position: fixed; inset: 76px 0 132px; overflow: hidden; outline: none; }
+.slide { color: var(--paper); transform-origin: center center; left: 50%; top: 50%; margin: -540px 0 0 -960px; background-image: linear-gradient(#87c6d00c 1px, transparent 1px), linear-gradient(90deg, #87c6d00c 1px, transparent 1px); background-size: 48px 48px; }
+.deck-ready .slide[hidden] { display: block; visibility: hidden; opacity: 0; pointer-events: none; }
+.deck-ready .slide.active { visibility: visible; opacity: 1; pointer-events: auto; }
+.registration { position: absolute; left: 64px; top: 65px; bottom: 76px; width: 26px; border: 2px solid #76979e; border-right: 0; }
+.registration::after { content: '+'; position: absolute; bottom: 25px; left: -13px; font: 40px 'JetBrains Mono'; color: var(--cyan); }
+.slide-heading { position: absolute; left: 120px; right: 120px; top: 66px; }
+.eyebrow { font: 23px 'JetBrains Mono', monospace; color: #b3ced4; letter-spacing: 1px; margin-bottom: 30px; }
+h1, .slide h2 { font-size: 88px; font-weight: 650; line-height: 1.04; letter-spacing: -3px; max-width: 1630px; }
+.lead { font-size: 36px; line-height: 1.3; margin-top: 28px; color: #c4d7da; max-width: 1580px; }
+/* === PLAIN ANNOTATION: one jargon-free sentence of help, never stage filler === */
+.plain { font-family: 'Instrument Sans', sans-serif; font-size: 29px; line-height: 1.32; margin-top: 14px; padding-left: 20px; border-left: 4px solid #6e919b; color: #a9c3c9; max-width: 1400px; }
+.slide-heading:has(.plain) .lead { margin-top: 16px; }
+.composition { position: absolute; left: 120px; right: 120px; top: 430px; height: 480px; }
+
+/* === PLATES: approved artwork keeps its frame and box even when a file is missing === */
+.plate { position: absolute; margin: 0; }
+.plate img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; border: 1px solid #4f6b73; background: #101719; color: #b3ced4; font: 20px/1.3 'Instrument Sans', sans-serif; overflow: hidden; }
+.plate-frame { position: absolute; inset: -10px; border: 1px solid #3d565d; pointer-events: none; }
+.plate-caption { display: block; min-height: 22px; margin-top: 8px; border-top: 1px solid #3d565d; }
+.plate-feature::after { content: ''; position: absolute; inset: -1px; background: radial-gradient(closest-side, transparent 58%, #101719 135%); pointer-events: none; }
+/* Wash: full-bleed, very low contrast, scrim keeps every text layer above 4.5:1. */
+.plate-wash { inset: 0; width: 100%; height: 100%; z-index: 0; }
+.plate-wash img { width: 100%; height: 100%; aspect-ratio: auto; object-fit: cover; border: 0; opacity: .22; filter: saturate(.85); }
+.plate-wash .plate-frame, .plate-wash .plate-caption { display: none; }
+.plate-wash::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(16, 23, 25, .45) 0%, rgba(16, 23, 25, .62) 60%, rgba(16, 23, 25, .5) 100%); }
+.slide-footer { position: absolute; left: 120px; right: 120px; bottom: 60px; border-top: 1px solid #718d94; padding-top: 22px; display: flex; align-items: baseline; justify-content: space-between; gap: 24px; font-size: 24px; }
+/* The running case sits quiet and centred: a band, not a second headline. */
+.footer-page { font-family: 'JetBrains Mono'; color: var(--amber); font-size: 22px; }
+.panel { min-width: 0; }
+.station h3, .integration h3 { font-size: 32px; line-height: 1.15; font-weight: 600; margin-bottom: 20px; overflow-wrap: anywhere; }
+.station p, .integration p { font-size: 29px; line-height: 1.35; overflow-wrap: anywhere; }
+.station-number { display: block; font: 25px 'JetBrains Mono'; color: var(--cyan); margin-bottom: 22px; transition: transform .3s ease-out; }
+.station:has(p.step-pending) .station-number { transform: scale(.94); }
+.step-pending { opacity: .13; visibility: hidden; pointer-events: none; }
+
+/* === HERO / CLOSING: oversized editorial statement, assembly rail === */
+.kind-hero h1 { font-size: 96px; max-width: 900px; text-transform: uppercase; color: var(--paper); line-height: .98; letter-spacing: -4px; }
+/* Spanish concept first, English industry term as the alias line right under it. */
+.hero-alias { font: 22px 'JetBrains Mono', monospace; color: var(--cyan); letter-spacing: .18em; text-transform: uppercase; margin-top: 20px; }
+.kind-hero .lead { font-family: 'Instrument Serif'; font-size: 42px; color: var(--amber); margin-top: 22px; max-width: 900px; }
+/* The author's tagline reads as stage text: three items, hairline separators, no middle dots. */
+.hero-terms { list-style: none; display: flex; align-items: baseline; margin: 26px 0 0; padding: 0; font: 24px 'JetBrains Mono', monospace; color: #b3ced4; letter-spacing: .12em; text-transform: uppercase; }
+.hero-terms li { padding: 0 22px; }
+.hero-terms li + li { border-left: 1px solid #557077; }
+.hero-terms li:first-child { padding-left: 0; }
+.hero-terms li:last-child { padding-right: 0; }
+/* The title block keeps the left; the animated plant owns the upper right. */
+.kind-hero .slide-heading { right: 860px; }
+.kind-hero .composition { top: 610px; height: 320px; }
+.hero-scene { position: absolute; right: 0; top: -580px; width: 700px; }
+.hero-scene svg { display: block; width: 100%; height: auto; aspect-ratio: 1030 / 845; overflow: visible; }
+.hero-route { position: absolute; top: -20px; width: 100%; height: 40px; }
+.hero-line { display: grid; grid-template-columns: repeat(3, 1fr); gap: 65px; padding-top: 45px; }
+.hero-line .station { border-left: 2px solid var(--cyan); padding-left: 28px; }
+.kind-closing .slide-heading h2 { font-size: 110px; color: var(--amber); }
+.closing { display: grid; grid-template-columns: repeat(3, 1fr); gap: 60px; }
+.closing .station { border-top: 2px solid var(--amber); padding-top: 30px; }
+/* A two-line closing headline needs its own breathing room above the columns. */
+.kind-closing h2 { font-size: 80px; }
+.kind-closing .composition { top: 456px; }
+.kind-closing.has-plate .closing { grid-template-columns: 1fr 1fr; gap: 40px 64px; padding-right: 610px; }
+.kind-closing .plate { right: 0; top: 0; width: 520px; }
+
+/* === QUOTE: one oversized sentence with three short keys, no column of chips === */
+.kind-quote .composition { top: 372px; height: 568px; }
+.quote { display: grid; gap: 32px; align-content: start; }
+.quote-statement { font-family: 'Instrument Serif'; font-size: 48px; line-height: 1.18; color: var(--paper); }
+.quote-keys { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 54px; }
+.quote-key { border-top: 2px solid var(--cyan); padding-top: 18px; }
+.quote-key h3 { font-size: 30px; line-height: 1.15; margin-bottom: 10px; color: var(--amber); min-height: 2.3em; }
+.quote-key p { font-size: 28px; line-height: 1.3; color: #d4e2e1; }
+
+/* === TIMELINE: milestones on one continuous horizontal axis === */
+.timeline { display: grid; grid-template-columns: repeat(var(--count), 1fr); gap: 50px; padding-top: 58px; border-top: 3px solid var(--cyan); }
+.timeline .station { position: relative; }
+.timeline .station::before { content: ''; position: absolute; width: 22px; height: 22px; background: var(--amber); border: 5px solid #172127; outline: 2px solid var(--amber); top: -71px; left: 0; }
+.timeline h3 { color: var(--amber); }
+.timeline[style*="--count:5"] { gap: 34px; }
+.timeline[style*="--count:5"] h3 { font-size: 29px; }
+.timeline[style*="--count:5"] p { font-size: 28px; }
+/* Five stops: the clock labels wrap, so the detail starts on the same line everywhere. */
+.timeline[style*="--count:5"] h3 { min-height: 2.3em; }
+
+/* === COMPARISON: open columns, not nested card grids === */
+.comparison { display: grid; grid-template-columns: repeat(var(--count), 1fr); gap: 55px; }
+.comparison .station { padding: 35px 30px 35px 0; border-top: 3px solid var(--cyan); border-right: 1px solid #637f86; }
+.comparison .station:last-child { border-color: var(--amber); }
+.comparison .station:last-child .station-number { color: var(--amber); }
+
+/* === DIAGRAMS: bounded stations and manually revealed, reserved geometry === */
+.diagram { position: relative; height: 100%; }
+.connectors { position: absolute; inset: 0; width: 100%; height: 100%; color: var(--cyan); overflow: visible; }
+.route-line { fill: none; stroke: var(--cyan); stroke-width: 3; }
+.packet { fill: none; stroke: var(--amber); stroke-width: 9; stroke-dasharray: 18 1600; animation: convey 4.4s ease-in-out infinite; opacity: 0; }
+@keyframes convey { from { stroke-dashoffset: 0; } to { stroke-dashoffset: -420; } }
+@keyframes roll-to-gate { from { stroke-dashoffset: 0; } to { stroke-dashoffset: -1452; } }
+/* A token exists only past the station whose explanation was revealed. */
+.diagram:has(.station:nth-child(1) p:not(.step-pending)) .packet-1,
+.diagram:has(.station:nth-child(2) p:not(.step-pending)) .packet-2,
+.diagram:has(.station:nth-child(3) p:not(.step-pending)) .packet-3,
+.diagram:has(.station:nth-child(4) p:not(.step-pending)) .packet-4 { opacity: 1; }
+.diagram .station p, .gate .station p { transition: opacity .32s ease-out; }
+/* The gate slide rolls once and rests before the barrier: advancing is not approving. */
+.kind-gate .packet { opacity: 1; animation: none; }
+.slide.active .kind-gate .gate-packet { animation: roll-to-gate 5.2s ease-out 1 forwards; }
+.stations { position: relative; display: grid; grid-template-columns: repeat(var(--count), 1fr); gap: 42px; padding-top: 18px; }
+.stations[style*="--count:5"] { gap: 30px; }
+.stations[style*="--count:5"] .station { padding: 22px; }
+.stations[style*="--count:5"] .station h3 { font-size: 30px; margin-bottom: 14px; }
+.stations[style*="--count:5"] .station p { font-size: 28px; line-height: 1.3; }
+.stations .station { background: #172127; border: 2px solid var(--cyan); padding: 28px; min-height: 365px; }
+.loop .stations .station { min-height: 320px; }
+.loop .stations { padding-top: 0; }
+.diagram.loop { display: grid; grid-template-rows: auto 62px; align-content: start; }
+/* The loopback flow is one drawn journey: the SVG owns its viewBox, so no pseudo-arc and no
+   card row. Type sizes and the journey keyframes live inside the drawing itself. */
+.diagram.flow.loopback { position: relative; }
+.flow-diagram { display: block; width: 100%; height: auto; }
+/* The ordinary day is a second drawn timeline: the flag replaces the card row, and the
+   drawing carries its own geometry. Reduced motion is the shared rule below: it stops every
+   animation, and the marker's transform attribute already rests it on 09:10, so the still
+   keeps all five moments, their clocks and the amber exception branch. */
+.diagram.day { position: relative; }
+.day-diagram { display: block; width: 100%; height: auto; }
+/* The plant map is the third drawn composition: the zone text is real SVG text placed by the
+   renderer, and the moving parts are painted by the shared scene governor. Type stays on the
+   projection floor, so a detail that does not fit is shortened in the content, never shrunk. */
+.diagram.flow.plant { position: relative; }
+.plant-map { display: block; width: 100%; height: auto; }
+.plant-map text { stroke: none; font-family: 'Instrument Sans', sans-serif; text-anchor: middle; }
+.plant-map .plant-index { font-family: 'JetBrains Mono', monospace; font-size: 28px; fill: var(--cyan); letter-spacing: 2px; }
+.plant-map .plant-label { font-size: 32px; font-weight: 600; fill: var(--paper); }
+.plant-map .plant-detail { font-size: 28px; fill: #b3ced4; }
+/* The automatic gates are the third governed scene: two lanes over the same three controls,
+   so the rejection is on stage at the same time as the pass. Gate labels and details are real
+   SVG text placed by the renderer; the batches and the barriers are painted by the governed
+   scene. No rule here may shrink the type: a detail that does not fit is shortened instead. */
+.diagram.flow.gates { position: relative; }
+.gates-scene { display: block; width: 100%; height: auto; }
+.gates-scene text { stroke: none; font-family: 'Instrument Sans', sans-serif; }
+.gates-scene .gates-label { font-size: 32px; font-weight: 600; fill: var(--paper); text-anchor: middle; }
+.gates-scene .gates-detail { font-size: 28px; fill: #b3ced4; text-anchor: middle; }
+.gates-scene .gates-case { font-family: 'JetBrains Mono', monospace; font-size: 28px; letter-spacing: 1px; text-anchor: start; fill: var(--cyan); }
+.gates-scene .gates-case-b { fill: var(--amber); }
+.gates-scene .gates-verdict { font-family: 'JetBrains Mono', monospace; font-size: 28px; letter-spacing: 1px; text-anchor: start; fill: var(--paper); }
+.gates-scene .gates-verdict-b { fill: var(--amber); }
+.gates-scene .gates-rule-label { font-family: 'JetBrains Mono', monospace; font-size: 28px; letter-spacing: 1px; text-anchor: start; fill: var(--amber); }
+.gates-scene .gates-rule-text { font-size: 28px; text-anchor: start; fill: var(--paper); }
+.gates-scene .gates-rail { fill: none; stroke: #557077; stroke-width: 3; }
+.gates-scene .gates-inlet { fill: none; stroke: #4f6b73; stroke-width: 3; }
+.gates-scene .gates-rule-line { fill: none; stroke: #4f6b73; stroke-width: 2; }
+.loop-return { position: relative; z-index: 1; height: 62px; border-left: 3px solid var(--cyan); border-right: 3px solid var(--cyan); border-bottom: 3px dashed var(--cyan); }
+.loop-return::before { content: ''; position: absolute; left: -10px; top: 0; width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-bottom: 16px solid var(--cyan); }
+.return-sweep { position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: linear-gradient(90deg, transparent 0 40%, var(--amber) 50%, transparent 60% 100%); background-size: 300% 100%; animation: sweep 4.8s linear infinite; }
+.rounds { position: absolute; right: 0; top: 6px; font: 20px 'JetBrains Mono'; color: var(--amber); letter-spacing: .06em; }
+.gate-banner { position: relative; font: 26px 'JetBrains Mono'; color: var(--amber); padding: 14px 24px; margin-bottom: 26px; border: 2px solid var(--amber); border-left: 14px double var(--amber); background: #10171980; }
+.gate-arm { position: absolute; right: -6px; top: -8px; width: 6px; height: calc(100% + 16px); background: var(--amber); transform-origin: top center; transition: transform .55s ease; }
+/* One notch, only after a factory step is revealed: never a full automatic opening. */
+.kind-gate:has(.station p:not(.step-pending)) .gate-arm { transform: rotate(-9deg); }
+.kind-gate.has-plate .gate-layout { width: calc(100% - 440px); }
+.kind-gate .plate { right: 0; top: 0; width: 380px; }
+.gate-layout { display: grid; grid-template-columns: minmax(0, 1fr); align-content: start; height: 100%; }
+.gate-track { position: relative; height: 46px; margin-top: 14px; }
+.gate-track svg { width: 100%; height: 46px; overflow: visible; }
+.gate-stop { stroke: var(--amber); stroke-width: 4; }
+.gate-stop-label { position: absolute; right: 0; bottom: 8px; font: 28px 'JetBrains Mono', monospace; color: var(--amber); background: #172127; padding-left: 18px; }
+.gate { display: grid; grid-template-columns: repeat(var(--count), 1fr); gap: 36px; }
+.gate .station { border-left: 3px solid var(--amber); padding: 12px 25px; }
+.gate .station-number { color: var(--amber); }
+
+/* === RISKS: causal sequence with explicit warning labels === */
+.risk { display: grid; grid-template-columns: 1.15fr 1fr 1fr; gap: 52px; }
+.risk .station { padding: 30px 0; border-top: 3px solid #c98d87; }
+.risk .station:first-child { background: #382b2b; padding: 30px; }
+.risk .station-number { color: #efb1a8; }
+
+/* === CODE: literal text, bounded lines, separate explanatory callouts === */
+.code-layout { display: grid; grid-template-columns: 1.65fr 1fr; gap: 55px; height: 100%; }
+.code-panel { margin: 0; padding: 30px; background: #101719; border: 1px solid #6e919b; font: 28px/1.5 'JetBrains Mono', monospace; white-space: pre-wrap; overflow-wrap: anywhere; color: #d8e7e4; }
+.callouts { display: grid; gap: 30px; align-content: start; }
+.callouts .station { border-left: 3px solid var(--amber); padding: 8px 0 8px 30px; }
+.callouts .station-number { display: none; }
+.kind-code.has-plate .slide-heading, .kind-table.has-plate .slide-heading { right: 620px; }
+.kind-code .plate, .kind-table .plate { right: 0; top: -258px; width: 380px; }
+
+/* === BOUNDARIES: aligned inputs and outcomes === */
+.boundary-table { width: 100%; border-collapse: collapse; table-layout: fixed; text-align: left; font-size: 29px; line-height: 1.25; }
+.boundary-table th, .boundary-table td { padding: 17px 26px; border-bottom: 1px solid #65818a; overflow-wrap: anywhere; }
+.boundary-table th:first-child { width: 34%; }
+.boundary-table thead { font: 24px 'JetBrains Mono'; color: var(--cyan); background: #101719; }
+.boundary-table tbody th { color: var(--amber); font-weight: 550; }
+.boundary-table[data-rows="5"] th, .boundary-table[data-rows="5"] td { padding: 11px 24px; }
+
+/* === PARALLEL: separate lanes converge on one shared contract === */
+.parallel { position: relative; display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr); gap: 64px; height: 100%; align-items: stretch; }
+.lanes { display: grid; gap: 18px; }
+.lanes .station { border: 1px solid var(--cyan); padding: 16px 25px 16px 90px; position: relative; }
+.lanes .station-number { position: absolute; left: 22px; top: 22px; }
+.lanes h3 { margin-bottom: 8px; }
+.lanes p { font-size: 28px; }
+.integration { border-left: 10px double var(--amber); padding: 34px 30px; background: #101719; display: flex; flex-direction: column; justify-content: center; gap: 18px; }
+
+.integration strong { display: block; font: 24px/1.4 'JetBrains Mono'; color: var(--amber); }
+.kind-parallel.has-plate .integration { margin-bottom: 200px; }
+.kind-parallel .plate { right: 0; bottom: 0; width: 300px; }
+
+/* === CHECKLIST / WORKSHOP: a readable list and a chat prompt === */
+.checklist { display: grid; gap: 12px; }
+.checklist .station { display: grid; grid-template-columns: 60px 390px 1fr; align-items: start; border-bottom: 1px solid #637f86; padding: 14px 0; gap: 20px; }
+.checklist h3, .checklist .station-number { margin-bottom: 0; }
+.workshop { display: grid; grid-template-columns: 390px 1fr; gap: 75px; }
+.workshop-sign { border-top: 8px solid var(--amber); padding-top: 35px; }
+.workshop-sign span { font: 72px 'Instrument Serif'; color: var(--amber); }
+.workshop-sign p { font-size: 32px; line-height: 1.4; margin-top: 24px; }
+.exercise { display: grid; gap: 20px; }
+.exercise .station { padding: 4px 0 4px 70px; position: relative; }
+.exercise .station-number { position: absolute; left: 0; top: 4px; }
+.exercise h3 { margin-bottom: 6px; }
+.kind-exercise .plate { left: 0; bottom: 0; width: 300px; }
+
+/* === FAN-OUT / DRAW-IN: thin connectors appear in sequence, never noise === */
+@keyframes draw { from { stroke-dashoffset: 900; } to { stroke-dashoffset: 0; } }
+.slide.active .fanout .route-line { stroke-dasharray: 900; animation: draw .65s ease-out calc(var(--i, 0) * .13s) both; }
+.checklist.fanout { position: relative; padding-left: 34px; }
+.checklist.fanout::before { content: ''; position: absolute; left: 0; top: 34px; bottom: 34px; border-left: 2px solid var(--cyan); }
+.checklist.fanout .station { position: relative; }
+.checklist.fanout .station::before { content: ''; position: absolute; left: -34px; top: 30px; width: 32px; border-top: 2px solid var(--cyan); transform: scaleX(0); transform-origin: left center; }
+.slide.active .checklist.fanout .station::before { animation: fan .5s ease-out forwards; }
+.slide.active .checklist.fanout .station:nth-child(2)::before { animation-delay: .12s; }
+.slide.active .checklist.fanout .station:nth-child(3)::before { animation-delay: .24s; }
+.slide.active .checklist.fanout .station:nth-child(4)::before { animation-delay: .36s; }
+
+/* === FILES: the state of the line as a versioned tree === */
+.files { display: grid; gap: 4px; align-content: start; }
+.files-root { font: 500 30px/1.2 'JetBrains Mono', monospace; color: var(--cyan); }
+.files-root span { color: var(--amber); margin-right: 10px; }
+.tree { list-style: none; margin: 0; padding: 0; display: grid; }
+.file-row { display: grid; grid-template-columns: 470px 1fr; gap: 24px; align-items: start; padding: 9px 0; border-bottom: 1px solid #557077; }
+.file-path { font: 28px/1.35 'JetBrains Mono', monospace; color: var(--paper); overflow-wrap: anywhere; }
+.file-path span { color: var(--cyan); }
+.file-note h3 { font-size: 30px; line-height: 1.15; margin-bottom: 4px; }
+.file-note p { font-size: 28px; line-height: 1.3; color: #d4e2e1; }
+
+/* === CIRCLE: closed loop, measured ring, animated return arc === */
+.circle-loop { position: relative; height: 100%; }
+.ring { position: absolute; inset: 0; width: 100%; height: 100%; }
+.ring-track { fill: none; stroke: #4c6b73; stroke-width: 2; stroke-dasharray: 4 10; }
+.ring-flow { fill: none; stroke: var(--cyan); stroke-width: 3; }
+.ring-return { fill: none; stroke: var(--amber); stroke-width: 3; stroke-dasharray: 12 10; animation: ring-sweep 5.4s linear infinite; }
+@keyframes ring-sweep { from { stroke-dashoffset: 0; } to { stroke-dashoffset: -220; } }
+.ring-node { fill: #172127; stroke: var(--amber); stroke-width: 3; }
+.ring-label { position: absolute; width: 372px; }
+.ring-label-0 { left: 0; top: 0; }
+.ring-label-1 { right: 0; top: 0; }
+.ring-label-2 { right: 0; bottom: 0; }
+.ring-label-3 { left: 0; bottom: 0; }
+.ring-label h3 { font-size: 30px; line-height: 1.15; margin-bottom: 8px; }
+.ring-label p { font-size: 28px; line-height: 1.3; color: #d4e2e1; }
+.kind-circle .plate { left: 50%; top: 50%; width: 540px; transform: translate(-50%, -50%); }
+
+@keyframes drift { from { transform: translate(-6px, -4px) scale(1); } to { transform: translate(6px, 4px) scale(1.02); } }
+@keyframes sweep { from { background-position: 0 0; } to { background-position: 100% 0; } }
+@keyframes fan { to { transform: scaleX(1); } }
+/* The closing plate keeps breathing: slow, bounded drift on artwork nobody reads through.
+   The hero draws its own plant now, so no raster there. */
+.slide.active .kind-closing .plate img { animation: drift 44s ease-in-out infinite alternate; }
+
+/* === EXTERNAL UI: real-size controls, never scaled with stage === */
+.deck-toolbar { position: fixed; top: 0; left: 0; right: 0; height: 58px; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 6px 18px; }
+.deck-brand { text-decoration: none; font-weight: 700; white-space: nowrap; }
+#chapter-label { font-size: 14px; }
+.toolbar-actions { display: flex; gap: 8px; align-items: center; }
+.deck-controls { width: min(780px, calc(100% - 20px)); bottom: 12px; }
+#keyboard-help { text-align: center; font-size: 13px; margin-bottom: 8px; color: #bdd0d5; }
+.navigation-buttons { display: flex; gap: 10px; justify-content: center; align-items: center; }
+#slide-select { max-width: 260px; }
+#slide-counter { white-space: nowrap; font-size: 14px; }
+#deck-progress { width: 100%; height: 5px; accent-color: var(--amber); margin-top: 10px; }
+dialog { width: min(860px, calc(100% - 24px)); max-height: 85dvh; overflow: auto; background: #172127; color: var(--paper); border: 1px solid var(--cyan); border-radius: 6px; padding: 24px; font-size: 18px; line-height: 1.6; }
+dialog::backdrop { background: #000b; }
+.index-header { display: flex; justify-content: space-between; align-items: start; gap: 18px; margin-bottom: 20px; }
+.index-header h2 { font-size: 28px; }
+#index-links { display: grid; gap: 4px; }
+#index-links a { padding: 10px; }
+#index-links a[aria-current] { color: var(--amber); border-left: 3px solid var(--amber); }
+.note-entry h2 { font-size: 26px; margin: 20px 0; }
+.note-entry h3 { font-size: 20px; margin-top: 20px; }
+.note-entry a { overflow-wrap: anywhere; }
+.immersive #deck { inset: 0; }
+.immersive .deck-toolbar, .immersive .deck-controls { opacity: 0; transition: opacity .2s; }
+.immersive .deck-toolbar:hover, .immersive .deck-toolbar:focus-within, .immersive .deck-controls:hover, .immersive .deck-controls:focus-within { opacity: 1; }
+.paused .packet { animation-play-state: paused !important; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+@media (max-width: 650px) {
+  #deck { inset: 122px 0 148px; }
+  .deck-toolbar { height: auto; flex-wrap: wrap; padding: 6px 10px; gap: 6px; }
+  #chapter-label { max-width: 65%; font-size: 12px; }
+  .toolbar-actions { width: 100%; justify-content: center; }
+  .toolbar-actions button { font-size: 12px; padding: 6px; }
+  .toolbar-actions kbd { display: none; }
+  #keyboard-help { font-size: 11px; }
+  .navigation-buttons { flex-wrap: wrap; gap: 5px; }
+  #slide-select { width: 140px; font-size: 12px; }
+  #slide-counter { font-size: 12px; }
+  #previous-slide, #next-slide { font-size: 12px; padding: 6px; }
+}
+
+/* === NO SCRIPT / PRINT: legible reading view, not a stack of invisible stages === */
+html:has(body:not(.deck-ready)) { overflow: auto; height: auto; }
+body:not(.deck-ready) { overflow: visible; height: auto; }
+body:not(.deck-ready) #deck { position: static; overflow: visible; }
+body:not(.deck-ready) .slide { position: relative; left: 0; top: 0; width: auto; height: auto; margin: 25px auto; padding: 28px; visibility: visible; opacity: 1; max-width: 1000px; overflow: visible; }
+body:not(.deck-ready) .slide-heading, body:not(.deck-ready) .composition, body:not(.deck-ready) .slide-footer { position: static; height: auto; margin: 25px 0; }
+body:not(.deck-ready) .registration, body:not(.deck-ready) .connectors, body:not(.deck-ready) .hero-route, body:not(.deck-ready) .plate, body:not(.deck-ready) .ring, body:not(.deck-ready) .loop-return, body:not(.deck-ready) .deck-toolbar, body:not(.deck-ready) .deck-controls { display: none; }
+body:not(.deck-ready) .checklist.fanout { padding-left: 0; }
+body:not(.deck-ready) .checklist.fanout::before, body:not(.deck-ready) .checklist.fanout .station::before { display: none; }
+body:not(.deck-ready) .slide h1, body:not(.deck-ready) .slide h2 { font-size: 42px; letter-spacing: -1px; }
+body:not(.deck-ready) .composition * { font-size: 20px; }
+body:not(.deck-ready) .main-panels, body:not(.deck-ready) .workshop, body:not(.deck-ready) .lanes { display: block; }
+body:not(.deck-ready) .station { margin: 20px 0; min-height: 0; display: block; padding: 16px; }
+body:not(.deck-ready) .station-number { position: static; margin-bottom: 12px; }
+body:not(.deck-ready) .slide-footer { display: block; }
+body:not(.deck-ready) .slide-footer span { display: block; margin-top: 8px; }
+body:not(.deck-ready) .boundary-table th, body:not(.deck-ready) .boundary-table td { padding: 12px 8px; }
+body:not(.deck-ready) .eyebrow { font-size: 16px; }
+body:not(.deck-ready) .lead { font-size: 26px; }
+@media print {
+  #deck { position: static; overflow: visible; }
+  .slide { left: 0; top: 0; margin: 0; transform: none !important; }
+  .step-pending { visibility: visible; opacity: 1; }
+  .deck-toolbar, dialog, .plate, .ring, .loop-return { display: none; }
+}
