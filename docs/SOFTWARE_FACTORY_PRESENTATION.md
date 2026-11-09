@@ -143,6 +143,8 @@ No build, dependencias nuevas ni despliegue en esta unidad. El resultado observa
 
 ## Símbolos y estilo de escritura
 
+Registro: español neutro, para una audiencia de varios países. No se usa voseo ni léxico regional (vos, tenés, podés, hacé, mirá, dejá, por vos, plata, laburo). Las instrucciones al ponente usan la segunda persona neutra habitual en material técnico (lee, compara, pide). Una prueba de contenido vigila voseo y regionalismos.
+
 Decisión del autor: los textos del escenario y las notas se escriben con puntuación normal. No se usan rayas, puntos medios, comillas tipográficas ni flechas; en su lugar van comas, paréntesis, comillas rectas o la palabra «y luego». La única excepción son los caracteres de árbol del diagrama de archivos, porque son parte del dibujo. Una prueba de contenido impide que vuelvan a aparecer.
 
 ## Ilustraciones
