@@ -5,7 +5,7 @@
       "mode": "desktop",
       "fallback": {
         "classes": "",
-        "height": 37227,
+        "height": 37014,
         "viewport": 720,
         "slides": [
           {
@@ -46,14 +46,14 @@
           {
             "id": "factory-06",
             "visibility": "visible",
-            "height": 1094.46875,
+            "height": 1173,
             "left": 140,
             "width": 1000
           },
           {
             "id": "factory-07",
             "visibility": "visible",
-            "height": 878.46875,
+            "height": 990.796875,
             "left": 140,
             "width": 1000
           },
@@ -67,7 +67,7 @@
           {
             "id": "factory-09",
             "visibility": "visible",
-            "height": 1083.46875,
+            "height": 679.171875,
             "left": 140,
             "width": 1000
           },
@@ -267,7 +267,7 @@
       "mode": "phone",
       "fallback": {
         "classes": "",
-        "height": 62094,
+        "height": 61851,
         "viewport": 844,
         "slides": [
           {
@@ -308,14 +308,14 @@
           {
             "id": "factory-06",
             "visibility": "visible",
-            "height": 1469.734375,
+            "height": 1750.859375,
             "left": 0,
             "width": 390
           },
           {
             "id": "factory-07",
             "visibility": "visible",
-            "height": 1189.40625,
+            "height": 1432.265625,
             "left": 0,
             "width": 390
           },
@@ -329,7 +329,7 @@
           {
             "id": "factory-09",
             "visibility": "visible",
-            "height": 1361.0625,
+            "height": 593.484375,
             "left": 0,
             "width": 390
           },

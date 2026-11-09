@@ -1,36 +1,9 @@
 {
-  "selector": "--chapter=1",
+  "selector": "--chapter=2",
   "probes": [
     {
       "mode": "desktop",
-      "slide": "1",
-      "kind": "hero",
-      "ratio": 1.7777776718139648,
-      "fit": true,
-      "errors": [],
-      "steps": []
-    },
-    {
-      "mode": "desktop",
-      "slide": "2",
-      "kind": "quote",
-      "ratio": 1.7777776718139648,
-      "fit": true,
-      "errors": [],
-      "steps": []
-    },
-    {
-      "mode": "desktop",
-      "slide": "3",
-      "kind": "comparison",
-      "ratio": 1.7777776718139648,
-      "fit": true,
-      "errors": [],
-      "steps": []
-    },
-    {
-      "mode": "desktop",
-      "slide": "4",
+      "slide": "8",
       "kind": "timeline",
       "ratio": 1.7777776718139648,
       "fit": true,
@@ -39,8 +12,8 @@
     },
     {
       "mode": "desktop",
-      "slide": "5",
-      "kind": "comparison",
+      "slide": "9",
+      "kind": "flow",
       "ratio": 1.7777776718139648,
       "fit": true,
       "errors": [],
@@ -48,7 +21,16 @@
     },
     {
       "mode": "desktop",
-      "slide": "6",
+      "slide": "10",
+      "kind": "table",
+      "ratio": 1.7777776718139648,
+      "fit": true,
+      "errors": [],
+      "steps": []
+    },
+    {
+      "mode": "desktop",
+      "slide": "11",
       "kind": "checklist",
       "ratio": 1.7777776718139648,
       "fit": true,
@@ -57,8 +39,51 @@
     },
     {
       "mode": "desktop",
-      "slide": "7",
-      "kind": "comparison",
+      "slide": "12",
+      "kind": "table",
+      "ratio": 1.7777776718139648,
+      "fit": true,
+      "errors": [],
+      "steps": []
+    },
+    {
+      "mode": "desktop",
+      "slide": "13",
+      "kind": "flow",
+      "ratio": 1.7777776718139648,
+      "fit": true,
+      "errors": [],
+      "steps": [
+        [
+          256,
+          356.08148193359375,
+          155.73333740234375,
+          55.666656494140625
+        ],
+        [
+          460.0888671875,
+          356.08148193359375,
+          155.73333740234375,
+          74.22222900390625
+        ],
+        [
+          664.177734375,
+          356.08148193359375,
+          155.7333984375,
+          55.666656494140625
+        ],
+        [
+          868.2666015625,
+          356.08148193359375,
+          155.7333984375,
+          55.666656494140625
+        ]
+      ]
+    },
+    {
+      "mode": "desktop",
+      "slide": "14",
+      "kind": "exercise",
       "ratio": 1.7777776718139648,
       "fit": true,
       "errors": [],
@@ -66,34 +91,7 @@
     },
     {
       "mode": "phone",
-      "slide": "1",
-      "kind": "hero",
-      "ratio": 1.7777777777777777,
-      "fit": true,
-      "errors": [],
-      "steps": []
-    },
-    {
-      "mode": "phone",
-      "slide": "2",
-      "kind": "quote",
-      "ratio": 1.7777777777777777,
-      "fit": true,
-      "errors": [],
-      "steps": []
-    },
-    {
-      "mode": "phone",
-      "slide": "3",
-      "kind": "comparison",
-      "ratio": 1.7777777777777777,
-      "fit": true,
-      "errors": [],
-      "steps": []
-    },
-    {
-      "mode": "phone",
-      "slide": "4",
+      "slide": "8",
       "kind": "timeline",
       "ratio": 1.7777777777777777,
       "fit": true,
@@ -102,8 +100,8 @@
     },
     {
       "mode": "phone",
-      "slide": "5",
-      "kind": "comparison",
+      "slide": "9",
+      "kind": "flow",
       "ratio": 1.7777777777777777,
       "fit": true,
       "errors": [],
@@ -111,7 +109,16 @@
     },
     {
       "mode": "phone",
-      "slide": "6",
+      "slide": "10",
+      "kind": "table",
+      "ratio": 1.7777777777777777,
+      "fit": true,
+      "errors": [],
+      "steps": []
+    },
+    {
+      "mode": "phone",
+      "slide": "11",
       "kind": "checklist",
       "ratio": 1.7777777777777777,
       "fit": true,
@@ -120,8 +127,51 @@
     },
     {
       "mode": "phone",
-      "slide": "7",
-      "kind": "comparison",
+      "slide": "12",
+      "kind": "table",
+      "ratio": 1.7777777777777777,
+      "fit": true,
+      "errors": [],
+      "steps": []
+    },
+    {
+      "mode": "phone",
+      "slide": "13",
+      "kind": "flow",
+      "ratio": 1.7777777777777777,
+      "fit": true,
+      "errors": [],
+      "steps": [
+        [
+          30.46875,
+          419.318115234375,
+          66.7265625,
+          23.851318359375
+        ],
+        [
+          117.9140625,
+          419.318115234375,
+          66.7265625,
+          31.8017578125
+        ],
+        [
+          205.359375,
+          419.318115234375,
+          66.7265625,
+          23.851318359375
+        ],
+        [
+          292.8046875,
+          419.318115234375,
+          66.7265625,
+          23.851318359375
+        ]
+      ]
+    },
+    {
+      "mode": "phone",
+      "slide": "14",
+      "kind": "exercise",
       "ratio": 1.7777777777777777,
       "fit": true,
       "errors": [],
