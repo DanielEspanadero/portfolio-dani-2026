@@ -1,0 +1,220 @@
+{
+  "selector": "--chapter=7",
+  "probes": [
+    {
+      "mode": "desktop",
+      "slide": "48",
+      "kind": "exercise",
+      "ratio": 1.777777663799895,
+      "fit": true,
+      "errors": [
+        "text escapes own box: Taller: una vuelta completa"
+      ],
+      "steps": [
+        [
+          474.7222595214844,
+          301.51849365234375,
+          535.5,
+          37.87615966796875
+        ],
+        [
+          474.7222595214844,
+          351.73541259765625,
+          535.5,
+          37.87615966796875
+        ],
+        [
+          474.7222595214844,
+          401.9523010253906,
+          535.5,
+          37.87615966796875
+        ]
+      ]
+    },
+    {
+      "mode": "desktop",
+      "slide": "49",
+      "kind": "exercise",
+      "ratio": 1.777777663799895,
+      "fit": true,
+      "errors": [
+        "text escapes own box: Pausa: explica tu decisión"
+      ],
+      "steps": []
+    },
+    {
+      "mode": "desktop",
+      "slide": "50",
+      "kind": "table",
+      "ratio": 1.777777663799895,
+      "fit": true,
+      "errors": [
+        "text escapes own box: Medir valor, no líneas"
+      ],
+      "steps": []
+    },
+    {
+      "mode": "desktop",
+      "slide": "51",
+      "kind": "comparison",
+      "ratio": 1.777777663799895,
+      "fit": true,
+      "errors": [
+        "text escapes own box: El modo manual no es un fracaso",
+        "text escapes own box: Con agente",
+        "text escapes own box: Sin agente",
+        "text escapes own box: Continuidad"
+      ],
+      "steps": []
+    },
+    {
+      "mode": "desktop",
+      "slide": "52",
+      "kind": "checklist",
+      "ratio": 1.777777663799895,
+      "fit": true,
+      "errors": [
+        "text escapes own box: Checklist de tu primera fábrica",
+        "text escapes own box: Unidad pequeña",
+        "text escapes own box: Recuperación"
+      ],
+      "steps": []
+    },
+    {
+      "mode": "desktop",
+      "slide": "53",
+      "kind": "table",
+      "ratio": 1.777777663799895,
+      "fit": true,
+      "errors": [
+        "text escapes own box: Fuentes para seguir contrastando"
+      ],
+      "steps": []
+    },
+    {
+      "mode": "desktop",
+      "slide": "54",
+      "kind": "closing",
+      "ratio": 1.777777663799895,
+      "fit": true,
+      "errors": [
+        "text escapes own box: Más capacidad, mejor criterio"
+      ],
+      "steps": []
+    },
+    {
+      "mode": "phone",
+      "slide": "48",
+      "kind": "exercise",
+      "ratio": 1.7777777777777777,
+      "fit": true,
+      "errors": [
+        "text escapes own box: Taller: una vuelta completa"
+      ],
+      "steps": [
+        [
+          118.828125,
+          407.65625,
+          246.796875,
+          17.4560546875
+        ],
+        [
+          118.828125,
+          430.7998046875,
+          246.796875,
+          17.4560546875
+        ],
+        [
+          118.828125,
+          453.943359375,
+          246.796875,
+          17.4560546875
+        ]
+      ]
+    },
+    {
+      "mode": "phone",
+      "slide": "49",
+      "kind": "exercise",
+      "ratio": 1.7777777777777777,
+      "fit": true,
+      "errors": [
+        "text escapes own box: Pausa: explica tu decisión"
+      ],
+      "steps": []
+    },
+    {
+      "mode": "phone",
+      "slide": "50",
+      "kind": "table",
+      "ratio": 1.7777777777777777,
+      "fit": true,
+      "errors": [
+        "text escapes own box: Medir valor, no líneas"
+      ],
+      "steps": []
+    },
+    {
+      "mode": "phone",
+      "slide": "51",
+      "kind": "comparison",
+      "ratio": 1.7777777777777777,
+      "fit": true,
+      "errors": [
+        "text escapes own box: El modo manual no es un fracaso"
+      ],
+      "steps": []
+    },
+    {
+      "mode": "phone",
+      "slide": "52",
+      "kind": "checklist",
+      "ratio": 1.7777777777777777,
+      "fit": true,
+      "errors": [
+        "text escapes own box: Checklist de tu primera fábrica"
+      ],
+      "steps": []
+    },
+    {
+      "mode": "phone",
+      "slide": "53",
+      "kind": "table",
+      "ratio": 1.7777777777777777,
+      "fit": true,
+      "errors": [
+        "text escapes own box: Fuentes para seguir contrastando"
+      ],
+      "steps": []
+    },
+    {
+      "mode": "phone",
+      "slide": "54",
+      "kind": "closing",
+      "ratio": 1.7777777777777777,
+      "fit": true,
+      "errors": [
+        "text escapes own box: Más capacidad, mejor criterio"
+      ],
+      "steps": []
+    }
+  ],
+  "failures": [
+    "desktop/#48: text bounds + panel separation [\"text escapes own box: Taller: una vuelta completa\"]",
+    "desktop/#49: text bounds + panel separation [\"text escapes own box: Pausa: explica tu decisión\"]",
+    "desktop/#50: text bounds + panel separation [\"text escapes own box: Medir valor, no líneas\"]",
+    "desktop/#51: text bounds + panel separation [\"text escapes own box: El modo manual no es un fracaso\",\"text escapes own box: Con agente\",\"text escapes own box: Sin agente\",\"text escapes own box: Continuidad\"]",
+    "desktop/#52: text bounds + panel separation [\"text escapes own box: Checklist de tu primera fábrica\",\"text escapes own box: Unidad pequeña\",\"text escapes own box: Recuperación\"]",
+    "desktop/#53: text bounds + panel separation [\"text escapes own box: Fuentes para seguir contrastando\"]",
+    "desktop/#54: text bounds + panel separation [\"text escapes own box: Más capacidad, mejor criterio\"]",
+    "phone/#48: text bounds + panel separation [\"text escapes own box: Taller: una vuelta completa\"]",
+    "phone/#49: text bounds + panel separation [\"text escapes own box: Pausa: explica tu decisión\"]",
+    "phone/#50: text bounds + panel separation [\"text escapes own box: Medir valor, no líneas\"]",
+    "phone/#51: text bounds + panel separation [\"text escapes own box: El modo manual no es un fracaso\"]",
+    "phone/#52: text bounds + panel separation [\"text escapes own box: Checklist de tu primera fábrica\"]",
+    "phone/#53: text bounds + panel separation [\"text escapes own box: Fuentes para seguir contrastando\"]",
+    "phone/#54: text bounds + panel separation [\"text escapes own box: Más capacidad, mejor criterio\"]"
+  ],
+  "requests": [],
+  "errors": []
+}

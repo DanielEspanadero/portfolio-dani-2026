@@ -1,0 +1,10 @@
+{
+  "selector": "--mode=reading",
+  "probes": [],
+  "failures": [
+    "desktop: no-script reading fallback",
+    "phone: no-script reading fallback"
+  ],
+  "requests": [],
+  "errors": []
+}

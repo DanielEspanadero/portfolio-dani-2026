@@ -1,0 +1,268 @@
+{
+  "selector": "--chapter=4",
+  "probes": [
+    {
+      "mode": "desktop",
+      "slide": "25",
+      "kind": "checklist",
+      "ratio": 1.777777663799895,
+      "fit": true,
+      "errors": [
+        "text escapes own box: Una mesa de trabajo suficiente",
+        "text escapes own box: Necesario"
+      ],
+      "steps": []
+    },
+    {
+      "mode": "desktop",
+      "slide": "26",
+      "kind": "code",
+      "ratio": 1.777777663799895,
+      "fit": true,
+      "errors": [
+        "text escapes own box: El árbol es el mapa",
+        "stage overflow: 01",
+        "panel overflow: 01",
+        "stage overflow: 02",
+        "panel overflow: 02",
+        "text escapes own box: Trabajo"
+      ],
+      "steps": []
+    },
+    {
+      "mode": "desktop",
+      "slide": "27",
+      "kind": "gate",
+      "ratio": 1.777777663799895,
+      "fit": true,
+      "errors": [
+        "text escapes own box: Instrucciones que realmente se leen"
+      ],
+      "steps": [
+        [
+          269.7778015136719,
+          346.0333251953125,
+          236.23703002929688,
+          112.0445556640625
+        ],
+        [
+          521.8814697265625,
+          346.0333251953125,
+          236.237060546875,
+          112.0445556640625
+        ],
+        [
+          773.9852294921875,
+          346.0333251953125,
+          236.23699951171875,
+          112.0445556640625
+        ]
+      ]
+    },
+    {
+      "mode": "desktop",
+      "slide": "28",
+      "kind": "table",
+      "ratio": 1.777777663799895,
+      "fit": true,
+      "errors": [
+        "text escapes own box: La spec convierte palabras en casos"
+      ],
+      "steps": []
+    },
+    {
+      "mode": "desktop",
+      "slide": "29",
+      "kind": "checklist",
+      "ratio": 1.777777663799895,
+      "fit": true,
+      "errors": [
+        "text escapes own box: Un worker con alcance",
+        "text escapes own box: Superficie"
+      ],
+      "steps": []
+    },
+    {
+      "mode": "desktop",
+      "slide": "30",
+      "kind": "checklist",
+      "ratio": 1.777777663799895,
+      "fit": true,
+      "errors": [
+        "text escapes own box: Un reviewer con preguntas distintas",
+        "text escapes own box: Derivar"
+      ],
+      "steps": []
+    },
+    {
+      "mode": "desktop",
+      "slide": "31",
+      "kind": "code",
+      "ratio": 1.777777663799895,
+      "fit": true,
+      "errors": [
+        "text escapes own box: El handoff sigue vacío hasta ejecutar",
+        "stage overflow: 01",
+        "panel overflow: 01",
+        "stage overflow: 02",
+        "panel overflow: 02",
+        "text escapes own box: Estado"
+      ],
+      "steps": []
+    },
+    {
+      "mode": "desktop",
+      "slide": "32",
+      "kind": "code",
+      "ratio": 1.777777663799895,
+      "fit": true,
+      "errors": [
+        "text escapes own box: Arranque sin proveedor",
+        "stage overflow: 01",
+        "panel overflow: 01",
+        "stage overflow: 02",
+        "panel overflow: 02"
+      ],
+      "steps": []
+    },
+    {
+      "mode": "phone",
+      "slide": "25",
+      "kind": "checklist",
+      "ratio": 1.7777777777777777,
+      "fit": true,
+      "errors": [
+        "text escapes own box: Una mesa de trabajo suficiente"
+      ],
+      "steps": []
+    },
+    {
+      "mode": "phone",
+      "slide": "26",
+      "kind": "code",
+      "ratio": 1.7777777777777777,
+      "fit": true,
+      "errors": [
+        "text escapes own box: El árbol es el mapa",
+        "stage overflow: 01",
+        "panel overflow: 01",
+        "stage overflow: 02",
+        "panel overflow: 02"
+      ],
+      "steps": []
+    },
+    {
+      "mode": "phone",
+      "slide": "27",
+      "kind": "gate",
+      "ratio": 1.7777777777777777,
+      "fit": true,
+      "errors": [
+        "text escapes own box: Instrucciones que realmente se leen"
+      ],
+      "steps": [
+        [
+          24.375,
+          428.171875,
+          108.875,
+          51.63818359375
+        ],
+        [
+          140.5625,
+          428.171875,
+          108.875,
+          51.63818359375
+        ],
+        [
+          256.75,
+          428.171875,
+          108.875,
+          51.63818359375
+        ]
+      ]
+    },
+    {
+      "mode": "phone",
+      "slide": "28",
+      "kind": "table",
+      "ratio": 1.7777777777777777,
+      "fit": true,
+      "errors": [
+        "text escapes own box: La spec convierte palabras en casos"
+      ],
+      "steps": []
+    },
+    {
+      "mode": "phone",
+      "slide": "29",
+      "kind": "checklist",
+      "ratio": 1.7777777777777777,
+      "fit": true,
+      "errors": [
+        "text escapes own box: Un worker con alcance"
+      ],
+      "steps": []
+    },
+    {
+      "mode": "phone",
+      "slide": "30",
+      "kind": "checklist",
+      "ratio": 1.7777777777777777,
+      "fit": true,
+      "errors": [
+        "text escapes own box: Un reviewer con preguntas distintas"
+      ],
+      "steps": []
+    },
+    {
+      "mode": "phone",
+      "slide": "31",
+      "kind": "code",
+      "ratio": 1.7777777777777777,
+      "fit": true,
+      "errors": [
+        "text escapes own box: El handoff sigue vacío hasta ejecutar",
+        "stage overflow: 01",
+        "panel overflow: 01",
+        "stage overflow: 02",
+        "panel overflow: 02"
+      ],
+      "steps": []
+    },
+    {
+      "mode": "phone",
+      "slide": "32",
+      "kind": "code",
+      "ratio": 1.7777777777777777,
+      "fit": true,
+      "errors": [
+        "text escapes own box: Arranque sin proveedor",
+        "stage overflow: 01",
+        "panel overflow: 01",
+        "stage overflow: 02",
+        "panel overflow: 02"
+      ],
+      "steps": []
+    }
+  ],
+  "failures": [
+    "desktop/#25: text bounds + panel separation [\"text escapes own box: Una mesa de trabajo suficiente\",\"text escapes own box: Necesario\"]",
+    "desktop/#26: text bounds + panel separation [\"text escapes own box: El árbol es el mapa\",\"stage overflow: 01\",\"panel overflow: 01\",\"stage overflow: 02\",\"panel overflow: 02\",\"text escapes own box: Trabajo\"]",
+    "desktop/#27: text bounds + panel separation [\"text escapes own box: Instrucciones que realmente se leen\"]",
+    "desktop/#28: text bounds + panel separation [\"text escapes own box: La spec convierte palabras en casos\"]",
+    "desktop/#29: text bounds + panel separation [\"text escapes own box: Un worker con alcance\",\"text escapes own box: Superficie\"]",
+    "desktop/#30: text bounds + panel separation [\"text escapes own box: Un reviewer con preguntas distintas\",\"text escapes own box: Derivar\"]",
+    "desktop/#31: text bounds + panel separation [\"text escapes own box: El handoff sigue vacío hasta ejecutar\",\"stage overflow: 01\",\"panel overflow: 01\",\"stage overflow: 02\",\"panel overflow: 02\",\"text escapes own box: Estado\"]",
+    "desktop/#32: text bounds + panel separation [\"text escapes own box: Arranque sin proveedor\",\"stage overflow: 01\",\"panel overflow: 01\",\"stage overflow: 02\",\"panel overflow: 02\"]",
+    "phone/#25: text bounds + panel separation [\"text escapes own box: Una mesa de trabajo suficiente\"]",
+    "phone/#26: text bounds + panel separation [\"text escapes own box: El árbol es el mapa\",\"stage overflow: 01\",\"panel overflow: 01\",\"stage overflow: 02\",\"panel overflow: 02\"]",
+    "phone/#27: text bounds + panel separation [\"text escapes own box: Instrucciones que realmente se leen\"]",
+    "phone/#28: text bounds + panel separation [\"text escapes own box: La spec convierte palabras en casos\"]",
+    "phone/#29: text bounds + panel separation [\"text escapes own box: Un worker con alcance\"]",
+    "phone/#30: text bounds + panel separation [\"text escapes own box: Un reviewer con preguntas distintas\"]",
+    "phone/#31: text bounds + panel separation [\"text escapes own box: El handoff sigue vacío hasta ejecutar\",\"stage overflow: 01\",\"panel overflow: 01\",\"stage overflow: 02\",\"panel overflow: 02\"]",
+    "phone/#32: text bounds + panel separation [\"text escapes own box: Arranque sin proveedor\",\"stage overflow: 01\",\"panel overflow: 01\",\"stage overflow: 02\",\"panel overflow: 02\"]"
+  ],
+  "requests": [],
+  "errors": []
+}

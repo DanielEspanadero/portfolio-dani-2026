@@ -1,0 +1,9 @@
+{
+  "selector": "--mode=reading",
+  "probes": [],
+  "failures": [
+    "Error: CDP timeout Runtime.evaluate\n    at Timeout._onTimeout (file:///Users/daniel/Documents/programming/portfolio-dani-2026/tests/software-factory-browser.mjs:36:65)\n    at listOnTimeout (node:internal/timers:605:17)\n    at process.processTimers (node:internal/timers:541:7)"
+  ],
+  "requests": [],
+  "errors": []
+}
