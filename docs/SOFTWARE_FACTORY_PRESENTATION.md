@@ -1,6 +1,6 @@
 # AI Software Factory: contenido para enseñar y practicar
 
-34 diapositivas en español, notas de ponente separadas y un kit local ejecutable. La densidad se recortó a propósito: cada diapositiva sostiene una idea y el directo se apoya en las notas, no en paredes de texto. La entrada es explícita para público no técnico: definición en la segunda diapositiva, una línea «en criollo» en las diapositivas con jerga, un caso único que atraviesa el recorrido y dos diapositivas de contexto (un día normal y qué problema resuelve). El hilo conductor es la fábrica como sistema de producción —orden de trabajo, estaciones especializadas, estándares, compuertas automáticas, evidencia, integración y medición— y no la aprobación humana: ésta aparece una sola vez, en la compuerta de integración, y como una de ocho familias de riesgo (S7). El renderer local integra ese currículo con la dirección elegida «Plano de fábrica» (S4), sin modificar otros decks ni el player compartido (S5). **Ruta implementada:** `/presentaciones/software-factory` (S6); lectura en `/presentaciones/software-factory/guia` y HTML autónomo en `/presentaciones/software-factory/descargar.html`. Son rutas Astro prerenderizadas; su respuesta HTTP en el hosting requiere la verificación posterior del orquestador. No se ha ejecutado build ni despliegue.
+35 diapositivas en español, notas de ponente separadas y un kit local ejecutable. La densidad se recortó a propósito: cada diapositiva sostiene una idea y el directo se apoya en las notas, no en paredes de texto. La entrada es explícita para público no técnico: definición en la segunda diapositiva, una línea «en criollo» en las diapositivas con jerga, un caso único que atraviesa el recorrido y dos diapositivas de contexto (un día normal y qué problema resuelve). El hilo conductor es la fábrica como sistema de producción —orden de trabajo, estaciones especializadas, estándares, compuertas automáticas, evidencia, integración y medición— y no la aprobación humana: ésta aparece una sola vez, en la compuerta de integración, y como una de ocho familias de riesgo (S7). El renderer local integra ese currículo con la dirección elegida «Plano de fábrica» (S4), sin modificar otros decks ni el player compartido (S5). **Ruta implementada:** `/presentaciones/software-factory` (S6); lectura en `/presentaciones/software-factory/guia` y HTML autónomo en `/presentaciones/software-factory/descargar.html`. Son rutas Astro prerenderizadas; su respuesta HTTP en el hosting requiere la verificación posterior del orquestador. No se ha ejecutado build ni despliegue.
 
 ## Camino rápido
 
@@ -28,7 +28,7 @@ La portada usa una línea de producción de tres estaciones (entrada, estaciones
 
 ## Arquitectura y contrato para el renderer
 
-Cada capítulo `.mjs` exporta por defecto `{ id, title, slides: [...] }`. `index.mjs` exporta con nombre `chapters` en orden narrativo y `slides` como concatenación de sus arrays. No hay side effects, HTML ni imports de herramientas de presentación. IDs estables `factory-01` a `factory-34`; no reconstruir IDs a partir de títulos.
+Cada capítulo `.mjs` exporta por defecto `{ id, title, slides: [...] }`. `index.mjs` exporta con nombre `chapters` en orden narrativo y `slides` como concatenación de sus arrays. No hay side effects, HTML ni imports de herramientas de presentación. IDs estables `factory-01` a `factory-35`; no reconstruir IDs a partir de títulos.
 
 | Campo de slide | Tipo y regla |
 |---|---|
@@ -67,9 +67,9 @@ Duración orientativa: **90–120 minutos ajustables**, no una garantía. Acorta
 | `02-production-line.mjs` | 08–14 | Un día en la fábrica; mapa de planta; de petición a orden de trabajo; estaciones especializadas; estándares y activos; compuertas automáticas; pausa de evidencia | 11–14 min |
 | `03-loop-state.mjs` | 15–18 | El bucle completo; estado en archivos; quién decide y cuándo escalar; política de modelos y esfuerzo | 9–12 min |
 | `04-failure-modes.mjs` | 19–23 | Dos fábricas; falso verde; texto hostil y permisos; coste y conocimiento; pausa con tres fallos reales | 12–15 min |
-| `05-build-yours.mjs` | 24–27 | Los ocho archivos; reglas operativas; primera corrida; observabilidad de la línea | 9–12 min |
-| `06-example-parallel.mjs` | 28–31 | Fronteras de la cancelación; RED antes de la solución; el lote aterriza integrado; worktrees y contrato compartido | 11–14 min |
-| `07-closing.mjs` | 32–34 | Del despliegue a la siguiente orden; medir coste, calidad y ciclo; cierre y checklist de arranque | 8–11 min |
+| `05-build-yours.mjs` | 24–28 | Los ocho archivos; reglas operativas; de dónde salen la orden y el contexto; primera corrida; observabilidad de la línea | 10–13 min |
+| `06-example-parallel.mjs` | 29–32 | Fronteras de la cancelación; RED antes de la solución; el lote aterriza integrado; worktrees y contrato compartido | 11–14 min |
+| `07-closing.mjs` | 33–35 | Del despliegue a la siguiente orden; medir coste, calidad y ciclo; cierre y checklist de arranque | 8–11 min |
 
 Los rangos permiten elegir ritmo; no deben sumarse como una promesa exacta. Para un directo corto, dar la práctica como continuación local. Para uno largo, ampliar preguntas sin añadir permisos ni servicios reales.
 
@@ -79,13 +79,13 @@ Los rangos permiten elegir ritmo; no deben sumarse como una promesa exacta. Para
 - 04: dos orígenes en 1968 (Bemer en GE y McIlroy en Garmisch) sin fechas ni páginas no comprobadas; CI se presenta como antecedente sin fecha fundacional.
 - 07: Anthropic (diciembre de 2024) distingue rutas predefinidas de decisiones dinámicas y recomienda simplicidad. No es una norma universal.
 - 08: los horarios del día normal son ilustrativos, no una medición.
-- 11, 20, 31: separar revisión no garantiza independencia de razonamiento; código y prueba pueden compartir el mismo error.
-- 19–23, 30: el capítulo de fallos es la parte negativa del método; el control humano es una familia de riesgo más y la única compuerta explícita, nunca el tema de la presentación.
-- 28: >=24h devuelve 100%; <24h antes devuelve 0%; inicio exacto o después rechaza intacta. Repetir conserva el resultado, pero sin eventos nuevos.
-- 29: autenticación y autorización están fuera de alcance; tiempos UTC canónicos e importes válidos se verifican antes de emitir eventos. No exponer el ejemplo como API de producción.
-- 29, 30: las expectativas de terminal se etiquetan como tales; cada participante registra su resultado real.
-- 30, 31: rollback de código no deshace efectos externos; worktree no aísla puertos, procesos, bases de datos ni permisos.
-- 33: capacidad de revisión como cuello de botella; medir ciclo completo y calidad, no líneas ni ahorro prometido.
+- 11, 20, 32: separar revisión no garantiza independencia de razonamiento; código y prueba pueden compartir el mismo error.
+- 19–23, 31: el capítulo de fallos es la parte negativa del método; el control humano es una familia de riesgo más y la única compuerta explícita, nunca el tema de la presentación.
+- 29: >=24h devuelve 100%; <24h antes devuelve 0%; inicio exacto o después rechaza intacta. Repetir conserva el resultado, pero sin eventos nuevos.
+- 30: autenticación y autorización están fuera de alcance; tiempos UTC canónicos e importes válidos se verifican antes de emitir eventos. No exponer el ejemplo como API de producción.
+- 30, 31: las expectativas de terminal se etiquetan como tales; cada participante registra su resultado real.
+- 31, 32: rollback de código no deshace efectos externos; worktree no aísla puertos, procesos, bases de datos ni permisos.
+- 34: capacidad de revisión como cuello de botella; medir ciclo completo y calidad, no líneas ni ahorro prometido.
 
 ## Kit: archivos y distribución
 
@@ -137,6 +137,10 @@ Chrome instalado y CDP nativo, sin npm ni servidor: ejecutar por separado `node 
 El checker recorre todas las diapositivas a 1280×720 y 390×844, revela pasos por teclado, comprueba proporción/encaje, cajas e ink de texto, separación de paneles, geometría reservada y slides inertes. Captura portada, cronología, flow/loop/gate, riesgo, código, tablas, paralelo y cierre. El modo interaction verifica Enter nativo con texto `\r` y click trusted, navegación, historial, foco, ausencia de controles extra, fullscreen y movimiento reducido. Reading comprueba fallback sin scripts y guía responsive/imprimible. Se registran peticiones de red y excepciones. Las métricas no sustituyen mirar las imágenes ni verifican HTTP.
 
 No build, dependencias nuevas ni despliegue en esta unidad. El resultado observado se comunica en el handoff de implementación, no se pre-rellena en la plantilla del alumno.
+
+## Símbolos y estilo de escritura
+
+Decisión del autor: los textos del escenario y las notas se escriben con puntuación normal. No se usan rayas, puntos medios, comillas tipográficas ni flechas; en su lugar van comas, paréntesis, comillas rectas o la palabra «y luego». La única excepción son los caracteres de árbol del diagrama de archivos, porque son parte del dibujo. Una prueba de contenido impide que vuelvan a aparecer.
 
 ## Ilustraciones
 

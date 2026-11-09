@@ -5,195 +5,195 @@
       "mode": "desktop",
       "fallback": {
         "classes": "",
-        "height": 52418,
+        "height": 37744,
         "viewport": 720,
         "slides": [
           {
             "id": "factory-01",
             "visibility": "visible",
-            "height": 931.109375,
+            "height": 974.953125,
             "left": 140,
             "width": 1000
           },
           {
             "id": "factory-02",
             "visibility": "visible",
-            "height": 878.46875,
+            "height": 692.25,
             "left": 140,
             "width": 1000
           },
           {
             "id": "factory-03",
             "visibility": "visible",
-            "height": 950.46875,
+            "height": 878.46875,
             "left": 140,
             "width": 1000
           },
           {
             "id": "factory-04",
             "visibility": "visible",
-            "height": 977.46875,
+            "height": 1011.265625,
             "left": 140,
             "width": 1000
           },
           {
             "id": "factory-05",
             "visibility": "visible",
-            "height": 1094.46875,
+            "height": 966.265625,
             "left": 140,
             "width": 1000
           },
           {
             "id": "factory-06",
             "visibility": "visible",
-            "height": 878.46875,
+            "height": 1094.46875,
             "left": 140,
             "width": 1000
           },
           {
             "id": "factory-07",
             "visibility": "visible",
-            "height": 812.46875,
+            "height": 913.46875,
             "left": 140,
             "width": 1000
           },
           {
             "id": "factory-08",
             "visibility": "visible",
-            "height": 986.46875,
+            "height": 1420.46875,
             "left": 140,
             "width": 1000
           },
           {
             "id": "factory-09",
             "visibility": "visible",
-            "height": 1083.46875,
+            "height": 1118.46875,
             "left": 140,
             "width": 1000
           },
           {
             "id": "factory-10",
             "visibility": "visible",
-            "height": 660.46875,
+            "height": 849,
             "left": 140,
             "width": 1000
           },
           {
             "id": "factory-11",
             "visibility": "visible",
-            "height": 953.46875,
+            "height": 1067,
             "left": 140,
             "width": 1000
           },
           {
             "id": "factory-12",
             "visibility": "visible",
-            "height": 1083.46875,
+            "height": 907.796875,
             "left": 140,
             "width": 1000
           },
           {
             "id": "factory-13",
             "visibility": "visible",
-            "height": 1869.46875,
+            "height": 1197,
             "left": 140,
             "width": 1000
           },
           {
             "id": "factory-14",
             "visibility": "visible",
-            "height": 1083.46875,
+            "height": 1149.46875,
             "left": 140,
             "width": 1000
           },
           {
             "id": "factory-15",
             "visibility": "visible",
-            "height": 953.46875,
+            "height": 2300.53125,
             "left": 140,
             "width": 1000
           },
           {
             "id": "factory-16",
             "visibility": "visible",
-            "height": 760.46875,
+            "height": 972.796875,
             "left": 140,
             "width": 1000
           },
           {
             "id": "factory-17",
             "visibility": "visible",
-            "height": 878.46875,
+            "height": 957.796875,
             "left": 140,
             "width": 1000
           },
           {
             "id": "factory-18",
             "visibility": "visible",
-            "height": 906.46875,
+            "height": 1188.796875,
             "left": 140,
             "width": 1000
           },
           {
             "id": "factory-19",
             "visibility": "visible",
-            "height": 906.46875,
+            "height": 1103.46875,
             "left": 140,
             "width": 1000
           },
           {
             "id": "factory-20",
             "visibility": "visible",
-            "height": 1869.46875,
+            "height": 941.46875,
             "left": 140,
             "width": 1000
           },
           {
             "id": "factory-21",
             "visibility": "visible",
-            "height": 878.46875,
+            "height": 941.46875,
             "left": 140,
             "width": 1000
           },
           {
             "id": "factory-22",
             "visibility": "visible",
-            "height": 919.46875,
+            "height": 1239.46875,
             "left": 140,
             "width": 1000
           },
           {
             "id": "factory-23",
             "visibility": "visible",
-            "height": 878.46875,
+            "height": 1149.46875,
             "left": 140,
             "width": 1000
           },
           {
             "id": "factory-24",
             "visibility": "visible",
-            "height": 986.46875,
+            "height": 1341,
             "left": 140,
             "width": 1000
           },
           {
             "id": "factory-25",
             "visibility": "visible",
-            "height": 812.46875,
+            "height": 1163.265625,
             "left": 140,
             "width": 1000
           },
           {
             "id": "factory-26",
             "visibility": "visible",
-            "height": 1055.46875,
+            "height": 1150.53125,
             "left": 140,
             "width": 1000
           },
           {
             "id": "factory-27",
             "visibility": "visible",
-            "height": 919.46875,
+            "height": 845.46875,
             "left": 140,
             "width": 1000
           },
@@ -207,182 +207,49 @@
           {
             "id": "factory-29",
             "visibility": "visible",
-            "height": 812.46875,
+            "height": 760.46875,
             "left": 140,
             "width": 1000
           },
           {
             "id": "factory-30",
             "visibility": "visible",
-            "height": 812.46875,
+            "height": 935.46875,
             "left": 140,
             "width": 1000
           },
           {
             "id": "factory-31",
             "visibility": "visible",
-            "height": 995.46875,
+            "height": 1194.265625,
             "left": 140,
             "width": 1000
           },
           {
             "id": "factory-32",
             "visibility": "visible",
-            "height": 845.46875,
+            "height": 1348.796875,
             "left": 140,
             "width": 1000
           },
           {
             "id": "factory-33",
             "visibility": "visible",
-            "height": 1083.46875,
+            "height": 384.46875,
             "left": 140,
             "width": 1000
           },
           {
             "id": "factory-34",
             "visibility": "visible",
-            "height": 760.46875,
+            "height": 797.796875,
             "left": 140,
             "width": 1000
           },
           {
             "id": "factory-35",
             "visibility": "visible",
-            "height": 935.46875,
-            "left": 140,
-            "width": 1000
-          },
-          {
-            "id": "factory-36",
-            "visibility": "visible",
-            "height": 710.46875,
-            "left": 140,
-            "width": 1000
-          },
-          {
-            "id": "factory-37",
-            "visibility": "visible",
-            "height": 878.46875,
-            "left": 140,
-            "width": 1000
-          },
-          {
-            "id": "factory-38",
-            "visibility": "visible",
-            "height": 812.46875,
-            "left": 140,
-            "width": 1000
-          },
-          {
-            "id": "factory-39",
-            "visibility": "visible",
-            "height": 987.265625,
-            "left": 140,
-            "width": 1000
-          },
-          {
-            "id": "factory-40",
-            "visibility": "visible",
-            "height": 919.46875,
-            "left": 140,
-            "width": 1000
-          },
-          {
-            "id": "factory-41",
-            "visibility": "visible",
-            "height": 1061.46875,
-            "left": 140,
-            "width": 1000
-          },
-          {
-            "id": "factory-42",
-            "visibility": "visible",
-            "height": 685.46875,
-            "left": 140,
-            "width": 1000
-          },
-          {
-            "id": "factory-43",
-            "visibility": "visible",
-            "height": 935.46875,
-            "left": 140,
-            "width": 1000
-          },
-          {
-            "id": "factory-44",
-            "visibility": "visible",
-            "height": 1061.46875,
-            "left": 140,
-            "width": 1000
-          },
-          {
-            "id": "factory-45",
-            "visibility": "visible",
-            "height": 919.46875,
-            "left": 140,
-            "width": 1000
-          },
-          {
-            "id": "factory-46",
-            "visibility": "visible",
-            "height": 906.46875,
-            "left": 140,
-            "width": 1000
-          },
-          {
-            "id": "factory-47",
-            "visibility": "visible",
-            "height": 919.46875,
-            "left": 140,
-            "width": 1000
-          },
-          {
-            "id": "factory-48",
-            "visibility": "visible",
-            "height": 986.46875,
-            "left": 140,
-            "width": 1000
-          },
-          {
-            "id": "factory-49",
-            "visibility": "visible",
-            "height": 986.46875,
-            "left": 140,
-            "width": 1000
-          },
-          {
-            "id": "factory-50",
-            "visibility": "visible",
-            "height": 735.46875,
-            "left": 140,
-            "width": 1000
-          },
-          {
-            "id": "factory-51",
-            "visibility": "visible",
-            "height": 878.46875,
-            "left": 140,
-            "width": 1000
-          },
-          {
-            "id": "factory-52",
-            "visibility": "visible",
-            "height": 1094.46875,
-            "left": 140,
-            "width": 1000
-          },
-          {
-            "id": "factory-53",
-            "visibility": "visible",
-            "height": 794.265625,
-            "left": 140,
-            "width": 1000
-          },
-          {
-            "id": "factory-54",
-            "visibility": "visible",
-            "height": 875.46875,
+            "height": 1206.265625,
             "left": 140,
             "width": 1000
           }
@@ -393,384 +260,251 @@
       "mode": "phone",
       "fallback": {
         "classes": "",
-        "height": 70305,
+        "height": 63161,
         "viewport": 844,
         "slides": [
           {
             "id": "factory-01",
             "visibility": "visible",
-            "height": 1276.015625,
+            "height": 1340.859375,
             "left": 0,
             "width": 390
           },
           {
             "id": "factory-02",
             "visibility": "visible",
-            "height": 1189.40625,
+            "height": 1217.09375,
             "left": 0,
             "width": 390
           },
           {
             "id": "factory-03",
             "visibility": "visible",
-            "height": 1332.078125,
+            "height": 1189.40625,
             "left": 0,
             "width": 390
           },
           {
             "id": "factory-04",
             "visibility": "visible",
-            "height": 1298.734375,
+            "height": 1403.203125,
             "left": 0,
             "width": 390
           },
           {
             "id": "factory-05",
             "visibility": "visible",
-            "height": 1469.734375,
+            "height": 1287.53125,
             "left": 0,
             "width": 390
           },
           {
             "id": "factory-06",
             "visibility": "visible",
-            "height": 1189.40625,
+            "height": 1469.734375,
             "left": 0,
             "width": 390
           },
           {
             "id": "factory-07",
             "visibility": "visible",
-            "height": 1079.734375,
+            "height": 1251.40625,
             "left": 0,
             "width": 390
           },
           {
             "id": "factory-08",
             "visibility": "visible",
-            "height": 1270.40625,
+            "height": 1876.734375,
             "left": 0,
             "width": 390
           },
           {
             "id": "factory-09",
             "visibility": "visible",
-            "height": 1431.734375,
+            "height": 1423.0625,
             "left": 0,
             "width": 390
           },
           {
             "id": "factory-10",
             "visibility": "visible",
-            "height": 1069.734375,
+            "height": 1336.796875,
             "left": 0,
             "width": 390
           },
           {
             "id": "factory-11",
             "visibility": "visible",
-            "height": 1274.734375,
+            "height": 1410.796875,
             "left": 0,
             "width": 390
           },
           {
             "id": "factory-12",
             "visibility": "visible",
-            "height": 1377.734375,
+            "height": 1539.265625,
             "left": 0,
             "width": 390
           },
           {
             "id": "factory-13",
             "visibility": "visible",
-            "height": 2001.734375,
+            "height": 1633.0625,
             "left": 0,
             "width": 390
           },
           {
             "id": "factory-14",
             "visibility": "visible",
-            "height": 1377.734375,
+            "height": 1487.40625,
             "left": 0,
             "width": 390
           },
           {
             "id": "factory-15",
             "visibility": "visible",
-            "height": 1193.734375,
+            "height": 2605.546875,
             "left": 0,
             "width": 390
           },
           {
             "id": "factory-16",
             "visibility": "visible",
-            "height": 1144.734375,
+            "height": 1760.859375,
             "left": 0,
             "width": 390
           },
           {
             "id": "factory-17",
             "visibility": "visible",
-            "height": 1172.734375,
+            "height": 1545.59375,
             "left": 0,
             "width": 390
           },
           {
             "id": "factory-18",
             "visibility": "visible",
-            "height": 1288.078125,
+            "height": 1657.265625,
             "left": 0,
             "width": 390
           },
           {
             "id": "factory-19",
             "visibility": "visible",
-            "height": 1244.40625,
+            "height": 1451.734375,
             "left": 0,
             "width": 390
           },
           {
             "id": "factory-20",
             "visibility": "visible",
-            "height": 2045.40625,
+            "height": 1350.078125,
             "left": 0,
             "width": 390
           },
           {
             "id": "factory-21",
             "visibility": "visible",
-            "height": 1206.53125,
+            "height": 1306.40625,
             "left": 0,
             "width": 390
           },
           {
             "id": "factory-22",
             "visibility": "visible",
-            "height": 1203.40625,
+            "height": 1668.734375,
             "left": 0,
             "width": 390
           },
           {
             "id": "factory-23",
             "visibility": "visible",
-            "height": 1118.734375,
+            "height": 1416.734375,
             "left": 0,
             "width": 390
           },
           {
             "id": "factory-24",
             "visibility": "visible",
-            "height": 1192.9375,
+            "height": 1801.796875,
             "left": 0,
             "width": 390
           },
           {
             "id": "factory-25",
             "visibility": "visible",
-            "height": 991.9375,
+            "height": 1548.859375,
             "left": 0,
             "width": 390
           },
           {
             "id": "factory-26",
             "visibility": "visible",
-            "height": 1331.734375,
+            "height": 1684.265625,
             "left": 0,
             "width": 390
           },
           {
             "id": "factory-27",
             "visibility": "visible",
-            "height": 1230.40625,
+            "height": 1125.53125,
             "left": 0,
             "width": 390
           },
           {
             "id": "factory-28",
             "visibility": "visible",
-            "height": 1138.40625,
+            "height": 1128.53125,
             "left": 0,
             "width": 390
           },
           {
             "id": "factory-29",
             "visibility": "visible",
-            "height": 1106.734375,
+            "height": 1219.734375,
             "left": 0,
             "width": 390
           },
           {
             "id": "factory-30",
             "visibility": "visible",
-            "height": 1123.40625,
+            "height": 1358.734375,
             "left": 0,
             "width": 390
           },
           {
             "id": "factory-31",
             "visibility": "visible",
-            "height": 1339.40625,
+            "height": 7032.53125,
             "left": 0,
             "width": 390
           },
           {
             "id": "factory-32",
             "visibility": "visible",
-            "height": 1118.734375,
+            "height": 1784.46875,
             "left": 0,
             "width": 390
           },
           {
             "id": "factory-33",
             "visibility": "visible",
-            "height": 1448.40625,
+            "height": 560.40625,
             "left": 0,
             "width": 390
           },
           {
             "id": "factory-34",
             "visibility": "visible",
-            "height": 1269.734375,
+            "height": 1358.59375,
             "left": 0,
             "width": 390
           },
           {
             "id": "factory-35",
             "visibility": "visible",
-            "height": 1402.40625,
-            "left": 0,
-            "width": 390
-          },
-          {
-            "id": "factory-36",
-            "visibility": "visible",
-            "height": 1163.40625,
-            "left": 0,
-            "width": 390
-          },
-          {
-            "id": "factory-37",
-            "visibility": "visible",
-            "height": 1250.203125,
-            "left": 0,
-            "width": 390
-          },
-          {
-            "id": "factory-38",
-            "visibility": "visible",
-            "height": 1123.40625,
-            "left": 0,
-            "width": 390
-          },
-          {
-            "id": "factory-39",
-            "visibility": "visible",
-            "height": 1333.53125,
-            "left": 0,
-            "width": 390
-          },
-          {
-            "id": "factory-40",
-            "visibility": "visible",
-            "height": 1213.734375,
-            "left": 0,
-            "width": 390
-          },
-          {
-            "id": "factory-41",
-            "visibility": "visible",
-            "height": 1403.9375,
-            "left": 0,
-            "width": 390
-          },
-          {
-            "id": "factory-42",
-            "visibility": "visible",
-            "height": 1163.40625,
-            "left": 0,
-            "width": 390
-          },
-          {
-            "id": "factory-43",
-            "visibility": "visible",
-            "height": 1489.40625,
-            "left": 0,
-            "width": 390
-          },
-          {
-            "id": "factory-44",
-            "visibility": "visible",
-            "height": 1410.734375,
-            "left": 0,
-            "width": 390
-          },
-          {
-            "id": "factory-45",
-            "visibility": "visible",
-            "height": 1186.734375,
-            "left": 0,
-            "width": 390
-          },
-          {
-            "id": "factory-46",
-            "visibility": "visible",
-            "height": 1200.734375,
-            "left": 0,
-            "width": 390
-          },
-          {
-            "id": "factory-47",
-            "visibility": "visible",
-            "height": 1257.40625,
-            "left": 0,
-            "width": 390
-          },
-          {
-            "id": "factory-48",
-            "visibility": "visible",
-            "height": 1253.734375,
-            "left": 0,
-            "width": 390
-          },
-          {
-            "id": "factory-49",
-            "visibility": "visible",
-            "height": 1253.734375,
-            "left": 0,
-            "width": 390
-          },
-          {
-            "id": "factory-50",
-            "visibility": "visible",
-            "height": 1169.734375,
-            "left": 0,
-            "width": 390
-          },
-          {
-            "id": "factory-51",
-            "visibility": "visible",
-            "height": 1172.734375,
-            "left": 0,
-            "width": 390
-          },
-          {
-            "id": "factory-52",
-            "visibility": "visible",
-            "height": 1442.734375,
-            "left": 0,
-            "width": 390
-          },
-          {
-            "id": "factory-53",
-            "visibility": "visible",
-            "height": 1297.203125,
-            "left": 0,
-            "width": 390
-          },
-          {
-            "id": "factory-54",
-            "visibility": "visible",
-            "height": 1132.40625,
+            "height": 6967.734375,
             "left": 0,
             "width": 390
           }

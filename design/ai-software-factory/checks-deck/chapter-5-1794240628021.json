@@ -1,10 +1,10 @@
 {
-  "selector": "--chapter=1",
+  "selector": "--chapter=5",
   "probes": [
     {
       "mode": "desktop",
-      "slide": "1",
-      "kind": "hero",
+      "slide": "24",
+      "kind": "code",
       "ratio": 1.7777776718139648,
       "fit": true,
       "errors": [],
@@ -12,34 +12,7 @@
     },
     {
       "mode": "desktop",
-      "slide": "2",
-      "kind": "comparison",
-      "ratio": 1.7777776718139648,
-      "fit": true,
-      "errors": [],
-      "steps": []
-    },
-    {
-      "mode": "desktop",
-      "slide": "3",
-      "kind": "timeline",
-      "ratio": 1.7777776718139648,
-      "fit": true,
-      "errors": [],
-      "steps": []
-    },
-    {
-      "mode": "desktop",
-      "slide": "4",
-      "kind": "timeline",
-      "ratio": 1.7777776718139648,
-      "fit": true,
-      "errors": [],
-      "steps": []
-    },
-    {
-      "mode": "desktop",
-      "slide": "5",
+      "slide": "25",
       "kind": "checklist",
       "ratio": 1.7777776718139648,
       "fit": true,
@@ -48,7 +21,7 @@
     },
     {
       "mode": "desktop",
-      "slide": "6",
+      "slide": "26",
       "kind": "comparison",
       "ratio": 1.7777776718139648,
       "fit": true,
@@ -57,8 +30,8 @@
     },
     {
       "mode": "desktop",
-      "slide": "7",
-      "kind": "checklist",
+      "slide": "27",
+      "kind": "code",
       "ratio": 1.7777776718139648,
       "fit": true,
       "errors": [],
@@ -66,8 +39,8 @@
     },
     {
       "mode": "desktop",
-      "slide": "8",
-      "kind": "exercise",
+      "slide": "28",
+      "kind": "table",
       "ratio": 1.7777776718139648,
       "fit": true,
       "errors": [],
@@ -75,8 +48,8 @@
     },
     {
       "mode": "phone",
-      "slide": "1",
-      "kind": "hero",
+      "slide": "24",
+      "kind": "code",
       "ratio": 1.7777777777777777,
       "fit": true,
       "errors": [],
@@ -84,34 +57,7 @@
     },
     {
       "mode": "phone",
-      "slide": "2",
-      "kind": "comparison",
-      "ratio": 1.7777777777777777,
-      "fit": true,
-      "errors": [],
-      "steps": []
-    },
-    {
-      "mode": "phone",
-      "slide": "3",
-      "kind": "timeline",
-      "ratio": 1.7777777777777777,
-      "fit": true,
-      "errors": [],
-      "steps": []
-    },
-    {
-      "mode": "phone",
-      "slide": "4",
-      "kind": "timeline",
-      "ratio": 1.7777777777777777,
-      "fit": true,
-      "errors": [],
-      "steps": []
-    },
-    {
-      "mode": "phone",
-      "slide": "5",
+      "slide": "25",
       "kind": "checklist",
       "ratio": 1.7777777777777777,
       "fit": true,
@@ -120,7 +66,7 @@
     },
     {
       "mode": "phone",
-      "slide": "6",
+      "slide": "26",
       "kind": "comparison",
       "ratio": 1.7777777777777777,
       "fit": true,
@@ -129,8 +75,8 @@
     },
     {
       "mode": "phone",
-      "slide": "7",
-      "kind": "checklist",
+      "slide": "27",
+      "kind": "code",
       "ratio": 1.7777777777777777,
       "fit": true,
       "errors": [],
@@ -138,8 +84,8 @@
     },
     {
       "mode": "phone",
-      "slide": "8",
-      "kind": "exercise",
+      "slide": "28",
+      "kind": "table",
       "ratio": 1.7777777777777777,
       "fit": true,
       "errors": [],

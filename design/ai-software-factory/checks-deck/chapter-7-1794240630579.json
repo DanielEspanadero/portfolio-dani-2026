@@ -3,7 +3,7 @@
   "probes": [
     {
       "mode": "desktop",
-      "slide": "32",
+      "slide": "33",
       "kind": "circle",
       "ratio": 1.7777776718139648,
       "fit": true,
@@ -37,7 +37,7 @@
     },
     {
       "mode": "desktop",
-      "slide": "33",
+      "slide": "34",
       "kind": "table",
       "ratio": 1.7777776718139648,
       "fit": true,
@@ -46,7 +46,7 @@
     },
     {
       "mode": "desktop",
-      "slide": "34",
+      "slide": "35",
       "kind": "closing",
       "ratio": 1.7777776718139648,
       "fit": true,
@@ -55,7 +55,7 @@
     },
     {
       "mode": "phone",
-      "slide": "32",
+      "slide": "33",
       "kind": "circle",
       "ratio": 1.7777777777777777,
       "fit": true,
@@ -89,7 +89,7 @@
     },
     {
       "mode": "phone",
-      "slide": "33",
+      "slide": "34",
       "kind": "table",
       "ratio": 1.7777777777777777,
       "fit": true,
@@ -98,7 +98,7 @@
     },
     {
       "mode": "phone",
-      "slide": "34",
+      "slide": "35",
       "kind": "closing",
       "ratio": 1.7777777777777777,
       "fit": true,
