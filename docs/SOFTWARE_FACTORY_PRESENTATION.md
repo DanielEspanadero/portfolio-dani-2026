@@ -1,6 +1,6 @@
 # AI Software Factory: contenido para enseñar y practicar
 
-54 diapositivas en español, notas de ponente separadas y un kit local ejecutable. El renderer local integra el currículo S1, el formato de directo S2 y el control humano S3 con la dirección elegida «Plano de fábrica» (S4), sin modificar otros decks ni el player compartido (S5). **Ruta implementada:** `/presentaciones/software-factory` (S6); lectura en `/presentaciones/software-factory/guia` y HTML autónomo en `/presentaciones/software-factory/descargar.html`. Son rutas Astro prerenderizadas; su respuesta HTTP en el hosting requiere la verificación posterior del orquestador. No se ha ejecutado build ni despliegue.
+54 diapositivas en español, notas de ponente separadas y un kit local ejecutable. El hilo conductor es la fábrica como sistema de producción —orden de trabajo, estaciones especializadas, estándares, compuertas automáticas, evidencia, integración y medición— y no la aprobación humana: ésta aparece una sola vez, en la compuerta de integración, y como una de ocho familias de riesgo (S7). El renderer local integra ese currículo con la dirección elegida «Plano de fábrica» (S4), sin modificar otros decks ni el player compartido (S5). **Ruta implementada:** `/presentaciones/software-factory` (S6); lectura en `/presentaciones/software-factory/guia` y HTML autónomo en `/presentaciones/software-factory/descargar.html`. Son rutas Astro prerenderizadas; su respuesta HTTP en el hosting requiere la verificación posterior del orquestador. No se ha ejecutado build ni despliegue.
 
 ## Camino rápido
 
@@ -24,7 +24,7 @@ El escenario se autoriza a 1920×1080 y el player escala cada slide una sola vez
 
 `src/presentations/software-factory/render.mjs` transforma los 13 tipos en composiciones distintas y escapa contenido, código y fuentes. `document.ts` une `fonts.css`, la copia íntegra `viewport-base.css`, `deck.css` y los scripts inline. No hay script local adicional: el deck usa el player compartido tal cual. `guide.css` es independiente del escenario fijo. `src/presentations/shared/render.mjs` y `player.js` se reutilizan sin cambios.
 
-La portada usa una línea de ensamblaje con límite humano; cronologías, tablas de fronteras, advertencias causales, paneles de código, carriles paralelos y taller tienen gramática propia. Las estaciones con `data-step` reservan su geometría. Una puerta sigue indicando decisión humana pendiente después de revelar todo: avanzar no equivale a aprobar.
+La portada usa una línea de producción de tres estaciones (entrada, estaciones, salida); cronologías, tablas de fronteras, advertencias causales, paneles de código, carriles paralelos y taller tienen gramática propia. Las estaciones con `data-step` reservan su geometría. La compuerta de integración queda como lote pendiente de integrar después de revelar todo: avanzar pasos no equivale a integrar.
 
 ## Arquitectura y contrato para el renderer
 
@@ -60,11 +60,11 @@ Duración orientativa: **90–120 minutos ajustables**, no una garantía. Acorta
 | Módulo | IDs | Recorrido y atención del ponente | Tiempo orientativo |
 |---|---|---|---|
 | `01-foundations.mjs` | 01–08 | Metáfora no estándar; McIlroy 1968; antecedentes; vocabulario; distinción asistente/workflow/agente; pausa 08 | 12–15 min |
-| `02-anatomy.mjs` | 09–16 | Entrada → propuesta → contraste → decisión; autoridad de roles; procedencia; loop acotado; handoff; palanca humana | 10–13 min |
-| `03-risks.mjs` | 17–24 | Riesgos antes de crear: rubber stamp, falso verde correlacionado, inyección, permisos, coste, dependencia y recuperación; pausa 24 | 14–17 min |
+| `02-anatomy.mjs` | 09–16 | Petición → orden de trabajo; estaciones especializadas; estándares y activos reutilizables; ciclo acotado; compuertas automáticas; recibo de evidencia; lote pequeño y tiempo de ciclo | 10–13 min |
+| `03-risks.mjs` | 17–24 | Ocho modos de fallo de la fábrica: aceptar por costumbre, falso verde correlacionado, inyección, permisos excesivos, consumo sin límite, conocimiento y dependencia, recuperación, control ausente; pausa 24 | 14–17 min |
 | `04-create.mjs` | 25–32 | Entorno mínimo, árbol, instrucciones explícitas, política, worker, reviewer, plantilla y comando | 10–13 min |
-| `05-execute.mjs` | 33–40 | API y validación, RED, tabla de segundos, repetición, GREEN, STOP real, integración distinta de despliegue | 15–18 min |
-| `06-parallel.mjs` | 41–47 | Independencia, contrato, worktrees, propiedad, integración y presupuesto humano de revisión | 9–12 min |
+| `05-execute.mjs` | 33–40 | API y validación, RED, tabla de segundos, repetición, GREEN, aterrizaje integrado con evidencia y vuelta atrás; integración distinta de despliegue | 15–18 min |
+| `06-parallel.mjs` | 41–47 | Independencia, contrato compartido, worktrees sin pretensión de sandbox, conflictos en integración y capacidad de revisión como límite de flujo | 9–12 min |
 | `07-workshop.mjs` | 48–54 | Taller ajustable y pausa 49; medir valor total, fallback, checklist, fuentes y cierre | 20–32 min |
 
 Los rangos permiten elegir ritmo; no deben sumarse como una promesa exacta. Para un directo corto, dar la práctica como continuación local. Para uno largo, ampliar preguntas sin añadir permisos ni servicios reales.
@@ -74,7 +74,7 @@ Los rangos permiten elegir ritmo; no deben sumarse como una promesa exacta. Para
 - 03–04: no atribuir fechas no verificadas a Hitachi/SDC ni páginas no comprobadas a las actas. CI se presenta como antecedente sin fecha fundacional.
 - 06–07: Anthropic (diciembre de 2024) distingue rutas predefinidas de decisiones dinámicas y recomienda simplicidad. No es una norma universal.
 - 14, 18, 30: separar revisión no garantiza independencia de razonamiento. Código y tests pueden tener el mismo error.
-- 16–17, 39: control humano significa información, tiempo, autoridad para rechazar y capacidad real de detener; no mero botón.
+- 17–24, 39: el capítulo de fallos es la parte negativa del método; el control humano se trata como una familia de riesgo («firma vacía o línea sin freno») y como la única compuerta explícita, sin convertirla en el tema de toda la presentación.
 - 28, 36–37: >=24h devuelve 100%; <24h antes devuelve 0%; inicio exacto o después rechaza intacta. Repetir conserva outcome, pero events vacío hace que la respuesta completa pueda diferir.
 - 33–34: autenticación y autorización están fuera de alcance; tiempos UTC canónicos e importes válidos se verifican antes de eventos. No exponer el ejemplo como API de producción.
 - 35, 38: expectativas de terminal se etiquetan como tales; cada participante registra su resultado real. No prometer una suite pasada sin observarla.

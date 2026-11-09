@@ -1,0 +1,172 @@
+{
+  "selector": "--chapter=7",
+  "probes": [
+    {
+      "mode": "desktop",
+      "slide": "48",
+      "kind": "exercise",
+      "ratio": 1.7777776718139648,
+      "fit": true,
+      "errors": [],
+      "steps": [
+        [
+          495.40740966796875,
+          305.8296203613281,
+          542.8147583007812,
+          18.555572509765625
+        ],
+        [
+          495.40740966796875,
+          367.42962646484375,
+          542.8147583007812,
+          18.5555419921875
+        ],
+        [
+          495.40740966796875,
+          429.0296325683594,
+          542.8147583007812,
+          18.5555419921875
+        ]
+      ]
+    },
+    {
+      "mode": "desktop",
+      "slide": "49",
+      "kind": "exercise",
+      "ratio": 1.7777776718139648,
+      "fit": true,
+      "errors": [],
+      "steps": []
+    },
+    {
+      "mode": "desktop",
+      "slide": "50",
+      "kind": "table",
+      "ratio": 1.7777776718139648,
+      "fit": true,
+      "errors": [],
+      "steps": []
+    },
+    {
+      "mode": "desktop",
+      "slide": "51",
+      "kind": "comparison",
+      "ratio": 1.7777776718139648,
+      "fit": true,
+      "errors": [],
+      "steps": []
+    },
+    {
+      "mode": "desktop",
+      "slide": "52",
+      "kind": "checklist",
+      "ratio": 1.7777776718139648,
+      "fit": true,
+      "errors": [],
+      "steps": []
+    },
+    {
+      "mode": "desktop",
+      "slide": "53",
+      "kind": "table",
+      "ratio": 1.7777776718139648,
+      "fit": true,
+      "errors": [],
+      "steps": []
+    },
+    {
+      "mode": "desktop",
+      "slide": "54",
+      "kind": "closing",
+      "ratio": 1.7777776718139648,
+      "fit": true,
+      "errors": [],
+      "steps": []
+    },
+    {
+      "mode": "phone",
+      "slide": "48",
+      "kind": "exercise",
+      "ratio": 1.7777777777777777,
+      "fit": true,
+      "errors": [],
+      "steps": [
+        [
+          133.046875,
+          397.786865234375,
+          232.578125,
+          7.950439453125
+        ],
+        [
+          133.046875,
+          424.180419921875,
+          232.578125,
+          7.950439453125
+        ],
+        [
+          133.046875,
+          450.573974609375,
+          232.578125,
+          7.950439453125
+        ]
+      ]
+    },
+    {
+      "mode": "phone",
+      "slide": "49",
+      "kind": "exercise",
+      "ratio": 1.7777777777777777,
+      "fit": true,
+      "errors": [],
+      "steps": []
+    },
+    {
+      "mode": "phone",
+      "slide": "50",
+      "kind": "table",
+      "ratio": 1.7777777777777777,
+      "fit": true,
+      "errors": [],
+      "steps": []
+    },
+    {
+      "mode": "phone",
+      "slide": "51",
+      "kind": "comparison",
+      "ratio": 1.7777777777777777,
+      "fit": true,
+      "errors": [],
+      "steps": []
+    },
+    {
+      "mode": "phone",
+      "slide": "52",
+      "kind": "checklist",
+      "ratio": 1.7777777777777777,
+      "fit": true,
+      "errors": [],
+      "steps": []
+    },
+    {
+      "mode": "phone",
+      "slide": "53",
+      "kind": "table",
+      "ratio": 1.7777777777777777,
+      "fit": true,
+      "errors": [],
+      "steps": []
+    },
+    {
+      "mode": "phone",
+      "slide": "54",
+      "kind": "closing",
+      "ratio": 1.7777777777777777,
+      "fit": true,
+      "errors": [],
+      "steps": []
+    }
+  ],
+  "failures": [],
+  "requests": [],
+  "errors": []
+}

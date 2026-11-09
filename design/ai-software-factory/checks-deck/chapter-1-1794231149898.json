@@ -1,0 +1,152 @@
+{
+  "selector": "--chapter=1",
+  "probes": [
+    {
+      "mode": "desktop",
+      "slide": "1",
+      "kind": "hero",
+      "ratio": 1.7777776718139648,
+      "fit": true,
+      "errors": [],
+      "steps": []
+    },
+    {
+      "mode": "desktop",
+      "slide": "2",
+      "kind": "comparison",
+      "ratio": 1.7777776718139648,
+      "fit": true,
+      "errors": [],
+      "steps": []
+    },
+    {
+      "mode": "desktop",
+      "slide": "3",
+      "kind": "timeline",
+      "ratio": 1.7777776718139648,
+      "fit": true,
+      "errors": [],
+      "steps": []
+    },
+    {
+      "mode": "desktop",
+      "slide": "4",
+      "kind": "timeline",
+      "ratio": 1.7777776718139648,
+      "fit": true,
+      "errors": [],
+      "steps": []
+    },
+    {
+      "mode": "desktop",
+      "slide": "5",
+      "kind": "checklist",
+      "ratio": 1.7777776718139648,
+      "fit": true,
+      "errors": [],
+      "steps": []
+    },
+    {
+      "mode": "desktop",
+      "slide": "6",
+      "kind": "comparison",
+      "ratio": 1.7777776718139648,
+      "fit": true,
+      "errors": [],
+      "steps": []
+    },
+    {
+      "mode": "desktop",
+      "slide": "7",
+      "kind": "checklist",
+      "ratio": 1.7777776718139648,
+      "fit": true,
+      "errors": [],
+      "steps": []
+    },
+    {
+      "mode": "desktop",
+      "slide": "8",
+      "kind": "exercise",
+      "ratio": 1.7777776718139648,
+      "fit": true,
+      "errors": [],
+      "steps": []
+    },
+    {
+      "mode": "phone",
+      "slide": "1",
+      "kind": "hero",
+      "ratio": 1.7777777777777777,
+      "fit": true,
+      "errors": [],
+      "steps": []
+    },
+    {
+      "mode": "phone",
+      "slide": "2",
+      "kind": "comparison",
+      "ratio": 1.7777777777777777,
+      "fit": true,
+      "errors": [],
+      "steps": []
+    },
+    {
+      "mode": "phone",
+      "slide": "3",
+      "kind": "timeline",
+      "ratio": 1.7777777777777777,
+      "fit": true,
+      "errors": [],
+      "steps": []
+    },
+    {
+      "mode": "phone",
+      "slide": "4",
+      "kind": "timeline",
+      "ratio": 1.7777777777777777,
+      "fit": true,
+      "errors": [],
+      "steps": []
+    },
+    {
+      "mode": "phone",
+      "slide": "5",
+      "kind": "checklist",
+      "ratio": 1.7777777777777777,
+      "fit": true,
+      "errors": [],
+      "steps": []
+    },
+    {
+      "mode": "phone",
+      "slide": "6",
+      "kind": "comparison",
+      "ratio": 1.7777777777777777,
+      "fit": true,
+      "errors": [],
+      "steps": []
+    },
+    {
+      "mode": "phone",
+      "slide": "7",
+      "kind": "checklist",
+      "ratio": 1.7777777777777777,
+      "fit": true,
+      "errors": [],
+      "steps": []
+    },
+    {
+      "mode": "phone",
+      "slide": "8",
+      "kind": "exercise",
+      "ratio": 1.7777777777777777,
+      "fit": true,
+      "errors": [],
+      "steps": []
+    }
+  ],
+  "failures": [],
+  "requests": [],
+  "errors": []
+}

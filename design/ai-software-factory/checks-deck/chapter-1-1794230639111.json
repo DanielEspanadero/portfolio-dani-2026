@@ -1,0 +1,190 @@
+{
+  "selector": "--chapter=1",
+  "probes": [
+    {
+      "mode": "desktop",
+      "slide": "1",
+      "kind": "hero",
+      "ratio": 1.7777776718139648,
+      "fit": true,
+      "errors": [],
+      "steps": []
+    },
+    {
+      "mode": "desktop",
+      "slide": "2",
+      "kind": "comparison",
+      "ratio": 1.7777776718139648,
+      "fit": true,
+      "errors": [],
+      "steps": []
+    },
+    {
+      "mode": "desktop",
+      "slide": "3",
+      "kind": "timeline",
+      "ratio": 1.7777776718139648,
+      "fit": true,
+      "errors": [],
+      "steps": []
+    },
+    {
+      "mode": "desktop",
+      "slide": "4",
+      "kind": "timeline",
+      "ratio": 1.7777776718139648,
+      "fit": true,
+      "errors": [],
+      "steps": []
+    },
+    {
+      "mode": "desktop",
+      "slide": "5",
+      "kind": "table",
+      "ratio": 1.7777776718139648,
+      "fit": true,
+      "errors": [],
+      "steps": []
+    },
+    {
+      "mode": "desktop",
+      "slide": "6",
+      "kind": "comparison",
+      "ratio": 1.7777776718139648,
+      "fit": true,
+      "errors": [],
+      "steps": []
+    },
+    {
+      "mode": "desktop",
+      "slide": "7",
+      "kind": "gate",
+      "ratio": 1.7777776718139648,
+      "fit": true,
+      "errors": [],
+      "steps": [
+        [
+          255.05184936523438,
+          386.89630126953125,
+          228.977783203125,
+          55.666656494140625
+        ],
+        [
+          526.22216796875,
+          386.89630126953125,
+          228.977783203125,
+          37.111114501953125
+        ],
+        [
+          797.392578125,
+          386.89630126953125,
+          228.977783203125,
+          55.666656494140625
+        ]
+      ]
+    },
+    {
+      "mode": "desktop",
+      "slide": "8",
+      "kind": "exercise",
+      "ratio": 1.7777776718139648,
+      "fit": true,
+      "errors": [],
+      "steps": []
+    },
+    {
+      "mode": "phone",
+      "slide": "1",
+      "kind": "hero",
+      "ratio": 1.7777777777777777,
+      "fit": true,
+      "errors": [],
+      "steps": []
+    },
+    {
+      "mode": "phone",
+      "slide": "2",
+      "kind": "comparison",
+      "ratio": 1.7777777777777777,
+      "fit": true,
+      "errors": [],
+      "steps": []
+    },
+    {
+      "mode": "phone",
+      "slide": "3",
+      "kind": "timeline",
+      "ratio": 1.7777777777777777,
+      "fit": true,
+      "errors": [],
+      "steps": []
+    },
+    {
+      "mode": "phone",
+      "slide": "4",
+      "kind": "timeline",
+      "ratio": 1.7777777777777777,
+      "fit": true,
+      "errors": [],
+      "steps": []
+    },
+    {
+      "mode": "phone",
+      "slide": "5",
+      "kind": "table",
+      "ratio": 1.7777777777777777,
+      "fit": true,
+      "errors": [],
+      "steps": []
+    },
+    {
+      "mode": "phone",
+      "slide": "6",
+      "kind": "comparison",
+      "ratio": 1.7777777777777777,
+      "fit": true,
+      "errors": [],
+      "steps": []
+    },
+    {
+      "mode": "phone",
+      "slide": "7",
+      "kind": "gate",
+      "ratio": 1.7777777777777777,
+      "fit": true,
+      "errors": [],
+      "steps": [
+        [
+          30.0625,
+          432.521240234375,
+          98.109375,
+          23.851318359375
+        ],
+        [
+          146.25,
+          432.521240234375,
+          98.109375,
+          15.90087890625
+        ],
+        [
+          262.4375,
+          432.521240234375,
+          98.109375,
+          23.851318359375
+        ]
+      ]
+    },
+    {
+      "mode": "phone",
+      "slide": "8",
+      "kind": "exercise",
+      "ratio": 1.7777777777777777,
+      "fit": true,
+      "errors": [],
+      "steps": []
+    }
+  ],
+  "failures": [],
+  "requests": [],
+  "errors": []
+}
