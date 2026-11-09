@@ -355,11 +355,10 @@ h1, .slide h2 { font-size: 88px; font-weight: 650; line-height: 1.04; letter-spa
 .loop .stations .station { min-height: 320px; }
 .loop .stations { padding-top: 0; }
 .diagram.loop { display: grid; grid-template-rows: auto 62px; align-content: start; }
-/* The return row is a grid sibling: it starts at the measured station bottom. */
-.diagram.flow.loopback { position: relative; padding-bottom: 78px; }
-.diagram.flow.loopback::after { content: ''; position: absolute; left: 0; right: 0; bottom: 44px; height: 34px; border: 3px dashed var(--amber); border-top: 0; border-radius: 0 0 14px 14px; }
-.diagram.flow.loopback::before { content: ''; position: absolute; left: -6px; bottom: 68px; width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-bottom: 16px solid var(--amber); }
-.loopback-label { position: absolute; left: 0; right: 0; bottom: 0; text-align: center; font: 28px 'JetBrains Mono'; color: var(--amber); }
+/* The loopback flow is one drawn journey: the SVG owns its viewBox, so no pseudo-arc and no
+   card row. Type sizes and the journey keyframes live inside the drawing itself. */
+.diagram.flow.loopback { position: relative; }
+.flow-diagram { display: block; width: 100%; height: auto; }
 .loop-return { position: relative; z-index: 1; height: 62px; border-left: 3px solid var(--cyan); border-right: 3px solid var(--cyan); border-bottom: 3px dashed var(--cyan); }
 .loop-return::before { content: ''; position: absolute; left: -10px; top: 0; width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-bottom: 16px solid var(--cyan); }
 .return-sweep { position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: linear-gradient(90deg, transparent 0 40%, var(--amber) 50%, transparent 60% 100%); background-size: 300% 100%; animation: sweep 4.8s linear infinite; }
@@ -1060,24 +1059,58 @@ node --test tests/cancellation.test.mjs</code></pre>
     <div class="registration" aria-hidden="true"></div>
     <header class="slide-heading"><p class="eyebrow">AI SOFTWARE FACTORY / Cerrar el círculo</p>
     <h2 id="title-factory-33">El flujo completo, de una pieza</h2><p class="lead">Ahora sí, todas las piezas juntas y en el orden en que ocurren.</p><p class="plain">Todo lo anterior es una sola cadena: lo que entra vuelve a entrar si algo falla.</p></header>
-    <div class="composition"><div class="diagram flow loopback"><svg class="connectors" viewBox="0 0 1680 480" aria-hidden="true">
-    <defs><marker id="arrow-factory-33" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M2 2L10 6L2 10" fill="none" stroke="currentColor" stroke-width="2"/></marker></defs>
-    <path class="route-line" style="--i:0" d="M302.4 230H341.4" marker-end="url(#arrow-factory-33)"/>
-      <path class="packet packet-1" d="M302.4 230H341.4"/><path class="route-line" style="--i:1" d="M646.8 230H685.8" marker-end="url(#arrow-factory-33)"/>
-      <path class="packet packet-2" d="M646.8 230H685.8"/><path class="route-line" style="--i:2" d="M991.1999999999998 230H1030.1999999999998" marker-end="url(#arrow-factory-33)"/>
-      <path class="packet packet-3" d="M991.1999999999998 230H1030.1999999999998"/><path class="route-line" style="--i:3" d="M1335.6 230H1374.6" marker-end="url(#arrow-factory-33)"/>
-      <path class="packet packet-4" d="M1335.6 230H1374.6"/>
-  </svg><div class="stations main-panels" style="--count:5"><article class="panel station">
-    <span class="station-number" aria-hidden="true">01</span>
-    <h3>Entrada</h3><p data-step>Un issue, una alerta o un pedido interno, con enlace y contexto.</p></article><article class="panel station">
-    <span class="station-number" aria-hidden="true">02</span>
-    <h3>Orden y spec</h3><p data-step>La petición se convierte en criterios que se pueden comprobar.</p></article><article class="panel station">
-    <span class="station-number" aria-hidden="true">03</span>
-    <h3>Construcción</h3><p data-step>Un agente implementa en un espacio aislado y ejecuta las pruebas.</p></article><article class="panel station">
-    <span class="station-number" aria-hidden="true">04</span>
-    <h3>Revisión y compuertas</h3><p data-step>Revisores independientes y automatización buscan contradicciones.</p></article><article class="panel station">
-    <span class="station-number" aria-hidden="true">05</span>
-    <h3>Integración y operación</h3><p data-step>Entra al producto, se despliega y se observa con la vuelta atrás lista.</p></article></div><p class="loopback-label" aria-hidden="true">Lo que la operación observa vuelve a entrar como orden nueva</p></div></div>
+    <div class="composition"><div class="diagram flow loopback"><svg class="flow-diagram" viewBox="0 0 1680 480" role="img" aria-label="Flujo completo de una pieza: entra como issue, se convierte en criterios comprobables, se construye y se prueba aislada, pasa revisión y compuertas, y se despliega y se observa; un arco ámbar discontinuo devuelve la pieza al inicio como una nueva orden."><style>
+    .flow-diagram text { stroke: none; font-family: 'Instrument Sans', sans-serif; text-anchor: middle; }
+    .flow-index { font-family: 'JetBrains Mono', monospace; font-size: 28px; fill: var(--cyan); letter-spacing: 2px; animation: flow-status 14s ease-in-out infinite; }
+    .flow-label { font-size: 32px; font-weight: 600; fill: var(--paper); }
+    .flow-detail { font-size: 28px; fill: #b3ced4; }
+    .flow-caption { font-family: 'JetBrains Mono', monospace; font-size: 28px; fill: var(--amber); }
+    .flow-rail { fill: none; stroke: #557077; stroke-width: 3; }
+    .flow-dock { fill: none; stroke: var(--cyan); stroke-width: 3; }
+    .flow-return { fill: none; stroke: var(--amber); stroke-width: 3; stroke-dasharray: 14 12; stroke-linecap: round; }
+    .flow-return-tip { fill: none; stroke: var(--amber); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+    .flow-icon { fill: none; stroke: var(--cyan); stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; }
+    .flow-icon .flow-hair { stroke: #557077; stroke-width: 3; }
+    .flow-icon .flow-amber { stroke: var(--amber); stroke-width: 4; }
+    .flow-piece { color: var(--cyan); animation: flow-journey 14s ease-in-out infinite, flow-feedback 14s ease-in-out infinite; }
+    .flow-piece rect { fill: currentColor; }
+    .flow-piece path { fill: none; stroke: var(--slide-bg); stroke-width: 4; stroke-linecap: round; }
+    @keyframes flow-journey { 0%{transform:translate(200px,190px)}7.14%{transform:translate(200px,190px)}17.14%{transform:translate(520px,190px)}22.86%{transform:translate(520px,190px)}32.86%{transform:translate(840px,190px)}38.57%{transform:translate(840px,190px)}48.57%{transform:translate(1160px,190px)}54.29%{transform:translate(1160px,190px)}64.29%{transform:translate(1480px,190px)}70%{transform:translate(1480px,190px)}75.71%{transform:translate(1650px,190px)}80%{transform:translate(1650px,402px)}92.86%{transform:translate(30px,402px)}97.14%{transform:translate(30px,190px)}100%{transform:translate(200px,190px)} }
+    @keyframes flow-feedback { 0%{color:var(--cyan)}75.71%{color:var(--cyan)}80%{color:var(--amber)}97.14%{color:var(--amber)}100%{color:var(--cyan)} }
+    @keyframes flow-status { 0%, 6% { fill: var(--amber); } 9%, 100% { fill: var(--cyan); } }
+  </style>
+    <path class="flow-rail" d="M30 190H1650"/>
+    <path class="flow-return" d="M1650 190V372Q1650 402 1620 402H60Q30 402 30 372V214"/>
+    <path class="flow-return-tip" d="M21 214L30 198L39 214"/>
+    <text class="flow-caption" x="840" y="452">Lo observado vuelve como una nueva orden</text>
+    <g class="flow-node">
+    <text class="flow-index" x="200" y="28" style="animation-delay:-14.0s">01</text>
+    <g class="flow-icon" transform="translate(200 34) scale(1.12)"><path d="M-42 4H12L42 34V112H-42Z"/><path d="M12 4V34H42"/><path class="flow-hair" d="M-24 54H24M-24 74H8M-24 94H18"/></g>
+    <circle class="flow-dock" cx="200" cy="190" r="11"/>
+    <text class="flow-label" x="200" y="256">Entrada</text><text class="flow-detail" x="200" y="326">Un issue, alerta o</text><text class="flow-detail" x="200" y="358">pedido con contexto.</text>
+  </g><g class="flow-node">
+    <text class="flow-index" x="520" y="28" style="animation-delay:-11.6s">02</text>
+    <g class="flow-icon" transform="translate(520 34) scale(1.12)"><rect x="-40" y="18" width="80" height="94" rx="10"/><rect x="-18" y="4" width="36" height="22" rx="8"/><path d="M-28 48l6 7 12-15"/><path class="flow-hair" d="M2 48h20"/><path d="M-28 74l6 7 12-15"/><path class="flow-hair" d="M2 74h20"/><path d="M-28 100l6 7 12-15"/><path class="flow-hair" d="M2 100h20"/></g>
+    <circle class="flow-dock" cx="520" cy="190" r="11"/>
+    <text class="flow-label" x="520" y="256">Orden y spec</text><text class="flow-detail" x="520" y="326">Criterios que se</text><text class="flow-detail" x="520" y="358">pueden comprobar.</text>
+  </g><g class="flow-node">
+    <text class="flow-index" x="840" y="28" style="animation-delay:-9.4s">03</text>
+    <g class="flow-icon" transform="translate(840 34) scale(1.12)"><rect x="-42" y="96" width="84" height="16" rx="6"/><path d="M0 96V80"/><circle cx="0" cy="80" r="8"/><path d="M0 80L-34 52"/><circle cx="-34" cy="52" r="8"/><path d="M-34 52L-4 24"/><circle cx="-4" cy="24" r="7"/><rect class="flow-amber" x="4" y="8" width="22" height="22" rx="5" transform="rotate(45 15 19)"/></g>
+    <circle class="flow-dock" cx="840" cy="190" r="11"/>
+    <text class="flow-label" x="840" y="256">Construcción</text><text class="flow-detail" x="840" y="326">Un agente aislado</text><text class="flow-detail" x="840" y="358">implementa y prueba.</text>
+  </g><g class="flow-node">
+    <text class="flow-index" x="1160" y="28" style="animation-delay:-7.2s">04</text>
+    <g class="flow-icon" transform="translate(1160 34) scale(1.12)"><path d="M0 4L38 20V66Q38 100 0 112Q-38 100-38 66V20Z"/><path class="flow-amber" d="M-18 60L-4 76L20 46"/></g>
+    <circle class="flow-dock" cx="1160" cy="190" r="11"/>
+    <text class="flow-label" x="1160" y="256">Revisión y</text><text class="flow-label" x="1160" y="292">compuertas</text><text class="flow-detail" x="1160" y="326">Independiente, con</text><text class="flow-detail" x="1160" y="358">automatización.</text>
+  </g><g class="flow-node">
+    <text class="flow-index" x="1480" y="28" style="animation-delay:-5.0s">05</text>
+    <g class="flow-icon" transform="translate(1480 34) scale(1.12)"><rect x="-50" y="10" width="100" height="74" rx="9"/><path class="flow-hair" d="M-38 72H38"/><path d="M-36 66L-18 66L-4 42L12 56L26 32L38 40"/><path d="M-14 84V98M14 84V98M-30 104H30"/><circle class="flow-amber" cx="44" cy="10" r="11"/><path class="flow-amber" d="M39 10l3 4 7-8"/></g>
+    <circle class="flow-dock" cx="1480" cy="190" r="11"/>
+    <text class="flow-label" x="1480" y="256">Integración y</text><text class="flow-label" x="1480" y="292">operación</text><text class="flow-detail" x="1480" y="326">Entra, se despliega</text><text class="flow-detail" x="1480" y="358">y se observa.</text>
+  </g>
+    <g class="flow-piece" aria-hidden="true" transform="translate(200 190)"><rect x="-17" y="-19" width="34" height="38" rx="7"/><path d="M-9 -8H9M-9 1H2M-9 10H6"/></g>
+  </svg></div></div>
     <footer class="slide-footer"><span class="footer-author">Daniel Españadero</span><span class="footer-page">33 / 36</span></footer>
   </section>
 <section class="slide kind-circle has-plate" data-slide="34" data-kind="circle" id="factory-34" data-title="Del despliegue a la siguiente orden" data-chapter="Cerrar el círculo" aria-labelledby="title-factory-34">
