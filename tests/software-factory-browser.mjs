@@ -18,7 +18,7 @@ fs.mkdirSync(output, { recursive: true });
 const read = file => fs.readFileSync(`src/presentations/software-factory/${file}`, 'utf8');
 const css = ['fonts.css', 'viewport-base.css', 'deck.css'].map(read).join('\n');
 assert.ok(css.includes(fs.readFileSync('/Users/daniel/.gentle-shell/agent/skills/frontend-slides/viewport-base.css', 'utf8')));
-const controller = fs.readFileSync('src/presentations/shared/player.js', 'utf8') + '\n' + read('enhancements.js');
+const controller = fs.readFileSync('src/presentations/shared/player.js', 'utf8');
 const file = path.join(output, 'standalone.html');
 fs.writeFileSync(file, renderPresentation({ css, controller, offline: true }));
 fs.writeFileSync(path.join(output, 'guide.html'), renderGuide({ css: read('fonts.css') + read('guide.css') }));
@@ -182,21 +182,13 @@ try {
       await capture(`index-${mode}.png`);
       await key('Escape', 'Escape', 27);
       check(await evaluate("!document.querySelector('#slide-index').open && document.activeElement.id==='deck'"), `${mode}: index Escape restores focus`);
-      await key('n', 'KeyN', 78, 'n');
-      check(await evaluate("document.querySelector('#notes-dialog').open && document.activeElement.id==='notes-close' && document.querySelector('#notes-content').textContent.includes('De petición a evidencia')"), `${mode}: N notes + focus`);
-      await capture(`notes-${mode}.png`);
-      await key('ArrowRight', 'ArrowRight', 39);
-      check(await evaluate("location.hash==='#9'"), `${mode}: notes isolate navigation`);
-      await key('Escape', 'Escape', 27);
-      check(await evaluate("!document.querySelector('#notes-dialog').open && document.activeElement.id==='deck'"), `${mode}: notes Escape restores focus`);
-      await enter('notes-toggle'); await enter('notes-close');
-      check(await evaluate("document.activeElement.id==='notes-toggle' && window.trusted.includes('notes-toggle')"), `${mode}: trusted Enter opens notes and returns trigger`);
-      await enter('animation-pause');
-      check(await evaluate("document.querySelector('#animation-pause').getAttribute('aria-pressed')==='true' && [...document.querySelectorAll('.active .packet')].every(p=>p.getAnimations().every(a=>a.playState==='paused'))"), `${mode}: trusted Enter pauses CSS motion`);
-      await enter('animation-restart');
-      check(await evaluate("document.querySelector('#animation-pause').getAttribute('aria-pressed')==='false' && [...document.querySelectorAll('.active .packet')].some(p=>p.getAnimations().some(a=>a.currentTime<500))"), `${mode}: trusted restart resets motion`);
-      await command('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-reduced-motion', value: 'reduce' }] }); await frame();
-      check(await evaluate("document.querySelector('#animation-pause').disabled && document.querySelector('#animation-restart').disabled && document.querySelector('#deck').getAnimations({subtree:true}).length===0"), `${mode}: reduced motion removes CSS + WAAPI motion`);
+      // No notes drawer, animation pause or download chrome: the deck is slides only.
+      check(await evaluate("!document.querySelector('#notes-dialog') && !document.querySelector('#notes-toggle') && !document.querySelector('#animation-pause') && !document.querySelector('#animation-restart') && !document.querySelector('.local-tools') && !document.querySelector('.download-link')"), `${mode}: no extra deck chrome`);
+      const stillAnimates = await evaluate("[...document.querySelectorAll('.active .packet')].every(p=>p.getAnimations().length===0 || p.getAnimations().every(a=>a.playState==='running'))");
+      await command('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-reduced-motion', value: 'reduce' }] });
+      await go(9); await frame();
+      check(stillAnimates && await evaluate("document.querySelector('#deck').getAnimations({subtree:true}).length===0"), `${mode}: reduced motion removes CSS + WAAPI motion`);
+      await command('Emulation.setEmulatedMedia', { features: [] });
       await go(54); await key('ArrowRight', 'ArrowRight', 39);
       check(await evaluate("location.hash==='#54' && document.querySelector('#next-slide').disabled"), `${mode}: last boundary`);
       await enter('fullscreen-toggle');
@@ -205,7 +197,7 @@ try {
       check(full.fit && Math.abs(full.ratio - 16/9) < .001, `${mode}: fullscreen refit`);
       await key('Escape', 'Escape', 27);
       await command('Emulation.setEmulatedMedia', { features: [] });
-      check(await evaluate("[...document.querySelectorAll('.local-tools button')].every(b=>{let r=b.getBoundingClientRect();return r.width>=44&&r.height>=44})"), `${mode}: local touch targets >=44px`);
+      check(await evaluate("[...document.querySelectorAll('.deck-toolbar button, .deck-controls button, .deck-controls select')].every(b=>{let r=b.getBoundingClientRect();return r.width>=24&&r.height>=24})"), `${mode}: player controls keep usable targets`);
     } else {
       await command('Emulation.setScriptExecutionDisabled', { value: true });
       await load(pathToFileURL(file).href, false);

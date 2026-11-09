@@ -7,22 +7,22 @@
 1. Revisar capítulos en `src/content/software-factory/`, empezando por las notas y ejemplos fronterizos.
 2. Copiar el kit completo de `public/resources/software-factory/` a una carpeta local de prácticas con el gestor de archivos. Consultar su README antes de editar.
 3. Desde la raíz del repositorio comprobar contenido y kit con el comando indicado más abajo. No ejecutar un build.
-4. Abrir el deck o descargar su HTML para presentar sin conexión. Usar N para notas o abrir la guía para lectura detallada; el kit y los enlaces externos requieren conexión.
+4. Abrir el deck en `/presentaciones/software-factory`. El deck muestra solo diapositivas: las notas completas y el kit están en `/presentaciones/software-factory/guia`, y el HTML autónomo en `/presentaciones/software-factory/descargar.html` (ambos requieren conexión la primera vez).
 
 ## Presentación y controles
 
 - Flechas / Page Up y Page Down: paso o diapositiva anterior/siguiente. Espacio revela estaciones antes de avanzar; Home / End van al principio/final.
 - I: índice con foco en la diapositiva actual; Escape cierra y devuelve el foco. También hay selector y botones fuera del escenario.
 - F: pantalla completa; el player reajusta el escenario sin redistribuir contenido. Los controles reaparecen al enfocarlos o pasar el puntero.
-- N o botón Notas: diálogo local con explicación y fuentes de la diapositiva actual. No aparece en el escenario ni en el streaming mientras esté cerrado. Escape cierra y devuelve el foco.
-- Pausar / reiniciar diagrama: controla únicamente el movimiento ilustrativo, no ejecuta código, aprueba cambios ni publica. Reiniciar no borra los pasos revelados. Con movimiento reducido los diagramas son estáticos y ambos botones se desactivan.
+- El escenario no lleva controles propios: no hay notas, pausa, reinicio, guía ni descarga en pantalla. Se usan los controles compartidos del player (flechas, Espacio, índice, pantalla completa).
+- Las notas del ponente no se incrustan en el deck; viven en la guía y siguen siendo la referencia para narrar cada ID.
 - Sin JavaScript se ofrece lectura vertical de las diapositivas; la guía añade notas completas y estilos de impresión.
 
-El escenario se autoriza a 1920×1080 y el player escala cada slide una sola vez. En teléfono permanece 16:9 con bandas vacías; no se garantiza leer un directo completo en una pantalla pequeña. La guía sí redistribuye texto de forma responsive. El HTML de descarga incluye CSS, SVG, fuentes con licencia OFL, notas y scripts sin recursos de render externos; los enlaces al portfolio, guía, bibliografía y kit siguen siendo online.
+El escenario se autoriza a 1920×1080 y el player escala cada slide una sola vez. En teléfono permanece 16:9 con bandas vacías; no se garantiza leer un directo completo en una pantalla pequeña. La guía sí redistribuye texto de forma responsive. El HTML de descarga incluye CSS, SVG, fuentes con licencia OFL y scripts sin recursos de render externos; no incluye notas ni enlaces de kit, que quedan en la guía online.
 
 ### Módulos de implementación
 
-`src/presentations/software-factory/render.mjs` transforma los 13 tipos en composiciones distintas y escapa contenido, código y fuentes. `document.ts` une `fonts.css`, la copia íntegra `viewport-base.css`, `deck.css` y los scripts inline. `enhancements.js` añade notas y controles de movimiento sin imports ni sustitución de teclas del player. `guide.css` es independiente del escenario fijo. `src/presentations/shared/render.mjs` y `player.js` se reutilizan sin cambios.
+`src/presentations/software-factory/render.mjs` transforma los 13 tipos en composiciones distintas y escapa contenido, código y fuentes. `document.ts` une `fonts.css`, la copia íntegra `viewport-base.css`, `deck.css` y los scripts inline. No hay script local adicional: el deck usa el player compartido tal cual. `guide.css` es independiente del escenario fijo. `src/presentations/shared/render.mjs` y `player.js` se reutilizan sin cambios.
 
 La portada usa una línea de ensamblaje con límite humano; cronologías, tablas de fronteras, advertencias causales, paneles de código, carriles paralelos y taller tienen gramática propia. Las estaciones con `data-step` reservan su geometría. Una puerta sigue indicando decisión humana pendiente después de revelar todo: avanzar no equivale a aprobar.
 
@@ -128,7 +128,7 @@ node --test tests/software-factory-render.test.mjs tests/software-factory-conten
 
 Chrome instalado y CDP nativo, sin npm ni servidor: ejecutar por separado `node tests/software-factory-browser.mjs --chapter=1`, repitiendo con 2 a 7; después `node tests/software-factory-browser.mjs --mode=interaction` y `node tests/software-factory-browser.mjs --mode=reading`. Cada comando es de primer plano, acotado, y genera evidencia en `design/ai-software-factory/checks-deck/`. Los JSON con timestamp conservan fallos anteriores; las capturas y HTML standalone reflejan la última ejecución. Un fallo de setup no se reintenta automáticamente.
 
-El checker recorre todas las diapositivas a 1280×720 y 390×844, revela pasos por teclado, comprueba proporción/encaje, cajas e ink de texto, separación de paneles, geometría reservada y slides inertes. Captura portada, cronología, flow/loop/gate, riesgo, código, tablas, paralelo y cierre. El modo interaction verifica Enter nativo con texto `\r` y click trusted, navegación, historial, foco, notas, pausa/reinicio, fullscreen y movimiento reducido. Reading comprueba fallback sin scripts y guía responsive/imprimible. Se registran peticiones de red y excepciones. Las métricas no sustituyen mirar las imágenes ni verifican HTTP.
+El checker recorre todas las diapositivas a 1280×720 y 390×844, revela pasos por teclado, comprueba proporción/encaje, cajas e ink de texto, separación de paneles, geometría reservada y slides inertes. Captura portada, cronología, flow/loop/gate, riesgo, código, tablas, paralelo y cierre. El modo interaction verifica Enter nativo con texto `\r` y click trusted, navegación, historial, foco, ausencia de controles extra, fullscreen y movimiento reducido. Reading comprueba fallback sin scripts y guía responsive/imprimible. Se registran peticiones de red y excepciones. Las métricas no sustituyen mirar las imágenes ni verifican HTTP.
 
 No build, dependencias nuevas ni despliegue en esta unidad. El resultado observado se comunica en el handoff de implementación, no se pre-rellena en la plantilla del alumno.
 

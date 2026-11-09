@@ -13,11 +13,14 @@ test('production route and offline response use the same inline document', async
   assert.equal((html.match(/data-slide=/g) || []).length, 54);
   assert.equal((html.match(/<h1\b/g) || []).length, 1);
   assert.match(html, /canonical.*https:\/\/daniel-espanadero.com\/presentaciones\/software-factory/);
-  for (const marker of ['og:title', 'og:description', 'twitter:card', 'name="description"', '<noscript>', 'id="slide-index"', 'id="notes-dialog"']) assert.ok(html.includes(marker), marker);
-  assert.match(html, /descargar.html/);
+  for (const marker of ['og:title', 'og:description', 'twitter:card', 'name="description"', '<noscript>', 'id="slide-index"']) assert.ok(html.includes(marker), marker);
   const offline = renderPresentation({ css: '', controller: '', offline: true });
   assert.match(offline, /Versión sin conexión/);
-  assert.doesNotMatch(offline, /class="download-link"/);
+  // The deck is a presentation, not a download kiosk: no download link in either mode.
+  for (const page of [html, offline]) {
+    assert.doesNotMatch(page, /download-link|descargar\.html/);
+    assert.doesNotMatch(page, /notes-toggle|notes-dialog|note-bank|animation-pause|animation-restart|local-tools/);
+  }
   assert.doesNotMatch(html, /<(?:script|img)[^>]+src="https?:|<link[^>]+rel="stylesheet"[^>]+href="https?:/);
   assert.match(read('src/pages/presentaciones/software-factory/index.astro'), /prerender = true/);
   assert.match(read('src/pages/presentaciones/software-factory/descargar.html.ts'), /Content-Disposition/);
@@ -39,7 +42,6 @@ test('13 compositions preserve all stage text and keep notes and sources off sta
   assert.match(stage, /<svg/);
   assert.match(stage, /<table/);
   assert.match(stage, /<pre/);
-  assert.match(html, /notes-toggle/);
 });
 
 test('every content context is escaped, including code, notes and source attributes', async () => {
@@ -76,7 +78,7 @@ test('guide has unique SEO, all detailed notes, sources and eight download fallb
   assert.match(read('src/pages/presentaciones/software-factory/guia.astro'), /renderGuide/);
 });
 
-test('assets retain fixed base, licensed fonts, reduced motion and isolated enhancements', () => {
+test('assets retain fixed base, licensed fonts and reduced motion, with no extra deck chrome', () => {
   const css = read(`${base}deck.css`);
   const fonts = read(`${base}fonts.css`);
   const viewport = read(`${base}viewport-base.css`);
@@ -86,8 +88,7 @@ test('assets retain fixed base, licensed fonts, reduced motion and isolated enha
   assert.doesNotMatch(fonts, /url\(['"]?https?:/);
   assert.match(css, /animation: none !important/);
   assert.match(css, /\.step-pending/);
-  const controller = read(`${base}enhancements.js`);
-  assert.doesNotMatch(controller, /\bimport\b|eval\(/);
-  assert.match(controller, /notes-toggle/);
-  assert.match(controller, /animation-pause/);
+  // Deck behaviour is the shared player plus the content itself; nothing local to hide.
+  assert.throws(() => read(`${base}enhancements.js`));
+  assert.doesNotMatch(css, /\.local-tools|\.checkpoint|\.closing-stamp|\.download-link/);
 });

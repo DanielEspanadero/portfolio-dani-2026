@@ -3,7 +3,7 @@
 :root { --stage-bg: #101719; --slide-bg: #172127; --paper: #e9eeeb; --cyan: #94c9d2; --amber: #ffc36a; }
 body { color: var(--paper); font-family: 'Instrument Sans', sans-serif; }
 a { color: var(--cyan); }
-button, select, .local-tools a, .download-link { min-width: 44px; min-height: 44px; border: 1px solid #819da5; background: #172127; color: var(--paper); padding: 8px 12px; border-radius: 4px; font: 14px 'Instrument Sans', sans-serif; }
+button, select { min-width: 44px; min-height: 44px; border: 1px solid #819da5; background: #172127; color: var(--paper); padding: 8px 12px; border-radius: 4px; font: 14px 'Instrument Sans', sans-serif; }
 button, select { cursor: pointer; }
 button:disabled { opacity: .5; cursor: default; }
 :focus-visible { outline: 3px solid var(--amber); outline-offset: 3px; }
@@ -13,7 +13,7 @@ h1, h2, h3, p { margin: 0; }
 .skip-link:focus { top: 4px; background: #101719; padding: 12px; }
 
 /* === UNTRANSFORMED VIEWPORT: shared player scales each slide exactly once === */
-#deck { position: fixed; inset: 112px 0 132px; overflow: hidden; outline: none; }
+#deck { position: fixed; inset: 76px 0 132px; overflow: hidden; outline: none; }
 .slide { color: var(--paper); transform-origin: center center; left: 50%; top: 50%; margin: -540px 0 0 -960px; background-image: linear-gradient(#87c6d00c 1px, transparent 1px), linear-gradient(90deg, #87c6d00c 1px, transparent 1px); background-size: 48px 48px; }
 .deck-ready .slide[hidden] { display: block; visibility: hidden; opacity: 0; pointer-events: none; }
 .deck-ready .slide.active { visibility: visible; opacity: 1; pointer-events: auto; }
@@ -39,11 +39,9 @@ h1, .slide h2 { font-size: 88px; font-weight: 650; line-height: 1.04; letter-spa
 .hero-route { position: absolute; top: -20px; width: 100%; height: 40px; }
 .hero-line { display: grid; grid-template-columns: repeat(3, 1fr); gap: 65px; padding-top: 45px; }
 .hero-line .station { border-left: 2px solid var(--cyan); padding-left: 28px; }
-.checkpoint { margin-top: 40px; text-align: right; color: var(--amber); font: 28px 'JetBrains Mono'; }
 .kind-closing .slide-heading h2 { font-size: 110px; color: var(--amber); }
 .closing { display: grid; grid-template-columns: repeat(3, 1fr); gap: 60px; }
 .closing .station { border-top: 2px solid var(--amber); padding-top: 30px; }
-.closing-stamp { margin-top: 50px; font: 30px 'JetBrains Mono'; color: var(--amber); }
 
 /* === TIMELINE: milestones on one continuous horizontal axis === */
 .timeline { display: grid; grid-template-columns: repeat(var(--count), 1fr); gap: 50px; padding-top: 58px; border-top: 3px solid var(--cyan); }
@@ -98,16 +96,16 @@ h1, .slide h2 { font-size: 88px; font-weight: 650; line-height: 1.04; letter-spa
 .boundary-table thead { font: 24px 'JetBrains Mono'; color: var(--cyan); background: #101719; }
 .boundary-table tbody th { color: var(--amber); font-weight: 550; }
 
-/* === PARALLEL: distinct lanes converge on a shared human boundary === */
-.parallel { position: relative; display: grid; grid-template-columns: 2fr 1fr; gap: 80px; height: 100%; }
+/* === PARALLEL: separate lanes converge on one shared contract === */
+.parallel { position: relative; display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr); gap: 64px; height: 100%; align-items: stretch; }
 .lanes { display: grid; gap: 18px; }
 .lanes .station { border: 1px solid var(--cyan); padding: 16px 25px 16px 90px; position: relative; }
 .lanes .station-number { position: absolute; left: 22px; top: 22px; }
 .lanes h3 { margin-bottom: 8px; }
 .lanes p { font-size: 28px; }
-.integration { border-left: 10px double var(--amber); padding: 40px 30px; background: #101719; }
-.integration .station-number { color: var(--amber); font-size: 60px; }
-.integration strong { display: block; margin-top: 32px; font: 25px/1.4 'JetBrains Mono'; color: var(--amber); }
+.integration { border-left: 10px double var(--amber); padding: 34px 30px; background: #101719; display: flex; flex-direction: column; justify-content: center; gap: 18px; }
+
+.integration strong { display: block; font: 24px/1.4 'JetBrains Mono'; color: var(--amber); }
 
 /* === CHECKLIST / WORKSHOP: a readable list and a chat prompt === */
 .checklist { display: grid; gap: 12px; }
@@ -127,9 +125,6 @@ h1, .slide h2 { font-size: 88px; font-weight: 650; line-height: 1.04; letter-spa
 .deck-brand { text-decoration: none; font-weight: 700; white-space: nowrap; }
 #chapter-label { font-size: 14px; }
 .toolbar-actions { display: flex; gap: 8px; align-items: center; }
-.download-link { display: inline-flex; align-items: center; text-decoration: none; }
-.local-tools { position: fixed; left: 0; right: 0; top: 62px; display: flex; justify-content: center; gap: 8px; }
-.local-tools a { display: inline-flex; align-items: center; text-decoration: none; }
 .deck-controls { width: min(780px, calc(100% - 20px)); bottom: 12px; }
 #keyboard-help { text-align: center; font-size: 13px; margin-bottom: 8px; color: #bdd0d5; }
 .navigation-buttons { display: flex; gap: 10px; justify-content: center; align-items: center; }
@@ -147,21 +142,19 @@ dialog::backdrop { background: #000b; }
 .note-entry h3 { font-size: 20px; margin-top: 20px; }
 .note-entry a { overflow-wrap: anywhere; }
 .immersive #deck { inset: 0; }
-.immersive .deck-toolbar, .immersive .local-tools, .immersive .deck-controls { opacity: 0; transition: opacity .2s; }
-.immersive .deck-toolbar:hover, .immersive .deck-toolbar:focus-within, .immersive .local-tools:hover, .immersive .local-tools:focus-within, .immersive .deck-controls:hover, .immersive .deck-controls:focus-within { opacity: 1; }
+.immersive .deck-toolbar, .immersive .deck-controls { opacity: 0; transition: opacity .2s; }
+.immersive .deck-toolbar:hover, .immersive .deck-toolbar:focus-within, .immersive .deck-controls:hover, .immersive .deck-controls:focus-within { opacity: 1; }
 .paused .packet { animation-play-state: paused !important; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
 @media (max-width: 650px) {
-  #deck { inset: 164px 0 148px; }
+  #deck { inset: 122px 0 148px; }
   .deck-toolbar { height: auto; flex-wrap: wrap; padding: 6px 10px; gap: 6px; }
   #chapter-label { max-width: 65%; font-size: 12px; }
   .toolbar-actions { width: 100%; justify-content: center; }
-  .toolbar-actions button, .download-link { font-size: 12px; padding: 6px; }
-  .local-tools { top: 108px; gap: 4px; padding: 0 6px; }
-  .local-tools button, .local-tools a { font-size: 12px; padding: 6px; }
-  .local-tools kbd, .toolbar-actions kbd { display: none; }
+  .toolbar-actions button { font-size: 12px; padding: 6px; }
+  .toolbar-actions kbd { display: none; }
   #keyboard-help { font-size: 11px; }
   .navigation-buttons { flex-wrap: wrap; gap: 5px; }
   #slide-select { width: 140px; font-size: 12px; }
@@ -175,7 +168,7 @@ body:not(.deck-ready) { overflow: visible; height: auto; }
 body:not(.deck-ready) #deck { position: static; overflow: visible; }
 body:not(.deck-ready) .slide { position: relative; left: 0; top: 0; width: auto; height: auto; margin: 25px auto; padding: 28px; visibility: visible; opacity: 1; max-width: 1000px; overflow: visible; }
 body:not(.deck-ready) .slide-heading, body:not(.deck-ready) .composition, body:not(.deck-ready) .slide-footer { position: static; height: auto; margin: 25px 0; }
-body:not(.deck-ready) .registration, body:not(.deck-ready) .connectors, body:not(.deck-ready) .hero-route, body:not(.deck-ready) .diagram-mini, body:not(.deck-ready) .local-tools, body:not(.deck-ready) .deck-toolbar, body:not(.deck-ready) .deck-controls { display: none; }
+body:not(.deck-ready) .registration, body:not(.deck-ready) .connectors, body:not(.deck-ready) .hero-route, body:not(.deck-ready) .diagram-mini, body:not(.deck-ready) .deck-toolbar, body:not(.deck-ready) .deck-controls { display: none; }
 body:not(.deck-ready) .slide h1, body:not(.deck-ready) .slide h2 { font-size: 42px; letter-spacing: -1px; }
 body:not(.deck-ready) .composition * { font-size: 20px; }
 body:not(.deck-ready) .main-panels, body:not(.deck-ready) .workshop, body:not(.deck-ready) .lanes { display: block; }
@@ -190,5 +183,5 @@ body:not(.deck-ready) .lead { font-size: 26px; }
   #deck { position: static; overflow: visible; }
   .slide { left: 0; top: 0; margin: 0; transform: none !important; }
   .step-pending { visibility: visible; opacity: 1; }
-  .deck-toolbar, .local-tools, dialog { display: none; }
+  .deck-toolbar, dialog { display: none; }
 }
