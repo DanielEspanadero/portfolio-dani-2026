@@ -44,13 +44,9 @@ test('the deck length is derived from the content, never typed as a literal', as
     assert.ok(page, `footer sin número: ${inner}`);
     assert.equal(page[1], pad(index + 1));
     assert.equal(page[2], pad(slides.length));
-    // Orden del pie: autor, banda del caso, número de página.
-    const order = ['footer-author', 'footer-story', 'footer-page']
-      .map(name => (inner.includes(`class="${name}"`) ? inner.indexOf(`class="${name}"`) : null));
-    assert.ok(order[0] !== null && order[2] !== null, inner);
-    if (order[1] === null) assert.equal(slides[index].story, undefined, slides[index].id);
-    else assert.ok(order[0] < order[1] && order[1] < order[2], inner);
-    if (slides[index].story) assert.equal(slides[index].story, slides[index].story.trim());
+    // El pie es autor y número de página: el caso en curso ya no ocupa el pie.
+    assert.ok(inner.indexOf('class="footer-author"') < inner.indexOf('class="footer-page"'), inner);
+    assert.ok(!inner.includes('footer-story'), inner);
   });
   for (const page of [html, guide]) {
     assert.ok(!page.includes('54 diapositivas'), 'stale 54 literal');
@@ -93,7 +89,6 @@ test('every content context is escaped, including code, notes and source attribu
     s.kind = 'code';
     s.alias = '<em>alias</em>';
     s.plain = '<b>plain</b> & neutral';
-    s.story = '<i>story</i> & case';
     s.figure = { src: '01-planta.png', mode: 'feature', alt: '"><script alt()</script>' };
     s.sources = ['https://example.org/" onclick="bad()'];
     const deck = renderPresentation({ css: '', controller: '' });
@@ -106,11 +101,9 @@ test('every content context is escaped, including code, notes and source attribu
       assert.match(html, /A &amp; B/);
       assert.ok(!html.includes('href="https://example.org/" onclick='));
     }
-    // The two S9 annotations live on the deck only, and both are text, never markup.
+    // The plain-language annotation lives on the deck only, and it is text, never markup.
     assert.ok(!deck.includes('<b>plain</b>'));
-    assert.ok(!deck.includes('<i>story</i>'));
     assert.match(deck, /&lt;b&gt;plain&lt;\/b&gt; &amp; neutral/);
-    assert.match(deck, /&lt;i&gt;story&lt;\/i&gt; &amp; case/);
     assert.match(deck, /&quot;&gt;&lt;script alt\(\)&lt;\/script&gt;/);
   } finally {
     Object.assign(s, original);
@@ -283,17 +276,15 @@ test('the plain annotation sits under the lead, styled as help and never as fill
   assert.equal(annotated, slides.filter(s => s.plain).length);
 });
 
-test('the story band runs between author and page number only where it belongs', async () => {
+test('the footer carries only the author and the page number', async () => {
+  // The running-case band was removed by the author: the example is introduced where it starts.
   const { renderPresentation } = await renderer();
   const html = renderPresentation({ css: '', controller: '' });
-  const withStory = slides.filter(s => s.story);
-  assert.equal([...html.matchAll(/class="footer-story"/g)].length, withStory.length);
-  const story = escape(withStory[0].story);
-  const slide = byId(html, 'factory-09');
-  assert.match(slide, new RegExp(`<span class="footer-author">Daniel Españadero</span><span class="footer-story">${story}</span><span class="footer-page">`));
-  assert.doesNotMatch(byId(html, 'factory-27'), /footer-story/);
+  assert.equal([...html.matchAll(/class="footer-story"/g)].length, 0);
+  assert.equal(slides.filter(s => s.story).length, 0);
+  assert.match(html, /<span class="footer-author">Daniel Españadero<\/span><span class="footer-page">01 \/ 35<\/span>/);
   const css = read(`${base}deck.css`);
-  assert.match(css, /\.footer-story \{[^}]*font/s);
+  assert.doesNotMatch(css, /\.footer-story/);
   assert.match(css, /\.slide-footer \{[^}]*display: flex/s);
 });
 

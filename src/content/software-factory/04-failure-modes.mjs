@@ -3,7 +3,6 @@ export default {
  slides: [
  {
  id: 'factory-19', title: 'Dos fábricas con la misma pinta', kind: 'comparison',
- story: 'Caso del taller: cancelar una reserva',
  lead: 'Una produce software verificado; otra produce volumen con luces verdes.',
  items: [
  { label: 'Fábrica real', detail: 'Entrada definida, compuertas automáticas, evidencia y medición del flujo.' },
@@ -15,7 +14,6 @@ export default {
  },
  {
  id: 'factory-20', title: 'Falso verde: código y prueba con el mismo error', kind: 'risk',
- story: 'Caso del taller: cancelar una reserva',
  lead: 'Dos artefactos pueden compartir exactamente el mismo malentendido.',
  items: [
  { label: 'Fallo correlacionado', detail: 'Autor y test interpretan que exactamente 24h no recibe devolución.' },
@@ -26,7 +24,6 @@ export default {
  },
  {
  id: 'factory-21', title: 'Texto hostil y permisos amplios', kind: 'risk',
- story: 'Caso del taller: cancelar una reserva',
  lead: 'Un contenido encontrado en datos no hereda autoridad para dar órdenes.',
  items: [
  { label: 'Prompt injection', detail: 'Una incidencia ordena al agente revelar secretos o ignorar reglas.' },
@@ -38,7 +35,6 @@ export default {
  },
  {
  id: 'factory-22', title: 'Coste y conocimiento', kind: 'comparison',
- story: 'Caso del taller: cancelar una reserva',
  lead: 'El coste no es solo la factura: también es lo que el equipo deja de entender.',
  items: [
  { label: 'Coste de contexto', detail: 'Cada subagente recibe y devuelve contexto; ese intercambio consume tokens.' },
@@ -52,7 +48,6 @@ export default {
  },
  {
  id: 'factory-23', title: 'Pausa: tres fallos que verás', kind: 'exercise',
- story: 'Caso del taller: cancelar una reserva',
  lead: 'Tres incidentes reales de una fábrica que se puede montar hoy, con su lección.',
  items: [
  { label: 'Árbol sucio', detail: 'Cambios sin confirmar bloquean el arranque de la orden.' },

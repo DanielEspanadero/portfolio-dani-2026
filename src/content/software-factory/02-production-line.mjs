@@ -3,7 +3,6 @@ export default {
  slides: [
  {
  id: 'factory-08', title: 'Un día en la fábrica', kind: 'timeline',
- story: 'Caso del taller: cancelar una reserva',
  lead: 'Un martes normal de trabajo, con hora de entrada y de salida.',
  items: [
  { label: '09:10, Entra la orden', detail: 'Alguien escribe qué necesita y cómo sabrá que está bien; queda en la lista de pendientes.' },
@@ -16,7 +15,6 @@ export default {
  },
  {
  id: 'factory-09', title: 'Mapa de planta', kind: 'flow',
- story: 'Caso del taller: cancelar una reserva',
  lead: 'Toda orden recorre entrada, estaciones, compuertas e integración en ese orden.',
  figure: { src: '02-linea.png', mode: 'wash', alt: 'Vista lateral de una cinta con cuatro estaciones robotizadas, cajas de trabajo y brazos articulados sobre la línea.' },
  items: [
@@ -29,7 +27,6 @@ export default {
  },
  {
  id: 'factory-10', title: 'De petición a orden de trabajo', kind: 'table',
- story: 'Caso del taller: cancelar una reserva',
  plain: 'Una petición vaga se convierte en una lista de cosas que se pueden comprobar.',
  lead: 'La fábrica arranca cuando la petición se vuelve comprobable.',
  items: [
@@ -42,7 +39,6 @@ export default {
  },
  {
  id: 'factory-11', title: 'Estaciones especializadas', kind: 'checklist',
- story: 'Caso del taller: cancelar una reserva',
  plain: 'El trabajo pasa por varias manos y cada una responde una pregunta distinta.',
  lead: 'Cada estación tiene una función distinta y una salida revisable.',
  items: [
@@ -55,7 +51,6 @@ export default {
  },
  {
  id: 'factory-12', title: 'Estándares y activos reutilizables', kind: 'table',
- story: 'Caso del taller: cancelar una reserva',
  plain: 'Las reglas y las piezas ya hechas se reutilizan para no negociar lo mismo cada vez.',
  lead: 'Las reglas compartidas y las piezas que ya funcionan evitan renegociar cada tarea.',
  items: [
@@ -69,7 +64,6 @@ export default {
  },
  {
  id: 'factory-13', title: 'Compuertas automáticas', kind: 'flow',
- story: 'Caso del taller: cancelar una reserva',
  plain: 'Antes de que alguien mire el trabajo, la máquina comprueba que cumple lo acordado.',
  lead: 'Lo que no cumple el contrato se detiene antes de gastar atención.',
  items: [
@@ -83,7 +77,6 @@ export default {
  },
  {
  id: 'factory-14', title: 'Pausa: ¿qué evidencia pedirías?', kind: 'exercise',
- story: 'Caso del taller: cancelar una reserva',
  lead: 'Una estación entrega un recibo: diff, salida real, límites y pendientes.',
  figure: { src: '05-evidencia.png', mode: 'feature', alt: 'Tarjeta de informe con líneas de datos, un sello ámbar y una lupa grande apoyada encima.' },
  items: [

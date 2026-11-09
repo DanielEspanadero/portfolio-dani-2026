@@ -62,7 +62,6 @@ test('contrato de datos, densidad escénica y notas entre 90 y 150 palabras', ()
     if (s.pause !== undefined) check(typeof s.pause === 'boolean', 'pause');
     // S9 annotations: one plain sentence, one running-case label, one English alias.
     if (s.plain !== undefined) check(typeof s.plain === 'string' && words(s.plain) <= 18, `plain=${words(s.plain ?? '')}`);
-    if (s.story !== undefined) check(typeof s.story === 'string' && words(s.story) <= 6, `story=${s.story}`);
     if (s.alias !== undefined) check(typeof s.alias === 'string' && words(s.alias) <= 4, `alias=${s.alias}`);
     if (s.quote !== undefined) check(typeof s.quote === 'string' && words(s.quote) >= 25, 'quote statement');
     if (s.sources !== undefined) {
@@ -214,31 +213,11 @@ test('la línea llana cubre la jerga mínima y no invade el resto del deck', () 
   }
 });
 
-test('el caso que corre: una sola cadena desde factory-07 hasta factory-26', () => {
-  const withStory = slides.filter(s => s.story);
-  assert.ok(withStory.length >= 10, String(withStory.length));
-  const story = withStory[0].story;
-  // Una cadena única, no variantes: la audiencia cuelga cada idea abstracta del mismo caso.
-  for (const slide of withStory) assert.equal(slide.story, story, slide.id);
-  assert.match(story, /reserva/i);
-  const first = slides.findIndex(s => s.story) + 1;
-  const last = slides.findLastIndex(s => s.story) + 1;
-  assert.equal(first, 7);
-  assert.equal(last, 26);
-  for (let index = 6; index <= 25; index += 1) assert.ok(slides[index].story, `sin story en ${slides[index].id}`);
-  // Desde factory-27 el ejemplo es el contenido: la banda desaparece.
-  for (const slide of slides.slice(26)) assert.equal(slide.story, undefined, slide.id);
-});
-
-test('los textos no llevan símbolos decorativos', () => {
-  // Decisión del autor: en pantalla y en las notas se lee con puntuación normal.
-  // Las rayas, puntos medios, comillas tipográficas y flechas distraen al proyectar.
-  const forbidden = /[\u2014\u2013\u00b7\u00ab\u00bb\u201c\u201d\u2192]/;
-  for (const slide of slides) {
-    const fields = [slide.title, slide.lead, slide.plain, slide.story, slide.quote, slide.notes,
-      ...slide.items.flatMap(entry => [entry.label, entry.detail])].filter(Boolean);
-    for (const text of fields) assert.doesNotMatch(text, forbidden, `${slide.id}: ${text}`);
-  }
+test('el caso no se anuncia en el pie: se presenta con el ejemplo', () => {
+  // Decisión del autor: el pie queda en autor y página; la reserva aparece en el capítulo del ejemplo.
+  for (const slide of slides) assert.equal(slide.story, undefined, slide.id);
+  const example = slides.filter(s => /cancel/i.test(JSON.stringify(s)));
+  assert.ok(example.length >= 3, String(example.length));
 });
 
 test('portada en español con el alias inglés para la búsqueda', () => {

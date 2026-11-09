@@ -70,7 +70,6 @@ export default {
  },
  {
  id: 'factory-07', title: 'Asistente, workflow o agente', kind: 'comparison',
- story: 'Caso del taller: cancelar una reserva',
  lead: 'La diferencia importante es quién elige el siguiente paso.',
  items: [
  { label: 'Asistente', detail: 'La persona dirige el intercambio y decide las acciones.' },

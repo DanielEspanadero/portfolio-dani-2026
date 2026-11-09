@@ -3,7 +3,6 @@ export default {
  slides: [
  {
  id: 'factory-24', title: 'Los ocho archivos', kind: 'code',
- story: 'Caso del taller: cancelar una reserva',
  plain: 'Ocho archivos de texto bastan para que otra persona siga el trabajo sin preguntarte.',
  lead: 'Cada archivo tiene una responsabilidad que se localiza sin preguntar.',
  figure: { src: '04-banco.png', mode: 'feature', alt: 'Alzado de un banco de trabajo con seis bandejas de herramientas y planos técnicos, y dos hojas de plano superpuestas.' },
@@ -25,7 +24,6 @@ export default {
  },
  {
  id: 'factory-25', title: 'Reglas operativas', kind: 'checklist',
- story: 'Caso del taller: cancelar una reserva',
  lead: 'Las instrucciones se señalan explícitamente; los permisos no se amplían para avanzar.',
  figure: { src: '06-carriles.png', mode: 'wash', alt: 'Tres carriles paralelos con cajas en movimiento que convergen en una compuerta vertical ámbar.' },
  items: [
@@ -39,7 +37,6 @@ export default {
  },
  {
  id: 'factory-26', title: 'De dónde salen la orden y el contexto', kind: 'comparison',
- story: 'Caso del taller: cancelar una reserva',
  plain: 'Si lo que está escrito miente, el trabajo repite el error con seguridad.',
  lead: 'Una orden no nace de la nada y un agente no adivina: ambos dependen de lo que está escrito.',
  items: [

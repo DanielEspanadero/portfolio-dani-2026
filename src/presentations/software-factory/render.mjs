@@ -153,7 +153,7 @@ function renderSlide(slide, index) {
     <header class="slide-heading"><p class="eyebrow">${eyebrow}</p>
     <${heading} id="title-${e(slide.id)}">${e(slide.title)}</${heading}>${slide.alias ? `<p class="hero-alias">${e(slide.alias)}</p>` : ''}<p class="lead">${e(slide.lead)}</p>${slide.plain ? `<p class="plain">${e(slide.plain)}</p>` : ''}</header>
     <div class="composition">${composition(slide)}${slide.figure && slide.figure.mode !== 'wash' ? plate(slide) : ''}</div>
-    <footer class="slide-footer"><span class="footer-author">Daniel Españadero</span>${slide.story ? `<span class="footer-story">${e(slide.story)}</span>` : ''}<span class="footer-page">${pad(index + 1)} / ${pad(total)}</span></footer>
+    <footer class="slide-footer"><span class="footer-author">Daniel Españadero</span><span class="footer-page">${pad(index + 1)} / ${pad(total)}</span></footer>
   </section>`;
 }
 

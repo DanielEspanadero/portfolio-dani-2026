@@ -3,7 +3,6 @@ export default {
  slides: [
  {
  id: 'factory-15', title: 'El bucle completo', kind: 'loop',
- story: 'Caso del taller: cancelar una reserva',
  plain: 'La máquina repite a lo sumo unas vueltas y luego entrega lo que tiene.',
  lead: 'Un agente escribe la spec, otro construye, revisores independientes juzgan y alguien decide.',
  items: [
@@ -17,7 +16,6 @@ export default {
  },
  {
  id: 'factory-16', title: 'El estado vive en archivos', kind: 'files',
- story: 'Caso del taller: cancelar una reserva',
  plain: 'Lo que se decide queda escrito en archivos que cualquiera puede leer mañana.',
  lead: 'Backlog, una spec por trabajo y un registro de estado: markdown que una persona puede leer.',
  items: [
@@ -30,7 +28,6 @@ export default {
  },
  {
  id: 'factory-17', title: 'Quién decide y cuándo escalar', kind: 'table',
- story: 'Caso del taller: cancelar una reserva',
  plain: 'Algunos cambios los cierra la máquina; los que no se deshacen pasan por una persona.',
  lead: 'Un agente puede fusionar lotes verdes; lo irreversible siempre escala a una persona.',
  items: [
@@ -44,7 +41,6 @@ export default {
  },
  {
  id: 'factory-18', title: 'Política de modelos y esfuerzo', kind: 'comparison',
- story: 'Caso del taller: cancelar una reserva',
  plain: 'Pagar por el cerebro más capaz para el plan; usar los rápidos para tareas pequeñas.',
  lead: 'El modelo caro orquesta; los subagentes baratos ejecutan; el mejor modelo mejora la fábrica.',
  items: [

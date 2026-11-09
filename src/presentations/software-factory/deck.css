@@ -41,7 +41,6 @@ h1, .slide h2 { font-size: 88px; font-weight: 650; line-height: 1.04; letter-spa
 .plate-wash::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(16, 23, 25, .45) 0%, rgba(16, 23, 25, .62) 60%, rgba(16, 23, 25, .5) 100%); }
 .slide-footer { position: absolute; left: 120px; right: 120px; bottom: 60px; border-top: 1px solid #718d94; padding-top: 22px; display: flex; align-items: baseline; justify-content: space-between; gap: 24px; font-size: 24px; }
 /* The running case sits quiet and centred: a band, not a second headline. */
-.footer-story { font: 21px 'JetBrains Mono', monospace; color: #a9c3c9; letter-spacing: .04em; padding: 0 22px; border-left: 1px solid #557077; border-right: 1px solid #557077; }
 .footer-page { font-family: 'JetBrains Mono'; color: var(--amber); font-size: 22px; }
 .panel { min-width: 0; }
 .station h3, .integration h3 { font-size: 32px; line-height: 1.15; font-weight: 600; margin-bottom: 20px; overflow-wrap: anywhere; }
