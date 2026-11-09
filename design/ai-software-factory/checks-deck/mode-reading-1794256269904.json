@@ -5,7 +5,7 @@
       "mode": "desktop",
       "fallback": {
         "classes": "",
-        "height": 37014,
+        "height": 36610,
         "viewport": 720,
         "slides": [
           {
@@ -95,7 +95,7 @@
           {
             "id": "factory-13",
             "visibility": "visible",
-            "height": 1162,
+            "height": 757.703125,
             "left": 140,
             "width": 1000
           },
@@ -267,7 +267,7 @@
       "mode": "phone",
       "fallback": {
         "classes": "",
-        "height": 61851,
+        "height": 61110,
         "viewport": 844,
         "slides": [
           {
@@ -357,7 +357,7 @@
           {
             "id": "factory-13",
             "visibility": "visible",
-            "height": 1571.0625,
+            "height": 830.484375,
             "left": 0,
             "width": 390
           },

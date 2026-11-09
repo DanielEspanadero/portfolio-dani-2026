@@ -1,0 +1,10 @@
+{
+  "selector": "--mode=interaction",
+  "probes": [],
+  "failures": [
+    "desktop: the gates draw both cases (31 nodes), name them and keep the gate text",
+    "phone: the gates draw both cases (31 nodes), name them and keep the gate text"
+  ],
+  "requests": [],
+  "errors": []
+}
