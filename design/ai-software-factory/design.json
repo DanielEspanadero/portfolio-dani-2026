@@ -1,0 +1,28 @@
+{
+  "title": "Fábrica de software con IA",
+  "brief": "Tres portadas animadas para un curso en directo en YouTube. Ideas, agentes, calidad y control humano. Solo descubrimiento visual; pendiente de selección.",
+  "feature": "odd/tasks/ai-software-factory-presentation.md",
+  "artboards": [
+    {
+      "id": "01",
+      "title": "Sala de control",
+      "file": "01-sala-control.html",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "id": "02",
+      "title": "Manual editorial",
+      "file": "02-manual-editorial.html",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "id": "03",
+      "title": "Plano de fábrica",
+      "file": "03-plano-fabrica.html",
+      "width": 1920,
+      "height": 1080
+    }
+  ]
+}

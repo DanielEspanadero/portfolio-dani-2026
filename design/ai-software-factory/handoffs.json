@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "chosen": "03-plano-fabrica.html",
+  "handoffs": {
+    "03-plano-fabrica.html": {
+      "status": "sent",
+      "queued": false,
+      "sentAt": "2026-11-09T12:20:28.098Z",
+      "startedAt": null,
+      "implementedAt": null,
+      "feature": "odd/tasks/ai-software-factory-presentation.md"
+    }
+  }
+}
